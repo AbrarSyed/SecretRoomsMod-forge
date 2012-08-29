@@ -130,7 +130,7 @@ public class SecretRooms
         camoPlateAll = (new BlockCamoPlate(ids[14], EnumMobType.everything)).setBlockName("Secret PressurePlate");
         camoPlatePlayer = (new BlockCamoPlate(ids[15], EnumMobType.players)).setBlockName("Secret PlayerPlate");
         
-        camoStairs = (new BlockCamoStair(ids[16], 0)).setBlockName("Secret Camo Stair");
+        camoStairs = (new BlockCamoStair(ids[16])).setBlockName("Secret Camo Stair");
         
         // key Events
         proxy.doKeyStuff();
