@@ -240,6 +240,16 @@ public class SecretRooms
         GameRegistry.addShapelessRecipe(new ItemStack(camoTrapDoor, 1), new Object[]
                 { camoPaste, Block.trapdoor});
         
+        //CamoStairs
+        GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[]
+                {
+                    "0  ",
+                    "0X ",
+                    "000",
+                    'X', camoPaste,
+                    '0', Block.stone
+                });
+        
         //CamoPaste
         GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[]
         {
