@@ -24,9 +24,8 @@ public class BlockCamoStair extends BlockCamoFull {
 	protected BlockCamoStair(int par1) {
 		super(par1);
 		this.setHardness(1.5F);
-        this.setStepSound(Block.soundWoodFootstep);
 		this.setCreativeTab(CreativeTabs.tabBlock);
-		this.setLightOpacity(255);
+		this.setLightOpacity(15);
 	}
 	
 	private boolean field_72156_cr = false;
@@ -36,6 +35,29 @@ public class BlockCamoStair extends BlockCamoFull {
     public void addCreativeItems(ArrayList itemList)
     {
     	itemList.add(new ItemStack(this));
+    }
+    
+    @Override
+    public int getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
+    {
+    	if (!SecretRooms.displayCamo)
+    		return getBlockTextureFromSide(dir);
+    	
+    	TileEntityCamoFull entity = ((TileEntityCamoFull)world.getBlockTileEntity(x, y, z));
+    	int id;
+    	if (entity == null)
+    		id = 1;
+    	else if (entity.getCopyID() <= 0)
+    		id = 1;
+    	else
+    	{
+        	id = entity.getCopyID();
+        	x = entity.getCopyCoordX();
+        	y = entity.getCopyCoordY();
+        	z = entity.getCopyCoordZ();
+    	}
+    	
+    	return Block.blocksList[id].getBlockTexture(world, x, y, z, dir);
     }
     
     /**
@@ -52,31 +74,10 @@ public class BlockCamoStair extends BlockCamoFull {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
     }
-    
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
 
     /**
      * The type of render function that is called for this block
      */
-    public int getRenderType()
-    {
-        return 10;
-    }
     
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
@@ -195,9 +196,9 @@ public class BlockCamoStair extends BlockCamoFull {
     public int getBlockTextureFromSide(int i)
     {
     	if (i == 1)
-    		return Block.planks.blockIndexInTexture;
+    		return blockIndexInTexture;
     	else if (i == 3)
-    		return Block.planks.blockIndexInTexture;
+    		return blockIndexInTexture;
     	
     	return blockIndexInTexture;
     }
