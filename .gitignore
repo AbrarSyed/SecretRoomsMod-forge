@@ -14,8 +14,8 @@
 /src/minecraft/*
 /src/minecraft_server/*
 /src/common/*
-!/src/common/com/github/AbrarSyed/SecretRooms/*
-!/src/minecraft/com/github/AbrarSyed/SecretRooms/*
+!/src/common/com/github/AbrarSyed/SecretRooms
+!/src/minecraft/com/github/AbrarSyed/SecretRooms
 
 *.bat
 *.sh
