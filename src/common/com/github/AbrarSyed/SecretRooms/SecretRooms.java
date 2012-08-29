@@ -95,6 +95,8 @@ public class SecretRooms
 				
 				Integer.parseInt(config.getOrCreateBlockIdProperty("camoPlateAllBlock", 211).value),
 				Integer.parseInt(config.getOrCreateBlockIdProperty("camoPlatePlayerBlock", 212).value),
+				
+				Integer.parseInt(config.getOrCreateBlockIdProperty("camoStairBlock", 213).value),
 		};
 		config.save();
         
@@ -128,6 +130,8 @@ public class SecretRooms
         camoPlateAll = (new BlockCamoPlate(ids[14], EnumMobType.everything)).setBlockName("Secret PressurePlate");
         camoPlatePlayer = (new BlockCamoPlate(ids[15], EnumMobType.players)).setBlockName("Secret PlayerPlate");
         
+        camoStairs = (new BlockCamoStair(ids[16], 0)).setBlockName("Secret Camo Stair");
+        
         // key Events
         proxy.doKeyStuff();
         
@@ -148,6 +152,8 @@ public class SecretRooms
         
         GameRegistry.registerBlock(camoPlateAll);
         GameRegistry.registerBlock(camoPlatePlayer);
+        
+        GameRegistry.registerBlock(camoStairs);
         
         // camo Tile Entities
         GameRegistry.registerTileEntity(TileEntityCamo.class, "Camo");
@@ -453,6 +459,9 @@ public class SecretRooms
     // camo Plates
     public static Block camoPlateAll;
     public static Block camoPlatePlayer;
+    
+    // camo Stairs - alexbegt
+    public static Block camoStairs;
     
     protected static int camoRenderId;
     protected static int torchRenderId;
