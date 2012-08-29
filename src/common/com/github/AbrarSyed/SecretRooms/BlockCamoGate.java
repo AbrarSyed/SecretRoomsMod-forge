@@ -16,6 +16,8 @@ public class BlockCamoGate extends BlockCamoFull
     protected BlockCamoGate(int i)
     {
         super(i);
+        this.setHardness(1.5F);
+        this.setStepSound(Block.soundWoodFootstep);
     }
     
     @Override

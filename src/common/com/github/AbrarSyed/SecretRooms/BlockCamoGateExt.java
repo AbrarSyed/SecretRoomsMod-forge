@@ -2,12 +2,16 @@ package com.github.AbrarSyed.SecretRooms;
 
 import java.util.Random;
 
+import net.minecraft.src.Block;
+
 
 public class BlockCamoGateExt extends BlockCamoFull
 {
     public BlockCamoGateExt(int i)
     {
         super(i);
+        this.setHardness(2.5F);
+        this.setStepSound(Block.soundWoodFootstep);
     }
 
     @Override

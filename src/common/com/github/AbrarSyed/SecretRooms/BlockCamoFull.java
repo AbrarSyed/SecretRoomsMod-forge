@@ -25,6 +25,7 @@ public class BlockCamoFull extends BlockContainer
 	{
 		super(par1, Material.wood);
 		blockIndexInTexture = 0;
+		this.setLightOpacity(15);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 	
@@ -32,6 +33,7 @@ public class BlockCamoFull extends BlockContainer
 	{
 		super(par1, material);
 		blockIndexInTexture = 0;
+		this.setLightOpacity(15);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 
