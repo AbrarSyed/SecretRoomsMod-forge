@@ -179,6 +179,8 @@ public class SecretRooms
         LanguageRegistry.instance().addNameForObject(camoPlateAll, "en_US",  "Secret PressurePlate");
         LanguageRegistry.instance().addNameForObject(camoPlatePlayer, "en_US",  "Secret PlayerPlate");
         
+        LanguageRegistry.instance().addNameForObject(camoStairs, "en_US",  "Secret Camo Stair");
+        
         //Renders
         proxy.doRenderStuff();
         
