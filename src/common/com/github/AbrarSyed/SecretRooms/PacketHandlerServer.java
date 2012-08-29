@@ -17,6 +17,9 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.server.FMLServerHandler;
 
+/**
+ * @author AbrarSyed
+ */
 public class PacketHandlerServer implements IPacketHandler {
 
 	@Override

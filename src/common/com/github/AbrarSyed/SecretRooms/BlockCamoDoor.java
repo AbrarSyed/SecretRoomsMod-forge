@@ -17,7 +17,9 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
 
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockCamoDoor extends BlockContainer
 {
     protected BlockCamoDoor(int par1, Material mat)

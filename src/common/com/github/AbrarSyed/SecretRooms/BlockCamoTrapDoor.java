@@ -13,7 +13,9 @@ import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
 
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockCamoTrapDoor extends Block
 {
     protected BlockCamoTrapDoor(int par1)

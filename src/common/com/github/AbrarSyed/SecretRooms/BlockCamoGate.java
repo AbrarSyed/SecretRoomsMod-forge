@@ -10,7 +10,9 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockCamoGate extends BlockCamoFull
 {
     protected BlockCamoGate(int i)

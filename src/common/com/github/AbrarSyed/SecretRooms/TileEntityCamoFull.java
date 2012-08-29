@@ -12,11 +12,9 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 
-
-// CLIENT
-// Referenced classes of package net.minecraft.src:
-//            TileEntity, NBTTagCompound
-
+/**
+ * @author AbrarSyed
+ */
 public class TileEntityCamoFull extends TileEntity
 {
     public TileEntityCamoFull()

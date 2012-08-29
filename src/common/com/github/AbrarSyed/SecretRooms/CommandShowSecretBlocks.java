@@ -11,6 +11,9 @@ import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.ICommandSender;
 import net.minecraft.src.Packet250CustomPayload;
 
+/**
+ * @author AbrarSyed
+ */
 public class CommandShowSecretBlocks extends CommandBase
 {
 

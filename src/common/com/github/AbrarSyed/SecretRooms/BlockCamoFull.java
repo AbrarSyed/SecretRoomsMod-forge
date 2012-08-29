@@ -17,7 +17,9 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockCamoFull extends BlockContainer
 {
 
@@ -214,7 +216,7 @@ public class BlockCamoFull extends BlockContainer
      */
     private int[] getIdCamoStyle(World world, int x, int y, int z)
     {
-        int[] id = new int[]{0, 0, 0 , 0};;
+        int[] id = new int[]{0, 0, 0 , 0};
         int[][] plusIds = new int[6][4];
         Block block;
         
@@ -272,7 +274,8 @@ public class BlockCamoFull extends BlockContainer
         }
         catch(Exception e)
         {
-        	id = truncateArrayINT(plusIds)[0];
+        	if (id.length >= 1)
+        		id = truncateArrayINT(plusIds)[0];
         }
         
         if (id[0] == 0)

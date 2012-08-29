@@ -12,6 +12,9 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 
+/**
+ * @author AbrarSyed
+ */
 public class BlockCamoWire extends BlockCamoFull
 {
     public BlockCamoWire(int i)

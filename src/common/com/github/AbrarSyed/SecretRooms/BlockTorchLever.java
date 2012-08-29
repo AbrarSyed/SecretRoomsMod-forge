@@ -18,10 +18,9 @@ import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
 
 
-// Referenced classes of package net.minecraft.src:
-//            Block, Material, World, AxisAlignedBB,
-//            Vec3D, MovingObjectPosition
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockTorchLever extends BlockTorch
 {
     protected BlockTorchLever(int i, int j)

@@ -11,7 +11,9 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockCamoButton extends BlockCamoFull
 {
     protected BlockCamoButton(int i)

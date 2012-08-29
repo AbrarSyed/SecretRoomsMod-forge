@@ -8,6 +8,9 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 
+/**
+ * @author AbrarSyed
+ */
 public class TileEntityCamo extends TileEntity
 {
     public TileEntityCamo()

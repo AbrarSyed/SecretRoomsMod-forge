@@ -22,6 +22,9 @@ import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 
+/**
+ * @author AbrarSyed
+ */
 public class Proxy
 {
 	public void doRenderStuff()

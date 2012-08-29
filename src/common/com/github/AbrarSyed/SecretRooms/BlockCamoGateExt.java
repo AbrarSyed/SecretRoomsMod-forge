@@ -4,7 +4,9 @@ import java.util.Random;
 
 import net.minecraft.src.Block;
 
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockCamoGateExt extends BlockCamoFull
 {
     public BlockCamoGateExt(int i)

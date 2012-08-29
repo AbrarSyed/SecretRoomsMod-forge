@@ -21,7 +21,9 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockOneWay extends BlockContainer
 {
     public BlockOneWay(int i, int j)

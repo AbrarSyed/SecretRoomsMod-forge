@@ -12,6 +12,9 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 
+/**
+ * @author AbrarSyed
+ */
 
 public class ItemCamoDoor extends Item
 {

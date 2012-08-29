@@ -14,10 +14,9 @@ import net.minecraft.src.Material;
 import net.minecraft.src.World;
 
 
-// Referenced classes of package net.minecraft.src:
-//            Block, Material, World, AxisAlignedBB,
-//            Vec3D, MovingObjectPosition
-
+/**
+ * @author AbrarSyed
+ */
 public class BlockCamoLever extends BlockCamoFull
 {
     protected BlockCamoLever(int i)
