@@ -119,12 +119,14 @@ public class BlockOneWay extends BlockContainer
     	SecretRooms.proxy.doOneWayStuff(world, i, j, k, entityliving);
     }
     
+    /*
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
     	TileEntityCamo entity = (TileEntityCamo) par1World.getBlockTileEntity(par2, par3, par4);
     	par5EntityPlayer.addChatMessage("texture: "+entity.getTexture());
         return true;
     }
+    */
 
     @SideOnly(value=Side.CLIENT)
     @Override

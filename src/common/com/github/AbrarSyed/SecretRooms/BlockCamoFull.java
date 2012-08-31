@@ -5,6 +5,7 @@ import java.util.Random;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 import net.minecraft.src.Block;
@@ -64,6 +65,7 @@ public class BlockCamoFull extends BlockContainer
 	}
     
     @Override
+    @SideOnly(value=Side.CLIENT)
     public int getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
     {
     	if (!SecretRooms.displayCamo)
@@ -83,15 +85,10 @@ public class BlockCamoFull extends BlockContainer
         	z = entity.getCopyCoordZ();
     	}
     	
+    	if (id == 1)
+    		return Block.stone.blockIndexInTexture;
+    	
     	return Block.blocksList[id].getBlockTexture(world, x, y, z, dir);
-    }
-    
-    @Override
-    public int getBlockTextureFromSide(int i)
-    {
-    	if (i == 2)
-    		return 0;
-    	return blockIndexInTexture;
     }
     
     /**
@@ -277,6 +274,8 @@ public class BlockCamoFull extends BlockContainer
         	int[][] test = truncateArrayINT(plusIds);
         	if (test.length >= 1)
         		id = test[0];
+        	else
+        		id = new int[] {1, 0, 0, 0, 0};
         }
         
         if (id[0] == 0)
@@ -344,37 +343,37 @@ public class BlockCamoFull extends BlockContainer
     		{
     			TileEntityCamoFull entity = (TileEntityCamoFull)world.getBlockTileEntity(x, y, z);
     			if (entity != null)
-    				return new int[] {entity.getCopyID(), entity.getCopyCoordX(), entity.getCopyCoordY(), entity.getCopyCoordZ()};;
-    			return new int[] {0, 0, 0, 0};
+    				return new int[] {entity.getCopyID(), entity.getCopyCoordX(), entity.getCopyCoordY(), entity.getCopyCoordZ()};
+    			else
+    				return new int[] {0, 0, 0, 0};
     		}
+    		else if (block instanceof BlockOneWay)
+    			return new int[] {id, x, y, z};
+    		else if (block.isOpaqueCube())
+    			return new int[] {id, x, y, z};
     		else
     		{
-    			if (block instanceof BlockOneWay)
+    			block.setBlockBoundsBasedOnState(world, x, y, z);
+    			double[] bounds = new double[]
+    					{
+    					block.minX,
+    					block.minY,
+    					block.minZ,
+    					block.maxX,
+    					block.maxY,
+    					block.maxZ
+    					};
+
+    			if (block.minX == 0
+    					&& block.minY == 0
+    					&& block.minZ == 0
+    					&& block.maxX == 1
+    					&& block.maxY == 1
+    					&& block.maxZ == 1
+    					)
     				return new int[] {id, x, y, z};
     			else
-    			{
-    				block.setBlockBoundsBasedOnState(world, x, y, z);
-    				double[] bounds = new double[]
-    						{
-    						block.minX,
-    						block.minY,
-    						block.minZ,
-    						block.maxX,
-    						block.maxY,
-    						block.maxZ
-    						};
-    				
-    				if (block.minX == 0
-    						&& block.minY == 0
-    						&& block.minZ == 0
-    						&& block.maxX == 1
-    						&& block.maxY == 1
-    						&& block.maxZ == 1
-    						)
-    					return new int[] {id, x, y, z};
-    				else
-    					return new int[] {0, 0, 0, 0};
-    			}
+    				return new int[] {0, 0, 0, 0};
     		}
     	}
     }

@@ -69,7 +69,7 @@ public class PacketHandlerClient implements IPacketHandler {
 
 			if (texture == -1)
 			{
-				System.out.println(player.username+"-SET: *invalid*");
+				//System.out.println(player.username+"-SET: *invalid*");
 				return;
 			}
 
@@ -80,7 +80,7 @@ public class PacketHandlerClient implements IPacketHandler {
 				
 				if (!world.blockExists(coords[0], coords[1], coords[2]))
 				{
-					System.out.println(player.username+"-SET: *null-block*");
+					//System.out.println(player.username+"-SET: *null-block*");
 					return;
 				}
 				
@@ -90,7 +90,7 @@ public class PacketHandlerClient implements IPacketHandler {
 				entity.zCoord = coords[2];
 				world.addTileEntity(entity);
 				
-				System.out.println(player.username+"-SET: *null-entity*");
+				//System.out.println(player.username+"-SET: *null-entity*");
 				return;
 			}
 
@@ -100,7 +100,7 @@ public class PacketHandlerClient implements IPacketHandler {
 				entity.setTexturePath(texturePath);
 			
 			world.markBlockNeedsUpdate(coords[0], coords[1], coords[2]);
-			System.out.println(player.username+"-SET: "+texture);
+			//System.out.println(player.username+"-SET: "+texture);
 		}
 
 		else if (channel.equals("SRM-TE-CamoFull"))
