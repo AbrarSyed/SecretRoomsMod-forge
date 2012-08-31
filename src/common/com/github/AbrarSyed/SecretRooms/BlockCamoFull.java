@@ -274,8 +274,9 @@ public class BlockCamoFull extends BlockContainer
         }
         catch(Exception e)
         {
-        	if (id.length >= 1)
-        		id = truncateArrayINT(plusIds)[0];
+        	int[][] test = truncateArrayINT(plusIds);
+        	if (test.length >= 1)
+        		id = test[0];
         }
         
         if (id[0] == 0)
