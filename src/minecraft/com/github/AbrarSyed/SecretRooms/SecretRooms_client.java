@@ -47,7 +47,7 @@ public class SecretRooms_client extends Proxy
 	@Override
 	public void doRenderStuff()
 	{
-		System.out.println("renderring stuff is happenning");
+		//System.out.println("renderring stuff is happenning");
 		
 		SecretRooms.camoRenderId = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new CamoRenderer());

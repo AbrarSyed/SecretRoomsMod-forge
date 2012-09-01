@@ -68,9 +68,9 @@ public class SecretKey extends KeyHandler {
         if (!ModLoader.getMinecraftInstance().theWorld.isRemote)
         {
         	if (SecretRooms.OneWayFaceTowards)
-        		chat("§e-- !!! OneWayBlock facing set to Towards !!! --");
+        		chat(PacketHandlerClient.getColorThing()+"e-- !!! OneWayBlock facing set to Towards !!! --");
         	else
-        		chat("§e-- !!! OneWayBlock facing set to Away !!! --");
+        		chat(PacketHandlerClient.getColorThing()+"§-- !!! OneWayBlock facing set to Away !!! --");
         }
 	}
 	
