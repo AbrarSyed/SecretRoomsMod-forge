@@ -70,7 +70,7 @@ public class SecretKey extends KeyHandler {
         	if (SecretRooms.OneWayFaceTowards)
         		chat(PacketHandlerClient.getColorThing()+"e-- !!! OneWayBlock facing set to Towards !!! --");
         	else
-        		chat(PacketHandlerClient.getColorThing()+"§-- !!! OneWayBlock facing set to Away !!! --");
+        		chat(PacketHandlerClient.getColorThing()+"e-- !!! OneWayBlock facing set to Away !!! --");
         }
 	}
 	
