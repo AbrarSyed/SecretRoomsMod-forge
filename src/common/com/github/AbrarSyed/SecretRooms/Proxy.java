@@ -41,6 +41,7 @@ public class Proxy
 	{
 	}
 	
+	@Deprecated
 	public Configuration getConfig()
 	{
 		return new Configuration(new File("./SecretRoomsMod.prop"));

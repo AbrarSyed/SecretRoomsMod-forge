@@ -162,9 +162,9 @@ public class PacketHandlerClient implements IPacketHandler {
 			SecretRooms.displayCamo = !SecretRooms.displayCamo;
 
 			if (SecretRooms.displayCamo)
-				player.addChatMessage(getColorThing()+"eCamo blocks made secret");
+				player.addChatMessage(getColorThing()+"Camo blocks made secret");
 			else
-				player.addChatMessage(getColorThing()+"eCamo blocks made obvious");
+				player.addChatMessage(getColorThing()+"Camo blocks made obvious");
 
 			for (int i = -10; i < 10; i++)
 				for (int j = -10; j < 10; j++)
@@ -175,7 +175,8 @@ public class PacketHandlerClient implements IPacketHandler {
 	
 	public static String getColorThing()
 	{
-		return "§";
+		System.out.print("");
+		return "\u00a7e";
 	}
 
 }

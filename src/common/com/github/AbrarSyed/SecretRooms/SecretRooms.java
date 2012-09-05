@@ -71,7 +71,7 @@ public class SecretRooms
 	@PreInit
 	public void load(FMLPreInitializationEvent e)
 	{
-		Configuration config = proxy.getConfig();
+		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
 
 		config.load();
 		int[] ids = {
