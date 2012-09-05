@@ -1,6 +1,7 @@
 package com.github.AbrarSyed.SecretRooms;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -231,21 +232,22 @@ public class BlockCamoFull extends BlockContainer
         if (isOneLeft(truncateArrayINT(plusIds)))
         {
         	plusIds = truncateArrayINT(plusIds);
+        	System.out.println("IDs worked early:  "+Arrays.toString(plusIds[0]));
         	return plusIds[0];
         }
         
         int[][] intChecks = new int[3][4];
         
         // checks Y's
-        if (plusIds[0] == plusIds[1])
+        if (plusIds[0][0] == plusIds[1][0])
         	intChecks[1] = plusIds[0];
         
         //checks X's
-        if (plusIds[2] == plusIds[3])
-        	intChecks[0] = plusIds[1];
+        if (plusIds[2][0] == plusIds[3][0])
+        	intChecks[0] = plusIds[2];
     	
         // checks Z's
-        if (plusIds[4] == plusIds[5])
+        if (plusIds[4][0] == plusIds[5][0])
         	intChecks[2] = plusIds[4];
         
         // part of XY wall?
@@ -259,6 +261,20 @@ public class BlockCamoFull extends BlockContainer
         // part of XZ floor or ceiling?
         else if (intChecks[2][0] == intChecks[0][0] && intChecks[0][0] > 0)
         	id = intChecks[0];
+        
+        // check Y column
+        else if (intChecks[1][0] != 0)
+        	id = intChecks[1];
+        
+        // check X row
+        else if (intChecks[0][0] != 0)
+        	id = intChecks[0];
+        
+        // check Z row
+        else if (intChecks[2][0] != 0)
+        	id = intChecks[2];
+        
+        System.out.println("IDs are fun:  "+Arrays.toString(id));
         
         if (id[0] != 0) return id;
         
