@@ -97,14 +97,16 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
         TileEntityCamo entity = ((TileEntityCamo)blockAccess.getBlockTileEntity(i, j, k));
         int texture = 0;
         boolean grassed = false;
-        boolean forgetextured = false;
         boolean currentlyBound = false;
+        String textureFile = entity.getTexturePath();
+        
+        if (textureFile == null)
+        	textureFile = "/terrain.png";
         
         if (entity != null)
         {
         	texture = entity.getTexture();
         	grassed = texture == 3 || texture == 0 || texture == 38;
-        	forgetextured = (entity.getTexturePath() != null && !entity.getTexturePath().equals("/terrain.png"));
         }
         
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -112,8 +114,9 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
         // get metadata
         int metadata = blockAccess.getBlockMetadata(i, j, k);
         
-        if (!grassed && !forgetextured)
+        if (!grassed && textureFile.equals("/terrain.png"))
         {
+        	//System.out.println("renderred normal");
         	return renderblocks.renderStandardBlock(block, i, j, k);
         }
     	
@@ -152,9 +155,10 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         for (int l = 0; l < 6; l++)
         {
-        	if (forgetextured && metadata == l)
+        	if (metadata == l)
         	{
-        		ForgeHooksClient.bindTexture(entity.getTexturePath(), 0);
+        		//System.out.println("renderring special >> "+textureFile);
+        		ForgeHooksClient.bindTexture(textureFile, 0);
         		currentlyBound = true;
         	}
 
@@ -269,11 +273,8 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
         	return renderblocks.renderStandardBlock(block, i, j, k);
         }
         
-        if (!Block.blocksList[copyId].isDefaultTexture)
-        {
-        	ForgeHooksClient.bindTexture(Block.blocksList[copyId].getTextureFile(), 0);
-        	currentlyBound = true;
-        }
+    	ForgeHooksClient.bindTexture(Block.blocksList[copyId].getTextureFile(), 0);
+    	currentlyBound = true;
         
         renderblocks.enableAO = false;
         Tessellator tessellator = Tessellator.instance;

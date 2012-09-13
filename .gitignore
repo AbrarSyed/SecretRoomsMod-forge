@@ -15,8 +15,8 @@
 /src/minecraft/*
 /src/minecraft_server/*
 
-!/src/common/com/*
-!/src/minecraft/com/*
+!/src/common/com/
+!/src/minecraft/com/
 
 *.bat
 *.sh
