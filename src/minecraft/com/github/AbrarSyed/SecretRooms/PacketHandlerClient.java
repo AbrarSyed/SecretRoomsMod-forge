@@ -175,7 +175,7 @@ public class PacketHandlerClient implements IPacketHandler {
 	
 	public static String getColorThing()
 	{
-		System.out.print("");
+		//System.out.print("");
 		return "\u00a7e";
 	}
 

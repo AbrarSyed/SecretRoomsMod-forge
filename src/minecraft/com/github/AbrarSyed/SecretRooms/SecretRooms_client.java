@@ -73,7 +73,7 @@ public class SecretRooms_client extends Proxy
 
     	entity.setTexturePath((String)properties[1]);
     	entity.setTexture((Integer)properties[0]);
-    	PacketDispatcher.sendPacketToServer(entity.getAuxillaryInfoPacket());
+    	PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
 		
 	}
 	

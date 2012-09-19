@@ -43,7 +43,7 @@ public class TileEntityCamo extends TileEntity
     }
     
     @Override
-    public Packet getAuxillaryInfoPacket()
+    public Packet getDescriptionPacket()
     {
     	Packet250CustomPayload packet = new Packet250CustomPayload();
     	packet.channel = "SRM-TE-Camo";

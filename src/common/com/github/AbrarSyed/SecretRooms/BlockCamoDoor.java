@@ -408,7 +408,7 @@ public class BlockCamoDoor extends BlockContainer
     		int texture = Block.blocksList[id].getBlockTexture(par1World, x, y-1, z, 3);
     		entity.setTexture(texture);
     		System.out.println("Texture is "+texture);
-    		PacketDispatcher.sendPacketToServer(entity.getAuxillaryInfoPacket());
+    		PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
     	}
     }
     

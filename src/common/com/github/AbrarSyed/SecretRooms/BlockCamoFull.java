@@ -122,7 +122,7 @@ public class BlockCamoFull extends BlockContainer
     		}
 
     		entity.setCopyID(IdAndCoords[0]);
-    		FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getAuxillaryInfoPacket());
+    		FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
     	}
     	else
     	{

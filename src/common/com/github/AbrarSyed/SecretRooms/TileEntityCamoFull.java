@@ -52,7 +52,7 @@ public class TileEntityCamoFull extends TileEntity
      * signs and mobSpawners use this to send text and meta-data
      */
     @Override
-    public Packet getAuxillaryInfoPacket()
+    public Packet getDescriptionPacket()
     {
     	Packet250CustomPayload packet = new Packet250CustomPayload();
     	

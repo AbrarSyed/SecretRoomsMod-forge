@@ -24,7 +24,7 @@ public class ItemCamoDoor extends Item
     {
         super(par1);
         doorMaterial = par2Material;
-        this.setTabToDisplayOn(CreativeTabs.tabRedstone);
+        this.setCreativeTab(CreativeTabs.tabRedstone);
         this.setTextureFile(SecretRooms.textureFile);
         this.setIconIndex(0);
     }
@@ -34,7 +34,7 @@ public class ItemCamoDoor extends Item
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS !
      */
     @Override
-    public boolean tryPlaceIntoWorld(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float something1, float something2, float something3)
+    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float something1, float something2, float something3)
     {
         if (par7 != 1)
         {
@@ -120,6 +120,6 @@ public class ItemCamoDoor extends Item
         
         par5Block.onBlockAdded(par0World, par1, par2, par3);
         TileEntityCamo entity = (TileEntityCamo)par0World.getBlockTileEntity(par1, par2, par3);
-        PacketDispatcher.sendPacketToServer(entity.getAuxillaryInfoPacket());
+        PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
     }
 }
