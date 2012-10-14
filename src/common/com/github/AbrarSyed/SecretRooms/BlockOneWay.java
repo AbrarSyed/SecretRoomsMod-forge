@@ -53,6 +53,12 @@ public class BlockOneWay extends BlockContainer
         return false;
     }
     
+	@Override
+    public int getLightOpacity(World world, int x, int y, int z)
+    {
+		return world.getBlockMetadata(x, y, z) == 1 ? 0 : 15;
+    }
+    
     @Override
     public int getRenderType()
     {

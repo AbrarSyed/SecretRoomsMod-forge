@@ -62,10 +62,10 @@ import cpw.mods.fml.server.FMLServerHandler;
 public class SecretRooms
 {
 
-	@SidedProxy( clientSide = "com.github.AbrarSyed.SecretRooms.SecretRooms_client", serverSide = "com.github.AbrarSyed.SecretRooms.Proxy")
+	@SidedProxy(clientSide = "com.github.AbrarSyed.SecretRooms.SecretRooms_client", serverSide = "com.github.AbrarSyed.SecretRooms.Proxy")
 	public static Proxy proxy;
 
-	@Instance
+	@Instance(value="SecretRoomsMod")
 	public static SecretRooms instance;
 
 	@PreInit
@@ -75,33 +75,33 @@ public class SecretRooms
 
 		config.load();
 		int[] ids = {
-				Integer.parseInt(config.getOrCreateBlockIdProperty("torchLever", 200).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "torchLever", 200).value),
 
-				Integer.parseInt(config.getOrCreateBlockIdProperty("oneWay", 201).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "oneWay", 201).value),
 
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoGate", 202).value),
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoGateExt", 203).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoGate", 202).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoGateExt", 203).value),
 
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoTrapDoor", 204).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoTrapDoor", 204).value),
 
-				Integer.parseInt(config.getOrCreateIntProperty("camoWoodDoor", config.CATEGORY_ITEM, 3850+256).value),
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoWoodDoor", 205).value),
-				Integer.parseInt(config.getOrCreateIntProperty("camoIronDoor", config.CATEGORY_ITEM, 3851+256).value),
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoIronDoor", 206).value),
+				Integer.parseInt(config.getItem("CamoItems", "camoWoodDoor", 3850+256).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoWoodDoor", 205).value),
+				Integer.parseInt(config.getItem("CamoItems", "camoIronDoor", 3851+256).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoIronDoor", 206).value),
 
-				Integer.parseInt(config.getOrCreateIntProperty("camoPasteID", config.CATEGORY_ITEM, 3852+256).value),
+				Integer.parseInt(config.getItem("CamoItems", "camoPasteID", 3852+256).value),
 
-				Integer.parseInt(config.getOrCreateBlockIdProperty("ghostBlock", 207).value),
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoLeverBlock", 208).value),
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoRedstoneBlock", 209).value),
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoButtonBlock", 210).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "ghostBlock", 207).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoLeverBlock", 208).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoButtonBlock", 210).value),
 
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoPlateAllBlock", 211).value),
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoPlatePlayerBlock", 212).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).value),
 
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoStairBlock", 213).value),
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoStairBlock", 213).value),
 				
-				Integer.parseInt(config.getOrCreateBlockIdProperty("camoChestBlock", 214).value)
+				Integer.parseInt(config.getBlock("CamoBlocks", "camoChestBlock", 214).value)
 		};
 		config.save();
 

@@ -52,6 +52,22 @@ public class BlockCamoFull extends BlockContainer
     {
         return 1;
     }
+	
+	@Override
+    public int getLightOpacity(World world, int x, int y, int z)
+    {
+		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+		
+		if (entity == null)
+			return 0;
+		
+		int id = entity.getCopyID();
+		
+		if (id == 0)
+			return 0;
+		
+		return Block.blocksList[id].getLightOpacity(world, entity.getCopyCoordX(), entity.getCopyCoordY(), entity.getCopyCoordZ());
+    }
 
 	@Override
     public boolean isOpaqueCube()
