@@ -45,19 +45,7 @@ import cpw.mods.fml.server.FMLServerHandler;
 /**
  * @author AbrarSyed
  */
-@NetworkMod( 
-		clientSideRequired = true, 
-		serverSideRequired = true, 
-		versionBounds = "[4.3,)",
-		clientPacketHandlerSpec = @SidedPacketHandler(
-				channels = {"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display"},
-				packetHandler = PacketHandlerClient.class
-				),
-				serverPacketHandlerSpec = @SidedPacketHandler(
-						channels = {"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display"},
-						packetHandler = PacketHandlerServer.class
-						)
-		)
+@NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.3,)", clientPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
 @Mod(modid = "SecretRoomsMod", name = "SecretRoomsMod", version = "4.3.0")
 public class SecretRooms
 {
@@ -65,7 +53,7 @@ public class SecretRooms
 	@SidedProxy(clientSide = "com.github.AbrarSyed.SecretRooms.SecretRooms_client", serverSide = "com.github.AbrarSyed.SecretRooms.Proxy")
 	public static Proxy proxy;
 
-	@Instance(value="SecretRoomsMod")
+	@Instance(value = "SecretRoomsMod")
 	public static SecretRooms instance;
 
 	@PreInit
@@ -74,35 +62,16 @@ public class SecretRooms
 		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
 
 		config.load();
-		int[] ids = {
-				Integer.parseInt(config.getBlock("CamoBlocks", "torchLever", 200).value),
-
-				Integer.parseInt(config.getBlock("CamoBlocks", "oneWay", 201).value),
-
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoGate", 202).value),
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoGateExt", 203).value),
-
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoTrapDoor", 204).value),
-
-				Integer.parseInt(config.getItem("CamoItems", "camoWoodDoor", 3850+256).value),
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoWoodDoor", 205).value),
-				Integer.parseInt(config.getItem("CamoItems", "camoIronDoor", 3851+256).value),
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoIronDoor", 206).value),
-
-				Integer.parseInt(config.getItem("CamoItems", "camoPasteID", 3852+256).value),
-
-				Integer.parseInt(config.getBlock("CamoBlocks", "ghostBlock", 207).value),
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoLeverBlock", 208).value),
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).value),
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoButtonBlock", 210).value),
-
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).value),
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).value),
-
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoStairBlock", 213).value),
-				
-				Integer.parseInt(config.getBlock("CamoBlocks", "camoChestBlock", 214).value)
-		};
+		int[] ids = { Integer.parseInt(config.getBlock("CamoBlocks", "torchLever", 200).value),
+		Integer.parseInt(config.getBlock("CamoBlocks", "oneWay", 201).value),
+		Integer.parseInt(config.getBlock("CamoBlocks", "camoGate", 202).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoGateExt", 203).value),
+		Integer.parseInt(config.getBlock("CamoBlocks", "camoTrapDoor", 204).value),
+		Integer.parseInt(config.getItem("CamoItems", "camoWoodDoor", 3850 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoWoodDoor", 205).value), Integer.parseInt(config.getItem("CamoItems", "camoIronDoor", 3851 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoIronDoor", 206).value),
+		Integer.parseInt(config.getItem("CamoItems", "camoPasteID", 3852 + 256).value),
+		Integer.parseInt(config.getBlock("CamoBlocks", "ghostBlock", 207).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoLeverBlock", 208).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoButtonBlock", 210).value),
+		Integer.parseInt(config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).value),
+		Integer.parseInt(config.getBlock("CamoBlocks", "camoStairBlock", 213).value),
+		Integer.parseInt(config.getBlock("CamoBlocks", "camoChestBlock", 214).value) };
 		config.save();
 
 		torchLever = (new BlockTorchLever(ids[0], 80)).setBlockName("Torch Lever");
@@ -136,13 +105,13 @@ public class SecretRooms
 		camoPlatePlayer = (new BlockCamoPlate(ids[15], EnumMobType.players)).setBlockName("Secret PlayerPlate");
 
 		camoStairs = (new BlockCamoStair(ids[16])).setBlockName("Secret Camo Stair");
-		
+
 		camoChest = (new BlockCamoChest(ids[17])).setBlockName("Secret Camo Chest");
 
 		// key Events
 		proxy.doKeyStuff();
 
-		//registers
+		// registers
 		GameRegistry.registerBlock(torchLever);
 		GameRegistry.registerBlock(oneWay);
 		GameRegistry.registerBlock(camoGate);
@@ -161,62 +130,50 @@ public class SecretRooms
 		GameRegistry.registerBlock(camoPlatePlayer);
 
 		GameRegistry.registerBlock(camoStairs);
-		
+
 		GameRegistry.registerBlock(camoChest);
 
-		//Tile Entities
+		// Tile Entities
 		GameRegistry.registerTileEntity(TileEntityCamo.class, "Camo");
 		GameRegistry.registerTileEntity(TileEntityCamoFull.class, "CamoFull");
 		GameRegistry.registerTileEntity(TileEntityCamoChest.class, "CamoChest");
 
-		//Names
-		LanguageRegistry.instance().addNameForObject(torchLever, "en_US",  "Torch Lever");
-		LanguageRegistry.instance().addNameForObject(oneWay, "en_US",  "One-Way Glass");
-		LanguageRegistry.instance().addNameForObject(camoGate, "en_US",  "Camo Gate");
-		LanguageRegistry.instance().addNameForObject(camoGateExt, "en_US",  "Camo Gate Extension");
-		LanguageRegistry.instance().addNameForObject(camoTrapDoor, "en_US",  "Secret TrapDoor");
+		// Names
+		LanguageRegistry.instance().addNameForObject(torchLever, "en_US", "Torch Lever");
+		LanguageRegistry.instance().addNameForObject(oneWay, "en_US", "One-Way Glass");
+		LanguageRegistry.instance().addNameForObject(camoGate, "en_US", "Camo Gate");
+		LanguageRegistry.instance().addNameForObject(camoGateExt, "en_US", "Camo Gate Extension");
+		LanguageRegistry.instance().addNameForObject(camoTrapDoor, "en_US", "Secret TrapDoor");
 
-		LanguageRegistry.instance().addNameForObject(camoDoorWoodItem, "en_US",  "Secret Wooden Door");
-		LanguageRegistry.instance().addNameForObject(camoDoorIronItem, "en_US",  "Secret Iron Door");
+		LanguageRegistry.instance().addNameForObject(camoDoorWoodItem, "en_US", "Secret Wooden Door");
+		LanguageRegistry.instance().addNameForObject(camoDoorIronItem, "en_US", "Secret Iron Door");
 
-		LanguageRegistry.instance().addNameForObject(camoPaste, "en_US",  "Camoflauge Paste");
+		LanguageRegistry.instance().addNameForObject(camoPaste, "en_US", "Camoflauge Paste");
 
-		LanguageRegistry.instance().addNameForObject(fullCamoGhost, "en_US",  "Ghost Block");
-		LanguageRegistry.instance().addNameForObject(camoLever, "en_US",  "Secret Camo lever");
-		LanguageRegistry.instance().addNameForObject(camoCurrent, "en_US",  "Secret Camo Redstone");
-		LanguageRegistry.instance().addNameForObject(camoButton, "en_US",  "Secret Camo button");
+		LanguageRegistry.instance().addNameForObject(fullCamoGhost, "en_US", "Ghost Block");
+		LanguageRegistry.instance().addNameForObject(camoLever, "en_US", "Secret Camo lever");
+		LanguageRegistry.instance().addNameForObject(camoCurrent, "en_US", "Secret Camo Redstone");
+		LanguageRegistry.instance().addNameForObject(camoButton, "en_US", "Secret Camo button");
 
-		LanguageRegistry.instance().addNameForObject(camoPlateAll, "en_US",  "Secret PressurePlate");
-		LanguageRegistry.instance().addNameForObject(camoPlatePlayer, "en_US",  "Secret PlayerPlate");
+		LanguageRegistry.instance().addNameForObject(camoPlateAll, "en_US", "Secret PressurePlate");
+		LanguageRegistry.instance().addNameForObject(camoPlatePlayer, "en_US", "Secret PlayerPlate");
 
-		LanguageRegistry.instance().addNameForObject(camoStairs, "en_US",  "Secret Camo Stair");
-		
-		// Names -- Added by Alexbegt  (Camo Chest)
-		LanguageRegistry.instance().addNameForObject(camoChest, "en_US",  "Secret Camo Chest");
-		LanguageRegistry.instance().addStringLocalization("container.CamochestDouble", "en_US",  "Hidden Large Chest");
-		LanguageRegistry.instance().addStringLocalization("container.Camochest", "en_US",  "Hidden Chest");
+		LanguageRegistry.instance().addNameForObject(camoStairs, "en_US", "Secret Camo Stair");
 
-		//Renders
+		// Names -- Added by Alexbegt (Camo Chest)
+		LanguageRegistry.instance().addNameForObject(camoChest, "en_US", "Secret Camo Chest");
+		LanguageRegistry.instance().addStringLocalization("container.CamochestDouble", "en_US", "Hidden Large Chest");
+		LanguageRegistry.instance().addStringLocalization("container.Camochest", "en_US", "Hidden Chest");
+
+		// Renders
 		proxy.doRenderStuff();
 
-
-		//Recipes
+		// Recipes
 		/*
 		 * TESTING RECIPES
-		 *
-        GameRegistry.addRecipe(new ItemStack(fullCamoGhost), new Object[] {
-            "#", '#', Block.dirt
-        });
-        GameRegistry.addRecipe(new ItemStack(oneWay), new Object[] {
-            "##", '#', Block.dirt
-        });
-        GameRegistry.addRecipe(new ItemStack(torchLever), new Object[] {
-            "#", "#", '#', Block.dirt
-        });
-        GameRegistry.addRecipe(new ItemStack(camoCurrent), new Object[] {
-            "##", "##", '#', Block.dirt
-        });
-		 **/
+		 * 
+		 * GameRegistry.addRecipe(new ItemStack(fullCamoGhost), new Object[] { "#", '#', Block.dirt }); GameRegistry.addRecipe(new ItemStack(oneWay), new Object[] { "##", '#', Block.dirt }); GameRegistry.addRecipe(new ItemStack(torchLever), new Object[] { "#", "#", '#', Block.dirt }); GameRegistry.addRecipe(new ItemStack(camoCurrent), new Object[] { "##", "##", '#', Block.dirt });
+		 */
 
 		addrecipes();
 	}
@@ -224,300 +181,66 @@ public class SecretRooms
 	@ServerStarted
 	public void registerCommand(FMLServerStartedEvent e)
 	{
-		((CommandHandler)FMLCommonHandler.instance().getSidedDelegate().getServer().getCommandManager()).registerCommand(new CommandShowSecretBlocks());
+		((CommandHandler) FMLCommonHandler.instance().getSidedDelegate().getServer().getCommandManager()).registerCommand(new CommandShowSecretBlocks());
 	}
 
 	public static void addrecipes()
 	{
 		// Camo gate
-		GameRegistry.addRecipe(new ItemStack(camoGate, 1), new Object[]
-				{
-			"#0#",
-			"0A0",
-			"#@#",
-			'#', Block.planks,
-			'0', camoPaste,
-			'@', Item.redstone,
-			'A', Item.enderPearl
-				});
+		GameRegistry.addRecipe(new ItemStack(camoGate, 1), new Object[] { "#0#", "0A0", "#@#", '#', Block.planks, '0', camoPaste, '@', Item.redstone, 'A', Item.enderPearl });
 
-		
-		
 		// TorchLever
-		GameRegistry.addRecipe(new ItemStack(torchLever, 1), new Object[]
-				{
-			"#", "X", '#',  Block.torchWood, 'X', Item.redstone
-				});
+		GameRegistry.addRecipe(new ItemStack(torchLever, 1), new Object[] { "#", "X", '#', Block.torchWood, 'X', Item.redstone });
 
-		
-		
 		// CamoDoors
-		GameRegistry.addShapelessRecipe(new ItemStack(camoDoorWoodItem, 1), new Object[]
-				{ camoPaste, Item.doorWood});
-		GameRegistry.addShapelessRecipe(new ItemStack(camoDoorIronItem, 1), new Object[]
-				{ camoPaste,Item.doorSteel});
-		GameRegistry.addShapelessRecipe(new ItemStack(camoTrapDoor, 1), new Object[]
-				{ camoPaste, Block.trapdoor});
+		GameRegistry.addShapelessRecipe(new ItemStack(camoDoorWoodItem, 1), new Object[] { camoPaste, Item.doorWood });
+		GameRegistry.addShapelessRecipe(new ItemStack(camoDoorIronItem, 1), new Object[] { camoPaste, Item.doorSteel });
+		GameRegistry.addShapelessRecipe(new ItemStack(camoTrapDoor, 1), new Object[] { camoPaste, Block.trapdoor });
 
-		
-		//CamoPaste
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[]
-				{
-			"X#X",
-			"$0$",
-			"@#@",
-			'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1),
-			'$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2),
-			'@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11),
-			'#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0),
-			'0', Block.dirt
-				});
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[]
-				{
-			"X#X",
-			"$0$",
-			"@#@",
-			'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1),
-			'$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2),
-			'@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11),
-			'#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0),
-			'0', Block.sand
-				});
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[]
-				{
-			"X#X",
-			"$0$",
-			"@#@",
-			'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1),
-			'$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2),
-			'@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11),
-			'#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0),
-			'0', Item.clay
-				});
+		// CamoPaste
+		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Block.dirt });
+		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Block.sand });
+		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Item.clay });
 
-		
 		// Camo OneWay
-		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[]
-				{
-			"X00",
-			"X00",
-			"X00",
-			'X', camoPaste,
-			'0', Block.glass
-				});
-		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[]
-				{
-			"00X",
-			"00X",
-			"00X",
-			'X', camoPaste,
-			'0', Block.glass
-				});
-		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[]
-				{
-			"XXX",
-			"000",
-			"000",
-			'X', camoPaste,
-			'0', Block.glass
-				});
-		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[]
-				{
-			"000",
-			"000",
-			"XXX",
-			'X', camoPaste,
-			'0', Block.glass
-				});
-		ModLoader.addShapelessRecipe(new ItemStack(oneWay, 1), new Object[]
-				{ camoPaste, Block.glass });
+		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "X00", "X00", "X00", 'X', camoPaste, '0', Block.glass });
+		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "00X", "00X", "00X", 'X', camoPaste, '0', Block.glass });
+		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "XXX", "000", "000", 'X', camoPaste, '0', Block.glass });
+		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "000", "000", "XXX", 'X', camoPaste, '0', Block.glass });
+		ModLoader.addShapelessRecipe(new ItemStack(oneWay, 1), new Object[] { camoPaste, Block.glass });
 
-		
-		
 		// CamoGhost
-		GameRegistry.addRecipe(new ItemStack(fullCamoGhost, 4), new Object[]
-				{
-			"X0X",
-			"0 0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh
-				});
-		GameRegistry.addRecipe(new ItemStack(fullCamoGhost, 4), new Object[]
-				{
-			"X0X",
-			"0 0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth
-				});
+		GameRegistry.addRecipe(new ItemStack(fullCamoGhost, 4), new Object[] { "X0X", "0 0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh });
+		GameRegistry.addRecipe(new ItemStack(fullCamoGhost, 4), new Object[] { "X0X", "0 0", "X0X", 'X', camoPaste, '0', Block.cloth });
 
-		
-		
 		// Camo-Redstone
-		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh,
-			'@', Item.redstone
-				});
-		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth,
-			'@', Item.redstone
-				});
+		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Item.redstone });
+		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Item.redstone });
 
-		
-		
 		// Camo-Lever
-		GameRegistry.addRecipe(new ItemStack(camoLever, 1), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh,
-			'@', Block.lever
-				});
-		GameRegistry.addRecipe(new ItemStack(camoLever, 1), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth,
-			'@', Block.lever
-				});
+		GameRegistry.addRecipe(new ItemStack(camoLever, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.lever });
+		GameRegistry.addRecipe(new ItemStack(camoLever, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.lever });
 
-		
-		
 		// Camo-Button stuff
-		GameRegistry.addRecipe(new ItemStack(camoButton, 1), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh,
-			'@', Block.button
-				});
-		GameRegistry.addRecipe(new ItemStack(camoButton, 1), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth,
-			'@', Block.button
-				});
+		GameRegistry.addRecipe(new ItemStack(camoButton, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.button });
+		GameRegistry.addRecipe(new ItemStack(camoButton, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.button });
 
 		// pressure plates
-		GameRegistry.addRecipe(new ItemStack(camoPlateAll, 1), new Object[]
-				{
-			"X@X",
-			"0 0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh,
-			'@', Block.pressurePlatePlanks
-				});
-		GameRegistry.addRecipe(new ItemStack(camoPlateAll, 1), new Object[]
-				{
-			"X@X",
-			"0 0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth,
-			'@', Block.pressurePlatePlanks
-				});
+		GameRegistry.addRecipe(new ItemStack(camoPlateAll, 1), new Object[] { "X@X", "0 0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.pressurePlatePlanks });
+		GameRegistry.addRecipe(new ItemStack(camoPlateAll, 1), new Object[] { "X@X", "0 0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.pressurePlatePlanks });
 
+		GameRegistry.addRecipe(new ItemStack(camoPlatePlayer, 1), new Object[] { "X@X", "0#0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.pressurePlatePlanks, '#', Item.ingotIron });
+		GameRegistry.addRecipe(new ItemStack(camoPlatePlayer, 1), new Object[] { "X@X", "0#0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.pressurePlatePlanks, '#', Item.ingotIron });
 
-		GameRegistry.addRecipe(new ItemStack(camoPlatePlayer, 1), new Object[]
-				{
-			"X@X",
-			"0#0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh,
-			'@', Block.pressurePlatePlanks,
-			'#', Item.ingotIron
-				});
-		GameRegistry.addRecipe(new ItemStack(camoPlatePlayer, 1), new Object[]
-				{
-			"X@X",
-			"0#0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth,
-			'@', Block.pressurePlatePlanks,
-			'#', Item.ingotIron
-				});
+		// CamoStairs
+		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.stairCompactCobblestone });
+		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.stairCompactCobblestone });
+		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.stairCompactPlanks });
+		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.stairCompactPlanks });
 
-		
-		//CamoStairs
-		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh,
-			'@', Block.stairCompactCobblestone
-				});
-		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth,
-			'@', Block.stairCompactCobblestone
-				});
-		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh,
-			'@', Block.stairCompactPlanks
-				});
-		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth,
-			'@', Block.stairCompactPlanks
-				});
-		
-		//CamoStairs
-		GameRegistry.addRecipe(new ItemStack(camoChest, 1), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Item.rottenFlesh,
-			'@', Block.chest
-				});
-		GameRegistry.addRecipe(new ItemStack(camoChest, 1), new Object[]
-				{
-			"X0X",
-			"0@0",
-			"X0X",
-			'X', camoPaste,
-			'0', Block.cloth,
-			'@', Block.chest
-				});
+		// CamoStairs
+		GameRegistry.addRecipe(new ItemStack(camoChest, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.chest });
+		GameRegistry.addRecipe(new ItemStack(camoChest, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.chest });
 	}
 
 	// shelfs
@@ -537,7 +260,7 @@ public class SecretRooms
 	public static Item camoPaste;
 
 	// textures
-	@SideOnly( value = Side.CLIENT)
+	@SideOnly(value = Side.CLIENT)
 	public static final String textureFile = "/com/github/AbrarSyed/SecretRooms/textures.png";
 
 	// FullCamo Stuff
@@ -552,7 +275,7 @@ public class SecretRooms
 
 	// camo Stairs - Alexbegt
 	public static Block camoStairs;
-	
+
 	// Camo Chests - Alexbegt
 	public static Block camoChest;
 
