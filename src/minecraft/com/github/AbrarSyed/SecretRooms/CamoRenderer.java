@@ -164,7 +164,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         	if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0))  && l == 0)
         	{
-        		tessellator.setBrightness(block.minY <= 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k) : brightness);
+        		tessellator.setBrightness(renderblocks.field_83027_i > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k) : brightness);
         		tessellator.setColorOpaque_F(bottomWeightRed, bottomWeightGreen, bottomWeightBlue);
         		renderblocks.renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
         		flag = true;
@@ -173,7 +173,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         	if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1))  && l == 1)
         	{
-        		tessellator.setBrightness(block.maxY >= 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k) : brightness);
+        		tessellator.setBrightness(renderblocks.field_83024_j < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k) : brightness);
         		tessellator.setColorOpaque_F(topWeightRed, topWeightGreen, topWeightBlue);
         		renderblocks.renderTopFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 1));
         		flag = true;
@@ -183,7 +183,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
         	if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2))  && l == 2)
         	{
 
-        		tessellator.setBrightness(block.minZ <= 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1) : brightness);
+        		tessellator.setBrightness(renderblocks.field_83025_k > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1) : brightness);
         		tessellator.setColorOpaque_F(frontWeightRed, frontWeightGreen, frontWeightBlue);
         		int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 2);
         		renderblocks.renderEastFace(block, i, j, k, blockTexture);
@@ -201,7 +201,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
         	if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3))  && l == 3)
         	{
 
-        		tessellator.setBrightness(block.maxZ >= 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1) : brightness);
+        		tessellator.setBrightness(renderblocks.field_83022_l < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1) : brightness);
         		tessellator.setColorOpaque_F(frontWeightRed, frontWeightGreen, frontWeightBlue);
         		int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 3);
         		renderblocks.renderWestFace(block, i, j, k, blockTexture);
@@ -217,7 +217,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         	if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4))  && l == 4)
         	{
-        		tessellator.setBrightness(block.minX <= 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k) : brightness);
+        		tessellator.setBrightness(renderblocks.field_83021_g > 0.0D? block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k) : brightness);
         		tessellator.setColorOpaque_F(sideWeightRed, sideWeightGreen, sideWeightBlue);
         		int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 4);
         		renderblocks.renderNorthFace(block, i, j, k, blockTexture);
@@ -233,7 +233,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         	if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5)) && l == 5)
         	{        	
-        		tessellator.setBrightness(block.maxX >= 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k) : brightness);
+        		tessellator.setBrightness(renderblocks.field_83026_h < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k) : brightness);
         		tessellator.setColorOpaque_F(sideWeightRed, sideWeightGreen, sideWeightBlue);
         		int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 5);
         		renderblocks.renderSouthFace(block, i, j, k, blockTexture);
@@ -320,7 +320,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0))
         {
-            tessellator.setBrightness(block.minY <= 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k) : brightness);
+            tessellator.setBrightness(renderblocks.field_83027_i > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k) : brightness);
             tessellator.setColorOpaque_F(bottomWeightRed, bottomWeightGreen, bottomWeightBlue);
             renderblocks.renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
             flag = true;
@@ -328,7 +328,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1))
         {
-            tessellator.setBrightness(block.maxY >= 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k) : brightness);
+            tessellator.setBrightness(renderblocks.field_83024_j < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k) : brightness);
             tessellator.setColorOpaque_F(topWeightRed, topWeightGreen, topWeightBlue);
             renderblocks.renderTopFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 1));
             flag = true;
@@ -336,7 +336,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2))
         {
-            tessellator.setBrightness(block.minZ <= 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1) : brightness);
+            tessellator.setBrightness(renderblocks.field_83025_k > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1) : brightness);
             tessellator.setColorOpaque_F(frontWeightRed, frontWeightGreen, frontWeightBlue);
             int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 2);
             renderblocks.renderEastFace(block, i, j, k, blockTexture);
@@ -352,7 +352,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3))
         {
-            tessellator.setBrightness(block.maxZ >= 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1) : brightness);
+            tessellator.setBrightness(renderblocks.field_83022_l < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1) : brightness);
             tessellator.setColorOpaque_F(frontWeightRed, frontWeightGreen, frontWeightBlue);
             int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 3);
             renderblocks.renderWestFace(block, i, j, k, blockTexture);
@@ -368,7 +368,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4))
         {
-            tessellator.setBrightness(block.minX <= 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k) : brightness);
+            tessellator.setBrightness(renderblocks.field_83021_g > 0.0D? block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k) : brightness);
             tessellator.setColorOpaque_F(sideWeightRed, sideWeightGreen, sideWeightBlue);
             int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 4);
             renderblocks.renderNorthFace(block, i, j, k, blockTexture);
@@ -384,7 +384,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
         if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5))
         {
-            tessellator.setBrightness(block.maxX >= 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k) : brightness);
+            tessellator.setBrightness(renderblocks.field_83026_h < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k) : brightness);
             tessellator.setColorOpaque_F(sideWeightRed, sideWeightGreen, sideWeightBlue);
             int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 5);
             renderblocks.renderSouthFace(block, i, j, k, blockTexture);

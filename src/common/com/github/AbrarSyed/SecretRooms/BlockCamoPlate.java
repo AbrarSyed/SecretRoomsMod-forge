@@ -177,15 +177,15 @@ public class BlockCamoPlate extends BlockCamoFull
      * Is this block indirectly powering the block on the specified side
      */
     @Override
-    public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5)
+    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
     {
-        if (par1World.getBlockMetadata(par2, par3, par4) == 0)
+        if (world.getBlockMetadata(i, j, k) == 0)
         {
             return false;
         }
         else
         {
-            return par5 == 1;
+            return l == 1;
         }
     }
 

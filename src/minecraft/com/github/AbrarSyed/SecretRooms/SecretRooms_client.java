@@ -18,7 +18,6 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.KeyBinding;
 import net.minecraft.src.ModLoader;
-import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
@@ -75,12 +74,6 @@ public class SecretRooms_client extends Proxy
     	entity.setTexture((Integer)properties[0]);
     	PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
 		
-	}
-	
-	@Override
-	public Configuration getConfig()
-	{
-		return new Configuration(new File(FMLClientHandler.instance().getClient().getMinecraftDir(), "/config/SecretRoomsMod.prop"));
 	}
 
 }

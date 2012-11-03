@@ -232,7 +232,7 @@ public class BlockCamoLever extends BlockCamoFull
     }
 
     @Override
-    public boolean isIndirectlyPoweringTo(World world, int i, int j, int k, int l)
+    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
     {
         int i1 = world.getBlockMetadata(i, j, k);
 

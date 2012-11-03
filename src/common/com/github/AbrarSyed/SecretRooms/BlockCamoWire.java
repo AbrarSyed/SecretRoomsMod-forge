@@ -60,7 +60,7 @@ public class BlockCamoWire extends BlockCamoFull
     }
 
     @Override
-    public boolean isIndirectlyPoweringTo(World world, int i, int j, int k, int l)
+    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
     {
         if ((getPoweredState(world, i, j, k)) == 0)
         {
@@ -257,7 +257,7 @@ public class BlockCamoWire extends BlockCamoFull
         return world.getBlockMetadata(i, j, k) & 7;
     }
 
-    private int getPoweredState(World world, int i, int j, int k)
+    private int getPoweredState(IBlockAccess world, int i, int j, int k)
     {
         return world.getBlockMetadata(i, j, k) & 8;
     }

@@ -31,6 +31,7 @@ public class BlockCamoStair extends BlockCamoFull
 		this.setHardness(1.5F);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setLightOpacity(15);
+		blockIndexInTexture = 4;
 	}
 	
     private static final int[][] stairDirections = new int[][] {{2, 6}, {3, 7}, {2, 3}, {6, 7}, {0, 4}, {1, 5}, {0, 1}, {4, 5}};

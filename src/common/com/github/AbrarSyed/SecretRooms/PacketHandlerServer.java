@@ -3,19 +3,13 @@ package com.github.AbrarSyed.SecretRooms;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
-import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.ModLoader;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.World;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.server.FMLServerHandler;
 
 /**
  * @author AbrarSyed
@@ -23,7 +17,7 @@ import cpw.mods.fml.server.FMLServerHandler;
 public class PacketHandlerServer implements IPacketHandler {
 
 	@Override
-	public void onPacketData(NetworkManager manager, Packet250CustomPayload packet, Player useless)
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player useless)
 	{
 		String channel = packet.channel;
 		byte[] data = packet.data;
