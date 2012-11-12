@@ -22,7 +22,6 @@ public class BlockCamoWire extends BlockCamoFull
         super(i, Material.circuits);
         this.setHardness(1.5F);
         this.setStepSound(Block.soundWoodFootstep);
-        this.setCreativeTab(CreativeTabs.tabRedstone);
     }
     
     @Override

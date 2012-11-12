@@ -10,6 +10,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
+import net.minecraft.src.BlockPistonBase;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
@@ -32,7 +33,7 @@ public class BlockOneWay extends BlockContainer
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundWoodFootstep);
 		this.setLightOpacity(15);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(SecretRooms.tab);
 	}
 
 	@Override
@@ -119,7 +120,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving)
 	{
-		int metadata = ((BlockOneWay) SecretRooms.oneWay).getDefaultDirection(world, i, j, k, (EntityPlayer) entityliving);
+		int metadata = ((BlockOneWay) SecretRooms.oneWay).determineOrientation(world, i, j, k, (EntityPlayer) entityliving);
 		world.setBlockMetadata(i, j, k, metadata);
 
 		SecretRooms.proxy.doOneWayStuff(world, i, j, k, entityliving);
@@ -155,66 +156,38 @@ public class BlockOneWay extends BlockContainer
 			{
 				for (int i1 = -1; i1 <= 1; i1++)
 				{
-					int j1 = iblockaccess.getBiomeGenForCoords(x + i1, z + l).getBiomeGrassColor();
-					redColor += (j1 & 0xff0000) >> 16;
-					greenColor += (j1 & 0xff00) >> 8;
-					blueColork += j1 & 0xff;
+					int grassColor = iblockaccess.getBiomeGenForCoords(x + i1, z + l).getBiomeGrassColor();
+					redColor += (grassColor & 16711680) >> 16;
+					greenColor += (grassColor & 65280) >> 8;
+					blueColork += grassColor & 255;
 				}
 			}
 
-			return (redColor / 9 & 0xff) << 16 | (greenColor / 9 & 0xff) << 8 | blueColork / 9 & 0xff;
+			return (redColor / 9 & 255) << 16 | (greenColor / 9 & 255) << 8 | blueColork / 9 & 255;
 		}
 
 		return 0xffffff;
 	}
 
-	public static int getDefaultDirection(World world, int i, int j, int k, EntityPlayer entityplayer)
+	public static int determineOrientation(World world, int i, int j, int k, EntityPlayer entityplayer)
 	{
-		int l = MathHelper.floor_double((double) ((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-		double d = (entityplayer.posY + 1.82D) - (double) entityplayer.yOffset;
+		int direction = BlockPistonBase.determineOrientation(world, i, j, k, entityplayer);
 
-		if (SecretRooms.OneWayFaceTowards)
+		if (!SecretRooms.OneWayFaceTowards)
 		{
-			if (MathHelper.abs((float) entityplayer.posX - (float) i) < 2.0F && MathHelper.abs((float) entityplayer.posZ - (float) k) < 2.0F)
+			switch(direction)
 			{
-				if (d - (double) j > 2D)
-					return 1;
-				else if ((double) j - d > 0.0D)
-					return 0;
+				case 0: return 1;
+				case 1: return 0;
+				case 2: return 3;
+				case 3: return 2;
+				case 4: return 5;
+				case 5: return 4;
+				default: return 0;
 			}
-
-			if (l == 0)
-				return 2;
-			else if (l == 1)
-				return 5;
-			else if (l == 2)
-				return 3;
-			else if (l == 3)
-				return 4;
-			else
-				return 0;
 		}
 		else
-		{
-			if (MathHelper.abs((float) entityplayer.posX - (float) i) < 2.0F && MathHelper.abs((float) entityplayer.posZ - (float) k) < 2.0F)
-			{
-				if (d - (double) j > 2D)
-					return 0;
-				else if ((double) j - d > 0.0D)
-					return 1;
-			}
-
-			if (l == 0)
-				return 3;
-			else if (l == 1)
-				return 4;
-			else if (l == 2)
-				return 2;
-			else if (l == 3)
-				return 5;
-			else
-				return 0;
-		}
+			return direction;
 	}
 
 	@SideOnly(value = Side.CLIENT)

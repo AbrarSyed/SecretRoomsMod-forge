@@ -30,7 +30,7 @@ public class BlockCamoFull extends BlockContainer
 		super(par1, Material.wood);
 		blockIndexInTexture = 0;
 		this.setLightOpacity(15);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(SecretRooms.tab);
 	}
 
 	protected BlockCamoFull(int par1, Material material)
@@ -38,8 +38,14 @@ public class BlockCamoFull extends BlockContainer
 		super(par1, material);
 		blockIndexInTexture = 0;
 		this.setLightOpacity(15);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(SecretRooms.tab);
 	}
+	
+    @Override
+    public void addCreativeItems(ArrayList itemList)
+    {
+    	itemList.add(new ItemStack(this));
+    }
 
 	@Override
 	public TileEntity createNewTileEntity(World world)
@@ -247,7 +253,7 @@ public class BlockCamoFull extends BlockContainer
 		if (isOneLeft(truncateArrayINT(plusIds)))
 		{
 			plusIds = truncateArrayINT(plusIds);
-			System.out.println("IDs worked early:  " + Arrays.toString(plusIds[0]));
+			//System.out.println("IDs worked early:  " + Arrays.toString(plusIds[0]));
 			return plusIds[0];
 		}
 
@@ -289,7 +295,7 @@ public class BlockCamoFull extends BlockContainer
 		else if (intChecks[2][0] != 0)
 			id = intChecks[2];
 
-		System.out.println("IDs are fun:  " + Arrays.toString(id));
+		//System.out.println("IDs are fun:  " + Arrays.toString(id));
 
 		if (id[0] != 0)
 			return id;

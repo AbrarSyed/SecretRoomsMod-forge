@@ -19,7 +19,7 @@ public class BlockCamoButton extends BlockCamoFull
     protected BlockCamoButton(int i)
     {
     	super(i, Material.circuits);
-    	this.setCreativeTab(CreativeTabs.tabRedstone);
+    	this.setCreativeTab(SecretRooms.tab);
     }
     
     @Override

@@ -20,7 +20,6 @@ import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
 
 /**
- * 
  * @author alexbegt
  */
 public class BlockCamoStair extends BlockCamoFull
@@ -29,19 +28,12 @@ public class BlockCamoStair extends BlockCamoFull
 	protected BlockCamoStair(int par1) {
 		super(par1);
 		this.setHardness(1.5F);
-		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setLightOpacity(15);
 		blockIndexInTexture = 4;
 	}
 	
     private static final int[][] stairDirections = new int[][] {{2, 6}, {3, 7}, {2, 3}, {6, 7}, {0, 4}, {1, 5}, {0, 1}, {4, 5}};
     private boolean field_72156_cr = false;
-    
-    @Override
-    public void addCreativeItems(ArrayList itemList)
-    {
-    	itemList.add(new ItemStack(this));
-    }
     
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z

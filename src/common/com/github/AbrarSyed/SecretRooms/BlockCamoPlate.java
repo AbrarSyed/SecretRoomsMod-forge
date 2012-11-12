@@ -28,7 +28,6 @@ public class BlockCamoPlate extends BlockCamoFull
         setTickRandomly(true);
         this.setHardness(0.5F);
         this.setRequiresSelfNotify();
-        this.setCreativeTab(CreativeTabs.tabRedstone);
     }
     
     @Override

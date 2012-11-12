@@ -30,7 +30,7 @@ public class BlockTorchLever extends BlockTorch
         this.setHardness(0);
         this.setLightValue(0.9375F);
         this.setStepSound(Block.soundWoodFootstep);
-        this.setCreativeTab(CreativeTabs.tabRedstone);
+        this.setCreativeTab(SecretRooms.tab);
     }
     
     @Override

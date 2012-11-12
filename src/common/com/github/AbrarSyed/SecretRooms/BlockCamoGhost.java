@@ -21,7 +21,6 @@ public class BlockCamoGhost extends BlockCamoFull
 		super(par1, Material.wood);
         this.setHardness(1.5F);
         this.setStepSound(Block.soundWoodFootstep);
-		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
     
     @Override

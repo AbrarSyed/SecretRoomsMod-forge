@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CommandHandler;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EnumMobType;
@@ -73,6 +74,10 @@ public class SecretRooms
 		Integer.parseInt(config.getBlock("CamoBlocks", "camoStairBlock", 213).value),
 		Integer.parseInt(config.getBlock("CamoBlocks", "camoChestBlock", 214).value) };
 		config.save();
+		
+		// make creative tab.
+		tab = new CreativeTabCamo();
+		
 
 		torchLever = (new BlockTorchLever(ids[0], 80)).setBlockName("Torch Lever");
 
@@ -96,7 +101,7 @@ public class SecretRooms
 		camoPaste = (new ItemCamo(ids[9])).setItemName("Camoflauge Paste");
 
 		// FullCamoBlocks
-		fullCamoGhost = (new BlockCamoGhost(ids[10])).setBlockName("Ghost Block");
+		camoGhost = (new BlockCamoGhost(ids[10])).setBlockName("Ghost Block");
 		camoLever = (new BlockCamoLever(ids[11])).setBlockName("Secret Camo Lever");
 		camoCurrent = (new BlockCamoWire(ids[12])).setBlockName("Secret Camo Redstone");
 		camoButton = (new BlockCamoButton(ids[13])).setBlockName("Secret Camo Button");
@@ -120,7 +125,7 @@ public class SecretRooms
 		GameRegistry.registerBlock(camoDoorWood);
 		GameRegistry.registerBlock(camoDoorIron);
 
-		GameRegistry.registerBlock(fullCamoGhost);
+		GameRegistry.registerBlock(camoGhost);
 
 		GameRegistry.registerBlock(camoLever);
 		GameRegistry.registerBlock(camoCurrent);
@@ -150,7 +155,7 @@ public class SecretRooms
 
 		LanguageRegistry.instance().addNameForObject(camoPaste, "en_US", "Camoflauge Paste");
 
-		LanguageRegistry.instance().addNameForObject(fullCamoGhost, "en_US", "Ghost Block");
+		LanguageRegistry.instance().addNameForObject(camoGhost, "en_US", "Ghost Block");
 		LanguageRegistry.instance().addNameForObject(camoLever, "en_US", "Secret Camo lever");
 		LanguageRegistry.instance().addNameForObject(camoCurrent, "en_US", "Secret Camo Redstone");
 		LanguageRegistry.instance().addNameForObject(camoButton, "en_US", "Secret Camo button");
@@ -210,8 +215,8 @@ public class SecretRooms
 		ModLoader.addShapelessRecipe(new ItemStack(oneWay, 1), new Object[] { camoPaste, Block.glass });
 
 		// CamoGhost
-		GameRegistry.addRecipe(new ItemStack(fullCamoGhost, 4), new Object[] { "X0X", "0 0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh });
-		GameRegistry.addRecipe(new ItemStack(fullCamoGhost, 4), new Object[] { "X0X", "0 0", "X0X", 'X', camoPaste, '0', Block.cloth });
+		GameRegistry.addRecipe(new ItemStack(camoGhost, 4), new Object[] { "X0X", "0 0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh });
+		GameRegistry.addRecipe(new ItemStack(camoGhost, 4), new Object[] { "X0X", "0 0", "X0X", 'X', camoPaste, '0', Block.cloth });
 
 		// Camo-Redstone
 		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Item.redstone });
@@ -264,7 +269,7 @@ public class SecretRooms
 	public static final String textureFile = "/com/github/AbrarSyed/SecretRooms/textures.png";
 
 	// FullCamo Stuff
-	public static Block fullCamoGhost;
+	public static Block camoGhost;
 	public static Block camoLever;
 	public static Block camoCurrent;
 	public static Block camoButton;
@@ -287,4 +292,7 @@ public class SecretRooms
 
 	// Keybinding stuff.
 	protected static boolean OneWayFaceTowards = true;
+	
+	// creative tab
+	protected static CreativeTabs tab;
 }

@@ -30,7 +30,7 @@ public class BlockCamoChest extends BlockCamoFull
 	protected BlockCamoChest(int par1) {
 		super(par1);
 		this.setHardness(1.5F);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(SecretRooms.tab);
 		this.setLightOpacity(15);
 		this.setTextureFile(SecretRooms.textureFile);
 	}
