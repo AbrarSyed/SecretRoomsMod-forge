@@ -29,6 +29,7 @@ public class BlockCamoStair extends BlockCamoFull
 		super(par1);
 		this.setHardness(1.5F);
 		this.setLightOpacity(15);
+		this.setTextureFile(SecretRooms.textureFile);
 		blockIndexInTexture = 4;
 	}
 	

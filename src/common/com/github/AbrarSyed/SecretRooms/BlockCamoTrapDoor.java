@@ -15,6 +15,7 @@ import net.minecraft.src.World;
 
 /**
  * @author AbrarSyed
+ * TODO: FIX!!!!!!!!!!!
  */
 public class BlockCamoTrapDoor extends Block
 {
@@ -320,33 +321,38 @@ public class BlockCamoTrapDoor extends Block
      * the item. Args: x, y, z, facing
      */
     @Override
-    public void updateBlockMetadata(World world, int par2, int par3, int par4, int par5, float something1, float something2, float something3)
+    public int func_85104_a(World world, int i, int j, int k, int side, float clickX, float clickY, float clickZ, int currentMeta)
     {
-    	super.updateBlockMetadata(world, par2, par3, par4, par5, something1, something2, something3);
+    	//super.func_85104_a(world, par2, par3, par4, par5, something1, something2, something3);
     	
-        byte byte0 = 0;
+        int meta = 0;
 
-        if (par5 == 2)
+        if (side == 2)
         {
-            byte0 = 0;
+            meta = 0;
         }
 
-        if (par5 == 3)
+        if (side == 3)
         {
-            byte0 = 1;
+            meta = 1;
         }
 
-        if (par5 == 4)
+        if (side == 4)
         {
-            byte0 = 2;
+            meta = 2;
         }
 
-        if (par5 == 5)
+        if (side == 5)
         {
-            byte0 = 3;
+            meta = 3;
         }
-
-        world.setBlockMetadataWithNotify(par2, par3, par4, byte0);
+        
+        if (side != 1 && side != 0 && clickY > 0.5F)
+        {
+            meta |= 8;
+        }
+        
+        return meta;
     }
 
     /**

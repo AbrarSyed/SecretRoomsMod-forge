@@ -117,127 +117,6 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
         	return renderblocks.renderStandardBlock(block, i, j, k);
         }
         
-        // actually render
-        renderblocks.enableAO = false;
-        Tessellator var8 = Tessellator.instance;
-        boolean var9 = false;
-        float var10 = 0.5F;
-        float var11 = 1.0F;
-        float var12 = 0.8F;
-        float var13 = 0.6F;
-        float var14 = var11 * blockColorRed;
-        float var15 = var11 * blockColorGreen;
-        float var16 = var11 * blockColorBlue;
-        float var17 = var10;
-        float var18 = var12;
-        float var19 = var13;
-        float var20 = var10;
-        float var21 = var12;
-        float var22 = var13;
-        float var23 = var10;
-        float var24 = var12;
-        float var25 = var13;
-
-        if (block != Block.grass)
-        {
-            var17 = var10 * blockColorRed;
-            var18 = var12 * blockColorRed;
-            var19 = var13 * blockColorRed;
-            var20 = var10 * blockColorGreen;
-            var21 = var12 * blockColorGreen;
-            var22 = var13 * blockColorGreen;
-            var23 = var10 * blockColorBlue;
-            var24 = var12 * blockColorBlue;
-            var25 = var13 * blockColorBlue;
-        }
-
-        int brightness = block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k);
-
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j - 1, k, 0))
-        {
-            var8.setBrightness(renderblocks.field_83027_i > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j - 1, k));
-            var8.setColorOpaque_F(var17, var20, var23);
-            renderblocks.renderBottomFace(block, (double)i, (double)j, (double)k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 0));
-            var9 = true;
-        }
-
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j + 1, k, 1))
-        {
-            var8.setBrightness(renderblocks.field_83024_j < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j + 1, k));
-            var8.setColorOpaque_F(var14, var15, var16);
-            renderblocks.renderTopFace(block, (double)i, (double)j, (double)k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 1));
-            var9 = true;
-        }
-
-        int var28;
-
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k - 1, 2))
-        {
-            var8.setBrightness(renderblocks.field_83025_k > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k - 1));
-            var8.setColorOpaque_F(var18, var21, var24);
-            var28 = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 2);
-            renderblocks.renderEastFace(block, (double)i, (double)j, (double)k, var28);
-
-            if (Tessellator.instance.defaultTexture && fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
-            {
-                var8.setColorOpaque_F(var18 * blockColorRed, var21 * blockColorGreen, var24 * blockColorBlue);
-                renderblocks.renderEastFace(block, (double)i, (double)j, (double)k, 38);
-            }
-
-            var9 = true;
-        }
-
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k + 1, 3))
-        {
-            var8.setBrightness(renderblocks.field_83022_l < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k + 1));
-            var8.setColorOpaque_F(var18, var21, var24);
-            var28 = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 3);
-            renderblocks.renderWestFace(block, (double)i, (double)j, (double)k, var28);
-
-            if (Tessellator.instance.defaultTexture && fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
-            {
-                var8.setColorOpaque_F(var18 * blockColorRed, var21 * blockColorGreen, var24 * blockColorBlue);
-                renderblocks.renderWestFace(block, (double)i, (double)j, (double)k, 38);
-            }
-
-            var9 = true;
-        }
-
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i - 1, j, k, 4))
-        {
-            var8.setBrightness(renderblocks.field_83021_g > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i - 1, j, k));
-            var8.setColorOpaque_F(var19, var22, var25);
-            var28 = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 4);
-            renderblocks.renderNorthFace(block, (double)i, (double)j, (double)k, var28);
-
-            if (Tessellator.instance.defaultTexture && fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
-            {
-                var8.setColorOpaque_F(var19 * par5, var22 * par6, var25 * par7);
-                renderblocks.renderNorthFace(par1Block, (double)i, (double)j, (double)k, 38);
-            }
-
-            var9 = true;
-        }
-
-        if (renderblocks.renderAllFaces || par1Block.shouldSideBeRendered(renderblocks.blockAccess, i + 1, j, k, 5))
-        {
-            var8.setBrightness(renderblocks.field_83026_h < 1.0D ? brightness : par1Block.getMixedBrightnessForBlock(renderblocks.blockAccess, i + 1, j, k));
-            var8.setColorOpaque_F(var19, var22, var25);
-            var28 = par1Block.getBlockTexture(renderblocks.blockAccess, i, j, k, 5);
-            renderblocks.renderSouthFace(par1Block, (double)i, (double)j, (double)k, var28);
-
-            if (Tessellator.instance.defaultTexture && fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
-            {
-                var8.setColorOpaque_F(var19 * par5, var22 * par6, var25 * par7);
-                renderblocks.renderSouthFace(par1Block, (double)par2, (double)j, (double)k, 38);
-            }
-
-            var9 = true;
-        }
-
-        return var9;
-    	
-        /*
         renderblocks.enableAO = false;
         Tessellator tessellator = Tessellator.instance;
         boolean flag = false;
@@ -391,7 +270,6 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
         }
 
         return flag;
-        */
     }
     
     public boolean renderFullCamo(IBlockAccess blockAccess, int i, int j, int k, int l, RenderBlocks renderblocks, Block block)

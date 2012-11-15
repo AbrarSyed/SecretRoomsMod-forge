@@ -16,7 +16,7 @@ public class CreativeTabCamo extends CreativeTabs
     @Override
     public int getTabIconItemIndex()
     {
-        return SecretRooms.camoGhost.blockID;
+        return SecretRooms.camoPaste.shiftedIndex;
     }
 
 }

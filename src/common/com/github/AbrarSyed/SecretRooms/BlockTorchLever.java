@@ -101,9 +101,9 @@ public class BlockTorchLever extends BlockTorch
     }
 
     @Override
-    public void updateBlockMetadata(World world, int x, int y, int z, int side, float something1, float something2, float something3)
+    public int func_85104_a(World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ, int currentMeta)
     {
-        int i1 = world.getBlockMetadata(x, y, z) & 7;
+        int i1 = currentMeta & 7;
 
         if (side == 1 && canPlaceTorchOn(world, x, y - 1, z))
         {
@@ -130,7 +130,7 @@ public class BlockTorchLever extends BlockTorch
             i1 = 1;
         }
 
-        world.setBlockMetadataWithNotify(x, y, z, i1);
+        return i1;
     }
 
     @Override

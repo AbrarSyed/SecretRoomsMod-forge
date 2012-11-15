@@ -124,7 +124,7 @@ public class BlockCamoFull extends BlockContainer
 	}
 
 	@Override
-	public void updateBlockMetadata(World world, int i, int j, int k, int side, float something1, float something2, float something3)
+	public void onBlockAdded(World world, int i, int j, int k)
 	{
 		if (alreadyExists(world, i, j, k))
 			return;
@@ -397,7 +397,7 @@ public class BlockCamoFull extends BlockContainer
 			else
 			{
 				block.setBlockBoundsBasedOnState(world, x, y, z);
-				double[] bounds = new double[] { block.func_83009_v(), block.func_83008_x(), block.func_83005_z(), block.func_83007_w(), block.func_83010_y(), block.func_83006_A() };
+				double[] bounds = new double[] { block.getBlockBoundsMinX(), block.getBlockBoundsMinY(), block.getBlockBoundsMinZ(), block.getBlockBoundsMaxX(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxZ() };
 
 				if (bounds[0] == 0 && bounds[1] == 0 && bounds[2] == 0 && bounds[3] == 1 && bounds[4] == 1 && bounds[5] == 1)
 					return new int[] { id, x, y, z };

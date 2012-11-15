@@ -227,8 +227,8 @@ public class SecretRooms
 		GameRegistry.addRecipe(new ItemStack(camoLever, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.lever });
 
 		// Camo-Button stuff
-		GameRegistry.addRecipe(new ItemStack(camoButton, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.button });
-		GameRegistry.addRecipe(new ItemStack(camoButton, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.button });
+		GameRegistry.addRecipe(new ItemStack(camoButton, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.stoneButton });
+		GameRegistry.addRecipe(new ItemStack(camoButton, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.stoneButton });
 
 		// pressure plates
 		GameRegistry.addRecipe(new ItemStack(camoPlateAll, 1), new Object[] { "X@X", "0 0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.pressurePlatePlanks });

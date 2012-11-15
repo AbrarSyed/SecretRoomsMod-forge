@@ -1,5 +1,12 @@
 package com.github.AbrarSyed.SecretRooms;
 
+import static net.minecraftforge.common.ForgeDirection.DOWN;
+import static net.minecraftforge.common.ForgeDirection.EAST;
+import static net.minecraftforge.common.ForgeDirection.NORTH;
+import static net.minecraftforge.common.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.ForgeDirection.UP;
+import static net.minecraftforge.common.ForgeDirection.WEST;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -98,52 +105,45 @@ public class BlockCamoLever extends BlockCamoFull
 
         return world.isBlockNormalCube(i, j - 1, k);
     }
-
-    @Override
-    public void updateBlockMetadata(World world, int i, int j, int k, int l, float something1, float something2, float something3)
+    
+    public int func_85104_a(World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ, int currentMeta)
     {
-        int i1 = world.getBlockMetadata(i, j, k);
-        int j1 = i1 & 8;
-        i1 &= 7;
-        i1 = -1;
+    	super.func_85104_a(world, x,y, z, side, clickX, clickY, clickZ, currentMeta);
+        int var11 = currentMeta & 8;
+        int var10 = currentMeta & 7;
+        var10 = -1;
 
-        if (l == 1 && world.isBlockNormalCube(i, j - 1, k))
+        if (side == 0 && world.isBlockSolidOnSide(x, y + 1, z, DOWN))
         {
-            i1 = 5 + world.rand.nextInt(2);
-        }
-
-        if (l == 2 && world.isBlockNormalCube(i, j, k + 1))
-        {
-            i1 = 4;
+            var10 = world.rand.nextBoolean() ? 0 : 7;
         }
 
-        if (l == 3 && world.isBlockNormalCube(i, j, k - 1))
+        if (side == 1 && world.isBlockSolidOnSide(x, y - 1, z, UP))
         {
-            i1 = 3;
+            var10 = 5 + world.rand.nextInt(2);
         }
 
-        if (l == 4 && world.isBlockNormalCube(i + 1, j, k))
+        if (side == 2 && world.isBlockSolidOnSide(x, y, z + 1, NORTH))
         {
-            i1 = 2;
+            var10 = 4;
         }
 
-        if (l == 5 && world.isBlockNormalCube(i - 1, j, k))
+        if (side == 3 && world.isBlockSolidOnSide(x, y, z - 1, SOUTH))
         {
-            i1 = 1;
+            var10 = 3;
         }
 
-        if (i1 == -1)
+        if (side == 4 && world.isBlockSolidOnSide(x + 1, y, z, WEST))
         {
-            dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
-            world.setBlockWithNotify(i, j, k, 0);
+            var10 = 2;
         }
-        else
+
+        if (side == 5 && world.isBlockSolidOnSide(x - 1, y, z, EAST))
         {
-        	System.out.println("metadata = "+(i1));
-            world.setBlockMetadataWithNotify(i, j, k, i1 + j1);
+            var10 = 1;
         }
-        
-        super.updateBlockMetadata(world, i,j, k, l, something1, something2, something3);
+
+        return var10 + var11;
     }
 
     @Override
