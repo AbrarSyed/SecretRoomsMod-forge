@@ -285,11 +285,19 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
         
         if (copyId == 0 || rawColors == 0xffffff)
         {
-        	return renderblocks.renderStandardBlock(block, i, j, k);
+        	if (block.getTextureFile().equals("/terrain.png"))
+        		return renderblocks.renderStandardBlock(block, i, j, k);
+        	else
+        	{
+            	ForgeHooksClient.bindTexture("/terrain.png", 0);
+            	currentlyBound = true;
+        	}
         }
-        
-    	ForgeHooksClient.bindTexture(Block.blocksList[copyId].getTextureFile(), 0);
-    	currentlyBound = true;
+        else
+        {
+        	ForgeHooksClient.bindTexture(Block.blocksList[copyId].getTextureFile(), 0);
+        	currentlyBound = true;
+        }
         
         renderblocks.enableAO = false;
         Tessellator tessellator = Tessellator.instance;
