@@ -1,16 +1,10 @@
 package com.github.AbrarSyed.SecretRooms;
 
-import static net.minecraftforge.common.ForgeDirection.DOWN;
-import static net.minecraftforge.common.ForgeDirection.UP;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
-import net.minecraft.src.BlockFarmland;
-import net.minecraft.src.BlockHalfSlab;
-import net.minecraft.src.BlockStairs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
@@ -425,17 +419,15 @@ public class BlockCamoFull extends BlockContainer
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 
 		if (entity != null)
-		{
 			return blockFlammability[entity.getCopyID()];
-		}
 
 		return blockFlammability[blockID];
 	}
-	
-    public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) 
-    {
-    	return true;
-    }
-	
+
+	@Override
+	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side)
+	{
+		return true;
+	}
 
 }

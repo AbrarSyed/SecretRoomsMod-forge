@@ -1,47 +1,28 @@
 package com.github.AbrarSyed.SecretRooms;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.util.Arrays;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.CommandHandler;
 import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EnumMobType;
-import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.ModLoader;
-import net.minecraft.src.INetworkManager;
-import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.PostInit;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.asm.SideOnly;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.server.FMLServerHandler;
 
 /**
  * @author AbrarSyed
@@ -52,10 +33,10 @@ public class SecretRooms
 {
 
 	@SidedProxy(clientSide = "com.github.AbrarSyed.SecretRooms.SecretRooms_client", serverSide = "com.github.AbrarSyed.SecretRooms.Proxy")
-	public static Proxy proxy;
+	public static Proxy			proxy;
 
 	@Instance(value = "SecretRoomsMod")
-	public static SecretRooms instance;
+	public static SecretRooms	instance;
 
 	@PreInit
 	public void load(FMLPreInitializationEvent e)
@@ -63,55 +44,45 @@ public class SecretRooms
 		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
 
 		config.load();
-		int[] ids = { Integer.parseInt(config.getBlock("CamoBlocks", "torchLever", 200).value),
-		Integer.parseInt(config.getBlock("CamoBlocks", "oneWay", 201).value),
-		Integer.parseInt(config.getBlock("CamoBlocks", "camoGate", 202).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoGateExt", 203).value),
-		Integer.parseInt(config.getBlock("CamoBlocks", "camoTrapDoor", 204).value),
-		Integer.parseInt(config.getItem("CamoItems", "camoWoodDoor", 3850 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoWoodDoor", 205).value), Integer.parseInt(config.getItem("CamoItems", "camoIronDoor", 3851 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoIronDoor", 206).value),
-		Integer.parseInt(config.getItem("CamoItems", "camoPasteID", 3852 + 256).value),
-		Integer.parseInt(config.getBlock("CamoBlocks", "ghostBlock", 207).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoLeverBlock", 208).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoButtonBlock", 210).value),
-		Integer.parseInt(config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).value),
-		Integer.parseInt(config.getBlock("CamoBlocks", "camoStairBlock", 213).value),
-		Integer.parseInt(config.getBlock("CamoBlocks", "camoChestBlock", 214).value) };
+		int[] ids = { Integer.parseInt(config.getBlock("CamoBlocks", "torchLever", 200).value), Integer.parseInt(config.getBlock("CamoBlocks", "oneWay", 201).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoGate", 202).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoGateExt", 203).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoTrapDoor", 204).value), Integer.parseInt(config.getItem("CamoItems", "camoWoodDoor", 3850 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoWoodDoor", 205).value), Integer.parseInt(config.getItem("CamoItems", "camoIronDoor", 3851 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoIronDoor", 206).value), Integer.parseInt(config.getItem("CamoItems", "camoPasteID", 3852 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "ghostBlock", 207).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoLeverBlock", 208).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoButtonBlock", 210).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoStairBlock", 213).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoChestBlock", 214).value) };
 		config.save();
-		
+
 		// make creative tab.
 		tab = new CreativeTabCamo();
-		
 
-		torchLever = (new BlockTorchLever(ids[0], 80)).setBlockName("Torch Lever");
+		torchLever = new BlockTorchLever(ids[0], 80).setBlockName("Torch Lever");
 
 		// Camo oneWay
-		oneWay = (new BlockOneWay(ids[1], 49)).setBlockName("One-Way Glass");
+		oneWay = new BlockOneWay(ids[1], 49).setBlockName("One-Way Glass");
 
 		// gates
-		camoGate = (new BlockCamoGate(ids[2])).setBlockName("Camo Gate");
-		camoGateExt = (new BlockCamoGateExt(ids[3])).setBlockName("Camo Gate Extension");
+		camoGate = new BlockCamoGate(ids[2]).setBlockName("Camo Gate");
+		camoGateExt = new BlockCamoGateExt(ids[3]).setBlockName("Camo Gate Extension");
 
 		// TrapDoor
-		camoTrapDoor = (new BlockCamoTrapDoor(ids[4])).setBlockName("Secret TrapDoor");
+		camoTrapDoor = new BlockCamoTrapDoor(ids[4]).setBlockName("Secret TrapDoor");
 
 		// doors, Iron AND Wood
-		camoDoorWoodItem = (new ItemCamoDoor(ids[5], Material.wood)).setItemName("Secret Wooden Door");
-		camoDoorWood = (new BlockCamoDoor(ids[6], Material.wood)).setBlockName("Secret Wooden Door");
-		camoDoorIronItem = (new ItemCamoDoor(ids[7], Material.iron)).setItemName("Secret Iron Door");
-		camoDoorIron = (new BlockCamoDoor(ids[8], Material.iron)).setBlockName("Secret Iron Door");
+		camoDoorWoodItem = new ItemCamoDoor(ids[5], Material.wood).setItemName("Secret Wooden Door");
+		camoDoorWood = new BlockCamoDoor(ids[6], Material.wood).setBlockName("Secret Wooden Door");
+		camoDoorIronItem = new ItemCamoDoor(ids[7], Material.iron).setItemName("Secret Iron Door");
+		camoDoorIron = new BlockCamoDoor(ids[8], Material.iron).setBlockName("Secret Iron Door");
 
 		// Camo Paste
-		camoPaste = (new ItemCamo(ids[9])).setItemName("Camoflauge Paste");
+		camoPaste = new ItemCamo(ids[9]).setItemName("Camoflauge Paste");
 
 		// FullCamoBlocks
-		camoGhost = (new BlockCamoGhost(ids[10])).setBlockName("Ghost Block");
-		camoLever = (new BlockCamoLever(ids[11])).setBlockName("Secret Camo Lever");
-		camoCurrent = (new BlockCamoWire(ids[12])).setBlockName("Secret Camo Redstone");
-		camoButton = (new BlockCamoButton(ids[13])).setBlockName("Secret Camo Button");
+		camoGhost = new BlockCamoGhost(ids[10]).setBlockName("Ghost Block");
+		camoLever = new BlockCamoLever(ids[11]).setBlockName("Secret Camo Lever");
+		camoCurrent = new BlockCamoWire(ids[12]).setBlockName("Secret Camo Redstone");
+		camoButton = new BlockCamoButton(ids[13]).setBlockName("Secret Camo Button");
 
-		camoPlateAll = (new BlockCamoPlate(ids[14], EnumMobType.everything)).setBlockName("Secret PressurePlate");
-		camoPlatePlayer = (new BlockCamoPlate(ids[15], EnumMobType.players)).setBlockName("Secret PlayerPlate");
+		camoPlateAll = new BlockCamoPlate(ids[14], EnumMobType.everything).setBlockName("Secret PressurePlate");
+		camoPlatePlayer = new BlockCamoPlate(ids[15], EnumMobType.players).setBlockName("Secret PlayerPlate");
 
-		camoStairs = (new BlockCamoStair(ids[16])).setBlockName("Secret Camo Stair");
+		camoStairs = new BlockCamoStair(ids[16]).setBlockName("Secret Camo Stair");
 
-		camoChest = (new BlockCamoChest(ids[17])).setBlockName("Secret Camo Chest");
+		camoChest = new BlockCamoChest(ids[17]).setBlockName("Secret Camo Chest");
 
 		// key Events
 		proxy.doKeyStuff();
@@ -176,7 +147,6 @@ public class SecretRooms
 		// Recipes
 		/*
 		 * TESTING RECIPES
-		 * 
 		 * GameRegistry.addRecipe(new ItemStack(fullCamoGhost), new Object[] { "#", '#', Block.dirt }); GameRegistry.addRecipe(new ItemStack(oneWay), new Object[] { "##", '#', Block.dirt }); GameRegistry.addRecipe(new ItemStack(torchLever), new Object[] { "#", "#", '#', Block.dirt }); GameRegistry.addRecipe(new ItemStack(camoCurrent), new Object[] { "##", "##", '#', Block.dirt });
 		 */
 
@@ -249,50 +219,50 @@ public class SecretRooms
 	}
 
 	// shelfs
-	public static Block torchLever;
-	public static Block oneWay;
-	public static Block camoGate;
-	public static Block camoGateExt;
+	public static Block				torchLever;
+	public static Block				oneWay;
+	public static Block				camoGate;
+	public static Block				camoGateExt;
 
 	// doors and Trap-Doors
-	public static Block camoTrapDoor;
-	public static Block camoDoorWood;
-	public static Item camoDoorWoodItem;
-	public static Block camoDoorIron;
-	public static Item camoDoorIronItem;
+	public static Block				camoTrapDoor;
+	public static Block				camoDoorWood;
+	public static Item				camoDoorWoodItem;
+	public static Block				camoDoorIron;
+	public static Item				camoDoorIronItem;
 
 	// Camo Paste
-	public static Item camoPaste;
+	public static Item				camoPaste;
 
 	// textures
 	@SideOnly(value = Side.CLIENT)
-	public static final String textureFile = "/com/github/AbrarSyed/SecretRooms/textures.png";
+	public static final String		textureFile			= "/com/github/AbrarSyed/SecretRooms/textures.png";
 
 	// FullCamo Stuff
-	public static Block camoGhost;
-	public static Block camoLever;
-	public static Block camoCurrent;
-	public static Block camoButton;
+	public static Block				camoGhost;
+	public static Block				camoLever;
+	public static Block				camoCurrent;
+	public static Block				camoButton;
 
 	// camo Plates
-	public static Block camoPlateAll;
-	public static Block camoPlatePlayer;
+	public static Block				camoPlateAll;
+	public static Block				camoPlatePlayer;
 
 	// camo Stairs - Alexbegt
-	public static Block camoStairs;
+	public static Block				camoStairs;
 
 	// Camo Chests - Alexbegt
-	public static Block camoChest;
+	public static Block				camoChest;
 
 	// render IDs
-	protected static int camoRenderId;
-	protected static int torchRenderId;
+	protected static int			camoRenderId;
+	protected static int			torchRenderId;
 
-	protected static boolean displayCamo = true;
+	protected static boolean		displayCamo			= true;
 
 	// Keybinding stuff.
-	protected static boolean OneWayFaceTowards = true;
-	
+	protected static boolean		OneWayFaceTowards	= true;
+
 	// creative tab
-	protected static CreativeTabs tab;
+	protected static CreativeTabs	tab;
 }

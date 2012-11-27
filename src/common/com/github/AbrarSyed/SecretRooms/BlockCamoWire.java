@@ -61,7 +61,7 @@ public class BlockCamoWire extends BlockCamoFull
 			else
 			{
 				// old and new are the same.
-				
+
 				// if its off, leave it off.
 				if (!isPowered)
 					return;
@@ -98,12 +98,12 @@ public class BlockCamoWire extends BlockCamoFull
 	{
 		return true;
 	}
-	
+
 	@Override
-    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
-    {
-        return Block.blocksList[blockID].canProvidePower() && side != -1;
-    }
+	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
+	{
+		return Block.blocksList[blockID].canProvidePower() && side != -1;
+	}
 
 	private void turnOff(World world, int i, int j, int k)
 	{
@@ -174,7 +174,7 @@ public class BlockCamoWire extends BlockCamoFull
 
 		Block block = Block.blocksList[id];
 
-		if (block.canProvidePower() && (block.isProvidingStrongPower(world, newX, newY, newZ, opposite) || block.isProvidingWeakPower(world,  newX,  newY,  newZ,  opposite)))
+		if (block.canProvidePower() && (block.isProvidingStrongPower(world, newX, newY, newZ, opposite) || block.isProvidingWeakPower(world, newX, newY, newZ, opposite)))
 			return true;
 
 		return false;
