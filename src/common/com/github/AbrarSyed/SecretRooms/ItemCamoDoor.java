@@ -24,7 +24,7 @@ public class ItemCamoDoor extends Item
     {
         super(par1);
         doorMaterial = par2Material;
-        this.setCreativeTab(CreativeTabs.tabRedstone);
+        this.setCreativeTab(SecretRooms.tab);
         this.setTextureFile(SecretRooms.textureFile);
         this.setIconIndex(0);
     }
@@ -51,7 +51,7 @@ public class ItemCamoDoor extends Item
         	block = SecretRooms.camoDoorWood;
 
         // check permissions
-        if (!par2EntityPlayer.func_82247_a(par4, par5, par6, par7, par1ItemStack ) ||!par2EntityPlayer.func_82247_a(par4, par5+1, par6, par7, par1ItemStack ))
+        if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack ) ||!par2EntityPlayer.canPlayerEdit(par4, par5+1, par6, par7, par1ItemStack ))
         {
             return false;
         }

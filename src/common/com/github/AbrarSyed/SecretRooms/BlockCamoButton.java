@@ -1,11 +1,6 @@
 package com.github.AbrarSyed.SecretRooms;
 
-import static net.minecraftforge.common.ForgeDirection.DOWN;
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.UP;
-import static net.minecraftforge.common.ForgeDirection.WEST;
+import static net.minecraftforge.common.ForgeDirection.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,7 +19,8 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class BlockCamoButton extends BlockCamoFull
 {
-    protected BlockCamoButton(int i)
+	
+    public BlockCamoButton(int i)
     {
     	super(i, Material.circuits);
     	this.setCreativeTab(SecretRooms.tab);
@@ -226,39 +222,17 @@ public class BlockCamoButton extends BlockCamoFull
     {
         if (world.isRemote)
         {
+            world.markBlockForUpdate(i, j, k);
             return true;
         }
 
-        int l = world.getBlockMetadata(i, j, k);
-        int i1 = l & 7;
-        int j1 = 8 - (l & 8);
-        world.setBlockMetadataWithNotify(i, j, k, i1 + j1);
-        world.markBlocksDirty(i, j, k, i, j, k);
-        world.playSoundEffect((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, j1 <= 0 ? 0.5F : 0.6F);
-        world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-        world.markBlockNeedsUpdate(i, j, k);
-
-        if (i1 == 1)
-        {
-            world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
-        }
-        else if (i1 == 2)
-        {
-            world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
-        }
-        else if (i1 == 3)
-        {
-            world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
-        }
-        else if (i1 == 4)
-        {
-            world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
-        }
-        else
-        {
-            world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
-        }
-
+        int meta = world.getBlockMetadata(i, j, k);
+        int sideMeta = meta & 7;
+        int poweredMeta = 8 - (meta & 8);
+        world.setBlockMetadataWithNotify(i, j, k, sideMeta + poweredMeta);
+        world.playSoundEffect((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, poweredMeta <= 0 ? 0.5F : 0.6F);
+        world.markBlockForUpdate(i, j, k);
+        updateArround(world, i, j, k, ForgeDirection.getOrientation(sideMeta));
         world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
         return true;
     }
@@ -266,127 +240,60 @@ public class BlockCamoButton extends BlockCamoFull
     @Override
     public void updateTick(World world, int i, int j, int k, Random random)
     {
+        
         if (world.isRemote)
         {
             return;
         }
 
-        int l = world.getBlockMetadata(i, j, k);
+        int meta = world.getBlockMetadata(i, j, k);
 
-        if ((l & 8) == 0)
+        if ((meta & 8) == 0)
         {
             return;
         }
 
-        int i1 = l & 7;
-        int j1 = 8 - (l & 8);
-        world.setBlockMetadataWithNotify(i, j, k, i1 + j1);
-        world.markBlocksDirty(i, j, k, i, j, k);
-        world.playSoundEffect((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, j1 <= 0 ? 0.5F : 0.6F);
-        world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-
-        if (i1 == 1)
-        {
-            world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
-        }
-        else if (i1 == 2)
-        {
-            world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
-        }
-        else if (i1 == 3)
-        {
-            world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
-        }
-        else if (i1 == 4)
-        {
-            world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
-        }
-        else
-        {
-            world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
-        }
-
+        int sideMeta = meta & 7;
+        int powerredMeta = 8 - (meta & 8);
+        world.setBlockMetadataWithNotify(i, j, k, sideMeta + powerredMeta);
         world.playSoundEffect((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, 0.5F);
-        world.markBlocksDirty(i, j, k, i, j, k);
+        updateArround(world, i, j, k, ForgeDirection.getOrientation(sideMeta));
+        world.markBlockForUpdate(i, j, k);
     }
 
     @Override
     public void breakBlock(World world, int i, int j, int k, int something, int metadata)
     {
         if ((metadata & 8) > 0)
-        {
-            world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-            int i1 = metadata & 7;
-
-            if (i1 == 1)
-            {
-                world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
-            }
-            else if (i1 == 2)
-            {
-                world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
-            }
-            else if (i1 == 3)
-            {
-                world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
-            }
-            else if (i1 == 4)
-            {
-                world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
-            }
-            else
-            {
-                world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
-            }
-        }
-
+            updateArround(world, i, j, k, ForgeDirection.getOrientation(metadata&7));
         super.breakBlock(world, i, j, k, something, metadata);
     }
 
     @Override
-    public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l)
+    public boolean isProvidingWeakPower(IBlockAccess iblockaccess, int i, int j, int k, int l)
     {
         return (iblockaccess.getBlockMetadata(i, j, k) & 8) > 0;
     }
-
-    @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
+    
+    public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side)
     {
-        int i1 = world.getBlockMetadata(i, j, k);
+        int var6 = world.getBlockMetadata(x, y, z);
 
-        if ((i1 & 8) == 0)
+        if ((var6 & 8) == 0)
         {
             return false;
         }
-
-        int j1 = i1 & 7;
-
-        if (j1 == 6 && l == 1)
+        else
         {
-            return true;
+            int var7 = var6 & 7;
+            return var7 == 5 && side == 1 ? true : (var7 == 4 && side == 2 ? true : (var7 == 3 && side == 3 ? true : (var7 == 2 && side == 4 ? true : var7 == 1 && side == 5)));
         }
-
-        if (j1 == 5 && l == 1)
-        {
-            return true;
-        }
-
-        if (j1 == 4 && l == 2)
-        {
-            return true;
-        }
-
-        if (j1 == 3 && l == 3)
-        {
-            return true;
-        }
-
-        if (j1 == 2 && l == 4)
-        {
-            return true;
-        }
-
-        return j1 == 1 && l == 5;
+    }
+    
+    private void updateArround(World world, int x, int y, int z, ForgeDirection side)
+    {
+        world.notifyBlocksOfNeighborChange(x + side.offsetX, y + side.offsetY, z + side.offsetZ, blockID);
+        world.notifyBlocksOfNeighborChange(x, y, z, blockID);
     }
 
     @Override

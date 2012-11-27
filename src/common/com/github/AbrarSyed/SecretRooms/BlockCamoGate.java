@@ -130,11 +130,10 @@ public class BlockCamoGate extends BlockCamoFull
 
 		for (; i <= maxSize && stop == false; i++)
 		{
-			ForgeDirection dir = ForgeDirection.getOrientation(i);
-			if (world.isAirBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) || isBreakable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))
+			ForgeDirection dir = ForgeDirection.getOrientation(data);
+			if (world.isAirBlock(x + (dir.offsetX*i), y + (dir.offsetY*i), z + (dir.offsetZ*i)) || isBreakable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))
 			{
-				world.setBlockWithNotify(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, SecretRooms.camoGateExt.blockID);
-				world.setBlockMetadata(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, SecretRooms.camoGateExt.func_85104_a(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, 0, 0, 0, 0, 0));
+				world.setBlockWithNotify(x + (dir.offsetX*i), y + (dir.offsetY*i), z + (dir.offsetZ*i), SecretRooms.camoGateExt.blockID);
 			}
 			else
 				break;

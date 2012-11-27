@@ -1,23 +1,25 @@
 package com.github.AbrarSyed.SecretRooms;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import static net.minecraftforge.common.ForgeDirection.DOWN;
+import static net.minecraftforge.common.ForgeDirection.UP;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import java.util.ArrayList;
+import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
-import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.BlockFarmland;
+import net.minecraft.src.BlockHalfSlab;
+import net.minecraft.src.BlockStairs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 /**
  * @author AbrarSyed
@@ -29,23 +31,23 @@ public class BlockCamoFull extends BlockContainer
 	{
 		super(par1, Material.wood);
 		blockIndexInTexture = 0;
-		this.setLightOpacity(15);
-		this.setCreativeTab(SecretRooms.tab);
+		setLightOpacity(15);
+		setCreativeTab(SecretRooms.tab);
 	}
 
 	protected BlockCamoFull(int par1, Material material)
 	{
 		super(par1, material);
 		blockIndexInTexture = 0;
-		this.setLightOpacity(15);
-		this.setCreativeTab(SecretRooms.tab);
+		setLightOpacity(15);
+		setCreativeTab(SecretRooms.tab);
 	}
-	
-    @Override
-    public void addCreativeItems(ArrayList itemList)
-    {
-    	itemList.add(new ItemStack(this));
-    }
+
+	@Override
+	public void addCreativeItems(ArrayList itemList)
+	{
+		itemList.add(new ItemStack(this));
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world)
@@ -94,7 +96,7 @@ public class BlockCamoFull extends BlockContainer
 		if (!SecretRooms.displayCamo)
 			return getBlockTextureFromSide(dir);
 
-		TileEntityCamoFull entity = ((TileEntityCamoFull) world.getBlockTileEntity(x, y, z));
+		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 		int id;
 		if (entity == null)
 			id = 1;
@@ -126,9 +128,6 @@ public class BlockCamoFull extends BlockContainer
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k)
 	{
-		if (alreadyExists(world, i, j, k))
-			return;
-
 		if (!world.isRemote)
 		{
 			// CAMO STUFF
@@ -164,30 +163,6 @@ public class BlockCamoFull extends BlockContainer
 		}
 	}
 
-	private boolean alreadyExists(World world, int i, int j, int k)
-	{
-		TileEntity entityU = world.getBlockTileEntity(i, j, k);
-
-		if (entityU != null && entityU instanceof TileEntityCamoFull)
-		{
-			TileEntityCamoFull entity = (TileEntityCamoFull) entityU;
-
-			if (entity.getCopyID() != 0)
-			{
-				if (entity.hasCoords())
-				{
-					int ID = world.getBlockId(entity.getCopyCoordX(), entity.getCopyCoordY(), entity.getCopyCoordZ());
-
-					if (ID == 0)
-						return false;
-				}
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	@Override
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
 	{
@@ -208,7 +183,6 @@ public class BlockCamoFull extends BlockContainer
 			int k = 0;
 
 			for (int l = -1; l <= 1; l++)
-			{
 				for (int i1 = -1; i1 <= 1; i1++)
 				{
 					int j1 = par1IBlockAccess.getBiomeGenForCoords(par2 + i1, par4 + l).getBiomeGrassColor();
@@ -216,7 +190,6 @@ public class BlockCamoFull extends BlockContainer
 					j += (j1 & 0xff00) >> 8;
 					k += j1 & 0xff;
 				}
-			}
 			return (i / 9 & 0xff) << 16 | (j / 9 & 0xff) << 8 | k / 9 & 0xff;
 		}
 
@@ -227,20 +200,15 @@ public class BlockCamoFull extends BlockContainer
 	 * annalyses surrounding blocks and decides on a BlockID for the Camo Block to copy.
 	 * 
 	 * @param world
-	 * @param x
-	 *            coord
-	 * @param y
-	 *            coord
-	 * @param z
-	 *            coord
+	 * @param x coord
+	 * @param y coord
+	 * @param z coord
 	 * @return the ID of the block to be copied
 	 */
 	private int[] getIdCamoStyle(World world, int x, int y, int z)
 	{
 		int[] id = new int[] { 0, 0, 0, 0 };
 		int[][] plusIds = new int[6][4];
-		Block block;
-
 		// Only PLUS sign id checks.
 		plusIds[0] = getInfo(world, x, y - 1, z); // y-1
 		plusIds[1] = getInfo(world, x, y + 1, z); // y+1
@@ -253,7 +221,7 @@ public class BlockCamoFull extends BlockContainer
 		if (isOneLeft(truncateArrayINT(plusIds)))
 		{
 			plusIds = truncateArrayINT(plusIds);
-			//System.out.println("IDs worked early:  " + Arrays.toString(plusIds[0]));
+			// System.out.println("IDs worked early:  " + Arrays.toString(plusIds[0]));
 			return plusIds[0];
 		}
 
@@ -295,13 +263,13 @@ public class BlockCamoFull extends BlockContainer
 		else if (intChecks[2][0] != 0)
 			id = intChecks[2];
 
-		//System.out.println("IDs are fun:  " + Arrays.toString(id));
+		// System.out.println("IDs are fun:  " + Arrays.toString(id));
 
 		if (id[0] != 0)
 			return id;
 
 		// GET MODE
-		plusIds = this.truncateArrayINT(plusIds);
+		plusIds = truncateArrayINT(plusIds);
 
 		try
 		{
@@ -327,9 +295,7 @@ public class BlockCamoFull extends BlockContainer
 		int[] nums = new int[nums2.length];
 
 		for (int i = 0; i < nums2.length; i++)
-		{
 			nums[i] = nums2[i][0];
-		}
 
 		// create array of tallies, all initialized to zero
 		int[] tally = new int[256];
@@ -345,16 +311,10 @@ public class BlockCamoFull extends BlockContainer
 		int maxIndex = 0;
 
 		for (int i = 1; i < tally.length; i++)
-		{
 			if (tally[i] == tally[maxIndex] && tally[i] != 0)
-			{
 				throw new Exception("NULL");
-			}
 			else if (tally[i] > tally[maxIndex])
-			{
 				maxIndex = i;
-			}
-		}
 
 		return nums2[maxIndex];
 	}
@@ -363,13 +323,13 @@ public class BlockCamoFull extends BlockContainer
 	 * Used to specially get Ids. It returns zero if the texture cannot be copied, or if it is air.
 	 * 
 	 * @param world
-	 *            The world
+	 * The world
 	 * @param x
-	 *            X coordinate
+	 * X coordinate
 	 * @param y
-	 *            Y Coordinate
+	 * Y Coordinate
 	 * @param z
-	 *            Z Coordinate
+	 * Z Coordinate
 	 * @return
 	 */
 	private static int[] getInfo(World world, int x, int y, int z)
@@ -411,7 +371,7 @@ public class BlockCamoFull extends BlockContainer
 	 * This truncates an int Array so that it contains only values above zero. The size of the array is also cut down so that all of them are full.
 	 * 
 	 * @param array
-	 *            The array to be truncated
+	 * The array to be truncated
 	 * @return the truncated array.
 	 */
 	private static int[][] truncateArrayINT(int[][] array)
@@ -419,24 +379,18 @@ public class BlockCamoFull extends BlockContainer
 		int num = 0;
 
 		for (int[] obj : array)
-		{
 			if (obj[0] > 0)
-			{
 				num++;
-			}
-		}
 
 		int[][] truncated = new int[num][4];
 		num = 0;
 
 		for (int[] obj : array)
-		{
 			if (obj[0] > 0)
 			{
 				truncated[num] = obj;
 				num++;
 			}
-		}
 
 		return truncated;
 	}
@@ -444,12 +398,8 @@ public class BlockCamoFull extends BlockContainer
 	private boolean isOneLeft(int[][] textures)
 	{
 		if (!checkAllNull(textures))
-		{
 			if (truncateArrayINT(textures).length == 1)
-			{
 				return true;
-			}
-		}
 
 		return false;
 	}
@@ -459,14 +409,33 @@ public class BlockCamoFull extends BlockContainer
 		boolean flag = true;
 
 		for (int[] num : textures)
-		{
 			if (num[0] > 0)
-			{
 				flag = false;
-			}
-		}
 
 		return flag;
 	}
+
+	/*
+	 * FORGE STUFF NOW!!!
+	 */
+
+	@Override
+	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+	{
+		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+
+		if (entity != null)
+		{
+			return blockFlammability[entity.getCopyID()];
+		}
+
+		return blockFlammability[blockID];
+	}
+	
+    public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) 
+    {
+    	return true;
+    }
+	
 
 }

@@ -8,271 +8,148 @@ import static net.minecraftforge.common.ForgeDirection.UP;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.ArrayList;
-import java.util.Random;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.minecraft.src.Block;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
-
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * @author AbrarSyed
  */
 public class BlockCamoLever extends BlockCamoFull
 {
-    protected BlockCamoLever(int i)
-    {
-        super(i, Material.circuits);
-        this.setHardness(1.5F);
-        this.setStepSound(Block.soundWoodFootstep);
-    }
-    
-    @Override
-    public void addCreativeItems(ArrayList itemList)
-    {
-    	itemList.add(new ItemStack(this));
-    }
+	protected BlockCamoLever(int i)
+	{
+		super(i, Material.circuits);
+		setHardness(1.5F);
+		setStepSound(Block.soundWoodFootstep);
+	}
 
-    @Override
-    public int getBlockTextureFromSideAndMetadata(int i, int j)
-    {
-        if (i == 1)
-        {
-            return Block.lever.blockIndexInTexture;
-        }
-        else if (i == 3)
-        	return Block.planks.blockIndexInTexture;
-        else
-        {
-            return blockIndexInTexture;
-        }
-    }
+	@Override
+	public void addCreativeItems(ArrayList itemList)
+	{
+		itemList.add(new ItemStack(this));
+	}
 
-    @Override
-    public boolean canPlaceBlockOnSide(World world, int i, int j, int k, int l)
-    {
-        if (l == 1 && world.isBlockNormalCube(i, j - 1, k))
-        {
-            return true;
-        }
+	@Override
+	public int getBlockTextureFromSideAndMetadata(int i, int j)
+	{
+		if (i == 1)
+			return Block.lever.blockIndexInTexture;
+		else if (i == 3)
+			return Block.planks.blockIndexInTexture;
+		else
+			return blockIndexInTexture;
+	}
 
-        if (l == 2 && world.isBlockNormalCube(i, j, k + 1))
-        {
-            return true;
-        }
+	@Override
+	public boolean canPlaceBlockOnSide(World world, int i, int j, int k, int l)
+	{
+		ForgeDirection dir = ForgeDirection.getOrientation(l);
+		return dir == DOWN && world.isBlockSolidOnSide(i, j + 1, k, DOWN) || dir == UP && world.isBlockSolidOnSide(i, j - 1, k, UP) || dir == NORTH && world.isBlockSolidOnSide(i, j, k + 1, NORTH) || dir == SOUTH && world.isBlockSolidOnSide(i, j, k - 1, SOUTH) || dir == WEST && world.isBlockSolidOnSide(i + 1, j, k, WEST) || dir == EAST && world.isBlockSolidOnSide(i - 1, j, k, EAST);
+	}
 
-        if (l == 3 && world.isBlockNormalCube(i, j, k - 1))
-        {
-            return true;
-        }
+	@Override
+	public boolean canPlaceBlockAt(World world, int i, int j, int k)
+	{
+		return world.isBlockSolidOnSide(i - 1, j, k, EAST) || world.isBlockSolidOnSide(i + 1, j, k, WEST) || world.isBlockSolidOnSide(i, j, k - 1, SOUTH) || world.isBlockSolidOnSide(i, j, k + 1, NORTH) || world.isBlockSolidOnSide(i, j - 1, k, UP) || world.isBlockSolidOnSide(i, j + 1, k, DOWN);
+	}
 
-        if (l == 4 && world.isBlockNormalCube(i + 1, j, k))
-        {
-            return true;
-        }
+	@Override
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int something1, float something2, float something3, float something4)
+	{
+		if (world.isRemote)
+			return true;
+		else
+		{
+			int meta = world.getBlockMetadata(i, j, k);
+			int sideMeta = meta & 7;
+			int powerMeta = 8 - (meta & 8);
+			world.setBlockMetadataWithNotify(i, j, k, sideMeta + powerMeta);
+			world.markBlockForUpdate(i, j, k);
+			world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "random.click", 0.3F, powerMeta > 0 ? 0.6F : 0.5F);
+			world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 
-        return l == 5 && world.isBlockNormalCube(i - 1, j, k);
-    }
+			if (sideMeta == 1)
+				world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
+			else if (sideMeta == 2)
+				world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
+			else if (sideMeta == 3)
+				world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
+			else if (sideMeta == 4)
+				world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
+			else if (sideMeta != 5 && sideMeta != 6)
+			{
+				if (sideMeta == 0 || sideMeta == 7)
+					world.notifyBlocksOfNeighborChange(i, j + 1, k, blockID);
+			}
+			else
+				world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
 
-    @Override
-    public boolean canPlaceBlockAt(World world, int i, int j, int k)
-    {
-        if (world.isBlockNormalCube(i - 1, j, k))
-        {
-            return true;
-        }
+			return true;
+		}
+	}
 
-        if (world.isBlockNormalCube(i + 1, j, k))
-        {
-            return true;
-        }
+	@Override
+	public void breakBlock(World world, int i, int j, int k, int something, int metadata)
+	{
 
-        if (world.isBlockNormalCube(i, j, k - 1))
-        {
-            return true;
-        }
+		if ((metadata & 8) > 0)
+		{
+			world.notifyBlocksOfNeighborChange(i, j, k, blockID);
+			int i1 = metadata & 7;
 
-        if (world.isBlockNormalCube(i, j, k + 1))
-        {
-            return true;
-        }
+			if (i1 == 1)
+				world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
+			else if (i1 == 2)
+				world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
+			else if (i1 == 3)
+				world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
+			else if (i1 == 4)
+				world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
+			else
+				world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
+		}
 
-        return world.isBlockNormalCube(i, j - 1, k);
-    }
-    
-    public int func_85104_a(World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ, int currentMeta)
-    {
-    	super.func_85104_a(world, x,y, z, side, clickX, clickY, clickZ, currentMeta);
-        int var11 = currentMeta & 8;
-        int var10 = currentMeta & 7;
-        var10 = -1;
+		super.breakBlock(world, i, j, k, something, metadata);
+	}
 
-        if (side == 0 && world.isBlockSolidOnSide(x, y + 1, z, DOWN))
-        {
-            var10 = world.rand.nextBoolean() ? 0 : 7;
-        }
+	/**
+	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
+	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
+	 * Y, Z, side
+	 */
+	@Override
+	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
+	}
 
-        if (side == 1 && world.isBlockSolidOnSide(x, y - 1, z, UP))
-        {
-            var10 = 5 + world.rand.nextInt(2);
-        }
+	/**
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+	 * side
+	 */
+	@Override
+	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
-        if (side == 2 && world.isBlockSolidOnSide(x, y, z + 1, NORTH))
-        {
-            var10 = 4;
-        }
+		if ((var6 & 8) == 0)
+			return false;
+		else
+		{
+			int var7 = var6 & 7;
+			return var7 == 0 && par5 == 0 ? true : var7 == 7 && par5 == 0 ? true : var7 == 6 && par5 == 1 ? true : var7 == 5 && par5 == 1 ? true : var7 == 4 && par5 == 2 ? true : var7 == 3 && par5 == 3 ? true : var7 == 2 && par5 == 4 ? true : var7 == 1 && par5 == 5;
+		}
+	}
 
-        if (side == 3 && world.isBlockSolidOnSide(x, y, z - 1, SOUTH))
-        {
-            var10 = 3;
-        }
-
-        if (side == 4 && world.isBlockSolidOnSide(x + 1, y, z, WEST))
-        {
-            var10 = 2;
-        }
-
-        if (side == 5 && world.isBlockSolidOnSide(x - 1, y, z, EAST))
-        {
-            var10 = 1;
-        }
-
-        return var10 + var11;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int something1, float something2, float something3, float something4)
-    {
-        if (world.isRemote)
-        {
-            return true;
-        }
-        
-        TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
-        System.out.println("ACTIVATED: "+entity.getCopyID());
-
-        int l = world.getBlockMetadata(i, j, k);
-        int i1 = l & 7;
-        int j1 = 8 - (l & 8);
-        world.setBlockMetadataWithNotify(i, j, k, i1 + j1);
-        world.markBlocksDirty(i, j, k, i, j, k);
-        world.playSoundEffect((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, j1 <= 0 ? 0.5F : 0.6F);
-        world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-        world.markBlockNeedsUpdate(i, j, k);
-
-        if (i1 == 1)
-        {
-            world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
-        }
-        else if (i1 == 2)
-        {
-            world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
-        }
-        else if (i1 == 3)
-        {
-            world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
-        }
-        else if (i1 == 4)
-        {
-            world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
-        }
-        else
-        {
-            world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
-        }
-
-        return true;
-    }
-
-    @Override
-    public void breakBlock(World world, int i, int j, int k, int something, int metadata)
-    {
-
-        if ((metadata & 8) > 0)
-        {
-            world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-            int i1 = metadata & 7;
-
-            if (i1 == 1)
-            {
-                world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
-            }
-            else if (i1 == 2)
-            {
-                world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
-            }
-            else if (i1 == 3)
-            {
-                world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
-            }
-            else if (i1 == 4)
-            {
-                world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
-            }
-            else
-            {
-                world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
-            }
-        }
-
-        super.breakBlock(world, i, j, k, something, metadata);
-    }
-
-    @Override
-    public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l)
-    {
-        return (iblockaccess.getBlockMetadata(i, j, k) & 8) > 0;
-    }
-
-    @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
-    {
-        int i1 = world.getBlockMetadata(i, j, k);
-
-        if ((i1 & 8) == 0)
-        {
-            return false;
-        }
-
-        int j1 = i1 & 7;
-
-        if (j1 == 6 && l == 1)
-        {
-            return true;
-        }
-
-        if (j1 == 5 && l == 1)
-        {
-            return true;
-        }
-
-        if (j1 == 4 && l == 2)
-        {
-            return true;
-        }
-
-        if (j1 == 3 && l == 3)
-        {
-            return true;
-        }
-
-        if (j1 == 2 && l == 4)
-        {
-            return true;
-        }
-
-        return j1 == 1 && l == 5;
-    }
-
-    @Override
-    public boolean canProvidePower()
-    {
-        return true;
-    }
+	@Override
+	public boolean canProvidePower()
+	{
+		return true;
+	}
 }

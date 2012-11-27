@@ -129,7 +129,7 @@ public class BlockCamoPlate extends BlockCamoFull
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
             par1World.notifyBlocksOfNeighborChange(par2, par3, par4, blockID);
             par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
-            par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+            par1World.markBlockForUpdate(par2, par3, par4);
             par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.10000000000000001D, (double)par4 + 0.5D, "random.click", 0.3F, 0.6F);
         }
 
@@ -138,7 +138,7 @@ public class BlockCamoPlate extends BlockCamoFull
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 0);
             par1World.notifyBlocksOfNeighborChange(par2, par3, par4, blockID);
             par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
-            par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+            par1World.markBlockForUpdate(par2, par3, par4);
             par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.10000000000000001D, (double)par4 + 0.5D, "random.click", 0.3F, 0.5F);
         }
 
@@ -164,28 +164,24 @@ public class BlockCamoPlate extends BlockCamoFull
     }
 
     /**
-     * Is this block powering the block on the specified side
+     * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
+     * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
+     * Y, Z, side
      */
     @Override
-    public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return par1IBlockAccess.getBlockMetadata(par2, par3, par4) > 0;
     }
 
     /**
-     * Is this block indirectly powering the block on the specified side
+     * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+     * side
      */
     @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
+    public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        if (world.getBlockMetadata(i, j, k) == 0)
-        {
-            return false;
-        }
-        else
-        {
-            return l == 1;
-        }
+        return par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 0 ? false : par5 == 1;
     }
 
     /**

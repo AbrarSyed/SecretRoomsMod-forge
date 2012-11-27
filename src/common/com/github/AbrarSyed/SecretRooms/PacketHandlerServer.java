@@ -79,9 +79,7 @@ public class PacketHandlerServer implements IPacketHandler {
     		if (forged)
     			entity.setTexturePath(texturePath);
 
-    		world.markBlockAsNeedsUpdate(coords[0], coords[1], coords[2]);
-    		world.updateTileEntityChunkAndDoNothing(coords[0], coords[1], coords[2], entity);
-    		FMLCommonHandler.instance().getSidedDelegate().getServer().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
+    		world.markBlockForUpdate(coords[0], coords[1], coords[2]);
     	}
 	}
 

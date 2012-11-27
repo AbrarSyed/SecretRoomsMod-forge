@@ -248,12 +248,12 @@ public class BlockCamoDoor extends BlockContainer
         if ((i & 8) != 0)
         {
             par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, j);
-            par1World.markBlocksDirty(par2, par3 - 1, par4, par2, par3, par4);
+            par1World.markBlocksDirtyVertical(par2, par4, par3-1, par3);
         }
         else
         {
             par1World.setBlockMetadataWithNotify(par2, par3, par4, j);
-            par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+            par1World.markBlockForUpdate(par2, par3, par4);
         }
 
         par1World.playAuxSFXAtEntity(par5EntityPlayer, 1003, par2, par3, par4, 0);
@@ -279,12 +279,12 @@ public class BlockCamoDoor extends BlockContainer
         if ((i & 8) != 0)
         {
             par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, j);
-            par1World.markBlocksDirty(par2, par3 - 1, par4, par2, par3, par4);
+            par1World.markBlocksDirtyVertical(par2, par4, par3-1, par3);
         }
         else
         {
             par1World.setBlockMetadataWithNotify(par2, par3, par4, j);
-            par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+            par1World.markBlockForUpdate(par2, par3, par4);
         }
 
         par1World.playAuxSFXAtEntity(null, 1003, par2, par3, par4, 0);

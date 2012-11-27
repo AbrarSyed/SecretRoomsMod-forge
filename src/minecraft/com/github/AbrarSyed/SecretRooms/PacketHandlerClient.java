@@ -99,7 +99,7 @@ public class PacketHandlerClient implements IPacketHandler {
 			if (forged)
 				entity.setTexturePath(texturePath);
 			
-			world.markBlockNeedsUpdate(coords[0], coords[1], coords[2]);
+			world.markBlockForRenderUpdate(coords[0], coords[1], coords[2]);
 			//System.out.println(player.username+"-SET: "+texture);
 		}
 
@@ -155,7 +155,7 @@ public class PacketHandlerClient implements IPacketHandler {
 				entity.setCopyCoordZ(copyCoords[2]);
 			}
 
-			world.markBlockNeedsUpdate(coords[0], coords[1], coords[2]);
+			world.markBlockForRenderUpdate(coords[0], coords[1], coords[2]);
 		}
 		else if (channel.equals("SRM-Display"))
 		{
@@ -165,11 +165,9 @@ public class PacketHandlerClient implements IPacketHandler {
 				player.addChatMessage(getColorThing()+"Camo blocks made secret");
 			else
 				player.addChatMessage(getColorThing()+"Camo blocks made obvious");
-
-			for (int i = -10; i < 10; i++)
-				for (int j = -10; j < 10; j++)
-					for (int k = -10; k < 10; k++)
-						world.markBlockAsNeedsUpdate((int)player.posX+i, (int)player.posY+j, (int)player.posZ+k);
+			
+			int rad = 10; // update radius
+			world.markBlockRangeForRenderUpdate((int)player.posX-rad, (int)player.posY-rad, (int)player.posZ-rad, (int)player.posX+rad, (int)player.posY+rad, (int)player.posZ+rad);
 		}
 	}
 	

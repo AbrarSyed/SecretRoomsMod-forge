@@ -11,7 +11,7 @@ public class ItemCamo extends Item {
 	protected ItemCamo(int par1)
 	{
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabMaterials);
+		this.setCreativeTab(SecretRooms.tab);
 		this.setTextureFile(SecretRooms.textureFile);
 		this.setIconIndex(1);
 	}

@@ -59,7 +59,7 @@ public class BlockCamoWire extends BlockCamoFull
     }
 
     @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
+    public boolean isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l)
     {
         if ((getPoweredState(world, i, j, k)) == 0)
         {
@@ -67,12 +67,12 @@ public class BlockCamoWire extends BlockCamoFull
         }
         else
         {
-            return isPoweringTo(world, i, j, k, l);
+            return isProvidingStrongPower(world, i, j, k, l);
         }
     }
 
     @Override
-    public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l)
+    public boolean isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l)
     {
         if (iblockaccess.getBlockMetadata(i, j, k) == 0)
         {
@@ -134,7 +134,7 @@ public class BlockCamoWire extends BlockCamoFull
     {
         world.setBlockMetadataWithNotify(i, j, k, 0);
         notifyWireNeighborsOfNeighborChange(world, i, j, k);
-        world.markBlockAsNeedsUpdate(i, j, k);
+        world.markBlockForUpdate(i, j, k);
         //System.out.println("Turned off");
     }
 
@@ -161,7 +161,7 @@ public class BlockCamoWire extends BlockCamoFull
         {
             world.setBlockMetadataWithNotify(i, j, k, 8 + poweredSide);
             notifyWireNeighborsOfNeighborChange(world, i, j, k);
-            world.markBlockAsNeedsUpdate(i, j, k);
+            world.markBlockForUpdate(i, j, k);
             //System.out.println(i+" "+j+" "+k+" Turned on: direction is "+poweredSide);
         }
     }
@@ -231,7 +231,7 @@ public class BlockCamoWire extends BlockCamoFull
 
         Block block = Block.blocksList[id];
 
-        if (block.canProvidePower() && block.isPoweringTo(world, coords[0], coords[1], coords[2], l))
+        if (block.canProvidePower() && block.isProvidingStrongPower(world, coords[0], coords[1], coords[2], l))
         {
             return true;
         }
