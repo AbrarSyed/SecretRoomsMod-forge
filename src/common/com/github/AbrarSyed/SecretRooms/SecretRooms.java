@@ -27,8 +27,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 /**
  * @author AbrarSyed
  */
-@NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.3,)", clientPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
-@Mod(modid = "SecretRoomsMod", name = "SecretRoomsMod", version = "4.3.0")
+@NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.4,)", clientPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
+@Mod(modid = "SecretRoomsMod", name = "SecretRoomsMod", version = "4.4.0")
 public class SecretRooms
 {
 
@@ -44,7 +44,26 @@ public class SecretRooms
 		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
 
 		config.load();
-		int[] ids = { Integer.parseInt(config.getBlock("CamoBlocks", "torchLever", 200).value), Integer.parseInt(config.getBlock("CamoBlocks", "oneWay", 201).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoGate", 202).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoGateExt", 203).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoTrapDoor", 204).value), Integer.parseInt(config.getItem("CamoItems", "camoWoodDoor", 3850 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoWoodDoor", 205).value), Integer.parseInt(config.getItem("CamoItems", "camoIronDoor", 3851 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoIronDoor", 206).value), Integer.parseInt(config.getItem("CamoItems", "camoPasteID", 3852 + 256).value), Integer.parseInt(config.getBlock("CamoBlocks", "ghostBlock", 207).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoLeverBlock", 208).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoButtonBlock", 210).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoStairBlock", 213).value), Integer.parseInt(config.getBlock("CamoBlocks", "camoChestBlock", 214).value) };
+		int[] ids = {
+				config.getBlock("CamoBlocks", "torchLever", 200).getInt(),
+				config.getBlock("CamoBlocks", "oneWay", 201).getInt(),
+				config.getBlock("CamoBlocks", "camoGate", 202).getInt(),
+				config.getBlock("CamoBlocks", "camoGateExt", 203).getInt(),
+				config.getBlock("CamoBlocks", "camoTrapDoor", 204).getInt(),
+				config.getItem("CamoItems", "camoWoodDoor", 3850 + 256).getInt(),
+				config.getBlock("CamoBlocks", "camoWoodDoor", 205).getInt(),
+				config.getItem("CamoItems", "camoIronDoor", 3851 + 256).getInt(),
+				config.getBlock("CamoBlocks", "camoIronDoor", 206).getInt(),
+				config.getItem("CamoItems", "camoPasteID", 3852 + 256).getInt(),
+				config.getBlock("CamoBlocks", "ghostBlock", 207).getInt(),
+				config.getBlock("CamoBlocks", "camoLeverBlock", 208).getInt(),
+				config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).getInt(),
+				config.getBlock("CamoBlocks", "camoButtonBlock", 210).getInt(),
+				config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).getInt(),
+				config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).getInt(),
+				config.getBlock("CamoBlocks", "camoStairBlock", 213).getInt(),
+				config.getBlock("CamoBlocks", "camoChestBlock", 214).getInt()
+				};
 		config.save();
 
 		// make creative tab.
