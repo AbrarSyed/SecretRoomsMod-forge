@@ -1,6 +1,6 @@
 package com.github.AbrarSyed.SecretRooms;
 
-import net.minecraft.src.Item;
+import net.minecraft.item.Item;
 
 /**
  * @author AbrarSyed

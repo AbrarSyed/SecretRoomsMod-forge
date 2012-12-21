@@ -5,17 +5,17 @@ import static net.minecraftforge.common.ForgeDirection.DOWN;
 import java.util.Iterator;
 import java.util.Random;
 
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityOcelot;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryLargeChest;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryLargeChest;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 
 /**
  * @author Alexbegt, AbrarSyed
@@ -222,7 +222,7 @@ public class BlockCamoChest extends BlockCamoFull
 						var14.motionZ = (float) random.nextGaussian() * var15;
 
 						if (var9.hasTagCompound())
-							var14.item.setTagCompound((NBTTagCompound) var9.getTagCompound().copy());
+							var14.func_92014_d().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
 					}
 				}
 			}

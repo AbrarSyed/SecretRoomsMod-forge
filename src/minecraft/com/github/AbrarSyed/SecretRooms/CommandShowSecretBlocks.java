@@ -1,8 +1,8 @@
 package com.github.AbrarSyed.SecretRooms;
 
-import net.minecraft.src.CommandBase;
-import net.minecraft.src.ICommandSender;
-import net.minecraft.src.Packet250CustomPayload;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 

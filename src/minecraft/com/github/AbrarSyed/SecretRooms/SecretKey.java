@@ -2,7 +2,7 @@ package com.github.AbrarSyed.SecretRooms;
 
 import java.util.EnumSet;
 
-import net.minecraft.src.KeyBinding;
+import net.minecraft.client.settings.KeyBinding;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;

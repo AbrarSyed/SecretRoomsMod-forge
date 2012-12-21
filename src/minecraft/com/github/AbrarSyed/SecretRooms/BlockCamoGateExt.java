@@ -2,7 +2,7 @@ package com.github.AbrarSyed.SecretRooms;
 
 import java.util.Random;
 
-import net.minecraft.src.Block;
+import net.minecraft.block.Block;
 
 /**
  * @author AbrarSyed

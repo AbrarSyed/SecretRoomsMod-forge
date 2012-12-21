@@ -1,16 +1,16 @@
 package com.github.AbrarSyed.SecretRooms;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.Tessellator;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(value = Side.CLIENT)
 public class CamoRenderer implements ISimpleBlockRenderingHandler
@@ -174,14 +174,14 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j - 1, k, 0)) && side == 0)
 			{
-				var8.setBrightness(renderblocks.field_83027_i > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j - 1, k));
+				var8.setBrightness(renderblocks.customMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j - 1, k));
 				var8.setColorOpaque_F(var17, var20, var23);
 				renderblocks.renderBottomFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 0));
 			}
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j + 1, k, 1)) && side == 1)
 			{
-				var8.setBrightness(renderblocks.field_83024_j < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j + 1, k));
+				var8.setBrightness(renderblocks.customMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j + 1, k));
 				var8.setColorOpaque_F(topR, topG, topB);
 				renderblocks.renderTopFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 1));
 			}
@@ -190,7 +190,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k - 1, 2)) && side == 2)
 			{
-				var8.setBrightness(renderblocks.field_83025_k > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k - 1));
+				var8.setBrightness(renderblocks.customMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k - 1));
 				var8.setColorOpaque_F(var18, var21, var24);
 				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 2);
 				renderblocks.renderEastFace(block, (double) i, (double) j, (double) k, tempTexture);
@@ -205,7 +205,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k + 1, 3) && side == 3))
 			{
-				var8.setBrightness(renderblocks.field_83022_l < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k + 1));
+				var8.setBrightness(renderblocks.customMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k + 1));
 				var8.setColorOpaque_F(var18, var21, var24);
 				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 3);
 				renderblocks.renderWestFace(block, (double) i, (double) j, (double) k, tempTexture);
@@ -219,7 +219,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i - 1, j, k, 4)) && side == 4)
 			{
-				var8.setBrightness(renderblocks.field_83021_g > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i - 1, j, k));
+				var8.setBrightness(renderblocks.customMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i - 1, j, k));
 				var8.setColorOpaque_F(var19, var22, var25);
 				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 4);
 				renderblocks.renderNorthFace(block, (double) i, (double) j, (double) k, tempTexture);
@@ -234,7 +234,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i + 1, j, k, 5)) && side == 5)
 			{
-				var8.setBrightness(renderblocks.field_83026_h < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i + 1, j, k));
+				var8.setBrightness(renderblocks.customMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i + 1, j, k));
 				var8.setColorOpaque_F(var19, var22, var25);
 				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 5);
 				renderblocks.renderSouthFace(block, (double) i, (double) j, (double) k, tempTexture);
@@ -329,7 +329,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0))
 		{
-			tessellator.setBrightness(renderblocks.field_83027_i > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k) : brightness);
+			tessellator.setBrightness(renderblocks.customMinY > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k) : brightness);
 			tessellator.setColorOpaque_F(bottomWeightRed, bottomWeightGreen, bottomWeightBlue);
 			renderblocks.renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
 			flag = true;
@@ -337,7 +337,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1))
 		{
-			tessellator.setBrightness(renderblocks.field_83024_j < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k) : brightness);
+			tessellator.setBrightness(renderblocks.customMaxY < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k) : brightness);
 			tessellator.setColorOpaque_F(topWeightRed, topWeightGreen, topWeightBlue);
 			renderblocks.renderTopFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 1));
 			flag = true;
@@ -345,7 +345,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2))
 		{
-			tessellator.setBrightness(renderblocks.field_83025_k > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1) : brightness);
+			tessellator.setBrightness(renderblocks.customMinZ > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1) : brightness);
 			tessellator.setColorOpaque_F(frontWeightRed, frontWeightGreen, frontWeightBlue);
 			int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 2);
 			renderblocks.renderEastFace(block, i, j, k, blockTexture);
@@ -361,7 +361,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3))
 		{
-			tessellator.setBrightness(renderblocks.field_83022_l < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1) : brightness);
+			tessellator.setBrightness(renderblocks.customMaxZ < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1) : brightness);
 			tessellator.setColorOpaque_F(frontWeightRed, frontWeightGreen, frontWeightBlue);
 			int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 3);
 			renderblocks.renderWestFace(block, i, j, k, blockTexture);
@@ -377,7 +377,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4))
 		{
-			tessellator.setBrightness(renderblocks.field_83021_g > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k) : brightness);
+			tessellator.setBrightness(renderblocks.customMinX > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k) : brightness);
 			tessellator.setColorOpaque_F(sideWeightRed, sideWeightGreen, sideWeightBlue);
 			int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 4);
 			renderblocks.renderNorthFace(block, i, j, k, blockTexture);
@@ -393,7 +393,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5))
 		{
-			tessellator.setBrightness(renderblocks.field_83026_h < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k) : brightness);
+			tessellator.setBrightness(renderblocks.customMaxX < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k) : brightness);
 			tessellator.setColorOpaque_F(sideWeightRed, sideWeightGreen, sideWeightBlue);
 			int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 5);
 			renderblocks.renderSouthFace(block, i, j, k, blockTexture);

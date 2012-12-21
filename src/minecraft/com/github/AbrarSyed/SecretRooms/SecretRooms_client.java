@@ -1,17 +1,17 @@
 package com.github.AbrarSyed.SecretRooms;
 
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.KeyBinding;
-import net.minecraft.src.World;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(value = Side.CLIENT)
 public class SecretRooms_client extends Proxy
