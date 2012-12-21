@@ -28,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author AbrarSyed
  */
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.4,)", clientPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
-@Mod(modid = "SecretRoomsMod", name = "SecretRoomsMod", version = "4.4.0")
+@Mod(modid = "SecretRoomsMod", name = "SecretRoomsMod", version = "4.4.1")
 public class SecretRooms
 {
 
