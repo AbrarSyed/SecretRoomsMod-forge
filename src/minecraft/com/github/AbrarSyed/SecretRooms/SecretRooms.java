@@ -23,6 +23,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 /**
  * @author AbrarSyed
@@ -192,9 +193,12 @@ public class SecretRooms
 		GameRegistry.addShapelessRecipe(new ItemStack(camoTrapDoor, 1), new Object[] { camoPaste, Block.trapdoor });
 
 		// CamoPaste
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Block.dirt });
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Block.sand });
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Item.clay });
+		ShapedOreRecipe CamoRecipe = new ShapedOreRecipe( new ItemStack( camoPaste, 9 ), new Object[] { "X#X", "$0$", "@#@", Character.valueOf('$'), "dyeGreen", Character.valueOf('@'), "dyeYellow", Character.valueOf('#'), "dyeBlack", Character.valueOf('0'), Block.dirt } );	
++    		GameRegistry.addRecipe( CamoRecipe );	
++    		CamoRecipe = new ShapedOreRecipe( new ItemStack( camoPaste, 9 ), new Object[] { "X#X", "$0$", "@#@", Character.valueOf('$'), "dyeGreen", Character.valueOf('@'), "dyeYellow", Character.valueOf('#'), "dyeBlack", Character.valueOf('0'), Block.sand } );
++    		GameRegistry.addRecipe( CamoRecipe );
++    		CamoRecipe = new ShapedOreRecipe( new ItemStack( camoPaste, 9 ), new Object[] { "X#X", "$0$", "@#@", Character.valueOf('$'), "dyeGreen", Character.valueOf('@'), "dyeYellow", Character.valueOf('#'), "dyeBlack", Character.valueOf('0'), Item.clay } );
++    		GameRegistry.addRecipe( CamoRecipe );
 
 		// Camo OneWay
 		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "X00", "X00", "X00", 'X', camoPaste, '0', Block.glass });
