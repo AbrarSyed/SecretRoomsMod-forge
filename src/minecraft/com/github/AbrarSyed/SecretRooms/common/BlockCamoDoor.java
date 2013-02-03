@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.Random;
 
@@ -315,8 +315,8 @@ public class BlockCamoDoor extends BlockContainer
 			return 0;
 
 		if (blockMaterial.equals(Material.iron))
-			return SecretRooms.camoDoorIronItem.shiftedIndex;
-		return SecretRooms.camoDoorWoodItem.shiftedIndex;
+			return SecretRooms.camoDoorIronItem.itemID;
+		return SecretRooms.camoDoorWoodItem.itemID;
 	}
 
 	/**

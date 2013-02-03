@@ -1,7 +1,11 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+
+import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
+import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
+import com.github.AbrarSyed.SecretRooms.common.TileEntityCamoFull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;

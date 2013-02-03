@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,6 @@ import net.minecraftforge.common.ForgeDirection;
 
 /**
  * @author AbrarSyed
- * TODO: FIX!!!!!!!!!!!
  */
 public class BlockCamoTrapDoor extends Block
 {
@@ -279,28 +278,26 @@ public class BlockCamoTrapDoor extends Block
 	 * the item. Args: x, y, z, facing
 	 */
 	@Override
-	public int func_85104_a(World world, int i, int j, int k, int side, float clickX, float clickY, float clickZ, int currentMeta)
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ, int currentMeta)
 	{
-		// super.func_85104_a(world, par2, par3, par4, par5, something1, something2, something3);
-
-		int meta = 0;
+		int newMeta = 0;
 
 		if (side == 2)
-			meta = 0;
+			newMeta = 0;
 
 		if (side == 3)
-			meta = 1;
+			newMeta = 1;
 
 		if (side == 4)
-			meta = 2;
+			newMeta = 2;
 
 		if (side == 5)
-			meta = 3;
+			newMeta = 3;
 
 		if (side != 1 && side != 0 && clickY > 0.5F)
-			meta |= 8;
+			newMeta |= 8;
 
-		return meta;
+		return newMeta;
 	}
 
 	/**

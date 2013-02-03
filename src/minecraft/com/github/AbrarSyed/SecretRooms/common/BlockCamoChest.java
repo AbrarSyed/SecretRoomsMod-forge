@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import static net.minecraftforge.common.ForgeDirection.DOWN;
 
@@ -222,7 +222,7 @@ public class BlockCamoChest extends BlockCamoFull
 						var14.motionZ = (float) random.nextGaussian() * var15;
 
 						if (var9.hasTagCompound())
-							var14.func_92014_d().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+							var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
 					}
 				}
 			}

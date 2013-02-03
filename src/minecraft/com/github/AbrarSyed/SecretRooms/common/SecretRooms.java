@@ -1,22 +1,24 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.EnumMobType;
 import net.minecraft.block.material.Material;
-import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import com.github.AbrarSyed.SecretRooms.client.PacketHandlerClient;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarted;
+import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -27,12 +29,31 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * @author AbrarSyed
  */
-@NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.4,)", clientPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
-@Mod(modid = "SecretRoomsMod", name = "SecretRoomsMod", version = "4.4.1")
+@NetworkMod(
+		clientSideRequired = true,
+		serverSideRequired = true,
+		versionBounds = "[4.5,)",
+		clientPacketHandlerSpec = @SidedPacketHandler(channels =
+		{
+				"SRM-TE-CamoFull",
+				"SRM-TE-Camo",
+				"SRM-KeyEvents",
+				"SRM-Display"
+		},
+				packetHandler = PacketHandlerClient.class),
+		serverPacketHandlerSpec = @SidedPacketHandler(channels =
+		{
+				"SRM-TE-CamoFull",
+				"SRM-TE-Camo",
+				"SRM-KeyEvents",
+				"SRM-Display"
+		},
+				packetHandler = PacketHandlerServer.class))
+@Mod(modid = "SecretRoomsMod", name = "SecretRoomsMod", version = "4.5.0")
 public class SecretRooms
 {
 
-	@SidedProxy(clientSide = "com.github.AbrarSyed.SecretRooms.SecretRooms_client", serverSide = "com.github.AbrarSyed.SecretRooms.Proxy")
+	@SidedProxy(clientSide = "com.github.AbrarSyed.SecretRooms.client.SecretRooms_client", serverSide = "com.github.AbrarSyed.SecretRooms.common.Proxy")
 	public static Proxy			proxy;
 
 	@Instance(value = "SecretRoomsMod")
@@ -44,26 +65,7 @@ public class SecretRooms
 		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
 
 		config.load();
-		int[] ids = {
-				config.getBlock("CamoBlocks", "torchLever", 200).getInt(),
-				config.getBlock("CamoBlocks", "oneWay", 201).getInt(),
-				config.getBlock("CamoBlocks", "camoGate", 202).getInt(),
-				config.getBlock("CamoBlocks", "camoGateExt", 203).getInt(),
-				config.getBlock("CamoBlocks", "camoTrapDoor", 204).getInt(),
-				config.getItem("CamoItems", "camoWoodDoor", 3850 + 256).getInt(),
-				config.getBlock("CamoBlocks", "camoWoodDoor", 205).getInt(),
-				config.getItem("CamoItems", "camoIronDoor", 3851 + 256).getInt(),
-				config.getBlock("CamoBlocks", "camoIronDoor", 206).getInt(),
-				config.getItem("CamoItems", "camoPasteID", 3852 + 256).getInt(),
-				config.getBlock("CamoBlocks", "ghostBlock", 207).getInt(),
-				config.getBlock("CamoBlocks", "camoLeverBlock", 208).getInt(),
-				config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).getInt(),
-				config.getBlock("CamoBlocks", "camoButtonBlock", 210).getInt(),
-				config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).getInt(),
-				config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).getInt(),
-				config.getBlock("CamoBlocks", "camoStairBlock", 213).getInt(),
-				config.getBlock("CamoBlocks", "camoChestBlock", 214).getInt()
-				};
+		int[] ids = { config.getBlock("CamoBlocks", "torchLever", 200).getInt(), config.getBlock("CamoBlocks", "oneWay", 201).getInt(), config.getBlock("CamoBlocks", "camoGate", 202).getInt(), config.getBlock("CamoBlocks", "camoGateExt", 203).getInt(), config.getBlock("CamoBlocks", "camoTrapDoor", 204).getInt(), config.getItem("CamoItems", "camoWoodDoor", 3850 + 256).getInt(), config.getBlock("CamoBlocks", "camoWoodDoor", 205).getInt(), config.getItem("CamoItems", "camoIronDoor", 3851 + 256).getInt(), config.getBlock("CamoBlocks", "camoIronDoor", 206).getInt(), config.getItem("CamoItems", "camoPasteID", 3852 + 256).getInt(), config.getBlock("CamoBlocks", "ghostBlock", 207).getInt(), config.getBlock("CamoBlocks", "camoLeverBlock", 208).getInt(), config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).getInt(), config.getBlock("CamoBlocks", "camoButtonBlock", 210).getInt(), config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).getInt(), config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).getInt(), config.getBlock("CamoBlocks", "camoStairBlock", 213).getInt(), config.getBlock("CamoBlocks", "camoChestBlock", 214).getInt() };
 		config.save();
 
 		// make creative tab.
@@ -107,26 +109,26 @@ public class SecretRooms
 		proxy.doKeyStuff();
 
 		// registers
-		GameRegistry.registerBlock(torchLever);
-		GameRegistry.registerBlock(oneWay);
-		GameRegistry.registerBlock(camoGate);
-		GameRegistry.registerBlock(camoGateExt);
-		GameRegistry.registerBlock(camoTrapDoor);
-		GameRegistry.registerBlock(camoDoorWood);
-		GameRegistry.registerBlock(camoDoorIron);
+		GameRegistry.registerBlock(torchLever, "SRM_TorchLever");
+		GameRegistry.registerBlock(oneWay, "SRM_OneWay");
+		GameRegistry.registerBlock(camoGate, "SRM_CamoGate");
+		GameRegistry.registerBlock(camoGateExt, "SRM_CamoGateExt");
+		GameRegistry.registerBlock(camoTrapDoor, "SRM_TrapDoor");
+		GameRegistry.registerBlock(camoDoorWood, "SRM_CamoDoor_Wood");
+		GameRegistry.registerBlock(camoDoorIron, "SRM_CamoDoor_Iron");
 
-		GameRegistry.registerBlock(camoGhost);
+		GameRegistry.registerBlock(camoGhost, "SRM_CamoGhost");
 
-		GameRegistry.registerBlock(camoLever);
-		GameRegistry.registerBlock(camoCurrent);
-		GameRegistry.registerBlock(camoButton);
+		GameRegistry.registerBlock(camoLever, "SRM_CamoLever");
+		GameRegistry.registerBlock(camoCurrent, "SRM_CamoRedstone");
+		GameRegistry.registerBlock(camoButton, "SRM_CamoButton");
 
-		GameRegistry.registerBlock(camoPlateAll);
-		GameRegistry.registerBlock(camoPlatePlayer);
+		GameRegistry.registerBlock(camoPlateAll, "SRM_CamoPlate_All");
+		GameRegistry.registerBlock(camoPlatePlayer, "SRM_CamoPlate_Player");
 
-		GameRegistry.registerBlock(camoStairs);
+		GameRegistry.registerBlock(camoStairs, "SRM_CamoStair");
 
-		GameRegistry.registerBlock(camoChest);
+		GameRegistry.registerBlock(camoChest, "SRM_CamoChest");
 
 		// Tile Entities
 		GameRegistry.registerTileEntity(TileEntityCamo.class, "Camo");
@@ -172,14 +174,17 @@ public class SecretRooms
 		addrecipes();
 	}
 
-	@ServerStarted
-	public void registerCommand(FMLServerStartedEvent e)
+	@ServerStarting
+	public void registerCommand(FMLServerStartingEvent e)
 	{
-		((CommandHandler) FMLCommonHandler.instance().getSidedDelegate().getServer().getCommandManager()).registerCommand(new CommandShowSecretBlocks());
+		e.registerServerCommand(new CommandShowSecretBlocks());
 	}
 
 	public static void addrecipes()
 	{
+		// init recipe..
+		ShapedOreRecipe recipe;
+
 		// Camo gate
 		GameRegistry.addRecipe(new ItemStack(camoGate, 1), new Object[] { "#0#", "0A0", "#@#", '#', Block.planks, '0', camoPaste, '@', Item.redstone, 'A', Item.enderPearl });
 
@@ -192,9 +197,42 @@ public class SecretRooms
 		GameRegistry.addShapelessRecipe(new ItemStack(camoTrapDoor, 1), new Object[] { camoPaste, Block.trapdoor });
 
 		// CamoPaste
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Block.dirt });
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Block.sand });
-		GameRegistry.addRecipe(new ItemStack(camoPaste, 9), new Object[] { "X#X", "$0$", "@#@", 'X', new ItemStack(Item.dyePowder.shiftedIndex, 1, 1), '$', new ItemStack(Item.dyePowder.shiftedIndex, 1, 2), '@', new ItemStack(Item.dyePowder.shiftedIndex, 1, 11), '#', new ItemStack(Item.dyePowder.shiftedIndex, 1, 0), '0', Item.clay });
+		recipe = new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[]
+		{
+				"X#X",
+				"$0$",
+				"@#@",
+				'X', "dyeRed",
+				'$', "dyeGreen",
+				'@', "dyeYellow",
+				'#', "dyeBlack",
+				'0', Block.dirt
+		});
+		GameRegistry.addRecipe(recipe); // add the recipe..
+		recipe = new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[]
+		{
+				"X#X",
+				"$0$",
+				"@#@",
+				'X', "dyeRed",
+				'$', "dyeGreen",
+				'@', "dyeYellow",
+				'#', "dyeBlack",
+				'0', Block.sand
+		});
+		GameRegistry.addRecipe(recipe); // add the recipe..
+		recipe = new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[]
+		{
+				"X#X",
+				"$0$",
+				"@#@",
+				'X', "dyeRed",
+				'$', "dyeGreen",
+				'@', "dyeYellow",
+				'#', "dyeBlack",
+				'0', Item.clay
+		});
+		GameRegistry.addRecipe(recipe); // add the recipe..
 
 		// Camo OneWay
 		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "X00", "X00", "X00", 'X', camoPaste, '0', Block.glass });
@@ -227,12 +265,46 @@ public class SecretRooms
 		GameRegistry.addRecipe(new ItemStack(camoPlatePlayer, 1), new Object[] { "X@X", "0#0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.pressurePlatePlanks, '#', Item.ingotIron });
 
 		// CamoStairs
-		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.stairCompactCobblestone });
-		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.stairCompactCobblestone });
-		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.stairCompactPlanks });
-		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.stairCompactPlanks });
+		recipe = new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[]
+		{
+				"X0X",
+				"0@0",
+				"X0X",
+				'X', camoPaste,
+				'0', Item.rottenFlesh,
+				'@', "stairWood",
+		});
+		GameRegistry.addRecipe(recipe); // add the recipe..
+		recipe = new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[]
+		{
+				"X0X",
+				"0@0",
+				"X0X",
+				'X', camoPaste,
+				'0', Block.cloth,
+				'@', "stairWood",
+		});
+		GameRegistry.addRecipe(recipe); // add the recipe..
+		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[]
+		{
+				"X0X",
+				"0@0",
+				"X0X",
+				'X', camoPaste,
+				'0', Item.rottenFlesh,
+				'@', Block.stairCompactCobblestone
+		});
+		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[]
+		{
+				"X0X",
+				"0@0",
+				"X0X",
+				'X', camoPaste,
+				'0', Block.cloth,
+				'@', Block.stairCompactCobblestone
+		});
 
-		// CamoStairs
+		// CamoChests
 		GameRegistry.addRecipe(new ItemStack(camoChest, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh, '@', Block.chest });
 		GameRegistry.addRecipe(new ItemStack(camoChest, 1), new Object[] { "X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@', Block.chest });
 	}
@@ -274,12 +346,12 @@ public class SecretRooms
 	public static Block				camoChest;
 
 	// render IDs
-	protected static int			camoRenderId;
-	protected static int			torchRenderId;
+	public static int				camoRenderId;
+	public static int				torchRenderId;
 
-	protected static boolean		displayCamo			= true;
+	public static boolean			displayCamo			= true;
 
-	// Keybinding stuff.
+	// Keybinding stuff. TODO: make client-side
 	protected static boolean		OneWayFaceTowards	= true;
 
 	// creative tab

@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.client;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLiving;
@@ -6,6 +6,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.input.Keyboard;
+
+import com.github.AbrarSyed.SecretRooms.common.BlockOneWay;
+import com.github.AbrarSyed.SecretRooms.common.Proxy;
+import com.github.AbrarSyed.SecretRooms.common.SecretKey;
+import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
+import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -22,8 +28,6 @@ public class SecretRooms_client extends Proxy
 	@Override
 	public void doRenderStuff()
 	{
-		// System.out.println("renderring stuff is happenning");
-
 		SecretRooms.camoRenderId = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new CamoRenderer());
 
@@ -49,7 +53,6 @@ public class SecretRooms_client extends Proxy
 		entity.setTexturePath((String) properties[1]);
 		entity.setTexture((Integer) properties[0]);
 		PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
-
 	}
 
 }

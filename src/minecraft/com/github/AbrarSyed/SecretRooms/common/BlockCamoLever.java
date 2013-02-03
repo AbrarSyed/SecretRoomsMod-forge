@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import static net.minecraftforge.common.ForgeDirection.DOWN;
 import static net.minecraftforge.common.ForgeDirection.EAST;

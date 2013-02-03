@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

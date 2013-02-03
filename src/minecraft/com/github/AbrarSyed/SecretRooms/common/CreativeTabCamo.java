@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.relauncher.Side;
@@ -15,7 +15,7 @@ public class CreativeTabCamo extends CreativeTabs
 	@Override
 	public int getTabIconItemIndex()
 	{
-		return SecretRooms.camoPaste.shiftedIndex;
+		return SecretRooms.camoPaste.itemID;
 	}
 
 }

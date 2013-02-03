@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import static net.minecraftforge.common.ForgeDirection.DOWN;
 import static net.minecraftforge.common.ForgeDirection.EAST;
@@ -104,33 +104,31 @@ public class BlockCamoButton extends BlockCamoFull
 	}
 
 	@Override
-	public int func_85104_a(World world, int i, int j, int k, int l, float clickX, float clickY, float clickZ, int currentMeta)
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ, int currentMeta)
 	{
-		super.func_85104_a(world, i, j, k, l, clickX, clickY, clickZ, currentMeta);
-
 		int var11 = currentMeta & 8;
-		int var10 = currentMeta & 7;
-		var10 = -1;
+		int direction = currentMeta & 7;
+		direction = -1;
 
-		if (l == 0 && world.isBlockSolidOnSide(i, j + 1, k, DOWN))
-			var10 = world.rand.nextBoolean() ? 0 : 7;
+		if (side == 0 && world.isBlockSolidOnSide(x, y + 1, z, DOWN))
+			direction = world.rand.nextBoolean() ? 0 : 7;
 
-		if (l == 1 && world.isBlockSolidOnSide(i, j - 1, k, UP))
-			var10 = 5 + world.rand.nextInt(2);
+		if (side == 1 && world.isBlockSolidOnSide(x, y - 1, z, UP))
+			direction = 5 + world.rand.nextInt(2);
 
-		if (l == 2 && world.isBlockSolidOnSide(i, j, k + 1, NORTH))
-			var10 = 4;
+		if (side == 2 && world.isBlockSolidOnSide(x, y, z + 1, NORTH))
+			direction = 4;
 
-		if (l == 3 && world.isBlockSolidOnSide(i, j, k - 1, SOUTH))
-			var10 = 3;
+		if (side == 3 && world.isBlockSolidOnSide(x, y, z - 1, SOUTH))
+			direction = 3;
 
-		if (l == 4 && world.isBlockSolidOnSide(i + 1, j, k, WEST))
-			var10 = 2;
+		if (side == 4 && world.isBlockSolidOnSide(x + 1, y, z, WEST))
+			direction = 2;
 
-		if (l == 5 && world.isBlockSolidOnSide(i - 1, j, k, EAST))
-			var10 = 1;
+		if (side == 5 && world.isBlockSolidOnSide(x - 1, y, z, EAST))
+			direction = 1;
 
-		return var10 + var11;
+		return direction + var11;
 	}
 
 	@Override

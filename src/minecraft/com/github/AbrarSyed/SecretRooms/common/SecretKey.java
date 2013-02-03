@@ -1,6 +1,8 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.EnumSet;
+
+import com.github.AbrarSyed.SecretRooms.client.PacketHandlerClient;
 
 import net.minecraft.client.settings.KeyBinding;
 import cpw.mods.fml.client.FMLClientHandler;

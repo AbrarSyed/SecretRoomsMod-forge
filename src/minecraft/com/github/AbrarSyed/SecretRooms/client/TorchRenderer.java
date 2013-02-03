@@ -1,4 +1,6 @@
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.client;
+
+import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;

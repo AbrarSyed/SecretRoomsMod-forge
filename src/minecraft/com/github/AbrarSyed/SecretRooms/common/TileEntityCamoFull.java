@@ -2,7 +2,7 @@
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) braces deadcode
 
-package com.github.AbrarSyed.SecretRooms;
+package com.github.AbrarSyed.SecretRooms.common;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
