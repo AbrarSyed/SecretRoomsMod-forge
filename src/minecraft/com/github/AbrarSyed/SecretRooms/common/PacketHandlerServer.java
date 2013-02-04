@@ -61,8 +61,6 @@ public class PacketHandlerServer implements IPacketHandler
 				e.printStackTrace();
 			}
 
-			// System.out.println("SERVER-RECIEVED: "+texture);
-
 			if (texture == -1)
 				return;
 
@@ -77,6 +75,22 @@ public class PacketHandlerServer implements IPacketHandler
 				entity.setTexturePath(texturePath);
 
 			world.markBlockForUpdate(coords[0], coords[1], coords[2]);
+		}
+		else if (channel.equals("SRM-KeyEvents"))
+		{
+			DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(data));
+			String username = null;
+			try
+			{
+				username = dataStream.readUTF();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			
+			if (username != null)
+				SecretRooms.proxy.onKeyPress(username);
 		}
 	}
 

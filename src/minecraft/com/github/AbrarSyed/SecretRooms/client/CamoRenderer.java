@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.github.AbrarSyed.SecretRooms.common.BlockCamoFull;
 import com.github.AbrarSyed.SecretRooms.common.BlockOneWay;
+import com.github.AbrarSyed.SecretRooms.common.FakeWorld;
 import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
 import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
 import com.github.AbrarSyed.SecretRooms.common.TileEntityCamoFull;
@@ -270,26 +271,20 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		float blockColorRed = (rawColors >> 16 & 0xff) / 255F;
 		float blockColorGreen = (rawColors >> 8 & 0xff) / 255F;
 		float blockColorBlue = (rawColors & 0xff) / 255F;
-		boolean currentlyBound = false;
 
 		// get Copied ID
 		int copyId = ((TileEntityCamoFull) blockAccess.getBlockTileEntity(i, j, k)).getCopyID();
+		FakeWorld fake = SecretRooms.proxy.getFakeWorld(blockAccess.getBlockTileEntity(i, j, k).worldObj);
 
-		if (copyId == 0 || rawColors == 0xffffff)
+		if (copyId == 0)
 		{
-			if (block.getTextureFile().equals("/terrain.png"))
-				return renderblocks.renderStandardBlock(block, i, j, k);
-			else
-			{
-				ForgeHooksClient.bindTexture("/terrain.png", 0);
-				currentlyBound = true;
-			}
+			return renderblocks.renderStandardBlock(block, i, j, k);
 		}
-		else
-		{
-			ForgeHooksClient.bindTexture(Block.blocksList[copyId].getTextureFile(), 0);
-			currentlyBound = true;
-		}
+		
+		String texture = Block.blocksList[copyId].getTextureFile();
+		
+		ForgeHooksClient.bindTexture(texture, 0);
+		
 
 		renderblocks.enableAO = false;
 		Tessellator tessellator = Tessellator.instance;
@@ -337,7 +332,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		{
 			tessellator.setBrightness(renderblocks.renderMinY > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k) : brightness);
 			tessellator.setColorOpaque_F(bottomWeightRed, bottomWeightGreen, bottomWeightBlue);
-			renderblocks.renderBottomFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 0));
+			renderblocks.renderBottomFace(block, i, j, k, block.getBlockTexture(fake, i, j, k, 0));
 			flag = true;
 		}
 
@@ -345,7 +340,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		{
 			tessellator.setBrightness(renderblocks.renderMaxY < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k) : brightness);
 			tessellator.setColorOpaque_F(topWeightRed, topWeightGreen, topWeightBlue);
-			renderblocks.renderTopFace(block, i, j, k, block.getBlockTexture(blockAccess, i, j, k, 1));
+			renderblocks.renderTopFace(block, i, j, k, block.getBlockTexture(fake, i, j, k, 1));
 			flag = true;
 		}
 
@@ -353,7 +348,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		{
 			tessellator.setBrightness(renderblocks.renderMinZ > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1) : brightness);
 			tessellator.setColorOpaque_F(frontWeightRed, frontWeightGreen, frontWeightBlue);
-			int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 2);
+			int blockTexture = block.getBlockTexture(fake, i, j, k, 2);
 			renderblocks.renderEastFace(block, i, j, k, blockTexture);
 
 			if (RenderBlocks.fancyGrass && blockTexture == 3 && renderblocks.overrideBlockTexture < 0)
@@ -369,7 +364,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		{
 			tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1) : brightness);
 			tessellator.setColorOpaque_F(frontWeightRed, frontWeightGreen, frontWeightBlue);
-			int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 3);
+			int blockTexture = block.getBlockTexture(fake, i, j, k, 3);
 			renderblocks.renderWestFace(block, i, j, k, blockTexture);
 
 			if (RenderBlocks.fancyGrass && blockTexture == 3 && renderblocks.overrideBlockTexture < 0)
@@ -385,7 +380,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		{
 			tessellator.setBrightness(renderblocks.renderMinX > 0.0D ? block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k) : brightness);
 			tessellator.setColorOpaque_F(sideWeightRed, sideWeightGreen, sideWeightBlue);
-			int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 4);
+			int blockTexture = block.getBlockTexture(fake, i, j, k, 4);
 			renderblocks.renderNorthFace(block, i, j, k, blockTexture);
 
 			if (RenderBlocks.fancyGrass && blockTexture == 3 && renderblocks.overrideBlockTexture < 0)
@@ -401,7 +396,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		{
 			tessellator.setBrightness(renderblocks.renderMaxX < 1.0D ? block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k) : brightness);
 			tessellator.setColorOpaque_F(sideWeightRed, sideWeightGreen, sideWeightBlue);
-			int blockTexture = block.getBlockTexture(blockAccess, i, j, k, 5);
+			int blockTexture = block.getBlockTexture(fake, i, j, k, 5);
 			renderblocks.renderSouthFace(block, i, j, k, blockTexture);
 
 			if (RenderBlocks.fancyGrass && blockTexture == 3 && renderblocks.overrideBlockTexture < 0)
@@ -412,12 +407,8 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			flag = true;
 		}
-
-		if (currentlyBound)
-		{
-			ForgeHooksClient.unbindTexture();
-			currentlyBound = false;
-		}
+		
+		ForgeHooksClient.unbindTexture();
 
 		return flag;
 	}

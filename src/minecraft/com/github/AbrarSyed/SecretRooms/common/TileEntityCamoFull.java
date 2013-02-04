@@ -5,12 +5,14 @@
 package com.github.AbrarSyed.SecretRooms.common;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+import java.io.ObjectOutputStream;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 /**
  * @author AbrarSyed
@@ -20,35 +22,29 @@ public class TileEntityCamoFull extends TileEntity
 	public TileEntityCamoFull()
 	{
 		super();
-		coordType = false;
+		holder = null;
 	}
 
 	@Override
 	public boolean canUpdate()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound)
 	{
 		super.readFromNBT(nbttagcompound);
-		copyID = nbttagcompound.getInteger("copyID");
-		coordType = nbttagcompound.getBoolean("hasCoords");
-		setCopyCoordX(nbttagcompound.getInteger("copyCoordX"));
-		setCopyCoordY(nbttagcompound.getInteger("copyCoordY"));
-		setCopyCoordZ(nbttagcompound.getInteger("copyCoordZ"));
+		holder = BlockHolder.buildFromNBT(nbttagcompound);
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound)
 	{
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setInteger("copyID", getCopyID());
-		nbttagcompound.setBoolean("hasCoords", coordType);
-		nbttagcompound.setInteger("copyCoordX", getCopyCoordX());
-		nbttagcompound.setInteger("copyCoordY", getCopyCoordY());
-		nbttagcompound.setInteger("copyCoordZ", getCopyCoordZ());
+		if (holder != null)
+			holder.writeToNBT(nbttagcompound);
+		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 	}
 
 	/**
@@ -64,21 +60,14 @@ public class TileEntityCamoFull extends TileEntity
 		packet.channel = "SRM-TE-CamoFull";
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream data = new DataOutputStream(bytes);
 		try
 		{
-			int[] coords = { xCoord, yCoord, zCoord, copyID };
+			ObjectOutputStream data = new ObjectOutputStream(bytes);
+			int[] coords = { xCoord, yCoord, zCoord};
 			for (int a = 0; a < coords.length; a++)
 				data.writeInt(coords[a]);
-
-			data.writeBoolean(hasCoords());
-
-			if (hasCoords())
-			{
-				data.writeInt(copyCoordX);
-				data.writeInt(copyCoordY);
-				data.writeInt(copyCoordZ);
-			}
+			data.writeObject(holder);
+			data.close();
 		}
 		catch (Exception e)
 		{
@@ -90,58 +79,31 @@ public class TileEntityCamoFull extends TileEntity
 		packet.length = packet.data.length;
 		return packet;
 	}
-
-	public int getCopyCoordX()
+	
+    public boolean shouldRefresh(int oldID, int newID, int oldMeta, int newMeta, World world, int x, int y, int z)
+    {
+    	SecretRooms.proxy.getFakeWorld(world).removeOverrideBlock(x, y, z);
+        return true;
+    }
+	
+	public void setBlockHolder(BlockHolder holder)
 	{
-		return copyCoordX;
+		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
+		this.holder = holder;
 	}
-
-	public void setCopyCoordX(int copyCoordX)
+	
+	public BlockHolder getBlockHolder()
 	{
-		coordType = true;
-		this.copyCoordX = copyCoordX;
-	}
-
-	public int getCopyCoordY()
-	{
-		return copyCoordY;
-	}
-
-	public void setCopyCoordY(int copyCoordY)
-	{
-		coordType = true;
-		this.copyCoordY = copyCoordY;
-	}
-
-	public int getCopyCoordZ()
-	{
-		return copyCoordZ;
-	}
-
-	public void setCopyCoordZ(int copyCoordZ)
-	{
-		coordType = true;
-		this.copyCoordZ = copyCoordZ;
-	}
-
-	public boolean hasCoords()
-	{
-		return coordType;
+		return holder;
 	}
 
 	public int getCopyID()
 	{
-		return copyID;
+		return holder == null ? 1 : holder.blockID;
 	}
-
-	public void setCopyID(int copyID)
-	{
-		this.copyID = copyID;
-	}
-
-	private int		copyID;
-	private boolean	coordType;
-	private int		copyCoordX;
-	private int		copyCoordY;
-	private int		copyCoordZ;
+	
+	private BlockHolder holder;
+	
+	
+	
 }

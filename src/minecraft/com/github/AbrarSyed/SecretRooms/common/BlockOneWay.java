@@ -1,6 +1,7 @@
 package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -105,16 +107,15 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving)
 	{
-		int metadata = BlockOneWay.determineOrientation(world, i, j, k, (EntityPlayer) entityliving);
+		int metadata = 1;
+		if (entityliving instanceof EntityPlayer)
+			metadata = BlockOneWay.determineOrientation(world, i, j, k, (EntityPlayer) entityliving);
+		
 		world.setBlockMetadata(i, j, k, metadata);
-
-		SecretRooms.proxy.doOneWayStuff(world, i, j, k, entityliving);
+		
+		SecretRooms.proxy.handleOneWayPlace(world, i, j, k, entityliving);
 	}
-
-	/*
-	 * public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) { TileEntityCamo entity = (TileEntityCamo) par1World.getBlockTileEntity(par2, par3, par4); par5EntityPlayer.addChatMessage("texture: "+entity.getTexture()); return true; }
-	 */
-
+	
 	@SideOnly(value = Side.CLIENT)
 	@Override
 	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z)
@@ -156,26 +157,12 @@ public class BlockOneWay extends BlockContainer
 	{
 		int direction = BlockPistonBase.determineOrientation(world, i, j, k, entityplayer);
 
-		if (!SecretRooms.OneWayFaceTowards)
-			switch (direction)
-				{
-					case 0:
-						return 1;
-					case 1:
-						return 0;
-					case 2:
-						return 3;
-					case 3:
-						return 2;
-					case 4:
-						return 5;
-					case 5:
-						return 4;
-					default:
-						return 0;
-				}
-		else
-			return direction;
+		ForgeDirection dir = ForgeDirection.getOrientation(direction);
+		
+		if (!SecretRooms.proxy.getFaceAway(entityplayer.username))
+			dir = dir.getOpposite();
+		
+		return dir.ordinal();
 	}
 
 	@SideOnly(value = Side.CLIENT)

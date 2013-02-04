@@ -2,15 +2,18 @@ package com.github.AbrarSyed.SecretRooms.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-
-import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
-import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
-import com.github.AbrarSyed.SecretRooms.common.TileEntityCamoFull;
+import java.io.ObjectInputStream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
+
+import com.github.AbrarSyed.SecretRooms.common.BlockHolder;
+import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
+import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
+import com.github.AbrarSyed.SecretRooms.common.TileEntityCamoFull;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
@@ -93,7 +96,6 @@ public class PacketHandlerClient implements IPacketHandler
 				entity.setTexturePath(texturePath);
 
 			world.markBlockForRenderUpdate(coords[0], coords[1], coords[2]);
-			// System.out.println(player.username+"-SET: "+texture);
 		}
 
 		else if (channel.equals("SRM-TE-CamoFull"))
@@ -101,47 +103,31 @@ public class PacketHandlerClient implements IPacketHandler
 			if (data.length <= 0)
 				return;
 
-			DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(data));
 			int coords[] = new int[3];
-			int copyCoords[] = null;
-			int texture = -1;
-			boolean hasCoords = false;
+			BlockHolder holder = null;
 			try
 			{
+				ObjectInputStream dataStream = new ObjectInputStream(new ByteArrayInputStream(data));
+				
 				for (int i = 0; i < 3; i++)
 					coords[i] = dataStream.readInt();
-
-				texture = dataStream.readInt();
-				hasCoords = dataStream.readBoolean();
-
-				if (hasCoords)
-				{
-					copyCoords = new int[3];
-					for (int i = 0; i < 3; i++)
-						copyCoords[i] = dataStream.readInt();
-				}
+				
+				holder = (BlockHolder) dataStream.readObject();
+				
+				dataStream.close();
+				
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
 
-			if (texture == -1)
-				return;
-
 			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(coords[0], coords[1], coords[2]);
 
 			if (entity == null)
 				return;
-
-			entity.setCopyID(texture);
-
-			if (hasCoords)
-			{
-				entity.setCopyCoordX(copyCoords[0]);
-				entity.setCopyCoordY(copyCoords[1]);
-				entity.setCopyCoordZ(copyCoords[2]);
-			}
+			
+			entity.setBlockHolder(holder);
 
 			world.markBlockForRenderUpdate(coords[0], coords[1], coords[2]);
 		}

@@ -1,24 +1,71 @@
 package com.github.AbrarSyed.SecretRooms.common;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
+import net.minecraftforge.event.EventPriority;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.world.WorldEvent.Load;
+import net.minecraftforge.event.world.WorldEvent.Unload;
 
-/**
- * @author AbrarSyed
- */
 public class Proxy
 {
-	public void doRenderStuff()
-	{
+	private HashMap<Integer, FakeWorld>	fakes;
+	private HashSet<String>				towardSet;
 
+	public Proxy()
+	{
+		fakes = new HashMap<Integer, FakeWorld>();
+		towardSet = new HashSet<String>();
 	}
 
-	public void doKeyStuff()
+	public void loadRenderStuff()
 	{
-
+		// client only
 	}
 
-	public void doOneWayStuff(World world, int i, int j, int k, EntityLiving entityliving)
+	public void loadKeyStuff()
 	{
+		// client only...
+	}
+
+	public void handleOneWayPlace(World world, int i, int j, int k, EntityLiving entityliving)
+	{
+		// client only...
+	}
+
+	@ForgeSubscribe(priority = EventPriority.HIGHEST)
+	public void onWorldLoad(Load event)
+	{
+		int dim = event.world.provider.dimensionId;
+		fakes.put(dim, FakeWorld.getFakeWorldFor(event.world));
+	}
+
+	@ForgeSubscribe(priority = EventPriority.LOWEST)
+	public void onWorldLoad(Unload event)
+	{
+		int dim = event.world.provider.dimensionId;
+		fakes.remove(dim);
+	}
+
+	public FakeWorld getFakeWorld(World world)
+	{
+		int dim = world.provider.dimensionId;
+		return fakes.get(dim);
+	}
+
+	public void onKeyPress(String username)
+	{
+		if (towardSet.contains(username))
+			towardSet.remove(username);
+		else
+			towardSet.add(username);
+	}
+
+	public boolean getFaceAway(String username)
+	{
+		return towardSet.contains(username);
 	}
 }

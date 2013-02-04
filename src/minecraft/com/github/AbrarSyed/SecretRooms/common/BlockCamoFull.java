@@ -59,6 +59,7 @@ public class BlockCamoFull extends BlockContainer
 	public int getLightOpacity(World world, int x, int y, int z)
 	{
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+		FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
 
 		if (entity == null)
 			return 0;
@@ -68,7 +69,7 @@ public class BlockCamoFull extends BlockContainer
 		if (id == 0)
 			return 0;
 
-		return Block.blocksList[id].getLightOpacity(world, entity.getCopyCoordX(), entity.getCopyCoordY(), entity.getCopyCoordZ());
+		return Block.blocksList[id].getLightOpacity(fake, x, y, z);
 	}
 
 	@Override
@@ -97,17 +98,14 @@ public class BlockCamoFull extends BlockContainer
 		else if (entity.getCopyID() <= 0)
 			id = 1;
 		else
-		{
 			id = entity.getCopyID();
-			x = entity.getCopyCoordX();
-			y = entity.getCopyCoordY();
-			z = entity.getCopyCoordZ();
-		}
 
 		if (id == 1)
 			return Block.stone.blockIndexInTexture;
 
-		return Block.blocksList[id].getBlockTexture(world, x, y, z, dir);
+		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+
+		return Block.blocksList[id].getBlockTexture(fake, x, y, z, dir);
 	}
 
 	/**
@@ -122,39 +120,20 @@ public class BlockCamoFull extends BlockContainer
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k)
 	{
-		if (!world.isRemote)
-		{
-			// CAMO STUFF
-			int[] IdAndCoords = getIdCamoStyle(world, i, j, k);
+		// CAMO STUFF
+		int[] IdAndCoords = getIdCamoStyle(world, i, j, k);
 
-			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
-
-			if (IdAndCoords.length <= 4)
-			{
-				entity.setCopyCoordX(IdAndCoords[1]);
-				entity.setCopyCoordY(IdAndCoords[2]);
-				entity.setCopyCoordZ(IdAndCoords[3]);
-			}
-
-			entity.setCopyID(IdAndCoords[0]);
-			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
-		}
+		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
+		
+		TileEntity test = world.getBlockTileEntity(IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
+		
+		if (test instanceof TileEntityCamoFull)
+			entity.setBlockHolder(((TileEntityCamoFull) test).getBlockHolder());
 		else
-		{
-			// CAMO STUFF
-			int[] IdAndCoords = getIdCamoStyle(world, i, j, k);
+			entity.setBlockHolder(new BlockHolder(world, IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]));
 
-			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
-
-			if (IdAndCoords.length <= 4)
-			{
-				entity.setCopyCoordX(IdAndCoords[1]);
-				entity.setCopyCoordY(IdAndCoords[2]);
-				entity.setCopyCoordZ(IdAndCoords[3]);
-			}
-
-			entity.setCopyID(IdAndCoords[0]);
-		}
+		if (!world.isRemote)
+			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
 	}
 
 	@Override
@@ -316,14 +295,10 @@ public class BlockCamoFull extends BlockContainer
 	/**
 	 * Used to specially get Ids. It returns zero if the texture cannot be copied, or if it is air.
 	 * 
-	 * @param world
-	 * The world
-	 * @param x
-	 * X coordinate
-	 * @param y
-	 * Y Coordinate
-	 * @param z
-	 * Z Coordinate
+	 * @param world The world
+	 * @param x X coordinate
+	 * @param y Y Coordinate
+	 * @param z Z Coordinate
 	 * @return
 	 */
 	private static int[] getInfo(World world, int x, int y, int z)
@@ -336,15 +311,7 @@ public class BlockCamoFull extends BlockContainer
 			int id = world.getBlockId(x, y, z);
 			Block block = Block.blocksList[id];
 
-			if (block instanceof BlockCamoFull)
-			{
-				TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
-				if (entity != null)
-					return new int[] { entity.getCopyID(), entity.getCopyCoordX(), entity.getCopyCoordY(), entity.getCopyCoordZ() };
-				else
-					return new int[] { 0, 0, 0, 0 };
-			}
-			else if (block instanceof BlockOneWay)
+			if (block instanceof BlockOneWay)
 				return new int[] { id, x, y, z };
 			else if (block.isOpaqueCube())
 				return new int[] { id, x, y, z };
@@ -353,7 +320,12 @@ public class BlockCamoFull extends BlockContainer
 				block.setBlockBoundsBasedOnState(world, x, y, z);
 				double[] bounds = new double[] { block.getBlockBoundsMinX(), block.getBlockBoundsMinY(), block.getBlockBoundsMinZ(), block.getBlockBoundsMaxX(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxZ() };
 
-				if (bounds[0] == 0 && bounds[1] == 0 && bounds[2] == 0 && bounds[3] == 1 && bounds[4] == 1 && bounds[5] == 1)
+				if (bounds[0] == 0 &&
+						bounds[1] == 0 &&
+						bounds[2] == 0 &&
+						bounds[3] == 1 &&
+						bounds[4] == 1 &&
+						bounds[5] == 1)
 					return new int[] { id, x, y, z };
 				else
 					return new int[] { 0, 0, 0, 0 };
@@ -409,17 +381,19 @@ public class BlockCamoFull extends BlockContainer
 		return flag;
 	}
 
-	/*
-	 * FORGE STUFF NOW!!!
-	 */
-
 	@Override
-	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+	public int getFlammability(IBlockAccess iba, int x, int y, int z, int metadata, ForgeDirection face)
 	{
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+		TileEntityCamoFull entity = (TileEntityCamoFull) iba.getBlockTileEntity(x, y, z);
 
 		if (entity != null)
-			return blockFlammability[entity.getCopyID()];
+		{
+			World world = entity.worldObj;
+			int ID = entity.getCopyID();
+
+			if (ID != 0)
+				return blocksList[ID].getFlammability(SecretRooms.proxy.getFakeWorld(world), x, y, z, metadata, face);
+		}
 
 		return blockFlammability[blockID];
 	}
