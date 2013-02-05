@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.ObjectInputStream;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
@@ -112,7 +113,8 @@ public class PacketHandlerClient implements IPacketHandler
 				for (int i = 0; i < 3; i++)
 					coords[i] = dataStream.readInt();
 				
-				holder = (BlockHolder) dataStream.readObject();
+				NBTTagCompound nbt = (NBTTagCompound) NBTTagCompound.readNamedTag(dataStream);
+				holder = BlockHolder.buildFromNBT(nbt);
 				
 				dataStream.close();
 				
