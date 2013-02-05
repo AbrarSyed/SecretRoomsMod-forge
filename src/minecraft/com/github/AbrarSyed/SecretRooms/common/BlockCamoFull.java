@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -166,6 +167,7 @@ public class BlockCamoFull extends BlockContainer
 			return super.colorMultiplier(par1IBlockAccess, x, y, z);
 
 		Block fakeBlock = Block.blocksList[id];
+		
 		return fakeBlock.colorMultiplier(fake, x, y, z);
 	}
 
