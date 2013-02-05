@@ -133,21 +133,23 @@ public class BlockOneWay extends BlockContainer
 		int texture = entityHere.getTexture();
 
 		if (texture == 0 && metadata == 1 || texture == 3 || texture == 38)
-		{
-			int redColor = 0;
-			int greenColor = 0;
-			int blueColork = 0;
+		{	
+	        int red = 0;
+	        int blue = 0;
+	        int green = 0;
 
-			for (int l = -1; l <= 1; l++)
-				for (int i1 = -1; i1 <= 1; i1++)
-				{
-					int grassColor = iblockaccess.getBiomeGenForCoords(x + i1, z + l).getBiomeGrassColor();
-					redColor += (grassColor & 16711680) >> 16;
-					greenColor += (grassColor & 65280) >> 8;
-					blueColork += grassColor & 255;
-				}
+	        for (int var8 = -1; var8 <= 1; ++var8)
+	        {
+	            for (int var9 = -1; var9 <= 1; ++var9)
+	            {
+	                int var10 = iblockaccess.getBiomeGenForCoords(x + var9, z + var8).getBiomeGrassColor();
+	                red += (var10 & 16711680) >> 16;
+	                blue += (var10 & 65280) >> 8;
+	                green += var10 & 255;
+	            }
+	        }
 
-			return (redColor / 9 & 255) << 16 | (greenColor / 9 & 255) << 8 | blueColork / 9 & 255;
+	        return (red / 9 & 255) << 16 | (blue / 9 & 255) << 8 | green / 9 & 255;
 		}
 
 		return 0xffffff;

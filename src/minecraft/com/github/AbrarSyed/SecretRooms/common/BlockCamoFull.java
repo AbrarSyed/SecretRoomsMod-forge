@@ -25,7 +25,7 @@ public class BlockCamoFull extends BlockContainer
 	{
 		super(par1, Material.wood);
 		blockIndexInTexture = 0;
-		setLightOpacity(15);
+		setLightOpacity(255);
 		setCreativeTab(SecretRooms.tab);
 	}
 
@@ -33,7 +33,7 @@ public class BlockCamoFull extends BlockContainer
 	{
 		super(par1, material);
 		blockIndexInTexture = 0;
-		setLightOpacity(15);
+		setLightOpacity(255);
 		setCreativeTab(SecretRooms.tab);
 	}
 
@@ -57,17 +57,17 @@ public class BlockCamoFull extends BlockContainer
 
 	@Override
 	public int getLightOpacity(World world, int x, int y, int z)
-	{
+	{		
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 		FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
 
 		if (entity == null)
-			return 0;
+			return 255;
 
 		int id = entity.getCopyID();
 
 		if (id == 0)
-			return 0;
+			return 255;
 
 		return Block.blocksList[id].getLightOpacity(fake, x, y, z);
 	}
@@ -137,36 +137,24 @@ public class BlockCamoFull extends BlockContainer
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
 	{
 		if (!SecretRooms.displayCamo)
 			return 0xffffff;
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+		TileEntityCamoFull entity = (TileEntityCamoFull) par1IBlockAccess.getBlockTileEntity(x, y, z);
 
 		if (entity == null)
 			return 0xffffff;
-
+		
+		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
 		int id = entity.getCopyID();
-
-		if (id == Block.grass.blockID)
-		{
-			int i = 0;
-			int j = 0;
-			int k = 0;
-
-			for (int l = -1; l <= 1; l++)
-				for (int i1 = -1; i1 <= 1; i1++)
-				{
-					int j1 = par1IBlockAccess.getBiomeGenForCoords(par2 + i1, par4 + l).getBiomeGrassColor();
-					i += (j1 & 0xff0000) >> 16;
-					j += (j1 & 0xff00) >> 8;
-					k += j1 & 0xff;
-				}
-			return (i / 9 & 0xff) << 16 | (j / 9 & 0xff) << 8 | k / 9 & 0xff;
-		}
-
-		return 0xffffff;
+		
+		if (id == 0)
+			return 0xffffff;
+		
+		Block fakeBlock = Block.blocksList[id];
+		return fakeBlock.colorMultiplier(fake, x, y, z);
 	}
 
 	/**

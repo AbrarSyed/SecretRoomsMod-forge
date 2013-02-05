@@ -90,6 +90,7 @@ public class TileEntityCamoFull extends TileEntity
 	{
 		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 		this.holder = holder;
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	public BlockHolder getBlockHolder()
@@ -99,7 +100,7 @@ public class TileEntityCamoFull extends TileEntity
 
 	public int getCopyID()
 	{
-		return holder == null ? 1 : holder.blockID;
+		return holder == null ? 0 : holder.blockID;
 	}
 	
 	private BlockHolder holder;
