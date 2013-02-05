@@ -55,7 +55,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(modid = SecretRooms.modid, name = "SecretRoomsMod", version = "4.5.0")
 public class SecretRooms
 {
-	public static final String modid = "SecretRoomsMod";
+	public static final String		modid		= "SecretRoomsMod";
 
 	@SidedProxy(
 			clientSide = "com.github.AbrarSyed.SecretRooms.client.SecretRooms_client",
@@ -132,7 +132,7 @@ public class SecretRooms
 				config.getBlock("CamoBlocks", "camoChestBlock", 214).getInt()
 		};
 		config.save();
-		
+
 		MinecraftForge.EVENT_BUS.register(proxy);
 	}
 

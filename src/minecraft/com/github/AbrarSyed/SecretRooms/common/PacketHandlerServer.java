@@ -39,7 +39,9 @@ public class PacketHandlerServer implements IPacketHandler
 			try
 			{
 				for (int i = 0; i < 3; i++)
+				{
 					coords[i] = dataStream.readInt();
+				}
 
 				texture = dataStream.readInt();
 				forged = dataStream.readBoolean();
@@ -51,7 +53,9 @@ public class PacketHandlerServer implements IPacketHandler
 					char[] string = new char[texturePathLength];
 
 					for (int i = 0; i < texturePathLength; i++)
+					{
 						string[i] = dataStream.readChar();
+					}
 
 					texturePath = new String(string);
 				}
@@ -72,7 +76,9 @@ public class PacketHandlerServer implements IPacketHandler
 			entity.setTexture(texture);
 
 			if (forged)
+			{
 				entity.setTexturePath(texturePath);
+			}
 
 			world.markBlockForUpdate(coords[0], coords[1], coords[2]);
 		}
@@ -88,9 +94,11 @@ public class PacketHandlerServer implements IPacketHandler
 			{
 				e.printStackTrace();
 			}
-			
+
 			if (username != null)
+			{
 				SecretRooms.proxy.onKeyPress(username);
+			}
 		}
 	}
 

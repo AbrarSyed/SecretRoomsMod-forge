@@ -96,7 +96,7 @@ public class SecretRooms_client extends Proxy
 	public void onKeyPress(String username)
 	{
 		oneWayFaceAway = !oneWayFaceAway;
-		
+
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = "SRM-KeyEvents";
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -111,9 +111,9 @@ public class SecretRooms_client extends Proxy
 		}
 		packet.data = bytes.toByteArray();
 		packet.length = packet.data.length;
-		
+
 		PacketDispatcher.sendPacketToServer(packet);
-		
+
 	}
 
 	@Override

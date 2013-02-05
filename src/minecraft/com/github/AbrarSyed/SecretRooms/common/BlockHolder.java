@@ -2,7 +2,6 @@ package com.github.AbrarSyed.SecretRooms.common;
 
 import java.io.Serializable;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -14,6 +13,10 @@ import net.minecraft.world.World;
  */
 public class BlockHolder implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long		serialVersionUID	= -4408120808029860108L;
 	private final NBTTagCompound	nbt;
 	public final int				blockID;
 	public final int				metadata;
@@ -51,8 +54,6 @@ public class BlockHolder implements Serializable
 		if (blockID == 0 || nbt == null)
 			return null;
 
-		Block block = Block.blocksList[blockID];
-		
 		TileEntity te = TileEntity.createAndLoadEntity(nbt);
 		te.worldObj = world;
 
@@ -67,7 +68,9 @@ public class BlockHolder implements Serializable
 		compound.setBoolean("hasCopyTE", nbt != null);
 
 		if (nbt != null)
+		{
 			compound.setCompoundTag("copyTE", nbt);
+		}
 	}
 
 	public static BlockHolder buildFromNBT(NBTTagCompound nbt)
@@ -79,7 +82,9 @@ public class BlockHolder implements Serializable
 		boolean hasNBT = nbt.getBoolean("hasCopyTE");
 
 		if (hasNBT)
+		{
 			nbtNew = nbt.getCompoundTag("copyTE");
+		}
 
 		return new BlockHolder(ID, meta, nbtNew);
 	}

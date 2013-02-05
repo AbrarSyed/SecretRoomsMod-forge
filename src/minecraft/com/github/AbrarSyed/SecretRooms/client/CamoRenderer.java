@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.github.AbrarSyed.SecretRooms.common.BlockCamoFull;
 import com.github.AbrarSyed.SecretRooms.common.BlockOneWay;
-import com.github.AbrarSyed.SecretRooms.common.FakeWorld;
 import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
 import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
 import com.github.AbrarSyed.SecretRooms.common.TileEntityCamoFull;
@@ -105,7 +104,9 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		String textureFile = entity.getTexturePath();
 
 		if (textureFile == null)
+		{
 			textureFile = "/terrain.png";
+		}
 
 		if (entity != null)
 		{
@@ -123,8 +124,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 			return renderblocks.renderStandardBlock(block, i, j, k);
 
 		renderblocks.enableAO = false;
-		Tessellator var8 = Tessellator.instance;
-		boolean var9 = false;
+		Tessellator tessellator = Tessellator.instance;
 		float bottomWeight = 0.5F;
 		float topWeight = 1.0F;
 		float frontWeight = 0.8F;
@@ -134,17 +134,17 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		float topG = topWeight * blockColorGreen;
 		float topB = topWeight * blockColorBlue;
 
-		float var17 = bottomWeight * blockColorRed;
-		float var18 = frontWeight * blockColorRed;
-		float var19 = sideWeight * blockColorRed;
+		float bottomColorRed = bottomWeight * blockColorRed;
+		float frontColorRed = frontWeight * blockColorRed;
+		float sideColorRed = sideWeight * blockColorRed;
 
-		float var20 = bottomWeight * blockColorGreen;
-		float var21 = frontWeight * blockColorGreen;
-		float var22 = sideWeight * blockColorGreen;
+		float bottomColorGreen = bottomWeight * blockColorGreen;
+		float frontColorGreen = frontWeight * blockColorGreen;
+		float sideColorGreen = sideWeight * blockColorGreen;
 
-		float var23 = bottomWeight * blockColorBlue;
-		float var24 = frontWeight * blockColorBlue;
-		float var25 = sideWeight * blockColorBlue;
+		float bottomColorBlue = bottomWeight * blockColorBlue;
+		float frontColorBlue = frontWeight * blockColorBlue;
+		float sideColorBlue = sideWeight * blockColorBlue;
 
 		// ensures white if the top is uncolorized...
 		if (metadata != 1)
@@ -157,17 +157,17 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		// changes colors for grassed stuff
 		if (grassed)
 		{
-			var17 = bottomWeight;
-			var18 = frontWeight;
-			var19 = sideWeight;
+			bottomColorRed = bottomWeight;
+			frontColorRed = frontWeight;
+			sideColorRed = sideWeight;
 
-			var20 = bottomWeight;
-			var21 = frontWeight;
-			var22 = sideWeight;
+			bottomColorGreen = bottomWeight;
+			frontColorGreen = frontWeight;
+			sideColorGreen = sideWeight;
 
-			var23 = bottomWeight;
-			var24 = frontWeight;
-			var25 = sideWeight;
+			bottomColorBlue = bottomWeight;
+			frontColorBlue = frontWeight;
+			sideColorBlue = sideWeight;
 		}
 
 		int brightness = block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k);
@@ -183,15 +183,15 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j - 1, k, 0)) && side == 0)
 			{
-				var8.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j - 1, k));
-				var8.setColorOpaque_F(var17, var20, var23);
+				tessellator.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j - 1, k));
+				tessellator.setColorOpaque_F(bottomColorRed, bottomColorGreen, bottomColorBlue);
 				renderblocks.renderBottomFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 0));
 			}
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j + 1, k, 1)) && side == 1)
 			{
-				var8.setBrightness(renderblocks.renderMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j + 1, k));
-				var8.setColorOpaque_F(topR, topG, topB);
+				tessellator.setBrightness(renderblocks.renderMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j + 1, k));
+				tessellator.setColorOpaque_F(topR, topG, topB);
 				renderblocks.renderTopFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 1));
 			}
 
@@ -199,43 +199,43 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k - 1, 2)) && side == 2)
 			{
-				var8.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k - 1));
-				var8.setColorOpaque_F(var18, var21, var24);
+				tessellator.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k - 1));
+				tessellator.setColorOpaque_F(frontColorRed, frontColorGreen, frontColorBlue);
 				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 2);
 				renderblocks.renderEastFace(block, (double) i, (double) j, (double) k, tempTexture);
 
-				if (Tessellator.instance.defaultTexture && renderblocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
+				if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
 				{
-					var8.setColorOpaque_F(var18 * blockColorRed, var21 * blockColorGreen, var24 * blockColorBlue);
+					tessellator.setColorOpaque_F(frontColorRed * blockColorRed, frontColorGreen * blockColorGreen, frontColorBlue * blockColorBlue);
 					renderblocks.renderEastFace(block, (double) i, (double) j, (double) k, 38);
 				}
 
 			}
 
-			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k + 1, 3) && side == 3))
+			if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k + 1, 3) && side == 3)
 			{
-				var8.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k + 1));
-				var8.setColorOpaque_F(var18, var21, var24);
+				tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k + 1));
+				tessellator.setColorOpaque_F(frontColorRed, frontColorGreen, frontColorBlue);
 				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 3);
 				renderblocks.renderWestFace(block, (double) i, (double) j, (double) k, tempTexture);
 
-				if (Tessellator.instance.defaultTexture && renderblocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
+				if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
 				{
-					var8.setColorOpaque_F(var18 * blockColorRed, var21 * blockColorGreen, var24 * blockColorBlue);
+					tessellator.setColorOpaque_F(frontColorRed * blockColorRed, frontColorGreen * blockColorGreen, frontColorBlue * blockColorBlue);
 					renderblocks.renderWestFace(block, (double) i, (double) j, (double) k, 38);
 				}
 			}
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i - 1, j, k, 4)) && side == 4)
 			{
-				var8.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i - 1, j, k));
-				var8.setColorOpaque_F(var19, var22, var25);
+				tessellator.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i - 1, j, k));
+				tessellator.setColorOpaque_F(sideColorRed, sideColorGreen, sideColorBlue);
 				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 4);
 				renderblocks.renderNorthFace(block, (double) i, (double) j, (double) k, tempTexture);
 
-				if (Tessellator.instance.defaultTexture && renderblocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
+				if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
 				{
-					var8.setColorOpaque_F(var19 * blockColorRed, var22 * blockColorGreen, var25 * blockColorBlue);
+					tessellator.setColorOpaque_F(sideColorRed * blockColorRed, sideColorGreen * blockColorGreen, sideColorBlue * blockColorBlue);
 					renderblocks.renderNorthFace(block, (double) i, (double) j, (double) k, 38);
 				}
 
@@ -243,14 +243,14 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i + 1, j, k, 5)) && side == 5)
 			{
-				var8.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i + 1, j, k));
-				var8.setColorOpaque_F(var19, var22, var25);
+				tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i + 1, j, k));
+				tessellator.setColorOpaque_F(sideColorRed, sideColorGreen, sideColorBlue);
 				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 5);
 				renderblocks.renderSouthFace(block, (double) i, (double) j, (double) k, tempTexture);
 
-				if (Tessellator.instance.defaultTexture && renderblocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
+				if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
 				{
-					var8.setColorOpaque_F(var19 * blockColorRed, var22 * blockColorGreen, var25 * blockColorBlue);
+					tessellator.setColorOpaque_F(sideColorRed * blockColorRed, sideColorGreen * blockColorGreen, sideColorBlue * blockColorBlue);
 					renderblocks.renderSouthFace(block, (double) i, (double) j, (double) k, 38);
 				}
 
@@ -276,150 +276,145 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 		// get Copied ID
 		int copyId = ((TileEntityCamoFull) blockAccess.getBlockTileEntity(i, j, k)).getCopyID();
-		FakeWorld fake = SecretRooms.proxy.getFakeWorld(blockAccess.getBlockTileEntity(i, j, k).worldObj);
 
 		if (copyId == 0)
-		{
 			return renderblocks.renderStandardBlock(block, i, j, k);
-		}
-		Block fakeBlock = block; //Block.blocksList[copyId];
+		Block fakeBlock = Block.blocksList[copyId];
 
 		ForgeHooksClient.bindTexture(fakeBlock.getTextureFile(), 0);
 
 		boolean flag;
 
-		if (rawColors == 0xffffff && Minecraft.isAmbientOcclusionEnabled() && fakeBlock.getLightValue(blockAccess, i, j, k) == 0)
+		if (rawColors == 0xffffff && Minecraft.isAmbientOcclusionEnabled())
 		{
-			flag = renderblocks.renderStandardBlock(fakeBlock, i, j, k);
+			flag = renderblocks.renderStandardBlock(block, i, j, k);
 			ForgeHooksClient.unbindTexture();
 			return flag;
 		}
 
- 		renderblocks.enableAO = false;
-	Tessellator tessellator = Tessellator.instance;
-	flag = false;
-	float bottomWeight = 0.5F;
-	float topWeight = 1.0F;
-	float frontWeight = 0.8F;
-	float sideWeight = 0.6F;
+		renderblocks.enableAO = false;
+		Tessellator tessellator = Tessellator.instance;
+		flag = false;
+		float bottomWeight = 0.5F;
+		float topWeight = 1.0F;
+		float frontWeight = 0.8F;
+		float sideWeight = 0.6F;
 
-	float topR = topWeight * blockColorRed;
-	float topG = topWeight * blockColorGreen;
-	float topB = topWeight * blockColorBlue;
+		float topR = topWeight * blockColorRed;
+		float topG = topWeight * blockColorGreen;
+		float topB = topWeight * blockColorBlue;
 
-	float bottomColorRed = bottomWeight * blockColorRed;
-	float frontColorRed = frontWeight * blockColorRed;
-	float sideColorRed = sideWeight * blockColorRed;
+		float bottomColorRed = bottomWeight * blockColorRed;
+		float frontColorRed = frontWeight * blockColorRed;
+		float sideColorRed = sideWeight * blockColorRed;
 
-	float bottomColorGreen = bottomWeight * blockColorGreen;
-	float frontColorGreen = frontWeight * blockColorGreen;
-	float sideColorGreen = sideWeight * blockColorGreen;
+		float bottomColorGreen = bottomWeight * blockColorGreen;
+		float frontColorGreen = frontWeight * blockColorGreen;
+		float sideColorGreen = sideWeight * blockColorGreen;
 
-	float bottomColorBlue = bottomWeight * blockColorBlue;
-	float frontColorBlue = frontWeight * blockColorBlue;
-	float sideColorBlue = sideWeight * blockColorBlue;
+		float bottomColorBlue = bottomWeight * blockColorBlue;
+		float frontColorBlue = frontWeight * blockColorBlue;
+		float sideColorBlue = sideWeight * blockColorBlue;
 
-	// changes colors for grassed stuff
-	if (fakeBlock instanceof BlockGrass)
-	{
-		bottomColorRed = bottomWeight;
-		frontColorRed = frontWeight;
-		sideColorRed = sideWeight;
-
-		bottomColorGreen = bottomWeight;
-		frontColorGreen = frontWeight;
-		sideColorGreen = sideWeight;
-
-		bottomColorBlue = bottomWeight;
-		frontColorBlue = frontWeight;
-		sideColorBlue = sideWeight;
-	}
-
-	// START------
-
-	int brightness = fakeBlock.getMixedBrightnessForBlock(fake, i, j, k);
-
-	if (renderblocks.renderAllFaces || fakeBlock.shouldSideBeRendered(fake, i, j - 1, k, 0))
-	{
-		tessellator.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : fakeBlock.getMixedBrightnessForBlock(fake, i, j - 1, k));
-		tessellator.setColorOpaque_F(bottomColorRed, bottomColorGreen, bottomColorBlue);
-		renderblocks.renderBottomFace(fakeBlock, (double) i, (double) j, (double) k, fakeBlock.getBlockTexture(fake, i, j, k, 0));
-		flag = true;
-	}
-
-	if (renderblocks.renderAllFaces || fakeBlock.shouldSideBeRendered(fake, i, j + 1, k, 1))
-	{
-		tessellator.setBrightness(renderblocks.renderMaxY < 1.0D ? brightness : fakeBlock.getMixedBrightnessForBlock(fake, i, j + 1, k));
-		tessellator.setColorOpaque_F(topR, topG, topB);
-		renderblocks.renderTopFace(fakeBlock, (double) i, (double) j, (double) k, fakeBlock.getBlockTexture(fake, i, j, k, 1));
-		flag = true;
-	}
-
-	int var28;
-
-	if (renderblocks.renderAllFaces || fakeBlock.shouldSideBeRendered(fake, i, j, k - 1, 2))
-	{
-		tessellator.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : fakeBlock.getMixedBrightnessForBlock(fake, i, j, k - 1));
-		tessellator.setColorOpaque_F(frontColorRed, frontColorGreen, frontColorBlue);
-		var28 = fakeBlock.getBlockTexture(fake, i, j, k, 2);
-		renderblocks.renderEastFace(fakeBlock, (double) i, (double) j, (double) k, var28);
-
-		if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
+		// changes colors for grassed stuff
+		if (fakeBlock instanceof BlockGrass || copyId == Block.grass.blockID)
 		{
-			tessellator.setColorOpaque_F(frontColorRed * blockColorRed, frontColorGreen * blockColorGreen, frontColorBlue * blockColorBlue);
-			renderblocks.renderEastFace(fakeBlock, (double) i, (double) j, (double) k, 38);
+			bottomColorRed = bottomWeight;
+			frontColorRed = frontWeight;
+			sideColorRed = sideWeight;
+
+			bottomColorGreen = bottomWeight;
+			frontColorGreen = frontWeight;
+			sideColorGreen = sideWeight;
+
+			bottomColorBlue = bottomWeight;
+			frontColorBlue = frontWeight;
+			sideColorBlue = sideWeight;
 		}
 
-		flag = true;
-	}
+		int brightness = block.getMixedBrightnessForBlock(blockAccess, i, j, k);
 
-	if (renderblocks.renderAllFaces || fakeBlock.shouldSideBeRendered(fake, i, j, k + 1, 3))
-	{
-		tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : fakeBlock.getMixedBrightnessForBlock(fake, i, j, k + 1));
-		tessellator.setColorOpaque_F(frontColorRed, frontColorGreen, frontColorBlue);
-		var28 = fakeBlock.getBlockTexture(fake, i, j, k, 3);
-		renderblocks.renderWestFace(fakeBlock, (double) i, (double) j, (double) k, var28);
-
-		if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
+		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0))
 		{
-			tessellator.setColorOpaque_F(frontColorRed * blockColorRed, frontColorGreen * blockColorGreen, frontColorBlue * blockColorBlue);
-			renderblocks.renderWestFace(fakeBlock, (double) i, (double) j, (double) k, 38);
+			tessellator.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k));
+			tessellator.setColorOpaque_F(bottomColorRed, bottomColorGreen, bottomColorBlue);
+			renderblocks.renderBottomFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(blockAccess, i, j, k, 0));
+			flag = true;
 		}
 
-		flag = true;
-	}
-
-	if (renderblocks.renderAllFaces || fakeBlock.shouldSideBeRendered(fake, i - 1, j, k, 4))
-	{
-		tessellator.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : fakeBlock.getMixedBrightnessForBlock(fake, i - 1, j, k));
-		tessellator.setColorOpaque_F(sideColorRed, sideColorGreen, sideColorBlue);
-		var28 = fakeBlock.getBlockTexture(fake, i, j, k, 4);
-		renderblocks.renderNorthFace(fakeBlock, (double) i, (double) j, (double) k, var28);
-
-		if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
+		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1))
 		{
-			tessellator.setColorOpaque_F(sideColorRed * blockColorRed, sideColorGreen * blockColorGreen, sideColorBlue * blockColorBlue);
-			renderblocks.renderNorthFace(fakeBlock, (double) i, (double) j, (double) k, 38);
+			tessellator.setBrightness(renderblocks.renderMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k));
+			tessellator.setColorOpaque_F(topR, topG, topB);
+			renderblocks.renderTopFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(blockAccess, i, j, k, 1));
+			flag = true;
 		}
 
-		flag = true;
-	}
+		int var28;
 
-	if (renderblocks.renderAllFaces || fakeBlock.shouldSideBeRendered(fake, i + 1, j, k, 5))
-	{
-		tessellator.setBrightness(renderblocks.renderMaxX < 1.0D ? brightness : fakeBlock.getMixedBrightnessForBlock(fake, i + 1, j, k));
-		tessellator.setColorOpaque_F(sideColorRed, sideColorGreen, sideColorBlue);
-		var28 = fakeBlock.getBlockTexture(fake, i, j, k, 5);
-		renderblocks.renderSouthFace(fakeBlock, (double) i, (double) j, (double) k, var28);
-
-		if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
+		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2))
 		{
-			tessellator.setColorOpaque_F(sideColorRed * blockColorRed, sideColorGreen * blockColorGreen, sideColorBlue * blockColorBlue);
-			renderblocks.renderSouthFace(fakeBlock, (double) i, (double) j, (double) k, 38);
+			tessellator.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1));
+			tessellator.setColorOpaque_F(frontColorRed, frontColorGreen, frontColorBlue);
+			var28 = block.getBlockTexture(blockAccess, i, j, k, 2);
+			renderblocks.renderEastFace(block, (double) i, (double) j, (double) k, var28);
+
+			if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
+			{
+				tessellator.setColorOpaque_F(frontColorRed * blockColorRed, frontColorGreen * blockColorGreen, frontColorBlue * blockColorBlue);
+				renderblocks.renderEastFace(block, (double) i, (double) j, (double) k, 38);
+			}
+
+			flag = true;
 		}
 
-		flag = true;
-	}
+		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3))
+		{
+			tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1));
+			tessellator.setColorOpaque_F(frontColorRed, frontColorGreen, frontColorBlue);
+			var28 = block.getBlockTexture(blockAccess, i, j, k, 3);
+			renderblocks.renderWestFace(block, (double) i, (double) j, (double) k, var28);
+
+			if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
+			{
+				tessellator.setColorOpaque_F(frontColorRed * blockColorRed, frontColorGreen * blockColorGreen, frontColorBlue * blockColorBlue);
+				renderblocks.renderWestFace(block, (double) i, (double) j, (double) k, 38);
+			}
+
+			flag = true;
+		}
+
+		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4))
+		{
+			tessellator.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k));
+			tessellator.setColorOpaque_F(sideColorRed, sideColorGreen, sideColorBlue);
+			var28 = block.getBlockTexture(blockAccess, i, j, k, 4);
+			renderblocks.renderNorthFace(block, (double) i, (double) j, (double) k, var28);
+
+			if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
+			{
+				tessellator.setColorOpaque_F(sideColorRed * blockColorRed, sideColorGreen * blockColorGreen, sideColorBlue * blockColorBlue);
+				renderblocks.renderNorthFace(block, (double) i, (double) j, (double) k, 38);
+			}
+
+			flag = true;
+		}
+
+		if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5))
+		{
+			tessellator.setBrightness(renderblocks.renderMaxX < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k));
+			tessellator.setColorOpaque_F(sideColorRed, sideColorGreen, sideColorBlue);
+			var28 = block.getBlockTexture(blockAccess, i, j, k, 5);
+			renderblocks.renderSouthFace(block, (double) i, (double) j, (double) k, var28);
+
+			if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && var28 == 3 && renderblocks.overrideBlockTexture < 0)
+			{
+				tessellator.setColorOpaque_F(sideColorRed * blockColorRed, sideColorGreen * blockColorGreen, sideColorBlue * blockColorBlue);
+				renderblocks.renderSouthFace(block, (double) i, (double) j, (double) k, 38);
+			}
+
+			flag = true;
+		}
 		ForgeHooksClient.unbindTexture();
 
 		return flag;

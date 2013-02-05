@@ -60,7 +60,9 @@ public class BlockTorchLever extends BlockTorch
 		super.updateTick(world, i, j, k, random);
 
 		if (world.getBlockMetadata(i, j, k) == 0)
+		{
 			onBlockAdded(world, i, j, k);
+		}
 	}
 
 	@Override
@@ -114,13 +116,21 @@ public class BlockTorchLever extends BlockTorch
 		float f = 0.15F;
 
 		if (l == 1)
+		{
 			setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
+		}
 		else if (l == 2)
+		{
 			setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
+		}
 		else if (l == 3)
+		{
 			setBlockBounds(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
+		}
 		else if (l == 4)
+		{
 			setBlockBounds(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
+		}
 		else if (l == 4)
 		{
 			float f1 = 0.1F;
@@ -163,15 +173,25 @@ public class BlockTorchLever extends BlockTorch
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 
 		if (i1 == 1)
+		{
 			world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
+		}
 		else if (i1 == 2)
+		{
 			world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
+		}
 		else if (i1 == 3)
+		{
 			world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
+		}
 		else if (i1 == 4)
+		{
 			world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
+		}
 		else if (i1 == 5)
+		{
 			world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
+		}
 
 		return true;
 	}
@@ -185,15 +205,25 @@ public class BlockTorchLever extends BlockTorch
 			int i1 = metadata & 7;
 
 			if (i1 == 1)
+			{
 				world.notifyBlocksOfNeighborChange(x - 1, y, z, blockID);
+			}
 			else if (i1 == 2)
+			{
 				world.notifyBlocksOfNeighborChange(x + 1, y, z, blockID);
+			}
 			else if (i1 == 3)
+			{
 				world.notifyBlocksOfNeighborChange(x, y, z - 1, blockID);
+			}
 			else if (i1 == 4)
+			{
 				world.notifyBlocksOfNeighborChange(x, y, z + 1, blockID);
+			}
 			else
+			{
 				world.notifyBlocksOfNeighborChange(x, y - 1, z, blockID);
+			}
 		}
 
 		super.breakBlock(world, x, y, z, something, metadata);

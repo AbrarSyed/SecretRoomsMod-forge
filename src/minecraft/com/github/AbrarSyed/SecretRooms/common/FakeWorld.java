@@ -5,7 +5,6 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.ChunkPosition;
@@ -43,7 +42,7 @@ public class FakeWorld extends World implements IBlockAccess
 		ChunkPosition position = new ChunkPosition(x, y, z);
 		overrideMap.put(position, holder);
 	}
-	
+
 	public void removeOverrideBlock(int x, int y, int z)
 	{
 		ChunkPosition position = new ChunkPosition(x, y, z);

@@ -111,22 +111,34 @@ public class BlockCamoButton extends BlockCamoFull
 		direction = -1;
 
 		if (side == 0 && world.isBlockSolidOnSide(x, y + 1, z, DOWN))
+		{
 			direction = world.rand.nextBoolean() ? 0 : 7;
+		}
 
 		if (side == 1 && world.isBlockSolidOnSide(x, y - 1, z, UP))
+		{
 			direction = 5 + world.rand.nextInt(2);
+		}
 
 		if (side == 2 && world.isBlockSolidOnSide(x, y, z + 1, NORTH))
+		{
 			direction = 4;
+		}
 
 		if (side == 3 && world.isBlockSolidOnSide(x, y, z - 1, SOUTH))
+		{
 			direction = 3;
+		}
 
 		if (side == 4 && world.isBlockSolidOnSide(x + 1, y, z, WEST))
+		{
 			direction = 2;
+		}
 
 		if (side == 5 && world.isBlockSolidOnSide(x - 1, y, z, EAST))
+		{
 			direction = 1;
+		}
 
 		return direction + var11;
 	}
@@ -140,22 +152,34 @@ public class BlockCamoButton extends BlockCamoFull
 			boolean flag = false;
 
 			if (!world.isBlockNormalCube(i - 1, j, k) && i1 == 1)
+			{
 				flag = true;
+			}
 
 			if (!world.isBlockNormalCube(i + 1, j, k) && i1 == 2)
+			{
 				flag = true;
+			}
 
 			if (!world.isBlockNormalCube(i, j, k - 1) && i1 == 3)
+			{
 				flag = true;
+			}
 
 			if (!world.isBlockNormalCube(i, j, k + 1) && i1 == 4)
+			{
 				flag = true;
+			}
 
 			if (!world.isBlockNormalCube(i, j - 1, k) && i1 == 5)
+			{
 				flag = true;
+			}
 
 			if (!world.isBlockNormalCube(i, j - 1, k) && i1 == 6)
+			{
 				flag = true;
+			}
 
 			if (flag)
 			{
@@ -221,7 +245,9 @@ public class BlockCamoButton extends BlockCamoFull
 	public void breakBlock(World world, int i, int j, int k, int something, int metadata)
 	{
 		if ((metadata & 8) > 0)
+		{
 			updateArround(world, i, j, k, ForgeDirection.getOrientation(metadata & 7));
+		}
 		super.breakBlock(world, i, j, k, something, metadata);
 	}
 

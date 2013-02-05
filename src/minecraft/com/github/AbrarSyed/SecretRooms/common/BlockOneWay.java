@@ -1,7 +1,6 @@
 package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -109,13 +108,15 @@ public class BlockOneWay extends BlockContainer
 	{
 		int metadata = 1;
 		if (entityliving instanceof EntityPlayer)
+		{
 			metadata = BlockOneWay.determineOrientation(world, i, j, k, (EntityPlayer) entityliving);
-		
+		}
+
 		world.setBlockMetadata(i, j, k, metadata);
-		
+
 		SecretRooms.proxy.handleOneWayPlace(world, i, j, k, entityliving);
 	}
-	
+
 	@SideOnly(value = Side.CLIENT)
 	@Override
 	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z)
@@ -133,24 +134,7 @@ public class BlockOneWay extends BlockContainer
 		int texture = entityHere.getTexture();
 
 		if (texture == 0 && metadata == 1 || texture == 3 || texture == 38)
-		{	
-	        int red = 0;
-	        int blue = 0;
-	        int green = 0;
-
-	        for (int var8 = -1; var8 <= 1; ++var8)
-	        {
-	            for (int var9 = -1; var9 <= 1; ++var9)
-	            {
-	                int var10 = iblockaccess.getBiomeGenForCoords(x + var9, z + var8).getBiomeGrassColor();
-	                red += (var10 & 16711680) >> 16;
-	                blue += (var10 & 65280) >> 8;
-	                green += var10 & 255;
-	            }
-	        }
-
-	        return (red / 9 & 255) << 16 | (blue / 9 & 255) << 8 | green / 9 & 255;
-		}
+			return Block.grass.colorMultiplier(iblockaccess, x, y, z);
 
 		return 0xffffff;
 	}
@@ -160,10 +144,12 @@ public class BlockOneWay extends BlockContainer
 		int direction = BlockPistonBase.determineOrientation(world, i, j, k, entityplayer);
 
 		ForgeDirection dir = ForgeDirection.getOrientation(direction);
-		
+
 		if (!SecretRooms.proxy.getFaceAway(entityplayer.username))
+		{
 			dir = dir.getOpposite();
-		
+		}
+
 		return dir.ordinal();
 	}
 
@@ -247,7 +233,9 @@ public class BlockOneWay extends BlockContainer
 		int[] textureCalc = new int[4];
 		ArrayList<String> pathList = new ArrayList<String>();
 		for (int i = 0; i < 4; i++)
+		{
 			textureCalc[i] = addToList(pathList, textures[i]);
+		}
 
 		byte icon = -1;
 
@@ -255,15 +243,19 @@ public class BlockOneWay extends BlockContainer
 		// System.out.println("Texture side2 = "+textureCalc[3]);
 		// check sides
 		if (textureCalc[2] >= 0 && textureCalc[3] >= 0 && textureCalc[2] == textureCalc[3] && icon < 0)
+		{
 			// System.out.println("Sides Have Same texture, using that");
 			icon = 2;
+		}
 
 		// System.out.println("Texture top = "+textureCalc[0]);
 		// System.out.println("Texture bot = "+textureCalc[1]);
 		// check top and bottom
 		if (textureCalc[0] >= 0 && textureCalc[1] >= 0 && textureCalc[0] == textureCalc[1] && icon < 0)
+		{
 			// System.out.println("Top And Bottom Have Same texture, using that");
 			icon = 0;
+		}
 
 		// if all else fails, get mode.
 		if (icon < 0)
@@ -287,8 +279,10 @@ public class BlockOneWay extends BlockContainer
 
 			if (tally <= textureCalc.length && tally >= 0)
 				if (textureCalc[tally - 1] >= 0)
+				{
 					icon = (byte) tally;
-			// System.out.println("tally is "+tally+" and icon is "+icon);
+					// System.out.println("tally is "+tally+" and icon is "+icon);
+				}
 		}
 
 		if (icon >= 0)
@@ -341,7 +335,9 @@ public class BlockOneWay extends BlockContainer
 
 		for (Object[] num : textures)
 			if ((Integer) num[0] >= 0)
+			{
 				flag = false;
+			}
 
 		return flag;
 	}
@@ -388,7 +384,9 @@ public class BlockOneWay extends BlockContainer
 		}
 
 		if (!block.isDefaultTexture)
+		{
 			array[1] = block.getTextureFile();
+		}
 
 		if (block.isOpaqueCube() && block.getRenderType() == 0)
 		{
@@ -418,7 +416,9 @@ public class BlockOneWay extends BlockContainer
 
 		for (Object[] obj : array)
 			if ((Integer) obj[0] >= 0)
+			{
 				num++;
+			}
 
 		Object[][] truncated = new Object[num][2];
 		num = 0;
@@ -440,7 +440,9 @@ public class BlockOneWay extends BlockContainer
 
 		for (int obj : array)
 			if (obj >= 0)
+			{
 				num++;
+			}
 
 		int[] truncated = new int[num];
 		num = 0;
@@ -462,7 +464,9 @@ public class BlockOneWay extends BlockContainer
 		int[] tally = new int[256];
 
 		for (int i = 0; i < tally.length; i++)
+		{
 			tally[i] = 0;
+		}
 
 		// for each array entry, increment corresponding tally box
 		for (int i = 0; i < nums.length; i++)
@@ -478,7 +482,9 @@ public class BlockOneWay extends BlockContainer
 			if (tally[i] == tally[maxIndex] && maxIndex != 0)
 				throw new Throwable("NULL");
 			else if (tally[i] > tally[maxIndex])
+			{
 				maxIndex = i;
+			}
 
 		return maxIndex;
 	}

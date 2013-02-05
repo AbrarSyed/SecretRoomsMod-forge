@@ -53,16 +53,24 @@ public class BlockCamoChest extends BlockCamoFull
 		int var8 = par1World.getBlockId(par2 + 1, par3, par4);
 
 		if (var5 == blockID)
+		{
 			unifyAdjacentChests(par1World, par2, par3, par4 - 1);
+		}
 
 		if (var6 == blockID)
+		{
 			unifyAdjacentChests(par1World, par2, par3, par4 + 1);
+		}
 
 		if (var7 == blockID)
+		{
 			unifyAdjacentChests(par1World, par2 - 1, par3, par4);
+		}
 
 		if (var8 == blockID)
+		{
 			unifyAdjacentChests(par1World, par2 + 1, par3, par4);
+		}
 	}
 
 	/**
@@ -88,16 +96,24 @@ public class BlockCamoChest extends BlockCamoFull
 					var13 = 3;
 
 					if (Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var6])
+					{
 						var13 = 3;
+					}
 
 					if (Block.opaqueCubeLookup[var6] && !Block.opaqueCubeLookup[var5])
+					{
 						var13 = 2;
+					}
 
 					if (Block.opaqueCubeLookup[var7] && !Block.opaqueCubeLookup[var8])
+					{
 						var13 = 5;
+					}
 
 					if (Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var7])
+					{
 						var13 = 4;
+					}
 				}
 				else
 				{
@@ -105,18 +121,28 @@ public class BlockCamoChest extends BlockCamoFull
 					var11 = par1World.getBlockId(var7 == blockID ? par2 - 1 : par2 + 1, par3, par4 + 1);
 					var13 = 3;
 					if (var7 == blockID)
+					{
 						var14 = par1World.getBlockMetadata(par2 - 1, par3, par4);
+					}
 					else
+					{
 						var14 = par1World.getBlockMetadata(par2 + 1, par3, par4);
+					}
 
 					if (var14 == 2)
+					{
 						var13 = 2;
+					}
 
 					if ((Block.opaqueCubeLookup[var5] || Block.opaqueCubeLookup[var10]) && !Block.opaqueCubeLookup[var6] && !Block.opaqueCubeLookup[var11])
+					{
 						var13 = 3;
+					}
 
 					if ((Block.opaqueCubeLookup[var6] || Block.opaqueCubeLookup[var11]) && !Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var10])
+					{
 						var13 = 2;
+					}
 				}
 			}
 			else
@@ -125,18 +151,28 @@ public class BlockCamoChest extends BlockCamoFull
 				var11 = par1World.getBlockId(par2 + 1, par3, var5 == blockID ? par4 - 1 : par4 + 1);
 				var13 = 5;
 				if (var5 == blockID)
+				{
 					var14 = par1World.getBlockMetadata(par2, par3, par4 - 1);
+				}
 				else
+				{
 					var14 = par1World.getBlockMetadata(par2, par3, par4 + 1);
+				}
 
 				if (var14 == 4)
+				{
 					var13 = 4;
+				}
 
 				if ((Block.opaqueCubeLookup[var7] || Block.opaqueCubeLookup[var10]) && !Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var11])
+				{
 					var13 = 5;
+				}
 
 				if ((Block.opaqueCubeLookup[var8] || Block.opaqueCubeLookup[var11]) && !Block.opaqueCubeLookup[var7] && !Block.opaqueCubeLookup[var10])
+				{
 					var13 = 4;
+				}
 			}
 
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, var13);
@@ -152,16 +188,24 @@ public class BlockCamoChest extends BlockCamoFull
 		int var5 = 0;
 
 		if (par1World.getBlockId(par2 - 1, par3, par4) == blockID)
+		{
 			++var5;
+		}
 
 		if (par1World.getBlockId(par2 + 1, par3, par4) == blockID)
+		{
 			++var5;
+		}
 
 		if (par1World.getBlockId(par2, par3, par4 - 1) == blockID)
+		{
 			++var5;
+		}
 
 		if (par1World.getBlockId(par2, par3, par4 + 1) == blockID)
+		{
 			++var5;
+		}
 
 		return var5 > 1 ? false : isThereANeighborChest(par1World, par2 - 1, par3, par4) ? false : isThereANeighborChest(par1World, par2 + 1, par3, par4) ? false : isThereANeighborChest(par1World, par2, par3, par4 - 1) ? false : !isThereANeighborChest(par1World, par2, par3, par4 + 1);
 	}
@@ -185,7 +229,9 @@ public class BlockCamoChest extends BlockCamoFull
 		TileEntityCamoChest var6 = (TileEntityCamoChest) par1World.getBlockTileEntity(par2, par3, par4);
 
 		if (var6 != null)
+		{
 			var6.updateContainingBlockInfo();
+		}
 	}
 
 	/**
@@ -197,6 +243,7 @@ public class BlockCamoChest extends BlockCamoFull
 		TileEntityCamoChest var7 = (TileEntityCamoChest) par1World.getBlockTileEntity(par2, par3, par4);
 
 		if (var7 != null)
+		{
 			for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8)
 			{
 				ItemStack var9 = var7.getStackInSlot(var8);
@@ -212,7 +259,9 @@ public class BlockCamoChest extends BlockCamoFull
 						int var13 = random.nextInt(21) + 10;
 
 						if (var13 > var9.stackSize)
+						{
 							var13 = var9.stackSize;
+						}
 
 						var9.stackSize -= var13;
 						var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
@@ -222,10 +271,13 @@ public class BlockCamoChest extends BlockCamoFull
 						var14.motionZ = (float) random.nextGaussian() * var15;
 
 						if (var9.hasTagCompound())
-							var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+						{
+							var14.getEntityItem().setTagCompound((NBTTagCompound) var9.getTagCompound().copy());
+						}
 					}
 				}
 			}
+		}
 
 		super.breakBlock(par1World, par2, par3, par4, par5, par6);
 	}
@@ -255,16 +307,24 @@ public class BlockCamoChest extends BlockCamoFull
 		else
 		{
 			if (par1World.getBlockId(par2 - 1, par3, par4) == blockID)
+			{
 				var10 = new InventoryLargeChest("container.CamochestDouble", (TileEntityCamoChest) par1World.getBlockTileEntity(par2 - 1, par3, par4), (IInventory) var10);
+			}
 
 			if (par1World.getBlockId(par2 + 1, par3, par4) == blockID)
+			{
 				var10 = new InventoryLargeChest("container.CamochestDouble", (IInventory) var10, (TileEntityCamoChest) par1World.getBlockTileEntity(par2 + 1, par3, par4));
+			}
 
 			if (par1World.getBlockId(par2, par3, par4 - 1) == blockID)
+			{
 				var10 = new InventoryLargeChest("container.CamochestDouble", (TileEntityCamoChest) par1World.getBlockTileEntity(par2, par3, par4 - 1), (IInventory) var10);
+			}
 
 			if (par1World.getBlockId(par2, par3, par4 + 1) == blockID)
+			{
 				var10 = new InventoryLargeChest("container.CamochestDouble", (IInventory) var10, (TileEntityCamoChest) par1World.getBlockTileEntity(par2, par3, par4 + 1));
+			}
 
 			if (par1World.isRemote)
 				return true;

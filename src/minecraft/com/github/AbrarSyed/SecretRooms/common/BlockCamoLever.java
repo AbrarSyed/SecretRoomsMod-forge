@@ -75,20 +75,32 @@ public class BlockCamoLever extends BlockCamoFull
 			world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 
 			if (sideMeta == 1)
+			{
 				world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
+			}
 			else if (sideMeta == 2)
+			{
 				world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
+			}
 			else if (sideMeta == 3)
+			{
 				world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
+			}
 			else if (sideMeta == 4)
+			{
 				world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
+			}
 			else if (sideMeta != 5 && sideMeta != 6)
 			{
 				if (sideMeta == 0 || sideMeta == 7)
+				{
 					world.notifyBlocksOfNeighborChange(i, j + 1, k, blockID);
+				}
 			}
 			else
+			{
 				world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
+			}
 
 			return true;
 		}
@@ -104,15 +116,25 @@ public class BlockCamoLever extends BlockCamoFull
 			int i1 = metadata & 7;
 
 			if (i1 == 1)
+			{
 				world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
+			}
 			else if (i1 == 2)
+			{
 				world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
+			}
 			else if (i1 == 3)
+			{
 				world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
+			}
 			else if (i1 == 4)
+			{
 				world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
+			}
 			else
+			{
 				world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
+			}
 		}
 
 		super.breakBlock(world, i, j, k, something, metadata);

@@ -81,7 +81,9 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 				var3 = chestContents[par1].splitStack(par2);
 
 				if (chestContents[par1].stackSize == 0)
+				{
 					chestContents[par1] = null;
+				}
 
 				onInventoryChanged();
 				return var3;
@@ -119,7 +121,9 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 		chestContents[par1] = par2ItemStack;
 
 		if (par2ItemStack != null && par2ItemStack.stackSize > getInventoryStackLimit())
+		{
 			par2ItemStack.stackSize = getInventoryStackLimit();
+		}
 
 		onInventoryChanged();
 	}
@@ -149,7 +153,9 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 			int var5 = var4.getByte("Slot") & 255;
 
 			if (var5 >= 0 && var5 < chestContents.length)
+			{
 				chestContents[var5] = ItemStack.loadItemStackFromNBT(var4);
+			}
 		}
 	}
 
@@ -221,28 +227,44 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 			adjacentChestZPosition = null;
 
 			if (worldObj.getBlockId(xCoord - 1, yCoord, zCoord) == SecretRooms.camoChest.blockID)
+			{
 				adjacentChestXNeg = (TileEntityCamoChest) worldObj.getBlockTileEntity(xCoord - 1, yCoord, zCoord);
+			}
 
 			if (worldObj.getBlockId(xCoord + 1, yCoord, zCoord) == SecretRooms.camoChest.blockID)
+			{
 				adjacentChestXPos = (TileEntityCamoChest) worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord);
+			}
 
 			if (worldObj.getBlockId(xCoord, yCoord, zCoord - 1) == SecretRooms.camoChest.blockID)
+			{
 				adjacentChestZNeg = (TileEntityCamoChest) worldObj.getBlockTileEntity(xCoord, yCoord, zCoord - 1);
+			}
 
 			if (worldObj.getBlockId(xCoord, yCoord, zCoord + 1) == SecretRooms.camoChest.blockID)
+			{
 				adjacentChestZPosition = (TileEntityCamoChest) worldObj.getBlockTileEntity(xCoord, yCoord, zCoord + 1);
+			}
 
 			if (adjacentChestZNeg != null)
+			{
 				adjacentChestZNeg.updateContainingBlockInfo();
+			}
 
 			if (adjacentChestZPosition != null)
+			{
 				adjacentChestZPosition.updateContainingBlockInfo();
+			}
 
 			if (adjacentChestXPos != null)
+			{
 				adjacentChestXPos.updateContainingBlockInfo();
+			}
 
 			if (adjacentChestXNeg != null)
+			{
 				adjacentChestXNeg.updateContainingBlockInfo();
+			}
 		}
 	}
 
@@ -258,7 +280,9 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 		checkForAdjacentChests();
 
 		if (++ticksSinceSync % 20 * 4 == 0)
+		{
 			;
+		}
 
 		prevLidAngle = lidAngle;
 		float var1 = 0.1F;
@@ -278,12 +302,18 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 			float var8 = lidAngle;
 
 			if (numUsingPlayers > 0)
+			{
 				lidAngle += var1;
+			}
 			else
+			{
 				lidAngle -= var1;
+			}
 
 			if (lidAngle > 1.0F)
+			{
 				lidAngle = 1.0F;
+			}
 
 			float var3 = 0.5F;
 
@@ -299,7 +329,9 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 			}
 
 			if (lidAngle < 0.0F)
+			{
 				lidAngle = 0.0F;
+			}
 		}
 	}
 
@@ -311,7 +343,9 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 	public void receiveClientEvent(int par1, int par2)
 	{
 		if (par1 == 1)
+		{
 			numUsingPlayers = par2;
+		}
 	}
 
 	@Override

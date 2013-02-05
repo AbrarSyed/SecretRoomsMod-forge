@@ -28,9 +28,13 @@ public class BlockCamoDoor extends BlockContainer
 		setHardness(3F);
 
 		if (mat.equals(Material.iron))
+		{
 			setStepSound(soundMetalFootstep);
+		}
 		else
+		{
 			setStepSound(soundWoodFootstep);
+		}
 
 		disableStats();
 		setRequiresSelfNotify();
@@ -59,9 +63,13 @@ public class BlockCamoDoor extends BlockContainer
 		TileEntityCamo entity;
 
 		if (flag)
+		{
 			entity = (TileEntityCamo) par1IBlockAccess.getBlockTileEntity(par2, par3 - 1, par4);
+		}
 		else
+		{
 			entity = (TileEntityCamo) par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+		}
 
 		if (entity == null)
 			return 0;
@@ -164,37 +172,61 @@ public class BlockCamoDoor extends BlockContainer
 		if (i == 0)
 		{
 			if (!flag)
+			{
 				setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+			}
 			else if (!flag1)
+			{
 				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+			}
 			else
+			{
 				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+			}
 		}
 		else if (i == 1)
 		{
 			if (!flag)
+			{
 				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+			}
 			else if (!flag1)
+			{
 				setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+			}
 			else
+			{
 				setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+			}
 		}
 		else if (i == 2)
 		{
 			if (!flag)
+			{
 				setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+			}
 			else if (!flag1)
+			{
 				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+			}
 			else
+			{
 				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+			}
 		}
 		else if (i == 3)
 			if (!flag)
+			{
 				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+			}
 			else if (!flag1)
+			{
 				setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+			}
 			else
+			{
 				setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+			}
 	}
 
 	/**
@@ -266,10 +298,14 @@ public class BlockCamoDoor extends BlockContainer
 		if ((i & 8) != 0)
 		{
 			if (par1World.getBlockId(par2, par3 - 1, par4) != blockID)
+			{
 				par1World.setBlockWithNotify(par2, par3, par4, 0);
+			}
 
 			if (par5 > 0 && par5 != blockID)
+			{
 				onNeighborBlockChange(par1World, par2, par3 - 1, par4, par5);
+			}
 		}
 		else
 		{
@@ -287,20 +323,26 @@ public class BlockCamoDoor extends BlockContainer
 				flag = true;
 
 				if (par1World.getBlockId(par2, par3 + 1, par4) == blockID)
+				{
 					par1World.setBlockWithNotify(par2, par3 + 1, par4, 0);
+				}
 			}
 
 			if (flag)
 			{
 				if (!par1World.isRemote)
+				{
 					dropBlockAsItem(par1World, par2, par3, par4, i, 0);
+				}
 			}
 			else
 			{
 				boolean flag1 = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4) || par1World.isBlockIndirectlyGettingPowered(par2, par3 + 1, par4);
 
 				if ((flag1 || par5 > 0 && Block.blocksList[par5].canProvidePower() || par5 == 0) && par5 != blockID)
+				{
 					onPoweredBlockChange(par1World, par2, par3, par4, flag1);
+				}
 			}
 		}
 	}

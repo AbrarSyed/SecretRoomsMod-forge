@@ -90,7 +90,9 @@ public class BlockCamoPlate extends BlockCamoFull
 
 		setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
 		if (par1World.getBlockMetadata(par2, par3, par4) == 1)
+		{
 			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate());
+		}
 		par1World.scheduleBlockUpdate(par2, par3, par4, blockID, 0);
 		return;
 	}
@@ -106,16 +108,24 @@ public class BlockCamoPlate extends BlockCamoFull
 		List list = null;
 
 		if (triggerMobType == EnumMobType.everything)
+		{
 			list = par1World.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(par2 + f, par3 + 1, par4 + f, par2 + 1 - f, par3 + 1.25D, par4 + 1 - f));
+		}
 
 		if (triggerMobType == EnumMobType.mobs)
+		{
 			list = par1World.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(par2 + f, par3 + 1, par4 + f, par2 + 1 - f, par3 + 1.25D, par4 + 1 - f));
+		}
 
 		if (triggerMobType == EnumMobType.players)
+		{
 			list = par1World.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(par2 + f, par3 + 1, par4 + f, par2 + 1 - f, par3 + 1.25D, par4 + 1 - f));
+		}
 
 		if (list.size() > 0)
+		{
 			flag1 = true;
+		}
 
 		if (flag1 && !flag)
 		{
@@ -136,7 +146,9 @@ public class BlockCamoPlate extends BlockCamoFull
 		}
 
 		if (flag1)
+		{
 			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate());
+		}
 	}
 
 	/**

@@ -81,16 +81,24 @@ public class BlockCamoTrapDoor extends Block
 		int k = z;
 
 		if ((i & 3) == 0)
+		{
 			k++;
+		}
 
 		if ((i & 3) == 1)
+		{
 			k--;
+		}
 
 		if ((i & 3) == 2)
+		{
 			j++;
+		}
 
 		if ((i & 3) == 3)
+		{
 			j--;
+		}
 
 		// actually get the texture.
 		Block block = Block.blocksList[world.getBlockId(j, y, k)];
@@ -117,6 +125,7 @@ public class BlockCamoTrapDoor extends Block
 			int k = 0;
 
 			for (int l = -1; l <= 1; l++)
+			{
 				for (int i1 = -1; i1 <= 1; i1++)
 				{
 					int j1 = par1IBlockAccess.getBiomeGenForCoords(par2 + i1, par4 + l).getBiomeGrassColor();
@@ -124,6 +133,7 @@ public class BlockCamoTrapDoor extends Block
 					j += (j1 & 0xff00) >> 8;
 					k += j1 & 0xff;
 				}
+			}
 
 			return (i / 9 & 0xff) << 16 | (j / 9 & 0xff) << 8 | k / 9 & 0xff;
 		}
@@ -176,23 +186,35 @@ public class BlockCamoTrapDoor extends Block
 		float var2 = 0.1875F;
 
 		if ((par1 & 8) != 0)
+		{
 			setBlockBounds(0.0F, 1.0F - var2, 0.0F, 1.0F, 1.0F, 1.0F);
+		}
 		else
+		{
 			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var2, 1.0F);
+		}
 
 		if (isTrapdoorOpen(par1))
 		{
 			if ((par1 & 3) == 0)
+			{
 				setBlockBounds(0.0F, 0.0F, 1.0F - var2, 1.0F, 1.0F, 1.0F);
+			}
 
 			if ((par1 & 3) == 1)
+			{
 				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, var2);
+			}
 
 			if ((par1 & 3) == 2)
+			{
 				setBlockBounds(1.0F - var2, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+			}
 
 			if ((par1 & 3) == 3)
+			{
 				setBlockBounds(0.0F, 0.0F, 0.0F, var2, 1.0F, 1.0F);
+			}
 		}
 	}
 
@@ -239,16 +261,24 @@ public class BlockCamoTrapDoor extends Block
 		int k = par4;
 
 		if ((i & 3) == 0)
+		{
 			k++;
+		}
 
 		if ((i & 3) == 1)
+		{
 			k--;
+		}
 
 		if ((i & 3) == 2)
+		{
 			j++;
+		}
 
 		if ((i & 3) == 3)
+		{
 			j--;
+		}
 
 		if (!isValidSupportBlock(par1World.getBlockId(j, par3, k)))
 		{
@@ -259,7 +289,9 @@ public class BlockCamoTrapDoor extends Block
 		boolean flag = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4);
 
 		if (flag || par5 > 0 && Block.blocksList[par5].canProvidePower() || par5 == 0)
+		{
 			onPoweredBlockChange(par1World, par2, par3, par4, flag);
+		}
 	}
 
 	/**
@@ -283,19 +315,29 @@ public class BlockCamoTrapDoor extends Block
 		int newMeta = 0;
 
 		if (side == 2)
+		{
 			newMeta = 0;
+		}
 
 		if (side == 3)
+		{
 			newMeta = 1;
+		}
 
 		if (side == 4)
+		{
 			newMeta = 2;
+		}
 
 		if (side == 5)
+		{
 			newMeta = 3;
+		}
 
 		if (side != 1 && side != 0 && clickY > 0.5F)
+		{
 			newMeta |= 8;
+		}
 
 		return newMeta;
 	}
@@ -313,16 +355,24 @@ public class BlockCamoTrapDoor extends Block
 			return false;
 
 		if (par5 == 2)
+		{
 			par4++;
+		}
 
 		if (par5 == 3)
+		{
 			par4--;
+		}
 
 		if (par5 == 4)
+		{
 			par2++;
+		}
 
 		if (par5 == 5)
+		{
 			par2--;
+		}
 
 		return isValidSupportBlock(par1World.getBlockId(par2, par3, par4)) || par1World.isBlockSolidOnSide(par2, par3, par4, ForgeDirection.UP);
 	}

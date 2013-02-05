@@ -2,10 +2,11 @@ package com.github.AbrarSyed.SecretRooms.client;
 
 import java.util.EnumSet;
 
-import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
-
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+
+import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
@@ -40,7 +41,7 @@ public class SecretKey extends KeyHandler
 	{
 		if (!tickEnd)
 			return;
-		
+
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 
 		SecretRooms.proxy.onKeyPress(player.username);

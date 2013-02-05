@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.ObjectInputStream;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -44,7 +45,9 @@ public class PacketHandlerClient implements IPacketHandler
 			try
 			{
 				for (int i = 0; i < 3; i++)
+				{
 					coords[i] = dataStream.readInt();
+				}
 
 				texture = dataStream.readInt();
 				forged = dataStream.readBoolean();
@@ -56,7 +59,9 @@ public class PacketHandlerClient implements IPacketHandler
 					char[] string = new char[texturePathLength];
 
 					for (int i = 0; i < texturePathLength; i++)
+					{
 						string[i] = dataStream.readChar();
+					}
 
 					texturePath = new String(string);
 				}
@@ -94,7 +99,9 @@ public class PacketHandlerClient implements IPacketHandler
 			entity.setTexture(texture);
 
 			if (forged)
+			{
 				entity.setTexturePath(texturePath);
+			}
 
 			world.markBlockForRenderUpdate(coords[0], coords[1], coords[2]);
 		}
@@ -109,15 +116,17 @@ public class PacketHandlerClient implements IPacketHandler
 			try
 			{
 				ObjectInputStream dataStream = new ObjectInputStream(new ByteArrayInputStream(data));
-				
+
 				for (int i = 0; i < 3; i++)
+				{
 					coords[i] = dataStream.readInt();
-				
-				NBTTagCompound nbt = (NBTTagCompound) NBTTagCompound.readNamedTag(dataStream);
+				}
+
+				NBTTagCompound nbt = (NBTTagCompound) NBTBase.readNamedTag(dataStream);
 				holder = BlockHolder.buildFromNBT(nbt);
-				
+
 				dataStream.close();
-				
+
 			}
 			catch (Exception e)
 			{
@@ -128,7 +137,7 @@ public class PacketHandlerClient implements IPacketHandler
 
 			if (entity == null)
 				return;
-			
+
 			entity.setBlockHolder(holder);
 
 			world.markBlockForRenderUpdate(coords[0], coords[1], coords[2]);
@@ -138,9 +147,13 @@ public class PacketHandlerClient implements IPacketHandler
 			SecretRooms.displayCamo = !SecretRooms.displayCamo;
 
 			if (SecretRooms.displayCamo)
+			{
 				player.addChatMessage(getColorThing() + "Camo blocks made secret");
+			}
 			else
+			{
 				player.addChatMessage(getColorThing() + "Camo blocks made obvious");
+			}
 
 			int rad = 10; // update radius
 			world.markBlockRangeForRenderUpdate((int) player.posX - rad, (int) player.posY - rad, (int) player.posZ - rad, (int) player.posX + rad, (int) player.posY + rad, (int) player.posZ + rad);

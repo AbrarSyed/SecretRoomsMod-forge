@@ -41,9 +41,13 @@ public class ItemCamoDoor extends Item
 
 		// change based on material.
 		if (doorMaterial.equals(Material.iron))
+		{
 			block = SecretRooms.camoDoorIron;
+		}
 		else
+		{
 			block = SecretRooms.camoDoorWood;
+		}
 
 		// check permissions
 		if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) || !par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6, par7, par1ItemStack))
@@ -66,16 +70,24 @@ public class ItemCamoDoor extends Item
 		byte byte1 = 0;
 
 		if (par4 == 0)
+		{
 			byte1 = 1;
+		}
 
 		if (par4 == 1)
+		{
 			byte0 = -1;
+		}
 
 		if (par4 == 2)
+		{
 			byte1 = -1;
+		}
 
 		if (par4 == 3)
+		{
 			byte0 = 1;
+		}
 
 		int i = (par0World.isBlockNormalCube(par1 - byte0, par2, par3 - byte1) ? 1 : 0) + (par0World.isBlockNormalCube(par1 - byte0, par2 + 1, par3 - byte1) ? 1 : 0);
 		int j = (par0World.isBlockNormalCube(par1 + byte0, par2, par3 + byte1) ? 1 : 0) + (par0World.isBlockNormalCube(par1 + byte0, par2 + 1, par3 + byte1) ? 1 : 0);
@@ -84,9 +96,13 @@ public class ItemCamoDoor extends Item
 		boolean flag2 = false;
 
 		if (flag && !flag1)
+		{
 			flag2 = true;
+		}
 		else if (j > i)
+		{
 			flag2 = true;
+		}
 
 		par0World.editingBlocks = true;
 		par0World.setBlockAndMetadataWithNotify(par1, par2, par3, par5Block.blockID, par4);

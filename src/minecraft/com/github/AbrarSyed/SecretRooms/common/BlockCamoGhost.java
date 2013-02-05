@@ -56,7 +56,9 @@ public class BlockCamoGhost extends BlockCamoFull
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l)
 	{
 		if (l > 0 && Block.blocksList[l].canProvidePower())
+		{
 			world.scheduleBlockUpdate(i, j, k, blockID, 0);
+		}
 	}
 
 	@Override
@@ -65,8 +67,12 @@ public class BlockCamoGhost extends BlockCamoFull
 		boolean flag = !world.isRemote && (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k));
 
 		if (flag)
+		{
 			world.setBlockMetadata(i, j, k, 1);
+		}
 		else
+		{
 			world.setBlockMetadata(i, j, k, 0);
+		}
 	}
 }

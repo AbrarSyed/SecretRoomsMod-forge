@@ -57,7 +57,7 @@ public class BlockCamoFull extends BlockContainer
 
 	@Override
 	public int getLightOpacity(World world, int x, int y, int z)
-	{		
+	{
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 		FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
 
@@ -94,11 +94,17 @@ public class BlockCamoFull extends BlockContainer
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 		int id;
 		if (entity == null)
+		{
 			id = 1;
+		}
 		else if (entity.getCopyID() <= 0)
+		{
 			id = 1;
+		}
 		else
+		{
 			id = entity.getCopyID();
+		}
 
 		if (id == 1)
 			return Block.stone.blockIndexInTexture;
@@ -124,35 +130,41 @@ public class BlockCamoFull extends BlockContainer
 		int[] IdAndCoords = getIdCamoStyle(world, i, j, k);
 
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
-		
+
 		TileEntity test = world.getBlockTileEntity(IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
-		
+
 		if (test instanceof TileEntityCamoFull)
+		{
 			entity.setBlockHolder(((TileEntityCamoFull) test).getBlockHolder());
+		}
 		else
+		{
 			entity.setBlockHolder(new BlockHolder(world, IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]));
+		}
 
 		if (!world.isRemote)
+		{
 			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
+		}
 	}
 
 	@Override
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
 	{
 		if (!SecretRooms.displayCamo)
-			return 0xffffff;
+			return super.colorMultiplier(par1IBlockAccess, x, y, z);
 
 		TileEntityCamoFull entity = (TileEntityCamoFull) par1IBlockAccess.getBlockTileEntity(x, y, z);
 
 		if (entity == null)
-			return 0xffffff;
-		
+			return super.colorMultiplier(par1IBlockAccess, x, y, z);
+
 		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
 		int id = entity.getCopyID();
-		
+
 		if (id == 0)
-			return 0xffffff;
-		
+			return super.colorMultiplier(par1IBlockAccess, x, y, z);
+
 		Block fakeBlock = Block.blocksList[id];
 		return fakeBlock.colorMultiplier(fake, x, y, z);
 	}
@@ -190,39 +202,47 @@ public class BlockCamoFull extends BlockContainer
 
 		// checks Y's
 		if (plusIds[0][0] == plusIds[1][0])
+		{
 			intChecks[1] = plusIds[0];
+		}
 
 		// checks X's
 		if (plusIds[2][0] == plusIds[3][0])
+		{
 			intChecks[0] = plusIds[2];
+		}
 
 		// checks Z's
 		if (plusIds[4][0] == plusIds[5][0])
+		{
 			intChecks[2] = plusIds[4];
+		}
 
 		// part of XY wall?
 		if (intChecks[1][0] == intChecks[0][0] && intChecks[0][0] > 0)
+		{
 			id = intChecks[0];
-
-		// part of YZ wall?
+		}
 		else if (intChecks[1][0] == intChecks[2][0] && intChecks[2][0] > 0)
+		{
 			id = intChecks[1];
-
-		// part of XZ floor or ceiling?
+		}
 		else if (intChecks[2][0] == intChecks[0][0] && intChecks[0][0] > 0)
+		{
 			id = intChecks[0];
-
-		// check Y column
+		}
 		else if (intChecks[1][0] != 0)
+		{
 			id = intChecks[1];
-
-		// check X row
+		}
 		else if (intChecks[0][0] != 0)
+		{
 			id = intChecks[0];
-
-		// check Z row
+		}
 		else if (intChecks[2][0] != 0)
+		{
 			id = intChecks[2];
+		}
 
 		// System.out.println("IDs are fun:  " + Arrays.toString(id));
 
@@ -240,9 +260,13 @@ public class BlockCamoFull extends BlockContainer
 		{
 			int[][] test = truncateArrayINT(plusIds);
 			if (test.length >= 1)
+			{
 				id = test[0];
+			}
 			else
+			{
 				id = new int[] { 1, 0, 0, 0, 0 };
+			}
 		}
 
 		if (id[0] == 0)
@@ -256,7 +280,9 @@ public class BlockCamoFull extends BlockContainer
 		int[] nums = new int[nums2.length];
 
 		for (int i = 0; i < nums2.length; i++)
+		{
 			nums[i] = nums2[i][0];
+		}
 
 		// create array of tallies, all initialized to zero
 		int[] tally = new int[256];
@@ -275,7 +301,9 @@ public class BlockCamoFull extends BlockContainer
 			if (tally[i] == tally[maxIndex] && tally[i] != 0)
 				throw new Exception("NULL");
 			else if (tally[i] > tally[maxIndex])
+			{
 				maxIndex = i;
+			}
 
 		return nums2[maxIndex];
 	}
@@ -334,7 +362,9 @@ public class BlockCamoFull extends BlockContainer
 
 		for (int[] obj : array)
 			if (obj[0] > 0)
+			{
 				num++;
+			}
 
 		int[][] truncated = new int[num][4];
 		num = 0;
@@ -364,7 +394,9 @@ public class BlockCamoFull extends BlockContainer
 
 		for (int[] num : textures)
 			if (num[0] > 0)
+			{
 				flag = false;
+			}
 
 		return flag;
 	}

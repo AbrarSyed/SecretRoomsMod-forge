@@ -59,9 +59,13 @@ public class Proxy
 	public void onKeyPress(String username)
 	{
 		if (towardSet.contains(username))
+		{
 			towardSet.remove(username);
+		}
 		else
+		{
 			towardSet.add(username);
+		}
 	}
 
 	public boolean getFaceAway(String username)

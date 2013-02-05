@@ -32,7 +32,9 @@ public class TileEntityCamo extends TileEntity
 		forged = nbttagcompound.getBoolean("Forged");
 
 		if (forged)
+		{
 			setTexturePath(nbttagcompound.getString("TexturePath"));
+		}
 	}
 
 	@Override
@@ -42,7 +44,9 @@ public class TileEntityCamo extends TileEntity
 		nbttagcompound.setInteger("Texture", getTexture());
 		nbttagcompound.setBoolean("Forged", forged);
 		if (forged)
+		{
 			nbttagcompound.setString("TexturePath", getTexturePath());
+		}
 	}
 
 	@Override
@@ -58,7 +62,9 @@ public class TileEntityCamo extends TileEntity
 		{
 			int[] coords = { xCoord, yCoord, zCoord, texture };
 			for (int a = 0; a < coords.length; a++)
+			{
 				data.writeInt(coords[a]);
+			}
 
 			data.writeBoolean(forged);
 

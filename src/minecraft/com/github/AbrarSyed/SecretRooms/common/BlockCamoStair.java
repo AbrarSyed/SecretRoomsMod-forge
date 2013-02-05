@@ -107,16 +107,24 @@ public class BlockCamoStair extends BlockCamoFull
 			}
 
 		if (var6 == 0)
+		{
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
+		}
 
 		if (var6 == 1)
+		{
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
+		}
 
 		if (var6 == 2)
+		{
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
+		}
 
 		if (var6 == 3)
+		{
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0);
+		}
 	}
 
 	/**
@@ -146,7 +154,9 @@ public class BlockCamoStair extends BlockCamoFull
 				var16 = var13[var15];
 
 				if (var16 == var12)
+				{
 					;
+				}
 			}
 
 			var7[var12] = super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);

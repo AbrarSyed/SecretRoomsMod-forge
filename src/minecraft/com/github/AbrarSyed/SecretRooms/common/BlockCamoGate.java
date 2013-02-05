@@ -48,7 +48,9 @@ public class BlockCamoGate extends BlockCamoFull
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l)
 	{
 		if (l > 0 && Block.blocksList[l].canProvidePower())
+		{
 			world.scheduleBlockUpdate(i, j, k, blockID, 0);
+		}
 	}
 
 	@Override
@@ -93,9 +95,13 @@ public class BlockCamoGate extends BlockCamoFull
 		boolean flag = !world.isRemote && (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k));
 
 		if (flag)
+		{
 			buildGate(world, i, j, k);
+		}
 		else
+		{
 			destroyGate(world, i, j, k);
+		}
 	}
 
 	public void buildGate(World world, int x, int y, int z)
@@ -108,9 +114,13 @@ public class BlockCamoGate extends BlockCamoFull
 		{
 			ForgeDirection dir = ForgeDirection.getOrientation(data);
 			if (world.isAirBlock(x + dir.offsetX * i, y + dir.offsetY * i, z + dir.offsetZ * i) || isBreakable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))
+			{
 				world.setBlockWithNotify(x + dir.offsetX * i, y + dir.offsetY * i, z + dir.offsetZ * i, SecretRooms.camoGateExt.blockID);
+			}
 			else
+			{
 				break;
+			}
 		}
 	}
 
@@ -119,44 +129,58 @@ public class BlockCamoGate extends BlockCamoFull
 		int data = world.getBlockMetadata(x, y, z);
 
 		for (int i = 1; i <= maxSize; i++)
+		{
 			switch (data)
 				{
 					case 0:
 						if (world.getBlockId(x, y, z) == SecretRooms.camoGateExt.blockID)
+						{
 							world.setBlockWithNotify(x, y - i, z, 0);
+						}
 
 						break;
 
 					case 1:
 						if (world.getBlockId(x, y + i, z) == SecretRooms.camoGateExt.blockID)
+						{
 							world.setBlockWithNotify(x, y + i, z, 0);
+						}
 
 						break;
 
 					case 2:
 						if (world.getBlockId(x, y, z - i) == SecretRooms.camoGateExt.blockID)
+						{
 							world.setBlockWithNotify(x, y, z - i, 0);
+						}
 
 						break;
 
 					case 3:
 						if (world.getBlockId(x, y, z + i) == SecretRooms.camoGateExt.blockID)
+						{
 							world.setBlockWithNotify(x, y, z + i, 0);
+						}
 
 						break;
 
 					case 4:
 						if (world.getBlockId(x - i, y, z) == SecretRooms.camoGateExt.blockID)
+						{
 							world.setBlockWithNotify(x - i, y, z, 0);
+						}
 
 						break;
 
 					case 5:
 						if (world.getBlockId(x + i, y, z) == SecretRooms.camoGateExt.blockID)
+						{
 							world.setBlockWithNotify(x + i, y, z, 0);
+						}
 
 						break;
 				}
+		}
 	}
 
 	public boolean isBreakable(World world, int x, int y, int z)

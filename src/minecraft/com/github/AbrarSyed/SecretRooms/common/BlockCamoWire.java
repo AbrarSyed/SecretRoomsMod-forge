@@ -53,10 +53,14 @@ public class BlockCamoWire extends BlockCamoFull
 			{
 				// if new is powerred.. turn on.
 				if (isPowered)
+				{
 					turnOn(world, i, j, k);
-				// else turnoff
+					// else turnoff
+				}
 				else
+				{
 					turnOff(world, i, j, k);
+				}
 			}
 			else
 			{
@@ -68,7 +72,9 @@ public class BlockCamoWire extends BlockCamoFull
 
 				// otherwise.. lets see if we have a new power-er.
 				if (!isPoweredFromAllowedDir(world, i, j, k))
+				{
 					turnOff(world, i, j, k);
+				}
 			}
 		}
 	}
@@ -118,13 +124,17 @@ public class BlockCamoWire extends BlockCamoFull
 		boolean[] flags = new boolean[6];
 
 		for (int x = 0; x < 6; x++)
+		{
 			flags[x] = isBlockPoweredBy(world, i, j, k, x);
+		}
 
 		byte poweredSide = -1;
 
 		for (byte x = 0; x < 6; x++)
 			if (flags[x])
+			{
 				poweredSide = x;
+			}
 
 		if (poweredSide >= 0)
 		{
@@ -141,7 +151,9 @@ public class BlockCamoWire extends BlockCamoFull
 		boolean[] flags = new boolean[6];
 
 		for (int x = 0; x < 6; x++)
+		{
 			flags[x] = isBlockPoweredBy(world, i, j, k, x);
+		}
 
 		if (flags[dir])
 			// System.out.println("It is bieng powered by "+dir);

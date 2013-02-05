@@ -7,11 +7,11 @@ package com.github.AbrarSyed.SecretRooms.common;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -43,7 +43,9 @@ public class TileEntityCamoFull extends TileEntity
 	{
 		super.writeToNBT(nbttagcompound);
 		if (holder != null)
+		{
 			holder.writeToNBT(nbttagcompound);
+		}
 		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 	}
 
@@ -63,12 +65,14 @@ public class TileEntityCamoFull extends TileEntity
 		try
 		{
 			ObjectOutputStream data = new ObjectOutputStream(bytes);
-			int[] coords = { xCoord, yCoord, zCoord};
+			int[] coords = { xCoord, yCoord, zCoord };
 			for (int a = 0; a < coords.length; a++)
+			{
 				data.writeInt(coords[a]);
+			}
 			NBTTagCompound nbt = new NBTTagCompound();
 			holder.writeToNBT(nbt);
-			NBTTagCompound.writeNamedTag(nbt, data);
+			NBTBase.writeNamedTag(nbt, data);
 			data.close();
 		}
 		catch (Exception e)
@@ -81,20 +85,21 @@ public class TileEntityCamoFull extends TileEntity
 		packet.length = packet.data.length;
 		return packet;
 	}
-	
-    public boolean shouldRefresh(int oldID, int newID, int oldMeta, int newMeta, World world, int x, int y, int z)
-    {
-    	SecretRooms.proxy.getFakeWorld(world).removeOverrideBlock(x, y, z);
-        return true;
-    }
-	
+
+	@Override
+	public boolean shouldRefresh(int oldID, int newID, int oldMeta, int newMeta, World world, int x, int y, int z)
+	{
+		SecretRooms.proxy.getFakeWorld(world).removeOverrideBlock(x, y, z);
+		return true;
+	}
+
 	public void setBlockHolder(BlockHolder holder)
 	{
 		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 		this.holder = holder;
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
-	
+
 	public BlockHolder getBlockHolder()
 	{
 		return holder;
@@ -104,9 +109,7 @@ public class TileEntityCamoFull extends TileEntity
 	{
 		return holder == null ? 0 : holder.blockID;
 	}
-	
-	private BlockHolder holder;
-	
-	
-	
+
+	private BlockHolder	holder;
+
 }
