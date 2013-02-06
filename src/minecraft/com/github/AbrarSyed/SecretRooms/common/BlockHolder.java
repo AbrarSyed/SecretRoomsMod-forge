@@ -11,12 +11,8 @@ import net.minecraft.world.World;
  * Tiny class that is used to contain the information of a block
  * @author AbrarSyed
  */
-public class BlockHolder implements Serializable
+public class BlockHolder
 {
-	/**
-	 * 
-	 */
-	private static final long		serialVersionUID	= -4408120808029860108L;
 	private final NBTTagCompound	nbt;
 	public final int				blockID;
 	public final int				metadata;
@@ -76,7 +72,7 @@ public class BlockHolder implements Serializable
 	public static BlockHolder buildFromNBT(NBTTagCompound nbt)
 	{
 		int ID = nbt.getInteger("copyID");
-		int meta = nbt.getInteger("metadata");
+		int meta = nbt.getInteger("copyMeta");
 
 		NBTTagCompound nbtNew = null;
 		boolean hasNBT = nbt.getBoolean("hasCopyTE");

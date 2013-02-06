@@ -95,6 +95,8 @@ public class TileEntityCamoFull extends TileEntity
 
 	public void setBlockHolder(BlockHolder holder)
 	{
+		if (holder == null)
+			return;
 		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 		this.holder = holder;
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);

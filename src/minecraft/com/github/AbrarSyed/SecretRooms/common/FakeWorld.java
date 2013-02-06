@@ -1,14 +1,18 @@
 package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -25,7 +29,7 @@ public class FakeWorld extends World implements IBlockAccess
 
 	private FakeWorld(World world, WorldSettings settings)
 	{
-		super(world.getSaveHandler(), world.getWorldInfo().getWorldName(), world.provider, settings, world.theProfiler);
+		super(world.getSaveHandler(), world.getWorldInfo().getWorldName(), settings, world.provider, world.theProfiler);
 		this.world = world;
 		overrideMap = new HashMap<ChunkPosition, BlockHolder>();
 		worldInfo = world.getWorldInfo();
@@ -36,6 +40,8 @@ public class FakeWorld extends World implements IBlockAccess
 		WorldSettings settings = new WorldSettings(world.getWorldInfo());
 		return new FakeWorld(world, settings);
 	}
+	
+	// actual stuff...
 
 	public void addOverrideBlock(int x, int y, int z, BlockHolder holder)
 	{
@@ -48,6 +54,9 @@ public class FakeWorld extends World implements IBlockAccess
 		ChunkPosition position = new ChunkPosition(x, y, z);
 		overrideMap.remove(position);
 	}
+	
+	
+	// overrides...
 
 	@Override
 	public int getBlockId(int x, int y, int z)
@@ -78,6 +87,10 @@ public class FakeWorld extends World implements IBlockAccess
 		else
 			return world.getBlockMetadata(x, y, z);
 	}
+	
+	
+	// other enecessary overrides....
+	
 
 	@Override
 	public Material getBlockMaterial(int x, int y, int z)
@@ -248,12 +261,6 @@ public class FakeWorld extends World implements IBlockAccess
 	}
 
 	@Override
-	protected IChunkProvider createChunkProvider()
-	{
-		return world.getChunkProvider();
-	}
-
-	@Override
 	public Entity getEntityByID(int var1)
 	{
 		return world.getEntityByID(var1);
@@ -277,5 +284,64 @@ public class FakeWorld extends World implements IBlockAccess
 	{
 		return world.setBlock(par1, par2, par3, par4);
 	}
+
+	@Override
+	protected IChunkProvider createChunkProvider()
+	{
+		return null;
+	}
+
+	@Override
+	public int func_82734_g(int par1, int par2)
+	{
+		return world.func_82734_g(par1, par2);
+	}
+
+	/**
+	 * Will get all entities within the specified AABB excluding the one passed into it. Args: entityToExclude, aabb
+	 */
+	@Override
+	public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
+	{
+		return world.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB);
+	}
+
+	/**
+	 * Returns the y coordinate with a block in it at this x, z coordinate
+	 */
+	@Override
+	public int getHeightValue(int par1, int par2)
+	{
+		return world.getHeightValue(par1, par2);
+	}
+	
+    /**
+     * Returns saved light value without taking into account the time of day.  Either looks in the sky light map or
+     * block light map based on the enumSkyBlock arg.
+     */
+    public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
+    {
+    	return world.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
+    }
+    
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * Brightness for SkyBlock.Sky is clear white and (through color computing it is assumed) DEPENDENT ON DAYTIME.
+     * Brightness for SkyBlock.Block is yellowish and independent.
+     */
+    public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
+    {
+    	return world.getSkyBlockTypeBrightness(par1EnumSkyBlock, par2, par3, par4);
+    }
+    
+    /**
+     * Sets the light value either into the sky map or block map depending on if enumSkyBlock is set to sky or block.
+     * Args: enumSkyBlock, x, y, z, lightValue
+     */
+    public void setLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4, int par5)
+    {
+    	world.setLightValue(par1EnumSkyBlock, par2, par3, par4, par5);
+    }
 
 }

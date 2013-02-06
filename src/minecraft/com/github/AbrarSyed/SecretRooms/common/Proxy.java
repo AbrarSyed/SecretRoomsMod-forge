@@ -39,6 +39,8 @@ public class Proxy
 	@ForgeSubscribe(priority = EventPriority.HIGHEST)
 	public void onWorldLoad(Load event)
 	{
+		if (event.world instanceof FakeWorld)
+			return;
 		int dim = event.world.provider.dimensionId;
 		fakes.put(dim, FakeWorld.getFakeWorldFor(event.world));
 	}
@@ -46,6 +48,9 @@ public class Proxy
 	@ForgeSubscribe(priority = EventPriority.LOWEST)
 	public void onWorldLoad(Unload event)
 	{
+		if (event.world instanceof FakeWorld)
+			return;
+		
 		int dim = event.world.provider.dimensionId;
 		fakes.remove(dim);
 	}

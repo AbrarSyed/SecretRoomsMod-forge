@@ -140,7 +140,8 @@ public class BlockCamoFull extends BlockContainer
 		}
 		else
 		{
-			entity.setBlockHolder(new BlockHolder(world, IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]));
+			BlockHolder holder = new BlockHolder(world, IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
+			entity.setBlockHolder(holder);
 		}
 
 		if (!world.isRemote)

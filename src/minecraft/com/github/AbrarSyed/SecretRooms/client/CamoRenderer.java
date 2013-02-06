@@ -27,6 +27,8 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
+		// copied vanilla render code....
+		
 		Tessellator tessellator = Tessellator.instance;
 
 		block.setBlockBoundsForItemRender();
@@ -63,9 +65,8 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
-		// FULL BLOCK CAMO RENDERING
 		if (block instanceof BlockCamoFull)
-			return renderFullCamo(world, x, y, z, modelId, renderer, block);
+			return renderFullCamo(world, x, y, z, renderer, block);
 		else if (block instanceof BlockOneWay)
 			return renderOneSideCamo(world, x, y, z, renderer, block);
 		else
@@ -170,7 +171,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 			sideColorBlue = sideWeight;
 		}
 
-		int brightness = block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k);
+		int brightness = block.getMixedBrightnessForBlock(blockAccess, i, j, k);
 
 		for (int side = 0; side < 6; side++)
 		{
@@ -181,27 +182,27 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 				currentlyBound = true;
 			}
 
-			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j - 1, k, 0)) && side == 0)
+			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0)) && side == 0)
 			{
-				tessellator.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j - 1, k));
+				tessellator.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k));
 				tessellator.setColorOpaque_F(bottomColorRed, bottomColorGreen, bottomColorBlue);
-				renderblocks.renderBottomFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 0));
+				renderblocks.renderBottomFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(blockAccess, i, j, k, 0));
 			}
 
-			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j + 1, k, 1)) && side == 1)
+			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1)) && side == 1)
 			{
-				tessellator.setBrightness(renderblocks.renderMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j + 1, k));
+				tessellator.setBrightness(renderblocks.renderMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k));
 				tessellator.setColorOpaque_F(topR, topG, topB);
-				renderblocks.renderTopFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 1));
+				renderblocks.renderTopFace(block, (double) i, (double) j, (double) k, block.getBlockTexture(blockAccess, i, j, k, 1));
 			}
 
 			int tempTexture;
 
-			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k - 1, 2)) && side == 2)
+			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2)) && side == 2)
 			{
-				tessellator.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k - 1));
+				tessellator.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1));
 				tessellator.setColorOpaque_F(frontColorRed, frontColorGreen, frontColorBlue);
-				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 2);
+				tempTexture = block.getBlockTexture(blockAccess, i, j, k, 2);
 				renderblocks.renderEastFace(block, (double) i, (double) j, (double) k, tempTexture);
 
 				if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
@@ -212,11 +213,11 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			}
 
-			if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k + 1, 3) && side == 3)
+			if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3) && side == 3)
 			{
-				tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k + 1));
+				tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1));
 				tessellator.setColorOpaque_F(frontColorRed, frontColorGreen, frontColorBlue);
-				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 3);
+				tempTexture = block.getBlockTexture(blockAccess, i, j, k, 3);
 				renderblocks.renderWestFace(block, (double) i, (double) j, (double) k, tempTexture);
 
 				if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
@@ -226,11 +227,11 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 				}
 			}
 
-			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i - 1, j, k, 4)) && side == 4)
+			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4)) && side == 4)
 			{
-				tessellator.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i - 1, j, k));
+				tessellator.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k));
 				tessellator.setColorOpaque_F(sideColorRed, sideColorGreen, sideColorBlue);
-				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 4);
+				tempTexture = block.getBlockTexture(blockAccess, i, j, k, 4);
 				renderblocks.renderNorthFace(block, (double) i, (double) j, (double) k, tempTexture);
 
 				if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
@@ -241,11 +242,11 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 
 			}
 
-			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i + 1, j, k, 5)) && side == 5)
+			if ((renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5)) && side == 5)
 			{
-				tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i + 1, j, k));
+				tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k));
 				tessellator.setColorOpaque_F(sideColorRed, sideColorGreen, sideColorBlue);
-				tempTexture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 5);
+				tempTexture = block.getBlockTexture(blockAccess, i, j, k, 5);
 				renderblocks.renderSouthFace(block, (double) i, (double) j, (double) k, tempTexture);
 
 				if (Tessellator.instance.defaultTexture && RenderBlocks.fancyGrass && tempTexture == 3 && renderblocks.overrideBlockTexture < 0)
@@ -267,7 +268,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		return true;
 	}
 
-	public boolean renderFullCamo(IBlockAccess blockAccess, int i, int j, int k, int l, RenderBlocks renderblocks, Block block)
+	public boolean renderFullCamo(IBlockAccess blockAccess, int i, int j, int k, RenderBlocks renderblocks, Block block)
 	{
 		int rawColors = block.colorMultiplier(blockAccess, i, j, k);
 		float blockColorRed = (rawColors >> 16 & 0xff) / 255F;
@@ -282,7 +283,8 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		
 		Block fakeBlock = Block.blocksList[copyId];
 		
-		boolean terrainPNG = fakeBlock.getTextureFile().equals("/terrain.png");
+		if (copyId == SecretRooms.oneWay.blockID)
+			return renderOneSideCamo(SecretRooms.proxy.getFakeWorld(null), i, j, k, renderblocks, fakeBlock);
 
 		ForgeHooksClient.bindTexture(fakeBlock.getTextureFile(), 0);
 
@@ -332,34 +334,34 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
             var25 = sideWeight * blockColorBlue;
         }
 
-        int brightness = block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k);
+        int brightness = block.getMixedBrightnessForBlock(blockAccess, i, j, k);
 
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j - 1, k, 0))
+        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j - 1, k, 0))
         {
-            tessellator.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j - 1, k));
+            tessellator.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j - 1, k));
             tessellator.setColorOpaque_F(var17, var20, var23);
-            renderblocks.renderBottomFace(block, (double)i, (double)j, (double)k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 0));
+            renderblocks.renderBottomFace(block, (double)i, (double)j, (double)k, block.getBlockTexture(blockAccess, i, j, k, 0));
             flag = true;
         }
 
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j + 1, k, 1))
+        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j + 1, k, 1))
         {
-            tessellator.setBrightness(renderblocks.renderMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j + 1, k));
+            tessellator.setBrightness(renderblocks.renderMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j + 1, k));
             tessellator.setColorOpaque_F(var14, var15, var16);
-            renderblocks.renderTopFace(block, (double)i, (double)j, (double)k, block.getBlockTexture(renderblocks.blockAccess, i, j, k, 1));
+            renderblocks.renderTopFace(block, (double)i, (double)j, (double)k, block.getBlockTexture(blockAccess, i, j, k, 1));
             flag = true;
         }
 
         int texture;
 
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k - 1, 2))
+        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k - 1, 2))
         {
-            tessellator.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k - 1));
+            tessellator.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j, k - 1));
             tessellator.setColorOpaque_F(var18, var21, var24);
-            texture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 2);
+            texture = block.getBlockTexture(blockAccess, i, j, k, 2);
             renderblocks.renderEastFace(block, (double)i, (double)j, (double)k, texture);
 
-            if (terrainPNG && renderblocks.fancyGrass && texture == 3 && renderblocks.overrideBlockTexture < 0)
+            if (renderblocks.fancyGrass && texture == 3 && renderblocks.overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(var18 * blockColorRed, var21 * blockColorGreen, var24 * blockColorBlue);
                 renderblocks.renderEastFace(block, (double)i, (double)j, (double)k, 38);
@@ -368,14 +370,14 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
             flag = true;
         }
 
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i, j, k + 1, 3))
+        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i, j, k + 1, 3))
         {
-            tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i, j, k + 1));
+            tessellator.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i, j, k + 1));
             tessellator.setColorOpaque_F(var18, var21, var24);
-            texture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 3);
+            texture = block.getBlockTexture(blockAccess, i, j, k, 3);
             renderblocks.renderWestFace(block, (double)i, (double)j, (double)k, texture);
 
-            if (terrainPNG && renderblocks.fancyGrass && texture == 3 && renderblocks.overrideBlockTexture < 0)
+            if (renderblocks.fancyGrass && texture == 3 && renderblocks.overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(var18 * blockColorRed, var21 * blockColorGreen, var24 * blockColorBlue);
                 renderblocks.renderWestFace(block, (double)i, (double)j, (double)k, 38);
@@ -384,14 +386,14 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
             flag = true;
         }
 
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i - 1, j, k, 4))
+        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i - 1, j, k, 4))
         {
-            tessellator.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i - 1, j, k));
+            tessellator.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i - 1, j, k));
             tessellator.setColorOpaque_F(var19, var22, var25);
-            texture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 4);
+            texture = block.getBlockTexture(blockAccess, i, j, k, 4);
             renderblocks.renderNorthFace(block, (double)i, (double)j, (double)k, texture);
 
-            if (terrainPNG && renderblocks.fancyGrass && texture == 3 && renderblocks.overrideBlockTexture < 0)
+            if (renderblocks.fancyGrass && texture == 3 && renderblocks.overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(var19 * blockColorRed, var22 * blockColorGreen, var25 * blockColorBlue);
                 renderblocks.renderNorthFace(block, (double)i, (double)j, (double)k, 38);
@@ -400,14 +402,14 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
             flag = true;
         }
 
-        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(renderblocks.blockAccess, i + 1, j, k, 5))
+        if (renderblocks.renderAllFaces || block.shouldSideBeRendered(blockAccess, i + 1, j, k, 5))
         {
-            tessellator.setBrightness(renderblocks.renderMaxX < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderblocks.blockAccess, i + 1, j, k));
+            tessellator.setBrightness(renderblocks.renderMaxX < 1.0D ? brightness : block.getMixedBrightnessForBlock(blockAccess, i + 1, j, k));
             tessellator.setColorOpaque_F(var19, var22, var25);
-            texture = block.getBlockTexture(renderblocks.blockAccess, i, j, k, 5);
+            texture = block.getBlockTexture(blockAccess, i, j, k, 5);
             renderblocks.renderSouthFace(block, (double)i, (double)j, (double)k, texture);
 
-            if (terrainPNG && renderblocks.fancyGrass && texture == 3 && renderblocks.overrideBlockTexture < 0)
+            if (renderblocks.fancyGrass && texture == 3 && renderblocks.overrideBlockTexture < 0)
             {
                 tessellator.setColorOpaque_F(var19 * blockColorRed, var22 * blockColorGreen, var25 * blockColorBlue);
                 renderblocks.renderSouthFace(block, (double)i, (double)j, (double)k, 38);
