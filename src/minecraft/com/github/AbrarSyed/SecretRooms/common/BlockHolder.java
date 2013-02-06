@@ -34,7 +34,7 @@ public class BlockHolder
 		}
 	}
 
-	private BlockHolder(int ID, int meta, NBTTagCompound nbt)
+	public BlockHolder(int ID, int meta, NBTTagCompound nbt)
 	{
 		this.nbt = nbt;
 		blockID = ID;

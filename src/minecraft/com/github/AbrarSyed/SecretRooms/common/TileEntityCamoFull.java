@@ -32,10 +32,30 @@ public class TileEntityCamoFull extends TileEntity
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound)
+	public void readFromNBT(NBTTagCompound nbt)
 	{
-		super.readFromNBT(nbttagcompound);
-		holder = BlockHolder.buildFromNBT(nbttagcompound);
+		super.readFromNBT(nbt);
+		
+		// backwards compat...
+		if (nbt.hasKey("hasCoords"))
+		{
+			boolean hasCoords = nbt.getBoolean("hasCoords");
+			if (hasCoords)
+			{
+				int x = nbt.getInteger("copyCoordX");
+				int y = nbt.getInteger("copyCoordY");
+				int z = nbt.getInteger("copyCoordZ");
+				
+				holder = new BlockHolder(worldObj, x, y, z);
+			}
+			else
+			{
+				int id = nbt.getInteger("copyID");
+				holder = new BlockHolder(id, 0, null);
+			}
+		}
+		else
+			holder = BlockHolder.buildFromNBT(nbt);
 	}
 
 	@Override
