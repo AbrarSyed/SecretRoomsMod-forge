@@ -133,6 +133,9 @@ public class BlockCamoFull extends BlockContainer
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
 
 		TileEntity test = world.getBlockTileEntity(IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
+		
+		if (entity == null)
+			return;
 
 		if (test instanceof TileEntityCamoFull)
 		{
