@@ -111,7 +111,10 @@ public class TileEntityCamoFull extends TileEntity
 	{
 		if (holder == null)
 			return;
-		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
+		FakeWorld fake = SecretRooms.proxy.getFakeWorld(worldObj);
+		if (fake != null)
+			fake.addOverrideBlock(xCoord, yCoord, zCoord, holder);
+
 		this.holder = holder;
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
