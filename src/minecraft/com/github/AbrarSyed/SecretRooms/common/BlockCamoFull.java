@@ -128,14 +128,12 @@ public class BlockCamoFull extends BlockContainer
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k)
 	{
+		super.onBlockAdded(world, i, j, k);
 		// CAMO STUFF
 		int[] IdAndCoords = getIdCamoStyle(world, i, j, k);
 		BlockHolder holder;
 
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
-		
-		if (entity == null)
-			return;
 		
 		if (Arrays.equals(IdAndCoords, new int[] { 1, 0, 0, 0 }))
 			holder = new BlockHolder(1, 0, null);
