@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -52,7 +53,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public int getLightOpacity(World world, int x, int y, int z)
 	{
-		return world.getBlockMetadata(x, y, z) == 1 ? 0 : 15;
+		return world.getBlockMetadata(x, y, z) == 1 ? 0 : 255;
 	}
 
 	@Override
@@ -133,8 +134,42 @@ public class BlockOneWay extends BlockContainer
 
 		int texture = entityHere.getTexture();
 
-		if (texture == 0 && metadata == 1 || texture == 3 || texture == 38)
-			return Block.grass.colorMultiplier(iblockaccess, x, y, z);
+		if (entityHere.getTexturePath().equals("/terrain.png"))
+		{
+			// grassed
+			if (texture == 0 || texture == 3 || texture == 38)
+				return Block.grass.colorMultiplier(iblockaccess, x, y, z);
+
+			// normal leaves
+			if (texture == 52 || texture == 53)
+			{
+				int var6 = 0;
+				int var7 = 0;
+				int var8 = 0;
+
+				for (int var9 = -1; var9 <= 1; ++var9)
+				{
+					for (int var10 = -1; var10 <= 1; ++var10)
+					{
+						int var11 = iblockaccess.getBiomeGenForCoords(x + var10, z + var9).getBiomeFoliageColor();
+						var6 += (var11 & 16711680) >> 16;
+						var7 += (var11 & 65280) >> 8;
+						var8 += var11 & 255;
+					}
+				}
+
+				return (var6 / 9 & 255) << 16 | (var7 / 9 & 255) << 8 | var8 / 9 & 255;
+			}
+
+			// pine leaves
+			if (texture == 132 || texture == 133)
+				return ColorizerFoliage.getFoliageColorPine();
+
+			// birch leaves
+			if (texture == 196 || texture == 197)
+				return ColorizerFoliage.getFoliageColorBirch();
+
+		}
 
 		return 0xffffff;
 	}
