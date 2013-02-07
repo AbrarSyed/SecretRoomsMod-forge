@@ -124,7 +124,7 @@ public class TileEntityCamoFull extends TileEntity
 	 */
 	@Override
 	public void invalidate()
-	{
+	{	
 		FakeWorld fake = SecretRooms.proxy.getFakeWorld(worldObj);
 		if (fake != null)
 			fake.removeOverrideBlock(xCoord, yCoord, zCoord);

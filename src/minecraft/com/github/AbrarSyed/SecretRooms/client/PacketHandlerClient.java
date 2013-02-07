@@ -83,16 +83,15 @@ public class PacketHandlerClient implements IPacketHandler
 			{
 
 				if (!world.blockExists(coords[0], coords[1], coords[2]))
-					// System.out.println(player.username+"-SET: *null-block*");
 					return;
 
 				entity = new TileEntityCamo();
 				entity.xCoord = coords[0];
 				entity.yCoord = coords[1];
 				entity.zCoord = coords[2];
-				world.addTileEntity(entity);
+				entity.worldObj = world;
+				entity.validate();
 
-				// System.out.println(player.username+"-SET: *null-entity*");
 				return;
 			}
 
