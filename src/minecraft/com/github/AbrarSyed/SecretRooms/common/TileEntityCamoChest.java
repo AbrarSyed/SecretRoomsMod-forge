@@ -28,12 +28,6 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 	/** Contains the chest tile located adjacent to this one (if any) */
 	public TileEntityCamoChest	adjacentChestZPosition;
 
-	/** The current angle of the lid (between 0 and 1) */
-	public float				lidAngle;
-
-	/** The angle of the lid last tick */
-	public float				prevLidAngle;
-
 	/** The number of players currently using this chest */
 	public int					numUsingPlayers;
 
@@ -264,73 +258,6 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 			if (adjacentChestXNeg != null)
 			{
 				adjacentChestXNeg.updateContainingBlockInfo();
-			}
-		}
-	}
-
-	/**
-	 * Allows the entity to update its state. Overridden in most subclasses,
-	 * e.g. the mob spawner uses this to count ticks and creates a new spawn
-	 * inside its implementation.
-	 */
-	@Override
-	public void updateEntity()
-	{
-		super.updateEntity();
-		checkForAdjacentChests();
-
-		if (++ticksSinceSync % 20 * 4 == 0)
-		{
-			;
-		}
-
-		prevLidAngle = lidAngle;
-		float var1 = 0.1F;
-		if (numUsingPlayers > 0 && lidAngle == 0.0F && adjacentChestZNeg == null && adjacentChestXNeg == null)
-		{
-			if (adjacentChestZPosition != null)
-			{
-			}
-
-			if (adjacentChestXPos != null)
-			{
-			}
-		}
-
-		if (numUsingPlayers == 0 && lidAngle > 0.0F || numUsingPlayers > 0 && lidAngle < 1.0F)
-		{
-			float var8 = lidAngle;
-
-			if (numUsingPlayers > 0)
-			{
-				lidAngle += var1;
-			}
-			else
-			{
-				lidAngle -= var1;
-			}
-
-			if (lidAngle > 1.0F)
-			{
-				lidAngle = 1.0F;
-			}
-
-			float var3 = 0.5F;
-
-			if (lidAngle < var3 && var8 >= var3 && adjacentChestZNeg == null && adjacentChestXNeg == null)
-			{
-				if (adjacentChestZPosition != null)
-				{
-				}
-
-				if (adjacentChestXPos != null)
-				{
-				}
-			}
-
-			if (lidAngle < 0.0F)
-			{
-				lidAngle = 0.0F;
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -57,7 +58,7 @@ public class BlockCamoFull extends BlockContainer
 	}
 
 	@Override
-	public int getLightOpacity(World world, int x, int y, int z)
+	public final int getLightOpacity(World world, int x, int y, int z)
 	{
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 		FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
@@ -74,20 +75,20 @@ public class BlockCamoFull extends BlockContainer
 	}
 
 	@Override
-	public boolean isOpaqueCube()
+	public final boolean isOpaqueCube()
 	{
 		return false;
 	}
 
 	@Override
-	public int getRenderType()
+	public final int getRenderType()
 	{
 		return SecretRooms.camoRenderId;
 	}
 
 	@Override
 	@SideOnly(value = Side.CLIENT)
-	public int getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
+	public final int getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
 	{
 		if (!SecretRooms.displayCamo)
 			return getBlockTextureFromSide(dir);
@@ -129,32 +130,31 @@ public class BlockCamoFull extends BlockContainer
 	{
 		// CAMO STUFF
 		int[] IdAndCoords = getIdCamoStyle(world, i, j, k);
+		BlockHolder holder;
 
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
-
-		TileEntity test = world.getBlockTileEntity(IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
 		
 		if (entity == null)
 			return;
+		
+		if (Arrays.equals(IdAndCoords, new int[] { 1, 0, 0, 0 }))
+			holder = new BlockHolder(1, 0, null);
 
+		TileEntity test = world.getBlockTileEntity(IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
+		
 		if (test instanceof TileEntityCamoFull)
-		{
-			entity.setBlockHolder(((TileEntityCamoFull) test).getBlockHolder());
-		}
+			holder = ((TileEntityCamoFull) test).getBlockHolder();
 		else
-		{
-			BlockHolder holder = new BlockHolder(world, IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
-			entity.setBlockHolder(holder);
-		}
+			holder = new BlockHolder(world, IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
+
+		entity.setBlockHolder(holder);
 
 		if (!world.isRemote)
-		{
 			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
-		}
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
+	public final int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
 	{
 		if (!SecretRooms.displayCamo)
 			return super.colorMultiplier(par1IBlockAccess, x, y, z);
@@ -171,7 +171,7 @@ public class BlockCamoFull extends BlockContainer
 			return super.colorMultiplier(par1IBlockAccess, x, y, z);
 
 		Block fakeBlock = Block.blocksList[id];
-		
+
 		return fakeBlock.colorMultiplier(fake, x, y, z);
 	}
 
@@ -271,12 +271,12 @@ public class BlockCamoFull extends BlockContainer
 			}
 			else
 			{
-				id = new int[] { 1, 0, 0, 0, 0 };
+				id = new int[] { 1, 0, 0, 0 };
 			}
 		}
 
 		if (id[0] == 0)
-			return new int[] { 1, 0, 0, 0, 0 };
+			return new int[] { 1, 0, 0, 0 };
 
 		return id;
 	}
@@ -339,15 +339,13 @@ public class BlockCamoFull extends BlockContainer
 				return new int[] { id, x, y, z };
 			else
 			{
-				block.setBlockBoundsBasedOnState(world, x, y, z);
-				double[] bounds = new double[] { block.getBlockBoundsMinX(), block.getBlockBoundsMinY(), block.getBlockBoundsMinZ(), block.getBlockBoundsMaxX(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxZ() };
 
-				if (bounds[0] == 0 &&
-						bounds[1] == 0 &&
-						bounds[2] == 0 &&
-						bounds[3] == 1 &&
-						bounds[4] == 1 &&
-						bounds[5] == 1)
+				if (block.getBlockBoundsMinX() == 0 &&
+						block.getBlockBoundsMinY() == 0 &&
+						block.getBlockBoundsMinZ() == 0 &&
+						block.getBlockBoundsMaxX() == 1 &&
+						block.getBlockBoundsMaxY() == 1 &&
+						block.getBlockBoundsMaxZ() == 1)
 					return new int[] { id, x, y, z };
 				else
 					return new int[] { 0, 0, 0, 0 };

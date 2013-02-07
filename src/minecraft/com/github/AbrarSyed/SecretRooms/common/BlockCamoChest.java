@@ -29,7 +29,6 @@ public class BlockCamoChest extends BlockCamoFull
 		super(par1);
 		setHardness(1.5F);
 		setCreativeTab(SecretRooms.tab);
-		setLightOpacity(255);
 		setTextureFile(SecretRooms.textureFile);
 	}
 

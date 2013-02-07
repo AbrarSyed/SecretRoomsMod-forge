@@ -56,6 +56,8 @@ public class TileEntityCamoFull extends TileEntity
 		}
 		else
 			holder = BlockHolder.buildFromNBT(nbt);
+		
+		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 	}
 
 	@Override
@@ -66,7 +68,6 @@ public class TileEntityCamoFull extends TileEntity
 		{
 			holder.writeToNBT(nbttagcompound);
 		}
-		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 	}
 
 	/**
@@ -106,13 +107,6 @@ public class TileEntityCamoFull extends TileEntity
 		return packet;
 	}
 
-	@Override
-	public boolean shouldRefresh(int oldID, int newID, int oldMeta, int newMeta, World world, int x, int y, int z)
-	{
-		SecretRooms.proxy.getFakeWorld(world).removeOverrideBlock(x, y, z);
-		return true;
-	}
-
 	public void setBlockHolder(BlockHolder holder)
 	{
 		if (holder == null)
@@ -120,6 +114,16 @@ public class TileEntityCamoFull extends TileEntity
 		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 		this.holder = holder;
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+	}
+	
+	/**
+	 * invalidates a tile entity
+	 */
+	@Override
+	public void invalidate()
+	{
+		SecretRooms.proxy.getFakeWorld(worldObj).removeOverrideBlock(xCoord, yCoord, zCoord);
+		super.invalidate();
 	}
 
 	public BlockHolder getBlockHolder()
