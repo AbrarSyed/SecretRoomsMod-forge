@@ -312,7 +312,7 @@ public class SecretRooms
 		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "00X", "00X", "00X", 'X', camoPaste, '0', Block.glass });
 		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "XXX", "000", "000", 'X', camoPaste, '0', Block.glass });
 		GameRegistry.addRecipe(new ItemStack(oneWay, 9), new Object[] { "000", "000", "XXX", 'X', camoPaste, '0', Block.glass });
-		ModLoader.addShapelessRecipe(new ItemStack(oneWay, 1), new Object[] { camoPaste, Block.glass });
+		GameRegistry.addShapelessRecipe(new ItemStack(oneWay, 1), new Object[] { camoPaste, Block.glass });
 
 		// CamoGhost
 		GameRegistry.addRecipe(new ItemStack(camoGhost, 4), new Object[] { "X0X", "0 0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh });
