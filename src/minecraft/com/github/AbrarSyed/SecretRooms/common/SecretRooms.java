@@ -249,7 +249,7 @@ public class SecretRooms
 	@ServerStarting
 	public void registerCommand(FMLServerStartingEvent e)
 	{
-		e.registerServerCommand(new CommandShowSecretBlocks());
+		e.registerServerCommand(new CommandShow());
 	}
 
 	public static void addrecipes()
