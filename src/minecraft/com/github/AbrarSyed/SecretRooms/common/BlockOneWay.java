@@ -28,7 +28,7 @@ public class BlockOneWay extends BlockContainer
 		super(i, j, Material.wood);
 		setHardness(1.0F);
 		setStepSound(Block.soundWoodFootstep);
-		setLightOpacity(15);
+		setLightOpacity(0);
 		setCreativeTab(SecretRooms.tab);
 	}
 
