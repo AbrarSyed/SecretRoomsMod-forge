@@ -6,7 +6,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.BlockGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -134,21 +133,29 @@ public class BlockCamoFull extends BlockContainer
 		BlockHolder holder;
 
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
-		
+
 		if (Arrays.equals(IdAndCoords, new int[] { 1, 0, 0, 0 }))
+		{
 			holder = new BlockHolder(1, 0, null);
+		}
 
 		TileEntity test = world.getBlockTileEntity(IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
-		
+
 		if (test instanceof TileEntityCamoFull)
+		{
 			holder = ((TileEntityCamoFull) test).getBlockHolder();
+		}
 		else
+		{
 			holder = new BlockHolder(world, IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
+		}
 
 		entity.setBlockHolder(holder);
 
 		if (!world.isRemote)
+		{
 			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
+		}
 	}
 
 	@Override

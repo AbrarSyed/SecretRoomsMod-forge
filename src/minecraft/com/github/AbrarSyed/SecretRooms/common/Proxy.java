@@ -13,12 +13,12 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 public class Proxy
 {
 	private HashMap<Integer, FakeWorld>	fakes;
-	private HashSet<String>				towardSet;
+	private HashSet<String>				awaySet;
 
 	public Proxy()
 	{
 		fakes = new HashMap<Integer, FakeWorld>();
-		towardSet = new HashSet<String>();
+		awaySet = new HashSet<String>();
 	}
 
 	public void loadRenderStuff()
@@ -50,7 +50,7 @@ public class Proxy
 	{
 		if (event.world instanceof FakeWorld)
 			return;
-		
+
 		int dim = event.world.provider.dimensionId;
 		fakes.remove(dim);
 	}
@@ -63,18 +63,18 @@ public class Proxy
 
 	public void onKeyPress(String username)
 	{
-		if (towardSet.contains(username))
+		if (awaySet.contains(username))
 		{
-			towardSet.remove(username);
+			awaySet.remove(username);
 		}
 		else
 		{
-			towardSet.add(username);
+			awaySet.add(username);
 		}
 	}
 
 	public boolean getFaceAway(String username)
 	{
-		return towardSet.contains(username);
+		return awaySet.contains(username);
 	}
 }

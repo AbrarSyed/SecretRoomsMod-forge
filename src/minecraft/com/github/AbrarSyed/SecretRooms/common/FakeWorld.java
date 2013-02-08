@@ -12,7 +12,6 @@ import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -40,7 +39,7 @@ public class FakeWorld extends World implements IBlockAccess
 		WorldSettings settings = new WorldSettings(world.getWorldInfo());
 		return new FakeWorld(world, settings);
 	}
-	
+
 	// actual stuff...
 
 	public void addOverrideBlock(int x, int y, int z, BlockHolder holder)
@@ -54,8 +53,7 @@ public class FakeWorld extends World implements IBlockAccess
 		ChunkPosition position = new ChunkPosition(x, y, z);
 		overrideMap.remove(position);
 	}
-	
-	
+
 	// overrides...
 
 	@Override
@@ -87,10 +85,8 @@ public class FakeWorld extends World implements IBlockAccess
 		else
 			return world.getBlockMetadata(x, y, z);
 	}
-	
-	
+
 	// other enecessary overrides....
-	
 
 	@Override
 	public Material getBlockMaterial(int x, int y, int z)
@@ -314,34 +310,36 @@ public class FakeWorld extends World implements IBlockAccess
 	{
 		return world.getHeightValue(par1, par2);
 	}
-	
-    /**
-     * Returns saved light value without taking into account the time of day.  Either looks in the sky light map or
-     * block light map based on the enumSkyBlock arg.
-     */
-    public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
-    {
-    	return world.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
-    }
-    
-    @SideOnly(Side.CLIENT)
 
-    /**
-     * Brightness for SkyBlock.Sky is clear white and (through color computing it is assumed) DEPENDENT ON DAYTIME.
-     * Brightness for SkyBlock.Block is yellowish and independent.
-     */
-    public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
-    {
-    	return world.getSkyBlockTypeBrightness(par1EnumSkyBlock, par2, par3, par4);
-    }
-    
-    /**
-     * Sets the light value either into the sky map or block map depending on if enumSkyBlock is set to sky or block.
-     * Args: enumSkyBlock, x, y, z, lightValue
-     */
-    public void setLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4, int par5)
-    {
-    	world.setLightValue(par1EnumSkyBlock, par2, par3, par4, par5);
-    }
+	/**
+	 * Returns saved light value without taking into account the time of day. Either looks in the sky light map or
+	 * block light map based on the enumSkyBlock arg.
+	 */
+	@Override
+	public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
+	{
+		return world.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	/**
+	 * Brightness for SkyBlock.Sky is clear white and (through color computing it is assumed) DEPENDENT ON DAYTIME.
+	 * Brightness for SkyBlock.Block is yellowish and independent.
+	 */
+	public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
+	{
+		return world.getSkyBlockTypeBrightness(par1EnumSkyBlock, par2, par3, par4);
+	}
+
+	/**
+	 * Sets the light value either into the sky map or block map depending on if enumSkyBlock is set to sky or block.
+	 * Args: enumSkyBlock, x, y, z, lightValue
+	 */
+	@Override
+	public void setLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4, int par5)
+	{
+		world.setLightValue(par1EnumSkyBlock, par2, par3, par4, par5);
+	}
 
 }

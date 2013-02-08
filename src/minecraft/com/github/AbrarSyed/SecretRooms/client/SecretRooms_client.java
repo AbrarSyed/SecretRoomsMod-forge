@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -89,6 +90,10 @@ public class SecretRooms_client extends Proxy
 	@Override
 	public FakeWorld getFakeWorld(World world)
 	{
+		if (fake == null)
+		{
+			fake = FakeWorld.getFakeWorldFor(Minecraft.getMinecraft().theWorld);
+		}
 		return fake;
 	}
 

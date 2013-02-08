@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 /**
  * @author AbrarSyed
@@ -35,7 +34,7 @@ public class TileEntityCamoFull extends TileEntity
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		
+
 		// backwards compat...
 		if (nbt.hasKey("hasCoords"))
 		{
@@ -45,7 +44,7 @@ public class TileEntityCamoFull extends TileEntity
 				int x = nbt.getInteger("copyCoordX");
 				int y = nbt.getInteger("copyCoordY");
 				int z = nbt.getInteger("copyCoordZ");
-				
+
 				holder = new BlockHolder(worldObj, x, y, z);
 			}
 			else
@@ -55,8 +54,10 @@ public class TileEntityCamoFull extends TileEntity
 			}
 		}
 		else
+		{
 			holder = BlockHolder.buildFromNBT(nbt);
-		
+		}
+
 		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 	}
 
@@ -113,21 +114,25 @@ public class TileEntityCamoFull extends TileEntity
 			return;
 		FakeWorld fake = SecretRooms.proxy.getFakeWorld(worldObj);
 		if (fake != null)
+		{
 			fake.addOverrideBlock(xCoord, yCoord, zCoord, holder);
+		}
 
 		this.holder = holder;
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
-	
+
 	/**
 	 * invalidates a tile entity
 	 */
 	@Override
 	public void invalidate()
-	{	
+	{
 		FakeWorld fake = SecretRooms.proxy.getFakeWorld(worldObj);
 		if (fake != null)
+		{
 			fake.removeOverrideBlock(xCoord, yCoord, zCoord);
+		}
 		super.invalidate();
 	}
 

@@ -127,7 +127,7 @@ public class BlockOneWay extends BlockContainer
 			return 0xffffff;
 
 		TileEntityCamo entityHere = (TileEntityCamo) iblockaccess.getBlockTileEntity(x, y, z);
-		int metadata = iblockaccess.getBlockMetadata(x, y, z);
+		iblockaccess.getBlockMetadata(x, y, z);
 
 		if (entityHere == null)
 			return 0xffffff;
