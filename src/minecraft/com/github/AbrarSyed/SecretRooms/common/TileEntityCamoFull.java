@@ -38,14 +38,12 @@ public class TileEntityCamoFull extends TileEntity
 		// backwards compat...
 		if (nbt.hasKey("hasCoords"))
 		{
-			boolean hasCoords = nbt.getBoolean("hasCoords");
+			hasCoords = nbt.getBoolean("hasCoords");
 			if (hasCoords)
 			{
-				int x = nbt.getInteger("copyCoordX");
-				int y = nbt.getInteger("copyCoordY");
-				int z = nbt.getInteger("copyCoordZ");
-
-				holder = new BlockHolder(worldObj, x, y, z);
+				tempX = nbt.getInteger("copyCoordX");
+				tempY = nbt.getInteger("copyCoordY");
+				tempZ = nbt.getInteger("copyCoordZ");
 			}
 			else
 			{
@@ -57,8 +55,6 @@ public class TileEntityCamoFull extends TileEntity
 		{
 			holder = BlockHolder.buildFromNBT(nbt);
 		}
-
-		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 	}
 
 	@Override
@@ -135,6 +131,18 @@ public class TileEntityCamoFull extends TileEntity
 		}
 		super.invalidate();
 	}
+	
+	@Override
+	public void validate()
+	{
+		if (hasCoords)
+		{
+			hasCoords = false;
+			holder = new BlockHolder(worldObj, tempX, tempY, tempZ);
+			tempX = tempY = tempZ = 0;
+		}
+		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
+	}
 
 	public BlockHolder getBlockHolder()
 	{
@@ -147,5 +155,10 @@ public class TileEntityCamoFull extends TileEntity
 	}
 
 	private BlockHolder	holder;
+	
+	private boolean hasCoords;
+	private int tempX;
+	private int tempY;
+	private int tempZ;
 
 }
