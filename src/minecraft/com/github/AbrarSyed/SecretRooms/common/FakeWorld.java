@@ -28,7 +28,7 @@ public class FakeWorld extends World implements IBlockAccess
 
 	private FakeWorld(World world, WorldSettings settings)
 	{
-		super(world.getSaveHandler(), world.getWorldInfo().getWorldName(), settings, world.provider, world.theProfiler);
+		super(world.getSaveHandler(), "SRM_FAKE_"+world.getWorldInfo().getWorldName(), settings, null, world.theProfiler);
 		this.world = world;
 		overrideMap = new HashMap<ChunkPosition, BlockHolder>();
 		worldInfo = world.getWorldInfo();
