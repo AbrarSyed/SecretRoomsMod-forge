@@ -108,7 +108,7 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 	@Override
 	public String getInvName()
 	{
-		return "container.Camochest";
+		return "container.CamoChest";
 	}
 
 	/**
@@ -177,14 +177,20 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 
 	/**
 	 * Called when a client event is received with the event number and argument, see World.sendClientEvent
+	 * @return 
 	 */
 	@Override
-	public void receiveClientEvent(int par1, int par2)
+	public boolean receiveClientEvent(int par1, int par2)
 	{
-		if (par1 == 1)
-		{
-			numUsingPlayers = par2;
-		}
+        if (par1 == 1)
+        {
+            this.numUsingPlayers = par2;
+            return true;
+        }
+        else
+        {
+            return super.receiveClientEvent(par1, par2);
+        }
 	}
 
 	@Override
@@ -199,5 +205,23 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 	{
 		--numUsingPlayers;
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, SecretRooms.camoChest.blockID, 1, numUsingPlayers);
+	}
+
+	/**
+	 * hasName
+	 */
+	@Override
+	public boolean func_94042_c()
+	{
+		return true;
+	}
+
+	/**
+	 * can stack go in slot i
+	 */
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack)
+	{
+		return true;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -25,7 +26,6 @@ public class BlockCamoFull extends BlockContainer
 	protected BlockCamoFull(int par1)
 	{
 		super(par1, Material.wood);
-		blockIndexInTexture = 0;
 		setLightOpacity(255);
 		setCreativeTab(SecretRooms.tab);
 	}
@@ -33,7 +33,6 @@ public class BlockCamoFull extends BlockContainer
 	protected BlockCamoFull(int par1, Material material)
 	{
 		super(par1, material);
-		blockIndexInTexture = 0;
 		setLightOpacity(255);
 		setCreativeTab(SecretRooms.tab);
 	}
@@ -55,6 +54,12 @@ public class BlockCamoFull extends BlockContainer
 	{
 		return 1;
 	}
+	
+    @SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+        this.field_94336_cN = par1IconRegister.func_94245_a(SecretRooms.TEXTURE_BLOCK_BASE);
+    }
 
 	@Override
 	public final int getLightOpacity(World world, int x, int y, int z)
