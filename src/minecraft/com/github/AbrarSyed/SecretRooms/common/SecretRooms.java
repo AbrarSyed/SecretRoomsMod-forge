@@ -32,10 +32,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * @author AbrarSyed
  */
-@NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.5,)", clientPacketHandlerSpec = @SidedPacketHandler(channels = {
+@NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.6,)", clientPacketHandlerSpec = @SidedPacketHandler(channels = {
 		"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = {
 		"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
-@Mod(modid = SecretRooms.modid, name = "SecretRoomsMod", version = "4.5.0")
+@Mod(modid = SecretRooms.modid, name = "SecretRoomsMod", version = "4.6.0")
 public class SecretRooms
 {
 	public static final String		modid					= "SecretRoomsMod";
