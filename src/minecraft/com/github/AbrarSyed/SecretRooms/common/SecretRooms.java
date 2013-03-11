@@ -166,7 +166,7 @@ public class SecretRooms
 				.setUnlocalizedName("mod_SRM.SecretIronDoorBlock");
 
 		// Camo Paste
-		camoPaste = new ItemCamo(ids[9])
+		camoPaste = new ItemCamoPaste(ids[9])
 				.setUnlocalizedName("mod_SRM.CamoflaugePaste");
 
 		// FullCamoBlocks

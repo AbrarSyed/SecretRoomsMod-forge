@@ -3,6 +3,10 @@ package com.github.AbrarSyed.SecretRooms.common;
 import java.util.Iterator;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 /**
@@ -25,17 +30,13 @@ public class BlockCamoChest extends BlockCamoFull
 		super(par1);
 		setHardness(1.5F);
 		setCreativeTab(SecretRooms.tab);
-		setTextureFile(SecretRooms.textureFile);
 	}
-
-	@Override
-	public int getBlockTextureFromSide(int i)
-	{
-		if (i == 3 || i == 2)
-			return 2;
-
-		return 3;
-	}
+	
+    @SideOnly(Side.CLIENT)
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+    	this.field_94336_cN = par1IconRegister.func_94245_a(SecretRooms.TEXTURE_BLOCK_CHEST);
+    }
 
 	/**
 	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
@@ -124,19 +125,22 @@ public class BlockCamoChest extends BlockCamoFull
 	 */
 	public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
 	{
-		Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
-		EntityOcelot var6;
+        Iterator iterator = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().getAABB((double)par1, (double)(par2 + 1), (double)par3, (double)(par1 + 1), (double)(par2 + 2), (double)(par3 + 1))).iterator();
+        EntityOcelot entityocelot;
 
-		do
-		{
-			if (!var4.hasNext())
-				return false;
+        do
+        {
+            if (!iterator.hasNext())
+            {
+                return false;
+            }
 
-			EntityOcelot var5 = (EntityOcelot) var4.next();
-			var6 = var5;
-		} while (!var6.isSitting());
+            EntityOcelot entityocelot1 = (EntityOcelot)iterator.next();
+            entityocelot = (EntityOcelot)entityocelot1;
+        }
+        while (!entityocelot.isSitting());
 
-		return true;
+        return true;
 	}
 
 }

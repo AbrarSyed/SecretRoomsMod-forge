@@ -2,8 +2,13 @@ package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -16,18 +21,29 @@ import net.minecraft.world.World;
  */
 public class BlockCamoStair extends BlockCamoFull
 {
+	private static final int[][]	stairDirections	= new int[][] {
+													{ 2, 6 },
+													{ 3, 7 },
+													{ 2, 3 },
+													{ 6, 7 },
+													{ 0, 4 },
+													{ 1, 5 },
+													{ 0, 1 },
+													{ 4, 5 }
+													};
 
 	protected BlockCamoStair(int par1)
 	{
 		super(par1);
 		setHardness(1.5F);
 		setLightOpacity(15);
-		setTextureFile(SecretRooms.textureFile);
-		blockIndexInTexture = 4;
 	}
 
-	private static final int[][]	stairDirections	= new int[][] { { 2, 6 }, { 3, 7 }, { 2, 3 }, { 6, 7 }, { 0, 4 }, { 1, 5 }, { 0, 1 }, { 4, 5 } };
-	private boolean					field_72156_cr	= false;
+	@SideOnly(Side.CLIENT)
+	public void func_94332_a(IconRegister register)
+	{
+		this.field_94336_cN = register.func_94245_a(SecretRooms.TEXTURE_BLOCK_STAIR);
+	}
 
 	/**
 	 * Updates the blocks bounds based on its current state. Args: world, x, y, z
@@ -42,7 +58,7 @@ public class BlockCamoStair extends BlockCamoFull
 	 * Sets teh special colliding bounding box necessary for stairs
 	 */
 	@Override
-	public void addCollidingBlockToList(World world, int x, int y, int z, AxisAlignedBB par5AxisAlignedBB, List list, Entity entity)
+	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB par5AxisAlignedBB, List list, Entity entity)
 	{
 		int var8 = world.getBlockMetadata(x, y, z);
 		int var9 = var8 & 3;
@@ -60,27 +76,27 @@ public class BlockCamoStair extends BlockCamoFull
 		}
 
 		setBlockBounds(0.0F, var10, 0.0F, 1.0F, var11, 1.0F);
-		super.addCollidingBlockToList(world, x, y, z, par5AxisAlignedBB, list, entity);
+		super.addCollisionBoxesToList(world, x, y, z, par5AxisAlignedBB, list, entity);
 
 		if (var9 == 0)
 		{
 			setBlockBounds(0.5F, var12, 0.0F, 1.0F, var13, 1.0F);
-			super.addCollidingBlockToList(world, x, y, z, par5AxisAlignedBB, list, entity);
+			super.addCollisionBoxesToList(world, x, y, z, par5AxisAlignedBB, list, entity);
 		}
 		else if (var9 == 1)
 		{
 			setBlockBounds(0.0F, var12, 0.0F, 0.5F, var13, 1.0F);
-			super.addCollidingBlockToList(world, x, y, z, par5AxisAlignedBB, list, entity);
+			super.addCollisionBoxesToList(world, x, y, z, par5AxisAlignedBB, list, entity);
 		}
 		else if (var9 == 2)
 		{
 			setBlockBounds(0.0F, var12, 0.5F, 1.0F, var13, 1.0F);
-			super.addCollidingBlockToList(world, x, y, z, par5AxisAlignedBB, list, entity);
+			super.addCollisionBoxesToList(world, x, y, z, par5AxisAlignedBB, list, entity);
 		}
 		else if (var9 == 3)
 		{
 			setBlockBounds(0.0F, var12, 0.0F, 1.0F, var13, 0.5F);
-			super.addCollidingBlockToList(world, x, y, z, par5AxisAlignedBB, list, entity);
+			super.addCollisionBoxesToList(world, x, y, z, par5AxisAlignedBB, list, entity);
 		}
 
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -90,9 +106,9 @@ public class BlockCamoStair extends BlockCamoFull
 	 * Sets the metadata of the stairs when they are placed
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving entity, ItemStack stack)
 	{
-		int var6 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		int var6 = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
 		switch (var6)
 			{
@@ -108,22 +124,22 @@ public class BlockCamoStair extends BlockCamoFull
 
 		if (var6 == 0)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
 		}
 
 		if (var6 == 1)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
 		}
 
 		if (var6 == 2)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
 		}
 
 		if (var6 == 3)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 2);
 		}
 	}
 
@@ -139,7 +155,6 @@ public class BlockCamoStair extends BlockCamoFull
 		int var9 = var8 & 3;
 		boolean var10 = (var8 & 4) == 4;
 		int[] var11 = stairDirections[var9 + (var10 ? 4 : 0)];
-		field_72156_cr = true;
 		int var14;
 		int var15;
 		int var16;

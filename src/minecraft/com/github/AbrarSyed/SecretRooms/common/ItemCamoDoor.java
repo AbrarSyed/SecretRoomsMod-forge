@@ -2,12 +2,15 @@ package com.github.AbrarSyed.SecretRooms.common;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author AbrarSyed
@@ -22,9 +25,16 @@ public class ItemCamoDoor extends Item
 		super(par1);
 		doorMaterial = par2Material;
 		setCreativeTab(SecretRooms.tab);
-		setTextureFile(SecretRooms.textureFile);
-		setIconIndex(0);
 	}
+	
+    @SideOnly(Side.CLIENT)
+    public void func_94581_a(IconRegister par1IconRegister)
+    {
+    	if (doorMaterial.equals(Material.iron))
+    		this.iconIndex = par1IconRegister.func_94245_a(SecretRooms.TEXTURE_ITEM_DOOR_STEEL);
+    	else
+    		this.iconIndex = par1IconRegister.func_94245_a(SecretRooms.TEXTURE_ITEM_DOOR_WOOD);
+    }
 
 	/**
 	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
@@ -103,11 +113,9 @@ public class ItemCamoDoor extends Item
 		{
 			flag2 = true;
 		}
-
-		par0World.editingBlocks = true;
-		par0World.setBlockAndMetadataWithNotify(par1, par2, par3, par5Block.blockID, par4);
-		par0World.setBlockAndMetadataWithNotify(par1, par2 + 1, par3, par5Block.blockID, 8 | (flag2 ? 1 : 0));
-		par0World.editingBlocks = false;
+		
+		par0World.setBlockAndMetadataWithNotify(par1, par2, par3, par5Block.blockID, par4, 2);
+		par0World.setBlockAndMetadataWithNotify(par1, par2 + 1, par3, par5Block.blockID, 8 | (flag2 ? 1 : 0), 2);
 		par0World.notifyBlocksOfNeighborChange(par1, par2, par3, par5Block.blockID);
 		par0World.notifyBlocksOfNeighborChange(par1, par2 + 1, par3, par5Block.blockID);
 
