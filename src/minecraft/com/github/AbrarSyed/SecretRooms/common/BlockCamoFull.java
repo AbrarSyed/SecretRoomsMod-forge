@@ -1,7 +1,8 @@
 package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -10,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -54,12 +56,13 @@ public class BlockCamoFull extends BlockContainer
 	{
 		return 1;
 	}
-	
-    @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94336_cN = par1IconRegister.func_94245_a(SecretRooms.TEXTURE_BLOCK_BASE);
-    }
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void func_94332_a(IconRegister par1IconRegister)
+	{
+		field_94336_cN = par1IconRegister.func_94245_a(SecretRooms.TEXTURE_BLOCK_BASE);
+	}
 
 	@Override
 	public final int getLightOpacity(World world, int x, int y, int z)
@@ -92,32 +95,24 @@ public class BlockCamoFull extends BlockContainer
 
 	@Override
 	@SideOnly(value = Side.CLIENT)
-	public final int getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
+	public final Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
 	{
 		if (!SecretRooms.displayCamo)
 			return getBlockTextureFromSide(dir);
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
-		int id;
-		if (entity == null)
+		try
 		{
-			id = 1;
+			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			int id = entity.getCopyID();
+
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+
+			return Block.blocksList[id].getBlockTexture(fake, x, y, z, dir);
 		}
-		else if (entity.getCopyID() <= 0)
+		catch (Throwable t)
 		{
-			id = 1;
+			return field_94336_cN;
 		}
-		else
-		{
-			id = entity.getCopyID();
-		}
-
-		if (id == 1)
-			return Block.stone.blockIndexInTexture;
-
-		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
-
-		return Block.blocksList[id].getBlockTexture(fake, x, y, z, dir);
 	}
 
 	/**
@@ -133,26 +128,15 @@ public class BlockCamoFull extends BlockContainer
 	public void onBlockAdded(World world, int i, int j, int k)
 	{
 		super.onBlockAdded(world, i, j, k);
+
 		// CAMO STUFF
-		int[] IdAndCoords = getIdCamoStyle(world, i, j, k);
-		BlockHolder holder;
+		BlockHolder holder = getIdCamoStyle(world, i, j, k);
 
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
 
-		if (Arrays.equals(IdAndCoords, new int[] { 1, 0, 0, 0 }))
+		if (holder == null)
 		{
 			holder = new BlockHolder(1, 0, null);
-		}
-
-		TileEntity test = world.getBlockTileEntity(IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
-
-		if (test instanceof TileEntityCamoFull)
-		{
-			holder = ((TileEntityCamoFull) test).getBlockHolder();
-		}
-		else
-		{
-			holder = new BlockHolder(world, IdAndCoords[1], IdAndCoords[2], IdAndCoords[3]);
 		}
 
 		entity.setBlockHolder(holder);
@@ -187,166 +171,154 @@ public class BlockCamoFull extends BlockContainer
 
 	/**
 	 * annalyses surrounding blocks and decides on a BlockID for the Camo Block to copy.
-	 * 
 	 * @param world
 	 * @param x coord
 	 * @param y coord
 	 * @param z coord
 	 * @return the ID of the block to be copied
 	 */
-	private int[] getIdCamoStyle(World world, int x, int y, int z)
+	private BlockHolder getIdCamoStyle(World world, int x, int y, int z)
 	{
-		int[] id = new int[] { 0, 0, 0, 0 };
-		int[][] plusIds = new int[6][4];
+		BlockHolder[] holders = new BlockHolder[6];
 		// Only PLUS sign id checks.
-		plusIds[0] = getInfo(world, x, y - 1, z); // y-1
-		plusIds[1] = getInfo(world, x, y + 1, z); // y+1
-		plusIds[2] = getInfo(world, x - 1, y, z); // x-1
-		plusIds[3] = getInfo(world, x + 1, y, z); // x+1
-		plusIds[4] = getInfo(world, x, y, z - 1); // z-1
-		plusIds[5] = getInfo(world, x, y, z + 1); // z+1
+		holders[0] = getInfo(world, x, y - 1, z); // y-1
+		holders[1] = getInfo(world, x, y + 1, z); // y+1
+		holders[2] = getInfo(world, x - 1, y, z); // x-1
+		holders[3] = getInfo(world, x + 1, y, z); // x+1
+		holders[4] = getInfo(world, x, y, z - 1); // z-1
+		holders[5] = getInfo(world, x, y, z + 1); // z+1
 
 		// if there is only 1 in the PLUS SIGN checked.
-		if (isOneLeft(truncateArrayINT(plusIds)))
+		if (isOneLeft(holders))
 		{
-			plusIds = truncateArrayINT(plusIds);
+			holders = truncateArray(holders);
 			// System.out.println("IDs worked early:  " + Arrays.toString(plusIds[0]));
-			return plusIds[0];
+			return holders[0];
 		}
 
-		int[][] intChecks = new int[3][4];
-
-		// checks Y's
-		if (plusIds[0][0] == plusIds[1][0])
-		{
-			intChecks[1] = plusIds[0];
-		}
+		BlockHolder[] planeChecks = new BlockHolder[3];
 
 		// checks X's
-		if (plusIds[2][0] == plusIds[3][0])
+		if (holders[2] != null && holders[2].equals(holders[3]))
 		{
-			intChecks[0] = plusIds[2];
+			planeChecks[0] = holders[2];
+		}
+
+		// checks Y's
+		if (holders[0] != null && holders[0].equals(holders[1]))
+		{
+			planeChecks[1] = holders[0];
 		}
 
 		// checks Z's
-		if (plusIds[4][0] == plusIds[5][0])
+		if (holders[4] != null && holders[4].equals(holders[5]))
 		{
-			intChecks[2] = plusIds[4];
+			planeChecks[2] = holders[4];
 		}
 
+		BlockHolder end = null;
+
+		// part of XZ wall?
+		if (planeChecks[0] != null && planeChecks[0].equals(planeChecks[2]))
+		{
+			end = planeChecks[0];
+		}
 		// part of XY wall?
-		if (intChecks[1][0] == intChecks[0][0] && intChecks[0][0] > 0)
+		else if (planeChecks[0] != null && planeChecks[0].equals(planeChecks[1]))
 		{
-			id = intChecks[0];
+			end = planeChecks[0];
 		}
-		else if (intChecks[1][0] == intChecks[2][0] && intChecks[2][0] > 0)
+		// part of YZ wall?
+		else if (planeChecks[1] != null && planeChecks[1].equals(planeChecks[2]))
 		{
-			id = intChecks[1];
+			end = planeChecks[1];
 		}
-		else if (intChecks[2][0] == intChecks[0][0] && intChecks[0][0] > 0)
+
+		// no entire planes? lets check single lines.
+
+		// check y
+		else if (planeChecks[1] != null)
 		{
-			id = intChecks[0];
+			end = planeChecks[1];
 		}
-		else if (intChecks[1][0] != 0)
+		// check x
+		else if (planeChecks[0] != null)
 		{
-			id = intChecks[1];
+			end = planeChecks[0];
 		}
-		else if (intChecks[0][0] != 0)
+		// check z
+		else if (planeChecks[2] != null)
 		{
-			id = intChecks[0];
-		}
-		else if (intChecks[2][0] != 0)
-		{
-			id = intChecks[2];
+			end = planeChecks[2];
 		}
 
 		// System.out.println("IDs are fun:  " + Arrays.toString(id));
 
-		if (id[0] != 0)
-			return id;
+		if (end != null)
+			return end;
 
 		// GET MODE
-		plusIds = truncateArrayINT(plusIds);
+		holders = truncateArray(holders);
+		return tallyMode(holders);
+	}
 
-		try
+	private BlockHolder tallyMode(BlockHolder[] holders)
+	{
+		HashMap<BlockHolder, Integer> map = new HashMap<BlockHolder, Integer>();
+
+		Integer num;
+		for (BlockHolder holder : holders)
 		{
-			id = tallyMode(plusIds);
-		}
-		catch (Exception e)
-		{
-			int[][] test = truncateArrayINT(plusIds);
-			if (test.length >= 1)
+			num = map.get(holder);
+			if (num == null)
 			{
-				id = test[0];
+				map.put(holder, 1);
 			}
 			else
 			{
-				id = new int[] { 1, 0, 0, 0 };
+				map.put(holder, num++);
 			}
 		}
 
-		if (id[0] == 0)
-			return new int[] { 1, 0, 0, 0 };
-
-		return id;
-	}
-
-	private int[] tallyMode(int[][] nums2) throws Exception
-	{
-		int[] nums = new int[nums2.length];
-
-		for (int i = 0; i < nums2.length; i++)
+		BlockHolder highestHolder = null;
+		int highestNum = 0;
+		for (Entry<BlockHolder, Integer> entry : map.entrySet())
 		{
-			nums[i] = nums2[i][0];
-		}
-
-		// create array of tallies, all initialized to zero
-		int[] tally = new int[256];
-
-		// for each array entry, increment corresponding tally box
-		for (int i = 0; i < nums.length; i++)
-		{
-			int value = nums[i];
-			tally[value]++;
-		}
-
-		// now find the index of the largest tally - this is the mode
-		int maxIndex = 0;
-
-		for (int i = 1; i < tally.length; i++)
-			if (tally[i] == tally[maxIndex] && tally[i] != 0)
-				throw new Exception("NULL");
-			else if (tally[i] > tally[maxIndex])
+			if (entry.getValue() > highestNum)
 			{
-				maxIndex = i;
+				highestNum = entry.getValue();
+				highestHolder = entry.getKey();
 			}
+		}
 
-		return nums2[maxIndex];
+		return highestHolder;
 	}
 
 	/**
 	 * Used to specially get Ids. It returns zero if the texture cannot be copied, or if it is air.
-	 * 
 	 * @param world The world
 	 * @param x X coordinate
 	 * @param y Y Coordinate
 	 * @param z Z Coordinate
 	 * @return
 	 */
-	private static int[] getInfo(World world, int x, int y, int z)
+	private static BlockHolder getInfo(World world, int x, int y, int z)
 	{
 		// if its an air block, return 0
 		if (world.isAirBlock(x, y, z))
-			return new int[] { 0, 0, 0, 0 };
+			return null;
 		else
 		{
 			int id = world.getBlockId(x, y, z);
 			Block block = Block.blocksList[id];
 
-			if (block instanceof BlockOneWay)
-				return new int[] { id, x, y, z };
+			if (block instanceof BlockCamoFull)
+			{
+				TileEntityCamoFull te = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+				return te.getBlockHolder();
+			}
 			else if (block.isOpaqueCube())
-				return new int[] { id, x, y, z };
+				return new BlockHolder(world, x, y, z);
 			else
 			{
 
@@ -356,35 +328,33 @@ public class BlockCamoFull extends BlockContainer
 						block.getBlockBoundsMaxX() == 1 &&
 						block.getBlockBoundsMaxY() == 1 &&
 						block.getBlockBoundsMaxZ() == 1)
-					return new int[] { id, x, y, z };
+					return new BlockHolder(world, x, y, z);
 				else
-					return new int[] { 0, 0, 0, 0 };
+					return null;
 			}
 		}
 	}
 
 	/**
 	 * This truncates an int Array so that it contains only values above zero. The size of the array is also cut down so that all of them are full.
-	 * 
-	 * @param array
-	 * The array to be truncated
+	 * @param array The array to be truncated
 	 * @return the truncated array.
 	 */
-	private static int[][] truncateArrayINT(int[][] array)
+	private static BlockHolder[] truncateArray(BlockHolder[] array)
 	{
 		int num = 0;
 
-		for (int[] obj : array)
-			if (obj[0] > 0)
+		for (BlockHolder obj : array)
+			if (obj != null)
 			{
 				num++;
 			}
 
-		int[][] truncated = new int[num][4];
-		num = 0;
+		BlockHolder[] truncated = new BlockHolder[num];
 
-		for (int[] obj : array)
-			if (obj[0] > 0)
+		num = 0;
+		for (BlockHolder obj : array)
+			if (obj != null)
 			{
 				truncated[num] = obj;
 				num++;
@@ -393,24 +363,18 @@ public class BlockCamoFull extends BlockContainer
 		return truncated;
 	}
 
-	private boolean isOneLeft(int[][] textures)
+	private boolean isOneLeft(BlockHolder[] holders)
 	{
-		if (!checkAllNull(textures))
-			if (truncateArrayINT(textures).length == 1)
-				return true;
-
-		return false;
+		return !checkAllNull(holders) && truncateArray(holders).length == 1;
 	}
 
-	private boolean checkAllNull(int[][] textures)
+	private boolean checkAllNull(BlockHolder[] holders)
 	{
 		boolean flag = true;
 
-		for (int[] num : textures)
-			if (num[0] > 0)
-			{
-				flag = false;
-			}
+		for (BlockHolder obj : holders)
+			if (obj != null)
+				return false;
 
 		return flag;
 	}

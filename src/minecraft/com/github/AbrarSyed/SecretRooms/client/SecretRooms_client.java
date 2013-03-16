@@ -51,8 +51,6 @@ public class SecretRooms_client extends Proxy
 
 		SecretRooms.torchRenderId = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new TorchRenderer());
-
-		MinecraftForgeClient.preloadTexture(SecretRooms.textureFile);
 	}
 
 	@Override
