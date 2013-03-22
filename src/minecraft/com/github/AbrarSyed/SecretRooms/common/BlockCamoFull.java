@@ -67,18 +67,25 @@ public class BlockCamoFull extends BlockContainer
 	@Override
 	public final int getLightOpacity(World world, int x, int y, int z)
 	{
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
-		FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
+		try
+		{
+			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
 
-		if (entity == null)
+			if (entity == null)
+				return 255;
+
+			int id = entity.getCopyID();
+
+			if (id == 0)
+				return 255;
+
+			return Block.blocksList[id].getLightOpacity(fake, x, y, z);
+		}
+		catch (Exception e)
+		{
 			return 255;
-
-		int id = entity.getCopyID();
-
-		if (id == 0)
-			return 255;
-
-		return Block.blocksList[id].getLightOpacity(fake, x, y, z);
+		}
 	}
 
 	@Override
@@ -129,6 +136,9 @@ public class BlockCamoFull extends BlockContainer
 	{
 		super.onBlockAdded(world, i, j, k);
 
+		if (world.isRemote)
+			return;
+
 		// CAMO STUFF
 		BlockHolder holder = getIdCamoStyle(world, i, j, k);
 
@@ -140,11 +150,7 @@ public class BlockCamoFull extends BlockContainer
 		}
 
 		entity.setBlockHolder(holder);
-
-		if (!world.isRemote)
-		{
-			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
-		}
+		FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
 	}
 
 	@Override

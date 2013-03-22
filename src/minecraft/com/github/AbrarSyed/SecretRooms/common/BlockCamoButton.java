@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -37,68 +38,55 @@ public class BlockCamoButton extends BlockCamoFull
 	}
 
 	@Override
-	public int tickRate()
+	public int tickRate(World world)
 	{
 		return 20;
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int i, int j)
+	public Icon getBlockTextureFromSideAndMetadata(int i, int j)
 	{
 		if (i == 3 || i == 1)
-			return Block.cobblestone.blockIndexInTexture;
+			return Block.cobblestone.getBlockTextureFromSide(i);
 		else
-			return blockIndexInTexture;
+			return field_94336_cN;
 	}
+	
+    /**
+     * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
+     */
+    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    {
+        ForgeDirection dir = ForgeDirection.getOrientation(side);
+        return (dir == NORTH && world.isBlockSolidOnSide(x, y, z + 1, NORTH)) ||
+               (dir == SOUTH && world.isBlockSolidOnSide(x, y, z - 1, SOUTH)) ||
+               (dir == WEST  && world.isBlockSolidOnSide(x + 1, y, z, WEST)) ||
+               (dir == EAST  && world.isBlockSolidOnSide(x - 1, y, z, EAST));
+    }
 
-	@Override
-	public boolean canPlaceBlockOnSide(World world, int i, int j, int k, int l)
-	{
-		if (l == 1 && world.isBlockNormalCube(i, j - 1, k))
-			return true;
-
-		if (l == 2 && world.isBlockNormalCube(i, j, k + 1))
-			return true;
-
-		if (l == 3 && world.isBlockNormalCube(i, j, k - 1))
-			return true;
-
-		if (l == 4 && world.isBlockNormalCube(i + 1, j, k))
-			return true;
-
-		return l == 5 && world.isBlockNormalCube(i - 1, j, k);
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World world, int i, int j, int k)
-	{
-		if (world.isBlockNormalCube(i - 1, j, k))
-			return true;
-
-		if (world.isBlockNormalCube(i + 1, j, k))
-			return true;
-
-		if (world.isBlockNormalCube(i, j, k - 1))
-			return true;
-
-		if (world.isBlockNormalCube(i, j, k + 1))
-			return true;
-
-		return world.isBlockNormalCube(i, j - 1, k);
-	}
+    /**
+     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
+     */
+    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    {
+        return (world.isBlockSolidOnSide(x - 1, y, z, EAST)) ||
+               (world.isBlockSolidOnSide(x + 1, y, z, WEST)) ||
+               (world.isBlockSolidOnSide(x, y, z - 1, SOUTH)) ||
+               (world.isBlockSolidOnSide(x, y, z + 1, NORTH));
+    }
 
 	/**
 	 * Get side which this button is facing.
 	 */
-	private int getOrientation(World par1World, int par2, int par3, int par4)
+	private int getOrientation(World world, int x, int y, int z)
 	{
-		if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST))
+		if (world.isBlockSolidOnSide(x - 1, y, z, EAST))
 			return 1;
-		if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST))
+		if (world.isBlockSolidOnSide(x + 1, y, z, WEST))
 			return 2;
-		if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH))
+		if (world.isBlockSolidOnSide(x, y, z - 1, SOUTH))
 			return 3;
-		if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH))
+		if (world.isBlockSolidOnSide(x, y, z + 1, NORTH))
 			return 4;
 		return 1;
 	}
@@ -106,41 +94,35 @@ public class BlockCamoButton extends BlockCamoFull
 	@Override
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ, int currentMeta)
 	{
-		int var11 = currentMeta & 8;
-		int direction = currentMeta & 7;
-		direction = -1;
+        int meta = world.getBlockMetadata(x, y, z);
+        int isActive = meta & 8;
+        meta &= 7;
 
-		if (side == 0 && world.isBlockSolidOnSide(x, y + 1, z, DOWN))
-		{
-			direction = world.rand.nextBoolean() ? 0 : 7;
-		}
 
-		if (side == 1 && world.isBlockSolidOnSide(x, y - 1, z, UP))
-		{
-			direction = 5 + world.rand.nextInt(2);
-		}
+        ForgeDirection dir = ForgeDirection.getOrientation(side);
 
-		if (side == 2 && world.isBlockSolidOnSide(x, y, z + 1, NORTH))
-		{
-			direction = 4;
-		}
+        if (dir == NORTH && world.isBlockSolidOnSide(x, y, z + 1, NORTH))
+        {
+            meta = 4;
+        }
+        else if (dir == SOUTH && world.isBlockSolidOnSide(x, y, z - 1, SOUTH))
+        {
+            meta = 3;
+        }
+        else if (dir == WEST && world.isBlockSolidOnSide(x + 1, y, z, WEST))
+        {
+            meta = 2;
+        }
+        else if (dir == EAST && world.isBlockSolidOnSide(x - 1, y, z, EAST))
+        {
+            meta = 1;
+        }
+        else
+        {
+            meta = this.getOrientation(world, x, y, z);
+        }
 
-		if (side == 3 && world.isBlockSolidOnSide(x, y, z - 1, SOUTH))
-		{
-			direction = 3;
-		}
-
-		if (side == 4 && world.isBlockSolidOnSide(x + 1, y, z, WEST))
-		{
-			direction = 2;
-		}
-
-		if (side == 5 && world.isBlockSolidOnSide(x - 1, y, z, EAST))
-		{
-			direction = 1;
-		}
-
-		return direction + var11;
+        return meta + isActive;
 	}
 
 	@Override
