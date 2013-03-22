@@ -41,7 +41,7 @@ public class BlockCamoPlate extends BlockCamoFull
 	 * How many world ticks before ticking
 	 */
 	@Override
-	public int tickRate()
+	public int tickRate(World world)
 	{
 		return 20;
 	}

@@ -172,25 +172,23 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64.0D;
+		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this ? false : par1EntityPlayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D;
 	}
 
 	/**
 	 * Called when a client event is received with the event number and argument, see World.sendClientEvent
-	 * @return 
+	 * @return
 	 */
 	@Override
 	public boolean receiveClientEvent(int par1, int par2)
 	{
-        if (par1 == 1)
-        {
-            this.numUsingPlayers = par2;
-            return true;
-        }
-        else
-        {
-            return super.receiveClientEvent(par1, par2);
-        }
+		if (par1 == 1)
+		{
+			numUsingPlayers = par2;
+			return true;
+		}
+		else
+			return super.receiveClientEvent(par1, par2);
 	}
 
 	@Override
@@ -207,20 +205,14 @@ public class TileEntityCamoChest extends TileEntityCamoFull implements IInventor
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, SecretRooms.camoChest.blockID, 1, numUsingPlayers);
 	}
 
-	/**
-	 * hasName
-	 */
 	@Override
-	public boolean func_94042_c()
+	public boolean isInvNameLocalized()
 	{
 		return true;
 	}
 
-	/**
-	 * can stack go in slot i
-	 */
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack)
+	public boolean isStackValidForSlot(int i, ItemStack itemstack)
 	{
 		return true;
 	}

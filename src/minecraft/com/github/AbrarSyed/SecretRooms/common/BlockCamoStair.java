@@ -2,9 +2,6 @@ package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -15,6 +12,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author alexbegt
@@ -39,10 +38,11 @@ public class BlockCamoStair extends BlockCamoFull
 		setLightOpacity(15);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94332_a(IconRegister register)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.field_94336_cN = register.func_94245_a(SecretRooms.TEXTURE_BLOCK_STAIR);
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_STAIR);
 	}
 
 	/**

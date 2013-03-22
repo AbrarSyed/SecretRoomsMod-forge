@@ -404,10 +404,10 @@ public class SecretRooms
 		GameRegistry.addRecipe(recipe); // add the recipe..
 		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] {
 				"X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh,
-				'@', Block.stairCompactCobblestone });
+				'@', Block.stairsCobblestone });
 		GameRegistry.addRecipe(new ItemStack(camoStairs, 4), new Object[] {
 				"X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@',
-				Block.stairCompactCobblestone });
+				Block.stairsCobblestone });
 
 		// CamoChests
 		GameRegistry.addRecipe(new ItemStack(camoChest, 1), new Object[] {

@@ -131,7 +131,7 @@ public class TileEntityCamoFull extends TileEntity
 		}
 		super.invalidate();
 	}
-	
+
 	@Override
 	public void validate()
 	{
@@ -155,10 +155,10 @@ public class TileEntityCamoFull extends TileEntity
 	}
 
 	private BlockHolder	holder;
-	
-	private boolean hasCoords;
-	private int tempX;
-	private int tempY;
-	private int tempZ;
+
+	private boolean		hasCoords;
+	private int			tempX;
+	private int			tempY;
+	private int			tempZ;
 
 }

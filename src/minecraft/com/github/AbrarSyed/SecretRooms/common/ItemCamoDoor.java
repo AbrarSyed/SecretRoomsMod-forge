@@ -26,28 +26,32 @@ public class ItemCamoDoor extends Item
 		doorMaterial = par2Material;
 		setCreativeTab(SecretRooms.tab);
 	}
-	
-    @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
-    {
-    	if (doorMaterial.equals(Material.iron))
-    		this.iconIndex = par1IconRegister.func_94245_a(SecretRooms.TEXTURE_ITEM_DOOR_STEEL);
-    	else
-    		this.iconIndex = par1IconRegister.func_94245_a(SecretRooms.TEXTURE_ITEM_DOOR_WOOD);
-    }
+
+	@SideOnly(Side.CLIENT)
+	public void func_94581_a(IconRegister par1IconRegister)
+	{
+		if (doorMaterial.equals(Material.iron))
+		{
+			iconIndex = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_DOOR_STEEL);
+		}
+		else
+		{
+			iconIndex = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_DOOR_WOOD);
+		}
+	}
 
 	/**
 	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
 	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS !
 	 */
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float something1, float something2, float something3)
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ)
 	{
-		if (par7 != 1)
+		if (side != 1)
 			return false;
 
 		Block block;
-		par5++;
+		y++;
 
 		// change based on material.
 		if (doorMaterial.equals(Material.iron))
@@ -60,49 +64,49 @@ public class ItemCamoDoor extends Item
 		}
 
 		// check permissions
-		if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) || !par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6, par7, par1ItemStack))
+		if (!player.canPlayerEdit(x, y, z, side, stack) || !player.canPlayerEdit(x, y + 1, z, side, stack))
 			return false;
 
-		if (!block.canPlaceBlockAt(par3World, par4, par5, par6))
+		if (!block.canPlaceBlockAt(world, x, y, z))
 			return false;
 		else
 		{
-			int i = MathHelper.floor_double((par2EntityPlayer.rotationYaw + 180F) * 4F / 360F - 0.5D) & 3;
-			placeDoorBlock(par3World, par4, par5, par6, i, block);
-			par1ItemStack.stackSize--;
+			int i = MathHelper.floor_double((player.rotationYaw + 180F) * 4F / 360F - 0.5D) & 3;
+			placeDoorBlock(world, x, y, z, i, block);
+			stack.stackSize--;
 			return true;
 		}
 	}
 
-	public static void placeDoorBlock(World par0World, int par1, int par2, int par3, int par4, Block par5Block)
+	public static void placeDoorBlock(World world, int x, int y, int z, int meta, Block block)
 	{
 		byte byte0 = 0;
 		byte byte1 = 0;
 
-		if (par4 == 0)
+		if (meta == 0)
 		{
 			byte1 = 1;
 		}
 
-		if (par4 == 1)
+		if (meta == 1)
 		{
 			byte0 = -1;
 		}
 
-		if (par4 == 2)
+		if (meta == 2)
 		{
 			byte1 = -1;
 		}
 
-		if (par4 == 3)
+		if (meta == 3)
 		{
 			byte0 = 1;
 		}
 
-		int i = (par0World.isBlockNormalCube(par1 - byte0, par2, par3 - byte1) ? 1 : 0) + (par0World.isBlockNormalCube(par1 - byte0, par2 + 1, par3 - byte1) ? 1 : 0);
-		int j = (par0World.isBlockNormalCube(par1 + byte0, par2, par3 + byte1) ? 1 : 0) + (par0World.isBlockNormalCube(par1 + byte0, par2 + 1, par3 + byte1) ? 1 : 0);
-		boolean flag = par0World.getBlockId(par1 - byte0, par2, par3 - byte1) == par5Block.blockID || par0World.getBlockId(par1 - byte0, par2 + 1, par3 - byte1) == par5Block.blockID;
-		boolean flag1 = par0World.getBlockId(par1 + byte0, par2, par3 + byte1) == par5Block.blockID || par0World.getBlockId(par1 + byte0, par2 + 1, par3 + byte1) == par5Block.blockID;
+		int i = (world.isBlockNormalCube(x - byte0, y, z - byte1) ? 1 : 0) + (world.isBlockNormalCube(x - byte0, y + 1, z - byte1) ? 1 : 0);
+		int j = (world.isBlockNormalCube(x + byte0, y, z + byte1) ? 1 : 0) + (world.isBlockNormalCube(x + byte0, y + 1, z + byte1) ? 1 : 0);
+		boolean flag = world.getBlockId(x - byte0, y, z - byte1) == block.blockID || world.getBlockId(x - byte0, y + 1, z - byte1) == block.blockID;
+		boolean flag1 = world.getBlockId(x + byte0, y, z + byte1) == block.blockID || world.getBlockId(x + byte0, y + 1, z + byte1) == block.blockID;
 		boolean flag2 = false;
 
 		if (flag && !flag1)
@@ -113,17 +117,17 @@ public class ItemCamoDoor extends Item
 		{
 			flag2 = true;
 		}
-		
-		par0World.setBlockAndMetadataWithNotify(par1, par2, par3, par5Block.blockID, par4, 2);
-		par0World.setBlockAndMetadataWithNotify(par1, par2 + 1, par3, par5Block.blockID, 8 | (flag2 ? 1 : 0), 2);
-		par0World.notifyBlocksOfNeighborChange(par1, par2, par3, par5Block.blockID);
-		par0World.notifyBlocksOfNeighborChange(par1, par2 + 1, par3, par5Block.blockID);
 
-		if (!par0World.isRemote)
+		world.setBlock(x, y, z, block.blockID, meta, 2);
+		world.setBlock(x, y + 1, z, block.blockID, 8 | (flag2 ? 1 : 0), 2);
+		world.notifyBlocksOfNeighborChange(x, y, z, block.blockID);
+		world.notifyBlocksOfNeighborChange(x, y + 1, z, block.blockID);
+
+		if (!world.isRemote)
 			return;
 
-		par5Block.onBlockAdded(par0World, par1, par2, par3);
-		TileEntityCamo entity = (TileEntityCamo) par0World.getBlockTileEntity(par1, par2, par3);
+		block.onBlockAdded(world, x, y, z);
+		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 		PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
 	}
 }

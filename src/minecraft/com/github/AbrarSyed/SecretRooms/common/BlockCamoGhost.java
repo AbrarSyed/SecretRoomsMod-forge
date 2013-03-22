@@ -68,11 +68,11 @@ public class BlockCamoGhost extends BlockCamoFull
 
 		if (flag)
 		{
-			world.setBlockMetadata(i, j, k, 1);
+			world.setBlockMetadataWithNotify(i, j, k, 1, 4);
 		}
 		else
 		{
-			world.setBlockMetadata(i, j, k, 0);
+			world.setBlockToAir(i, j, k);
 		}
 	}
 }
