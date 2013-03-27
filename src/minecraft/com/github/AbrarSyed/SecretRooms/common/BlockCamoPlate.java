@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -28,7 +29,6 @@ public class BlockCamoPlate extends BlockCamoFull
 		triggerMobType = par3EnumMobType;
 		setTickRandomly(true);
 		setHardness(0.5F);
-		setRequiresSelfNotify();
 	}
 
 	@Override
@@ -47,17 +47,17 @@ public class BlockCamoPlate extends BlockCamoFull
 	}
 
 	@Override
-	public int getBlockTextureFromSide(int i)
+	public Icon getBlockTextureFromSideAndMetadata(int i, int meta)
 	{
 		if (i == 1)
-			return Block.planks.blockIndexInTexture;
+			return Block.planks.getBlockTextureFromSide(i);
 
 		if ((triggerMobType.equals(EnumMobType.players) || blockID == SecretRooms.camoPlatePlayer.blockID) && i == 3)
-			return Block.oreDiamond.blockIndexInTexture;
+			return Block.oreDiamond.getBlockTextureFromSide(i);
 		else if (i == 3)
-			return Block.planks.blockIndexInTexture;
+			return Block.planks.getBlockTextureFromSide(i);
 
-		return blockIndexInTexture;
+		return this.blockIcon;
 	}
 
 	@Override
@@ -91,11 +91,17 @@ public class BlockCamoPlate extends BlockCamoFull
 		setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
 		if (par1World.getBlockMetadata(par2, par3, par4) == 1)
 		{
-			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate());
+			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate(par1World));
 		}
 		par1World.scheduleBlockUpdate(par2, par3, par4, blockID, 0);
 		return;
 	}
+	
+    protected AxisAlignedBB getSensetiveAABB(int x, int y, int z)
+    {
+        float f = 0.125F;
+        return AxisAlignedBB.getAABBPool().getAABB(x + f, y + 1, z + f, x + 1 - f, y + 1.25D, z + 1 - f);
+    }
 
 	/**
 	 * Checks if there are mobs on the plate. If a mob is on the plate and it is off, it turns it on, and vice versa.
@@ -109,17 +115,17 @@ public class BlockCamoPlate extends BlockCamoFull
 
 		if (triggerMobType == EnumMobType.everything)
 		{
-			list = par1World.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(par2 + f, par3 + 1, par4 + f, par2 + 1 - f, par3 + 1.25D, par4 + 1 - f));
+			list = par1World.getEntitiesWithinAABBExcludingEntity(null, getSensetiveAABB(par2, par3, par4));
 		}
 
 		if (triggerMobType == EnumMobType.mobs)
 		{
-			list = par1World.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(par2 + f, par3 + 1, par4 + f, par2 + 1 - f, par3 + 1.25D, par4 + 1 - f));
+			list = par1World.getEntitiesWithinAABB(EntityLiving.class, getSensetiveAABB(par2, par3, par4));
 		}
 
 		if (triggerMobType == EnumMobType.players)
 		{
-			list = par1World.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(par2 + f, par3 + 1, par4 + f, par2 + 1 - f, par3 + 1.25D, par4 + 1 - f));
+			list = par1World.getEntitiesWithinAABB(EntityPlayer.class, getSensetiveAABB(par2, par3, par4));
 		}
 
 		if (list.size() > 0)
@@ -129,7 +135,7 @@ public class BlockCamoPlate extends BlockCamoFull
 
 		if (flag1 && !flag)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
 			par1World.notifyBlocksOfNeighborChange(par2, par3, par4, blockID);
 			par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
 			par1World.markBlockForUpdate(par2, par3, par4);
@@ -138,7 +144,7 @@ public class BlockCamoPlate extends BlockCamoFull
 
 		if (!flag1 && flag)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 2);
 			par1World.notifyBlocksOfNeighborChange(par2, par3, par4, blockID);
 			par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
 			par1World.markBlockForUpdate(par2, par3, par4);
@@ -147,7 +153,7 @@ public class BlockCamoPlate extends BlockCamoFull
 
 		if (flag1)
 		{
-			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate());
+			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate(par1World));
 		}
 	}
 
@@ -172,9 +178,9 @@ public class BlockCamoPlate extends BlockCamoFull
 	 * Y, Z, side
 	 */
 	@Override
-	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side)
 	{
-		return par1IBlockAccess.getBlockMetadata(par2, par3, par4) > 0;
+		return 15;
 	}
 
 	/**
@@ -182,9 +188,12 @@ public class BlockCamoPlate extends BlockCamoFull
 	 * side
 	 */
 	@Override
-	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-	{
-		return par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 0 ? false : par5 == 1;
+	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side)
+	{	
+		if (world.getBlockMetadata(x, y, z) > 0)
+			return 15;
+		else
+			return 0;
 	}
 
 	/**
