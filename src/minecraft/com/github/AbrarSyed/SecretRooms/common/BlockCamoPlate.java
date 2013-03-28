@@ -1,12 +1,14 @@
 package com.github.AbrarSyed.SecretRooms.common;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.EnumMobType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,13 +22,12 @@ import net.minecraft.world.World;
  */
 public class BlockCamoPlate extends BlockCamoFull
 {
-	/** The mob type that can trigger this pressure plate. */
-	private EnumMobType	triggerMobType;
+	private boolean	players;
 
-	protected BlockCamoPlate(int par1, EnumMobType par3EnumMobType)
+	protected BlockCamoPlate(int par1, boolean players)
 	{
 		super(par1, Material.circuits);
-		triggerMobType = par3EnumMobType;
+		this.players = players;
 		setTickRandomly(true);
 		setHardness(0.5F);
 	}
@@ -52,7 +53,7 @@ public class BlockCamoPlate extends BlockCamoFull
 		if (i == 1)
 			return Block.planks.getBlockTextureFromSide(i);
 
-		if ((triggerMobType.equals(EnumMobType.players) || blockID == SecretRooms.camoPlatePlayer.blockID) && i == 3)
+		if (players && i == 3)
 			return Block.oreDiamond.getBlockTextureFromSide(i);
 		else if (i == 3)
 			return Block.planks.getBlockTextureFromSide(i);
@@ -96,12 +97,12 @@ public class BlockCamoPlate extends BlockCamoFull
 		par1World.scheduleBlockUpdate(par2, par3, par4, blockID, 0);
 		return;
 	}
-	
-    protected AxisAlignedBB getSensetiveAABB(int x, int y, int z)
-    {
-        float f = 0.125F;
-        return AxisAlignedBB.getAABBPool().getAABB(x + f, y + 1, z + f, x + 1 - f, y + 1.25D, z + 1 - f);
-    }
+
+	protected AxisAlignedBB getSensetiveAABB(int x, int y, int z)
+	{
+		float f = 0.125F;
+		return AxisAlignedBB.getAABBPool().getAABB(x + f, y + 1, z + f, x + 1 - f, y + 1.25D, z + 1 - f);
+	}
 
 	/**
 	 * Checks if there are mobs on the plate. If a mob is on the plate and it is off, it turns it on, and vice versa.
@@ -110,22 +111,15 @@ public class BlockCamoPlate extends BlockCamoFull
 	{
 		boolean flag = par1World.getBlockMetadata(par2, par3, par4) == 1;
 		boolean flag1 = false;
-		float f = 0.125F;
 		List list = null;
 
-		if (triggerMobType == EnumMobType.everything)
-		{
-			list = par1World.getEntitiesWithinAABBExcludingEntity(null, getSensetiveAABB(par2, par3, par4));
-		}
-
-		if (triggerMobType == EnumMobType.mobs)
-		{
-			list = par1World.getEntitiesWithinAABB(EntityLiving.class, getSensetiveAABB(par2, par3, par4));
-		}
-
-		if (triggerMobType == EnumMobType.players)
+		if (players)
 		{
 			list = par1World.getEntitiesWithinAABB(EntityPlayer.class, getSensetiveAABB(par2, par3, par4));
+		}
+		else
+		{
+			list = par1World.getEntitiesWithinAABBExcludingEntity(null, getSensetiveAABB(par2, par3, par4));
 		}
 
 		if (list.size() > 0)
@@ -157,6 +151,37 @@ public class BlockCamoPlate extends BlockCamoFull
 		}
 	}
 
+	protected int getCurrentWeight(World par1World, int par2, int par3, int par4)
+	{
+		List list = null;
+
+		if (players)
+		{
+			list = par1World.getEntitiesWithinAABB(EntityPlayer.class, getSensetiveAABB(par2, par3, par4));
+		}
+		else
+		{
+			list = par1World.getEntitiesWithinAABBExcludingEntity(null, getSensetiveAABB(par2, par3, par4));
+		}
+
+		if (list.isEmpty())
+			return 0;
+
+		Iterator iterator = list.iterator();
+
+		while (iterator.hasNext())
+		{
+			Entity entity = (Entity) iterator.next();
+
+			if (!entity.doesEntityNotTriggerPressurePlate())
+			{
+				return 15;
+			}
+		}
+
+		return 0;
+	}
+
 	/**
 	 * Called whenever the block is removed.
 	 */
@@ -167,9 +192,29 @@ public class BlockCamoPlate extends BlockCamoFull
 		{
 			par1World.notifyBlocksOfNeighborChange(par2, par3, par4, blockID);
 			par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
+			par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, blockID);
 		}
 
 		super.breakBlock(par1World, par2, par3, par4, something, metadata);
+	}
+
+	protected void NotifyArround(World world, int x, int y, int z)
+	{
+		world.notifyBlocksOfNeighborChange(x, y, z, this.blockID);
+		world.notifyBlocksOfNeighborChange(x + 1, y, z, this.blockID);
+		world.notifyBlocksOfNeighborChange(x - 1, y, z, this.blockID);
+		world.notifyBlocksOfNeighborChange(x, y, z + 1, this.blockID);
+		world.notifyBlocksOfNeighborChange(x, y, z - 1, this.blockID);
+	}
+
+	protected int getPowerFromMeta(int meta)
+	{
+		return meta > 0 ? 15 : 0;
+	}
+
+	protected int getMetaFromWeight(int weight)
+	{
+		return weight > 0 ? 1 : 0;
 	}
 
 	/**
@@ -180,7 +225,7 @@ public class BlockCamoPlate extends BlockCamoFull
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side)
 	{
-		return 15;
+		return getPowerFromMeta(world.getBlockMetadata(x, y, z));
 	}
 
 	/**
@@ -189,11 +234,8 @@ public class BlockCamoPlate extends BlockCamoFull
 	 */
 	@Override
 	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side)
-	{	
-		if (world.getBlockMetadata(x, y, z) > 0)
-			return 15;
-		else
-			return 0;
+	{
+		return getPowerFromMeta(world.getBlockMetadata(x, y, z));
 	}
 
 	/**

@@ -5,13 +5,16 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,10 +24,10 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockCamoDoor extends BlockContainer
 {
+
 	protected BlockCamoDoor(int par1, Material mat)
 	{
 		super(par1, mat);
-		blockIndexInTexture = 0;
 		setHardness(3F);
 
 		if (mat.equals(Material.iron))
@@ -37,11 +40,17 @@ public class BlockCamoDoor extends BlockContainer
 		}
 
 		disableStats();
-		setRequiresSelfNotify();
 
 		float f = 0.5F;
 		float f1 = 1.0F;
 		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BASE);
 	}
 
 	/**
@@ -49,34 +58,40 @@ public class BlockCamoDoor extends BlockContainer
 	 */
 	@SideOnly(value = Side.CLIENT)
 	@Override
-	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
 	{
 		if (!SecretRooms.displayCamo)
-			return 0;
+			return blockIcon;
 
 		// tile entity stuff
-		int i = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+		int i = world.getBlockMetadata(x, y, z);
 		int j;
 
 		boolean flag = (i & 8) != 0;
 
-		TileEntityCamo entity;
-
-		if (flag)
+		try
 		{
-			entity = (TileEntityCamo) par1IBlockAccess.getBlockTileEntity(par2, par3 - 1, par4);
+			TileEntityCamoFull entity;
+			
+			if (flag)
+			{
+				entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y-1, z);
+			}
+			else
+			{
+				entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			}
+			
+			int id = entity.getCopyID();
+
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+
+			return Block.blocksList[id].getBlockTexture(fake, x, y, z, side);
 		}
-		else
+		catch (Throwable t)
 		{
-			entity = (TileEntityCamo) par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+			return blockIcon;
 		}
-
-		if (entity == null)
-			return 0;
-
-		j = entity.getTexture();
-
-		return j;
 	}
 
 	/**
@@ -245,12 +260,12 @@ public class BlockCamoDoor extends BlockContainer
 
 		if ((i & 8) != 0)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, j);
+			par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, j, 2);
 			par1World.markBlocksDirtyVertical(par2, par4, par3 - 1, par3);
 		}
 		else
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, j);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, j, 2);
 			par1World.markBlockForUpdate(par2, par3, par4);
 		}
 
@@ -274,12 +289,12 @@ public class BlockCamoDoor extends BlockContainer
 
 		if ((i & 8) != 0)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, j);
+			par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, j, 2);
 			par1World.markBlocksDirtyVertical(par2, par4, par3 - 1, par3);
 		}
 		else
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, j);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, j, 2);
 			par1World.markBlockForUpdate(par2, par3, par4);
 		}
 
@@ -291,57 +306,57 @@ public class BlockCamoDoor extends BlockContainer
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+	public void onNeighborBlockChange(World world, int x, int y, int z, int id)
 	{
-		int i = par1World.getBlockMetadata(par2, par3, par4);
+		int i = world.getBlockMetadata(x, y, z);
 
 		if ((i & 8) != 0)
 		{
-			if (par1World.getBlockId(par2, par3 - 1, par4) != blockID)
+			if (world.getBlockId(x, y - 1, z) != blockID)
 			{
-				par1World.setBlockWithNotify(par2, par3, par4, 0);
+				world.setBlockToAir(x, y, z);
 			}
 
-			if (par5 > 0 && par5 != blockID)
+			if (id > 0 && id != blockID)
 			{
-				onNeighborBlockChange(par1World, par2, par3 - 1, par4, par5);
+				onNeighborBlockChange(world, x, y - 1, z, id);
 			}
 		}
 		else
 		{
 			boolean flag = false;
 
-			if (par1World.getBlockId(par2, par3 + 1, par4) != blockID)
+			if (world.getBlockId(x, y + 1, z) != blockID)
 			{
-				par1World.setBlockWithNotify(par2, par3, par4, 0);
+				world.setBlockToAir(x, y, z);
 				flag = true;
 			}
 
-			if (!par1World.isBlockNormalCube(par2, par3 - 1, par4))
+			if (!world.isBlockNormalCube(x, y - 1, z))
 			{
-				par1World.setBlockWithNotify(par2, par3, par4, 0);
+				world.setBlockToAir(x, y, z);
 				flag = true;
 
-				if (par1World.getBlockId(par2, par3 + 1, par4) == blockID)
+				if (world.getBlockId(x, y + 1, z) == blockID)
 				{
-					par1World.setBlockWithNotify(par2, par3 + 1, par4, 0);
+					world.setBlockToAir(x, y+1, z);
 				}
 			}
 
 			if (flag)
 			{
-				if (!par1World.isRemote)
+				if (!world.isRemote)
 				{
-					dropBlockAsItem(par1World, par2, par3, par4, i, 0);
+					dropBlockAsItem(world, x, y, z, i, 0);
 				}
 			}
 			else
 			{
-				boolean flag1 = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4) || par1World.isBlockIndirectlyGettingPowered(par2, par3 + 1, par4);
+				boolean flag1 = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
 
-				if ((flag1 || par5 > 0 && Block.blocksList[par5].canProvidePower() || par5 == 0) && par5 != blockID)
+				if ((flag1 || id > 0 && Block.blocksList[id].canProvidePower() || id == 0) && id != blockID)
 				{
-					onPoweredBlockChange(par1World, par2, par3, par4, flag1);
+					onPoweredBlockChange(world, x, y, z, flag1);
 				}
 			}
 		}
@@ -376,34 +391,36 @@ public class BlockCamoDoor extends BlockContainer
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(World par1World, int x, int y, int z)
+	public void onBlockAdded(World world, int x, int y, int z)
 	{
-		super.onBlockAdded(par1World, x, y, z);
+		super.onBlockAdded(world, x, y, z);
 
-		if (!par1World.isRemote)
+		if (!world.isRemote)
 			return;
 
-		int i = par1World.getBlockMetadata(x, y, z);
+		int i = world.getBlockMetadata(x, y, z);
 		boolean flag = (i & 8) != 0;
 
+		// is the bototm one.
 		if (!flag)
 		{
-			TileEntityCamo entity = (TileEntityCamo) par1World.getBlockTileEntity(x, y, z);
+			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 
-			int id = par1World.getBlockId(x, y - 1, z);
+			int id = world.getBlockId(x, y - 1, z);
 
 			// replace
 			if (id == Block.grass.blockID)
 			{
-				par1World.setBlock(x, y - 1, z, Block.dirt.blockID);
+				world.setBlock(x, y - 1, z, Block.dirt.blockID);
 				id = Block.dirt.blockID;
 			}
+			// CAMO STUFF
+			BlockHolder holder = new BlockHolder(world, x, y - 1, z);
 
-			int texture = Block.blocksList[id].getBlockTexture(par1World, x, y - 1, z, 3);
-			entity.setTexture(texture);
-			System.out.println("Texture is " + texture);
-			PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
+			entity.setBlockHolder(holder);
+			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
 		}
+		
 	}
 
 	@Override
