@@ -62,7 +62,7 @@ public class SecretRooms_client extends Proxy
 	public void handleOneWayPlace(World world, int i, int j, int k, EntityLiving entityliving)
 	{
 		int metadata = world.getBlockMetadata(i, j, k);
-		Object[] properties = ((BlockOneWay) SecretRooms.oneWay).getOtherProperties(world, i, j, k, metadata);
+		Object[] properties = ((BlockOneWay) SecretRooms.oneWay).getHoldersFromFacing(world, i, j, k, metadata);
 		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(i, j, k);
 
 		entity.setTexturePath((String) properties[1]);

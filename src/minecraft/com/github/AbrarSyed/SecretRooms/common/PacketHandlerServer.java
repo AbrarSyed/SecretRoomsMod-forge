@@ -25,64 +25,7 @@ public class PacketHandlerServer implements IPacketHandler
 		EntityPlayer player = (EntityPlayer) useless;
 		World world = player.worldObj;
 
-		if (channel.equals("SRM-TE-Camo"))
-		{
-
-			if (data.length <= 0)
-				return;
-
-			DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(data));
-			int coords[] = new int[3];
-			int texture = -1;
-			boolean forged = false;
-			String texturePath = null;
-			try
-			{
-				for (int i = 0; i < 3; i++)
-				{
-					coords[i] = dataStream.readInt();
-				}
-
-				texture = dataStream.readInt();
-				forged = dataStream.readBoolean();
-
-				if (forged)
-				{
-					int texturePathLength = dataStream.readInt();
-
-					char[] string = new char[texturePathLength];
-
-					for (int i = 0; i < texturePathLength; i++)
-					{
-						string[i] = dataStream.readChar();
-					}
-
-					texturePath = new String(string);
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-
-			if (texture == -1)
-				return;
-
-			TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(coords[0], coords[1], coords[2]);
-
-			if (entity == null)
-				return;
-
-			entity.setTexture(texture);
-
-			if (forged)
-			{
-				entity.setTexturePath(texturePath);
-			}
-
-			world.markBlockForUpdate(coords[0], coords[1], coords[2]);
-		}
-		else if (channel.equals("SRM-KeyEvents"))
+		if (channel.equals("SRM-KeyEvents"))
 		{
 			DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(data));
 			String username = null;

@@ -157,80 +157,27 @@ public class BlockOneWay extends BlockContainer
 	 */
 	private BlockHolder getIdCamoStyle(World world, int x, int y, int z)
 	{
-		BlockHolder[] holders = new BlockHolder[6];
-		// Only PLUS sign id checks.
-		holders[0] = BlockCamoFull.getInfo(world, x, y - 1, z); // y-1
-		holders[1] = BlockCamoFull.getInfo(world, x, y + 1, z); // y+1
-		holders[2] = BlockCamoFull.getInfo(world, x - 1, y, z); // x-1
-		holders[3] = BlockCamoFull.getInfo(world, x + 1, y, z); // x+1
-		holders[4] = BlockCamoFull.getInfo(world, x, y, z - 1); // z-1
-		holders[5] = BlockCamoFull.getInfo(world, x, y, z + 1); // z+1
+		int meta = world.getBlockMetadata(x, y, z);
+		BlockHolder[] holders = this.getHoldersFromFacing(world, x, y, z, meta);
 
 		// if there is only 1 in the PLUS SIGN checked.
 		if (BlockCamoFull.isOneLeft(holders))
 		{
 			holders = BlockCamoFull.truncateArray(holders);
-			// System.out.println("IDs worked early:  " + Arrays.toString(plusIds[0]));
 			return holders[0];
 		}
 
-		BlockHolder[] planeChecks = new BlockHolder[3];
-
-		// checks X's
-		if (holders[2] != null && holders[2].equals(holders[3]))
-		{
-			planeChecks[0] = holders[2];
-		}
-
-		// checks Y's
-		if (holders[0] != null && holders[0].equals(holders[1]))
-		{
-			planeChecks[1] = holders[0];
-		}
-
-		// checks Z's
-		if (holders[4] != null && holders[4].equals(holders[5]))
-		{
-			planeChecks[2] = holders[4];
-		}
-
 		BlockHolder end = null;
-
-		// part of XZ wall?
-		if (planeChecks[0] != null && planeChecks[0].equals(planeChecks[2]))
+		
+		// first line.
+		if (holders[0].equals(holders[1]))
 		{
-			end = planeChecks[0];
+			end = holders[0];
 		}
-		// part of XY wall?
-		else if (planeChecks[0] != null && planeChecks[0].equals(planeChecks[1]))
+		else if (holders[2].equals(holders[3]))
 		{
-			end = planeChecks[0];
+			end = holders[0];
 		}
-		// part of YZ wall?
-		else if (planeChecks[1] != null && planeChecks[1].equals(planeChecks[2]))
-		{
-			end = planeChecks[1];
-		}
-
-		// no entire planes? lets check single lines.
-
-		// check y
-		else if (planeChecks[1] != null)
-		{
-			end = planeChecks[1];
-		}
-		// check x
-		else if (planeChecks[0] != null)
-		{
-			end = planeChecks[0];
-		}
-		// check z
-		else if (planeChecks[2] != null)
-		{
-			end = planeChecks[2];
-		}
-
-		// System.out.println("IDs are fun:  " + Arrays.toString(id));
 
 		if (end != null)
 			return end;
@@ -277,65 +224,57 @@ public class BlockOneWay extends BlockContainer
 		return dir.ordinal();
 	}
 
-	@SideOnly(value = Side.CLIENT)
-	public Object[] getOtherProperties(World world, int i, int j, int k, int direction)
+	public BlockHolder[] getHoldersFromFacing(World world, int i, int j, int k, int direction)
 	{
-		int l = direction;
-		Object[] tempTexture = null;
-		Object[][] textures = new Object[4][2];
-		switch (l)
+		BlockHolder[] holders = new BlockHolder[4];
+		
+		switch (direction)
 			{
 				case 0:
-					textures[0] = getTexture(world, i + 1, j, k, l);
-					textures[1] = getTexture(world, i - 1, j, k, l);
-					textures[2] = getTexture(world, i, j, k + 1, l);
-					textures[3] = getTexture(world, i, j, k - 1, l);
-					tempTexture = getDuplicateBlock(textures);
+					holders[0] = BlockCamoFull.getInfo(world, i + 1, j, k);
+					holders[1] = BlockCamoFull.getInfo(world, i - 1, j, k);
+					holders[2] = BlockCamoFull.getInfo(world, i, j, k + 1);
+					holders[3] = BlockCamoFull.getInfo(world, i, j, k - 1);
 					break;
 
 				case 1:
-					textures[0] = getTexture(world, i + 1, j, k, l);
-					textures[1] = getTexture(world, i - 1, j, k, l);
-					textures[2] = getTexture(world, i, j, k + 1, l);
-					textures[3] = getTexture(world, i, j, k - 1, l);
-					tempTexture = getDuplicateBlock(textures);
+					holders[0] = BlockCamoFull.getInfo(world, i + 1, j, k);
+					holders[1] = BlockCamoFull.getInfo(world, i - 1, j, k);
+					holders[2] = BlockCamoFull.getInfo(world, i, j, k + 1);
+					holders[3] = BlockCamoFull.getInfo(world, i, j, k - 1);
 					break;
 
 				case 2:
-					textures[0] = getTexture(world, i, j + 1, k, l);
-					textures[1] = getTexture(world, i, j - 1, k, l);
-					textures[2] = getTexture(world, i + 1, j, k, l);
-					textures[3] = getTexture(world, i - 1, j, k, l);
-					tempTexture = getDuplicateBlock(textures);
+					holders[0] = BlockCamoFull.getInfo(world, i, j + 1, k);
+					holders[1] = BlockCamoFull.getInfo(world, i, j - 1, k);
+					holders[2] = BlockCamoFull.getInfo(world, i + 1, j, k);
+					holders[3] = BlockCamoFull.getInfo(world, i - 1, j, k);
 					break;
 
 				case 3:
-					textures[0] = getTexture(world, i, j + 1, k, l);
-					textures[1] = getTexture(world, i, j - 1, k, l);
-					textures[2] = getTexture(world, i + 1, j, k, l);
-					textures[3] = getTexture(world, i - 1, j, k, l);
-					tempTexture = getDuplicateBlock(textures);
+					holders[0] = BlockCamoFull.getInfo(world, i, j + 1, k);
+					holders[1] = BlockCamoFull.getInfo(world, i, j - 1, k);
+					holders[2] = BlockCamoFull.getInfo(world, i + 1, j, k);
+					holders[3] = BlockCamoFull.getInfo(world, i - 1, j, k);
 					break;
 
 				case 4:
-					textures[0] = getTexture(world, i, j + 1, k, l);
-					textures[1] = getTexture(world, i, j - 1, k, l);
-					textures[2] = getTexture(world, i, j, k + 1, l);
-					textures[3] = getTexture(world, i, j, k - 1, l);
-					tempTexture = getDuplicateBlock(textures);
+					holders[0] = BlockCamoFull.getInfo(world, i, j + 1, k);
+					holders[1] = BlockCamoFull.getInfo(world, i, j - 1, k);
+					holders[2] = BlockCamoFull.getInfo(world, i, j, k + 1);
+					holders[3] = BlockCamoFull.getInfo(world, i, j, k - 1);
 					break;
 
 				case 5:
-					textures[0] = getTexture(world, i, j + 1, k, l);
-					textures[1] = getTexture(world, i, j - 1, k, l);
-					textures[2] = getTexture(world, i, j, k + 1, l);
-					textures[3] = getTexture(world, i, j, k - 1, l);
-					tempTexture = getDuplicateBlock(textures);
+					holders[0] = BlockCamoFull.getInfo(world, i, j + 1, k);
+					holders[1] = BlockCamoFull.getInfo(world, i, j - 1, k);
+					holders[2] = BlockCamoFull.getInfo(world, i, j, k + 1);
+					holders[3] = BlockCamoFull.getInfo(world, i, j, k - 1);
 					break;
 			}
 
 		// return texture only
-		return tempTexture;
+		return holders;
 	}
 
 	@Override

@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 import com.github.AbrarSyed.SecretRooms.common.BlockCamoFull;
 import com.github.AbrarSyed.SecretRooms.common.BlockOneWay;
 import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
-import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
 import com.github.AbrarSyed.SecretRooms.common.TileEntityCamoFull;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;

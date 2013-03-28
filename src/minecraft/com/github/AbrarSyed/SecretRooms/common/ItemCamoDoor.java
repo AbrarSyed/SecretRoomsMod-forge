@@ -127,7 +127,5 @@ public class ItemCamoDoor extends Item
 			return;
 
 		block.onBlockAdded(world, x, y, z);
-		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
-		PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
 	}
 }

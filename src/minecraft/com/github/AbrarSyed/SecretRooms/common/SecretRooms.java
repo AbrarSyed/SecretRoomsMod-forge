@@ -34,9 +34,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.6,)",
 		clientPacketHandlerSpec = @SidedPacketHandler(channels = {
-				"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class),
+				"SRM-TE-CamoFull", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class),
 		serverPacketHandlerSpec = @SidedPacketHandler(channels = {
-				"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
+				"SRM-TE-CamoFull", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
 @Mod(modid = SecretRooms.modid, name = "SecretRoomsMod", version = "4.6.0")
 public class SecretRooms
 {
@@ -140,57 +140,40 @@ public class SecretRooms
 		// make creative tab.
 		tab = new CreativeTabCamo();
 
-		torchLever = new BlockTorchLever(ids[0], 80)
-				.setUnlocalizedName("mod_SRM.TorchLever");
+		torchLever = new BlockTorchLever(ids[0], 80).setUnlocalizedName("mod_SRM.TorchLever");
 
 		// Camo oneWay
-		oneWay = new BlockOneWay(ids[1], 49)
-				.setUnlocalizedName("mod_SRM.OneWayGlass");
+		oneWay = new BlockOneWay(ids[1]).setUnlocalizedName("mod_SRM.OneWayGlass");
 
 		// gates
-		camoGate = new BlockCamoGate(ids[2])
-				.setUnlocalizedName("mod_SRM.CamoGate");
-		camoGateExt = new BlockCamoGateExt(ids[3])
-				.setUnlocalizedName("mod_SRM.CamoGateExtension");
+		camoGate = new BlockCamoGate(ids[2]).setUnlocalizedName("mod_SRM.CamoGate");
+		camoGateExt = new BlockCamoGateExt(ids[3]).setUnlocalizedName("mod_SRM.CamoGateExtension");
 
 		// TrapDoor
 		camoTrapDoor = new BlockCamoTrapDoor(ids[4])
 				.setUnlocalizedName("mod_SRM.SecretTrapDoor");
 
 		// doors, Iron AND Wood
-		camoDoorWoodItem = new ItemCamoDoor(ids[5], Material.wood)
-				.setUnlocalizedName("mod_SRM.SecretWoodenDoorItem");
-		camoDoorWood = new BlockCamoDoor(ids[6], Material.wood)
-				.setUnlocalizedName("mod_SRM.SecretWoodenDoorBlock");
-		camoDoorIronItem = new ItemCamoDoor(ids[7], Material.iron)
-				.setUnlocalizedName("mod_SRM.SecretIronDoorItem");
-		camoDoorIron = new BlockCamoDoor(ids[8], Material.iron)
-				.setUnlocalizedName("mod_SRM.SecretIronDoorBlock");
+		camoDoorWoodItem = new ItemCamoDoor(ids[5], Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorItem");
+		camoDoorWood = new BlockCamoDoor(ids[6], Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorBlock");
+		camoDoorIronItem = new ItemCamoDoor(ids[7], Material.iron).setUnlocalizedName("mod_SRM.SecretIronDoorItem");
+		camoDoorIron = new BlockCamoDoor(ids[8], Material.iron).setUnlocalizedName("mod_SRM.SecretIronDoorBlock");
 
 		// Camo Paste
-		camoPaste = new ItemCamoPaste(ids[9])
-				.setUnlocalizedName("mod_SRM.CamoflaugePaste");
+		camoPaste = new ItemCamoPaste(ids[9]).setUnlocalizedName("mod_SRM.CamoflaugePaste");
 
 		// FullCamoBlocks
-		camoGhost = new BlockCamoGhost(ids[10])
-				.setUnlocalizedName("mod_SRM.GhostBlock");
-		camoLever = new BlockCamoLever(ids[11])
-				.setUnlocalizedName("mod_SRM.SecretCamoLever");
-		camoCurrent = new BlockCamoWire(ids[12])
-				.setUnlocalizedName("mod_SRM.SecretCamoRedstone");
-		camoButton = new BlockCamoButton(ids[13])
-				.setUnlocalizedName("mod_SRM.SecretCamoButton");
+		camoGhost = new BlockCamoGhost(ids[10]).setUnlocalizedName("mod_SRM.GhostBlock");
+		camoLever = new BlockCamoLever(ids[11]).setUnlocalizedName("mod_SRM.SecretCamoLever");
+		camoCurrent = new BlockCamoWire(ids[12]).setUnlocalizedName("mod_SRM.SecretCamoRedstone");
+		camoButton = new BlockCamoButton(ids[13]).setUnlocalizedName("mod_SRM.SecretCamoButton");
 
-		camoPlateAll = new BlockCamoPlate(ids[14], false)
-				.setUnlocalizedName("mod_SRM.SecretPressurePlate");
-		camoPlatePlayer = new BlockCamoPlate(ids[15], true)
-				.setUnlocalizedName("mod_SRM.SecretPlayerPlate");
+		camoPlateAll = new BlockCamoPlate(ids[14], false).setUnlocalizedName("mod_SRM.SecretPressurePlate");
+		camoPlatePlayer = new BlockCamoPlate(ids[15], true).setUnlocalizedName("mod_SRM.SecretPlayerPlate");
 
-		camoStairs = new BlockCamoStair(ids[16])
-				.setUnlocalizedName("mod_SRM.SecretCamoStair");
+		camoStairs = new BlockCamoStair(ids[16]).setUnlocalizedName("mod_SRM.SecretCamoStair");
 
-		camoChest = new BlockCamoChest(ids[17])
-				.setUnlocalizedName("mod_SRM.SecretCamoChest");
+		camoChest = new BlockCamoChest(ids[17]).setUnlocalizedName("mod_SRM.SecretCamoChest");
 
 		// key Events
 		proxy.loadKeyStuff();
@@ -203,13 +186,10 @@ public class SecretRooms
 
 		GameRegistry.registerBlock(camoTrapDoor, "mod_SRM.SecretTrapDoor");
 
-		GameRegistry.registerBlock(camoDoorWood,
-				"mod_SRM.SecretWoodenDoorBlock");
-		GameRegistry.registerItem(camoDoorWoodItem,
-				"mod_SRM.SecretWoodenDoorItem");
+		GameRegistry.registerBlock(camoDoorWood, "mod_SRM.SecretWoodenDoorBlock");
+		GameRegistry.registerItem(camoDoorWoodItem, "mod_SRM.SecretWoodenDoorItem");
 		GameRegistry.registerBlock(camoDoorIron, "mod_SRM.SecretIronDoorBlock");
-		GameRegistry.registerItem(camoDoorIronItem,
-				"mod_SRM.SecretWoodenIronItem");
+		GameRegistry.registerItem(camoDoorIronItem,	"mod_SRM.SecretWoodenIronItem");
 
 		GameRegistry.registerItem(camoPaste, "mod_SRM.CamoflaugePaste");
 
@@ -219,16 +199,13 @@ public class SecretRooms
 		GameRegistry.registerBlock(camoButton, "mod_SRM.SecretCamoButton");
 
 		GameRegistry.registerBlock(camoPlateAll, "mod_SRM.SecretPressurePlate");
-		GameRegistry
-				.registerBlock(camoPlatePlayer, "mod_SRM.SecretPlayerPlate");
+		GameRegistry.registerBlock(camoPlatePlayer, "mod_SRM.SecretPlayerPlate");
 
 		GameRegistry.registerBlock(camoStairs, "mod_SRM.SecretCamoStair");
 
 		GameRegistry.registerBlock(camoChest, "mod_SRM.SecretCamoChest");
 
 		// Tile Entities
-		GameRegistry
-				.registerTileEntity(TileEntityCamo.class, "mod_SRM.TE_Camo");
 		GameRegistry.registerTileEntity(TileEntityCamoFull.class,
 				"mod_SRM.TE_CamoFull");
 		GameRegistry.registerTileEntity(TileEntityCamoChest.class,

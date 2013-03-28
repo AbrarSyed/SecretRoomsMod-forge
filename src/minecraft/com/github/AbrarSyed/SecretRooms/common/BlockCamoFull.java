@@ -25,14 +25,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockCamoFull extends BlockContainer
 {
 
-	protected BlockCamoFull(int par1)
+	public BlockCamoFull(int par1)
 	{
 		super(par1, Material.wood);
 		setLightOpacity(255);
 		setCreativeTab(SecretRooms.tab);
 	}
 
-	protected BlockCamoFull(int par1, Material material)
+	public BlockCamoFull(int par1, Material material)
 	{
 		super(par1, material);
 		setLightOpacity(255);
@@ -65,7 +65,7 @@ public class BlockCamoFull extends BlockContainer
 	}
 
 	@Override
-	public int getLightOpacity(World world, int x, int y, int z)
+	public final int getLightOpacity(World world, int x, int y, int z)
 	{
 		try
 		{

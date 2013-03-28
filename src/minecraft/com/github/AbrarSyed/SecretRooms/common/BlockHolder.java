@@ -25,6 +25,12 @@ public class BlockHolder
 		{
 			nbt = new NBTTagCompound();
 			te.writeToNBT(nbt);
+			
+			// strip location
+			nbt.setInteger("x", 0);
+			nbt.setInteger("y", 0);
+			nbt.setInteger("z", 0);
+			
 		}
 		else
 		{
@@ -43,14 +49,17 @@ public class BlockHolder
 	 * Constructs a TileEntity from this block and loads it from the NBT data.
 	 * @return Tile Entity for this block
 	 */
-	public TileEntity getTileEntity(World world)
+	public TileEntity getTileEntity(World world, int x, int y, int z)
 	{
 		if (blockID == 0 || nbt == null)
 			return null;
 
 		TileEntity te = TileEntity.createAndLoadEntity(nbt);
+		
 		te.worldObj = world;
-
+		te.xCoord = x;
+		te.yCoord = y;
+		te.zCoord = z;
 		return te;
 	}
 
@@ -65,6 +74,21 @@ public class BlockHolder
 		{
 			compound.setCompoundTag("copyTE", nbt);
 		}
+	}
+
+	public boolean equals(Object equals)
+	{
+		return false;
+	}
+
+	public boolean equals(BlockHolder holder)
+	{
+		if (this.blockID == holder.blockID &&
+				this.metadata == holder.metadata &&
+				this.nbt.equals(holder.nbt))
+			return true;
+
+		return false;
 	}
 
 	public static BlockHolder buildFromNBT(NBTTagCompound nbt)

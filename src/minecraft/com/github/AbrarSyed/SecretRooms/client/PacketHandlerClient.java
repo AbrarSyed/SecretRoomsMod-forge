@@ -1,7 +1,6 @@
 package com.github.AbrarSyed.SecretRooms.client;
 
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.ObjectInputStream;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +12,6 @@ import net.minecraft.world.World;
 
 import com.github.AbrarSyed.SecretRooms.common.BlockHolder;
 import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
-import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
 import com.github.AbrarSyed.SecretRooms.common.TileEntityCamoFull;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -32,80 +30,7 @@ public class PacketHandlerClient implements IPacketHandler
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 		World world = player.worldObj;
 
-		if (channel.equals("SRM-TE-Camo"))
-		{
-			if (data.length <= 0)
-				return;
-
-			DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(data));
-			int coords[] = new int[3];
-			int texture = -1;
-			boolean forged = false;
-			String texturePath = null;
-			try
-			{
-				for (int i = 0; i < 3; i++)
-				{
-					coords[i] = dataStream.readInt();
-				}
-
-				texture = dataStream.readInt();
-				forged = dataStream.readBoolean();
-
-				if (forged)
-				{
-					int texturePathLength = dataStream.readInt();
-
-					char[] string = new char[texturePathLength];
-
-					for (int i = 0; i < texturePathLength; i++)
-					{
-						string[i] = dataStream.readChar();
-					}
-
-					texturePath = new String(string);
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-
-			// System.out.println("CLIENT-RECIEVED: "+texture);
-
-			if (texture == -1)
-				// System.out.println(player.username+"-SET: *invalid*");
-				return;
-
-			TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(coords[0], coords[1], coords[2]);
-
-			if (entity == null)
-			{
-
-				if (!world.blockExists(coords[0], coords[1], coords[2]))
-					return;
-
-				entity = new TileEntityCamo();
-				entity.xCoord = coords[0];
-				entity.yCoord = coords[1];
-				entity.zCoord = coords[2];
-				entity.worldObj = world;
-				entity.validate();
-
-				return;
-			}
-
-			entity.setTexture(texture);
-
-			if (forged)
-			{
-				entity.setTexturePath(texturePath);
-			}
-
-			world.markBlockForRenderUpdate(coords[0], coords[1], coords[2]);
-		}
-
-		else if (channel.equals("SRM-TE-CamoFull"))
+		if (channel.equals("SRM-TE-CamoFull"))
 		{
 			if (data.length <= 0)
 				return;
