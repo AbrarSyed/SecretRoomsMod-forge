@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -28,12 +29,12 @@ public class BlockCamoWire extends BlockCamoFull
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int i, int j)
+	public Icon getBlockTextureFromSideAndMetadata(int i, int j)
 	{
 		if (i == 3)
-			return Block.redstoneWire.blockIndexInTexture;
+			return Block.redstoneWire.getBlockTextureFromSide(j);
 		else
-			return blockIndexInTexture;
+			return this.blockIcon;
 	}
 
 	@Override

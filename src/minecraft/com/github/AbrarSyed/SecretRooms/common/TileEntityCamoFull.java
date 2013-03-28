@@ -9,11 +9,10 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 
-/**
- * @author AbrarSyed
- */
 public class TileEntityCamoFull extends TileEntity
 {
+	private BlockHolder	holder;
+	
 	public TileEntityCamoFull()
 	{
 		super();
@@ -32,25 +31,7 @@ public class TileEntityCamoFull extends TileEntity
 		super.readFromNBT(nbt);
 
 		// backwards compat...
-		if (nbt.hasKey("hasCoords"))
-		{
-			hasCoords = nbt.getBoolean("hasCoords");
-			if (hasCoords)
-			{
-				tempX = nbt.getInteger("copyCoordX");
-				tempY = nbt.getInteger("copyCoordY");
-				tempZ = nbt.getInteger("copyCoordZ");
-			}
-			else
-			{
-				int id = nbt.getInteger("copyID");
-				holder = new BlockHolder(id, 0, null);
-			}
-		}
-		else
-		{
-			holder = BlockHolder.buildFromNBT(nbt);
-		}
+		holder = BlockHolder.buildFromNBT(nbt);
 	}
 
 	@Override
@@ -131,12 +112,6 @@ public class TileEntityCamoFull extends TileEntity
 	@Override
 	public void validate()
 	{
-		if (hasCoords)
-		{
-			hasCoords = false;
-			holder = new BlockHolder(worldObj, tempX, tempY, tempZ);
-			tempX = tempY = tempZ = 0;
-		}
 		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
 	}
 
@@ -149,12 +124,4 @@ public class TileEntityCamoFull extends TileEntity
 	{
 		return holder == null ? 0 : holder.blockID;
 	}
-
-	private BlockHolder	holder;
-
-	private boolean		hasCoords;
-	private int			tempX;
-	private int			tempY;
-	private int			tempZ;
-
 }
