@@ -32,9 +32,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * @author AbrarSyed
  */
-@NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.6,)", clientPacketHandlerSpec = @SidedPacketHandler(channels = {
-		"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = {
-		"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
+@NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.6,)",
+		clientPacketHandlerSpec = @SidedPacketHandler(channels = {
+				"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class),
+		serverPacketHandlerSpec = @SidedPacketHandler(channels = {
+				"SRM-TE-CamoFull", "SRM-TE-Camo", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
 @Mod(modid = SecretRooms.modid, name = "SecretRoomsMod", version = "4.6.0")
 public class SecretRooms
 {
@@ -69,8 +71,8 @@ public class SecretRooms
 	public static Block				camoGateExt;
 	public static Block				camoPlateAll;
 	public static Block				camoPlatePlayer;
-	public static Block				camoStairs;																// thanks Alexbegt
-	public static Block				camoChest;																	// thanks alexbegt
+	public static Block				camoStairs;									// thanks Alexbegt
+	public static Block				camoChest;										// thanks alexbegt
 
 	// render IDs
 	public static int				camoRenderId;
@@ -179,9 +181,9 @@ public class SecretRooms
 		camoButton = new BlockCamoButton(ids[13])
 				.setUnlocalizedName("mod_SRM.SecretCamoButton");
 
-		camoPlateAll = new BlockCamoPlate(ids[14], EnumMobType.everything)
+		camoPlateAll = new BlockCamoPlate(ids[14], false)
 				.setUnlocalizedName("mod_SRM.SecretPressurePlate");
-		camoPlatePlayer = new BlockCamoPlate(ids[15], EnumMobType.players)
+		camoPlatePlayer = new BlockCamoPlate(ids[15], true)
 				.setUnlocalizedName("mod_SRM.SecretPlayerPlate");
 
 		camoStairs = new BlockCamoStair(ids[16])

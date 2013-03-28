@@ -76,27 +76,40 @@ public class BlockCamoPlate extends BlockCamoFull
 		super.onBlockAdded(world, i, j, k);
 		world.scheduleBlockUpdate(i, j, k, blockID, 0);
 	}
-
-	/**
-	 * Ticks the block if it's been scheduled
-	 */
+	
+    /**
+     * Ticks the block if it's been scheduled
+     */
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
-	{
-		if (par1World.isRemote)
-		{
-			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, 0);
-			return;
-		}
+    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    {
+        if (!par1World.isRemote)
+        {
+            int power = this.getPowerFromMeta(par1World.getBlockMetadata(par2, par3, par4));
 
-		setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
-		if (par1World.getBlockMetadata(par2, par3, par4) == 1)
-		{
-			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate(par1World));
-		}
-		par1World.scheduleBlockUpdate(par2, par3, par4, blockID, 0);
-		return;
-	}
+            if (power > 0)
+            {
+                this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4, power);
+            }
+        }
+    }
+
+    /**
+     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
+     */
+    @Override
+    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+    {
+        if (!par1World.isRemote)
+        {
+            int power = this.getPowerFromMeta(par1World.getBlockMetadata(par2, par3, par4));
+
+            if (power == 0)
+            {
+                this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4, power);
+            }
+        }
+    }
 
 	protected AxisAlignedBB getSensetiveAABB(int x, int y, int z)
 	{
@@ -107,48 +120,32 @@ public class BlockCamoPlate extends BlockCamoFull
 	/**
 	 * Checks if there are mobs on the plate. If a mob is on the plate and it is off, it turns it on, and vice versa.
 	 */
-	private void setStateIfMobInteractsWithPlate(World par1World, int par2, int par3, int par4)
+	private void setStateIfMobInteractsWithPlate(World world, int x, int y, int z, int oldPower)
 	{
-		boolean flag = par1World.getBlockMetadata(par2, par3, par4) == 1;
-		boolean flag1 = false;
-		List list = null;
+        int weight = this.getCurrentWeight(world, x, y, z);
+        boolean isPowerred = oldPower > 0;
+        boolean hasWeight = weight > 0;
 
-		if (players)
-		{
-			list = par1World.getEntitiesWithinAABB(EntityPlayer.class, getSensetiveAABB(par2, par3, par4));
-		}
-		else
-		{
-			list = par1World.getEntitiesWithinAABBExcludingEntity(null, getSensetiveAABB(par2, par3, par4));
-		}
+        if (oldPower != weight)
+        {
+            world.setBlockMetadataWithNotify(x, y, z, this.getMetaFromWeight(weight), 2);
+            this.notifyArround(world, x, y, z);
+            world.markBlockForRenderUpdate(x, y, z);
+        }
 
-		if (list.size() > 0)
-		{
-			flag1 = true;
-		}
+        if (!hasWeight && isPowerred)
+        {
+            world.playSoundEffect((double)x + 0.5D, (double)y + 0.1D, (double)z + 0.5D, "random.click", 0.3F, 0.5F);
+        }
+        else if (hasWeight && !isPowerred)
+        {
+            world.playSoundEffect((double)x + 0.5D, (double)y + 0.1D, (double)z + 0.5D, "random.click", 0.3F, 0.6F);
+        }
 
-		if (flag1 && !flag)
-		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
-			par1World.notifyBlocksOfNeighborChange(par2, par3, par4, blockID);
-			par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
-			par1World.markBlockForUpdate(par2, par3, par4);
-			par1World.playSoundEffect(par2 + 0.5D, par3 + 0.10000000000000001D, par4 + 0.5D, "random.click", 0.3F, 0.6F);
-		}
-
-		if (!flag1 && flag)
-		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 2);
-			par1World.notifyBlocksOfNeighborChange(par2, par3, par4, blockID);
-			par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, blockID);
-			par1World.markBlockForUpdate(par2, par3, par4);
-			par1World.playSoundEffect(par2 + 0.5D, par3 + 0.10000000000000001D, par4 + 0.5D, "random.click", 0.3F, 0.5F);
-		}
-
-		if (flag1)
-		{
-			par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate(par1World));
-		}
+        if (hasWeight)
+        {
+            world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world));
+        }
 	}
 
 	protected int getCurrentWeight(World par1World, int par2, int par3, int par4)
@@ -198,7 +195,7 @@ public class BlockCamoPlate extends BlockCamoFull
 		super.breakBlock(par1World, par2, par3, par4, something, metadata);
 	}
 
-	protected void NotifyArround(World world, int x, int y, int z)
+	protected void notifyArround(World world, int x, int y, int z)
 	{
 		world.notifyBlocksOfNeighborChange(x, y, z, this.blockID);
 		world.notifyBlocksOfNeighborChange(x + 1, y, z, this.blockID);

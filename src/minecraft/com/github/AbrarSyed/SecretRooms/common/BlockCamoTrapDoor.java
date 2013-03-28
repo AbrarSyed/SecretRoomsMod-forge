@@ -6,14 +6,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockHalfSlab;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author AbrarSyed
@@ -23,13 +27,18 @@ public class BlockCamoTrapDoor extends Block
 	protected BlockCamoTrapDoor(int par1)
 	{
 		super(par1, Material.wood);
-		blockIndexInTexture = 0;
 
 		disableStats();
-		setRequiresSelfNotify();
 		setHardness(3.0F);
 		setCreativeTab(SecretRooms.tab);
 		setStepSound(soundWoodFootstep);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BASE);
 	}
 
 	/**
@@ -73,7 +82,7 @@ public class BlockCamoTrapDoor extends Block
 	}
 
 	@Override
-	public int getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
 	{
 		// modify coordinates to get hinge Block.
 		int i = world.getBlockMetadata(x, y, z);
@@ -104,21 +113,17 @@ public class BlockCamoTrapDoor extends Block
 		Block block = Block.blocksList[world.getBlockId(j, y, k)];
 
 		if (block == null)
-			return 0;
+			return this.blockIcon;
 
-		int texture = block.getBlockTexture(world, j, y, k, dir);
-
-		if (texture == 38 || texture == 3)
-			return 1;
-		else
-			return texture;
+		Icon texture = block.getBlockTexture(world, j, y, k, dir);
+		return texture;
 	}
 
 	@Override
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
 	{
 
-		if (getBlockTexture(par1IBlockAccess, par2, par3, par4, 1) == 0)
+		if (getBlockTexture(par1IBlockAccess, par2, par3, par4, 1).equals(Block.grass.getBlockTextureFromSide(1)))
 		{
 			int i = 0;
 			int j = 0;
@@ -226,7 +231,7 @@ public class BlockCamoTrapDoor extends Block
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int something1, float something2, float something3, float something4)
 	{
 		int i = world.getBlockMetadata(x, y, z);
-		world.setBlockMetadataWithNotify(x, y, z, i ^ 4);
+		world.setBlockMetadataWithNotify(x, y, z, i ^ 4, 2);
 		world.playAuxSFXAtEntity(entityplayer, 1003, x, y, z, 0);
 		return true;
 	}
@@ -240,7 +245,7 @@ public class BlockCamoTrapDoor extends Block
 			return;
 		else
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, i ^ 4);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, i ^ 4, 2);
 			par1World.playAuxSFXAtEntity(null, 1003, par2, par3, par4, 0);
 			return;
 		}
@@ -282,7 +287,7 @@ public class BlockCamoTrapDoor extends Block
 
 		if (!isValidSupportBlock(par1World.getBlockId(j, par3, k)))
 		{
-			par1World.setBlockWithNotify(par2, par3, par4, 0);
+			par1World.setBlockToAir(par2, par3, par4);
 			dropBlockAsItem(par1World, par2, par3, par4, i, 0);
 		}
 

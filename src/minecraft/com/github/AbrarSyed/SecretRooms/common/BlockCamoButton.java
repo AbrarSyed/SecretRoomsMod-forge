@@ -51,12 +51,6 @@ public class BlockCamoButton extends BlockCamoFull
 	}
 
 	@Override
-	public int onBlockPlaced(World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ, int currentMeta)
-	{
-		return 0;
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int something, float something1, float soemthin2, float soemthing3)
 	{
 		int isActive = world.getBlockMetadata(i, j, k);
@@ -65,6 +59,7 @@ public class BlockCamoButton extends BlockCamoFull
 			return true;
 
 		world.setBlockMetadataWithNotify(i, j, k, 1, 3);
+		notifyArround(world, i, j, k);
 		world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "random.click", 0.3F, 0.5F);
 		world.markBlockForUpdate(i, j, k);
 		world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
@@ -80,6 +75,7 @@ public class BlockCamoButton extends BlockCamoFull
 			return;
 
 		world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+		notifyArround(world, i, j, k);
 		world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "random.click", 0.3F, 0.5F);
 		world.markBlockForUpdate(i, j, k);
 	}
@@ -88,6 +84,15 @@ public class BlockCamoButton extends BlockCamoFull
 	public void breakBlock(World world, int i, int j, int k, int something, int metadata)
 	{
 		super.breakBlock(world, i, j, k, something, metadata);
+	}
+	
+	protected void notifyArround(World world, int x, int y, int z)
+	{
+		world.notifyBlocksOfNeighborChange(x, y, z, this.blockID);
+		world.notifyBlocksOfNeighborChange(x + 1, y, z, this.blockID);
+		world.notifyBlocksOfNeighborChange(x - 1, y, z, this.blockID);
+		world.notifyBlocksOfNeighborChange(x, y, z + 1, this.blockID);
+		world.notifyBlocksOfNeighborChange(x, y, z - 1, this.blockID);
 	}
 
 	/**

@@ -65,7 +65,7 @@ public class BlockCamoFull extends BlockContainer
 	}
 
 	@Override
-	public final int getLightOpacity(World world, int x, int y, int z)
+	public int getLightOpacity(World world, int x, int y, int z)
 	{
 		try
 		{
@@ -89,7 +89,7 @@ public class BlockCamoFull extends BlockContainer
 	}
 
 	@Override
-	public final boolean isOpaqueCube()
+	public boolean isOpaqueCube()
 	{
 		return false;
 	}
@@ -99,10 +99,16 @@ public class BlockCamoFull extends BlockContainer
 	{
 		return SecretRooms.camoRenderId;
 	}
+	
+	@Override
+	public boolean renderAsNormalBlock()
+	{
+		return true;
+	}
 
 	@Override
 	@SideOnly(value = Side.CLIENT)
-	public final Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
 	{
 		if (!SecretRooms.displayCamo)
 			return getBlockTextureFromSide(dir);
@@ -268,7 +274,7 @@ public class BlockCamoFull extends BlockContainer
 		return tallyMode(holders);
 	}
 
-	private BlockHolder tallyMode(BlockHolder[] holders)
+	protected static BlockHolder tallyMode(BlockHolder[] holders)
 	{
 		HashMap<BlockHolder, Integer> map = new HashMap<BlockHolder, Integer>();
 
@@ -308,7 +314,7 @@ public class BlockCamoFull extends BlockContainer
 	 * @param z Z Coordinate
 	 * @return
 	 */
-	private static BlockHolder getInfo(World world, int x, int y, int z)
+	protected static BlockHolder getInfo(World world, int x, int y, int z)
 	{
 		// if its an air block, return 0
 		if (world.isAirBlock(x, y, z))
@@ -346,7 +352,7 @@ public class BlockCamoFull extends BlockContainer
 	 * @param array The array to be truncated
 	 * @return the truncated array.
 	 */
-	private static BlockHolder[] truncateArray(BlockHolder[] array)
+	protected static BlockHolder[] truncateArray(BlockHolder[] array)
 	{
 		int num = 0;
 
@@ -369,12 +375,12 @@ public class BlockCamoFull extends BlockContainer
 		return truncated;
 	}
 
-	private boolean isOneLeft(BlockHolder[] holders)
+	protected static  boolean isOneLeft(BlockHolder[] holders)
 	{
 		return !checkAllNull(holders) && truncateArray(holders).length == 1;
 	}
 
-	private boolean checkAllNull(BlockHolder[] holders)
+	private static boolean checkAllNull(BlockHolder[] holders)
 	{
 		boolean flag = true;
 

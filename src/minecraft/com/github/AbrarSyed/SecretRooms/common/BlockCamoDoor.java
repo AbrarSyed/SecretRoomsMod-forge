@@ -426,7 +426,7 @@ public class BlockCamoDoor extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{
-		return new TileEntityCamo();
+		return new TileEntityCamoFull();
 	}
 
 	/**

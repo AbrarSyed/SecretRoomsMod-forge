@@ -7,15 +7,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-/**
- * @author AbrarSyed
- */
 public class BlockCamoGate extends BlockCamoFull
 {
+	private static final int	maxSize	= 10;
+
 	protected BlockCamoGate(int i)
 	{
 		super(i);
@@ -36,12 +36,12 @@ public class BlockCamoGate extends BlockCamoFull
 	}
 
 	@Override
-	public int getBlockTextureFromSide(int i)
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta)
 	{
-		if (i <= 1)
-			return 4;
+		if (side <= 1)
+			return Block.wood.getBlockTextureFromSide(side);
 		else
-			return blockIndexInTexture;
+			return this.blockIcon;
 	}
 
 	@Override
@@ -54,10 +54,10 @@ public class BlockCamoGate extends BlockCamoFull
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving)
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack stack)
 	{
-		int metadata = setDefaultDirection(world, i, j, k, (EntityPlayer) entityliving);
-		world.setBlockMetadataWithNotify(i, j, k, metadata);
+		int metadata = setDefaultDirection(world, x, y, z, (EntityPlayer) entity);
+		world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 	}
 
 	private static int setDefaultDirection(World world, int i, int j, int k, EntityPlayer entityplayer)
@@ -108,14 +108,18 @@ public class BlockCamoGate extends BlockCamoFull
 	{
 		int data = world.getBlockMetadata(x, y, z);
 		boolean stop = false;
-		int i = 1;
+		ForgeDirection dir = ForgeDirection.getOrientation(data);
+		int xOffset, yOffset, zOffset;
 
-		for (; i <= maxSize && stop == false; i++)
+		for (int i = 1; i <= maxSize && stop == false; i++)
 		{
-			ForgeDirection dir = ForgeDirection.getOrientation(data);
-			if (world.isAirBlock(x + dir.offsetX * i, y + dir.offsetY * i, z + dir.offsetZ * i) || isBreakable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))
+			xOffset = x + (dir.offsetX * i);
+			yOffset = y + (dir.offsetY * i);
+			zOffset = z + (dir.offsetZ * i);
+
+			if (world.isAirBlock(xOffset, yOffset, zOffset) || isBreakable(world, xOffset, yOffset, zOffset))
 			{
-				world.setBlockWithNotify(x + dir.offsetX * i, y + dir.offsetY * i, z + dir.offsetZ * i, SecretRooms.camoGateExt.blockID);
+				world.setBlock(yOffset, xOffset, zOffset, SecretRooms.camoGateExt.blockID);
 			}
 			else
 			{
@@ -127,59 +131,19 @@ public class BlockCamoGate extends BlockCamoFull
 	public void destroyGate(World world, int x, int y, int z)
 	{
 		int data = world.getBlockMetadata(x, y, z);
+		ForgeDirection dir = ForgeDirection.getOrientation(data);
+		int xOffset, yOffset, zOffset;
 
 		for (int i = 1; i <= maxSize; i++)
 		{
-			switch (data)
-				{
-					case 0:
-						if (world.getBlockId(x, y, z) == SecretRooms.camoGateExt.blockID)
-						{
-							world.setBlockWithNotify(x, y - i, z, 0);
-						}
+			xOffset = x + (dir.offsetX * i);
+			yOffset = y + (dir.offsetY * i);
+			zOffset = z + (dir.offsetZ * i);
 
-						break;
-
-					case 1:
-						if (world.getBlockId(x, y + i, z) == SecretRooms.camoGateExt.blockID)
-						{
-							world.setBlockWithNotify(x, y + i, z, 0);
-						}
-
-						break;
-
-					case 2:
-						if (world.getBlockId(x, y, z - i) == SecretRooms.camoGateExt.blockID)
-						{
-							world.setBlockWithNotify(x, y, z - i, 0);
-						}
-
-						break;
-
-					case 3:
-						if (world.getBlockId(x, y, z + i) == SecretRooms.camoGateExt.blockID)
-						{
-							world.setBlockWithNotify(x, y, z + i, 0);
-						}
-
-						break;
-
-					case 4:
-						if (world.getBlockId(x - i, y, z) == SecretRooms.camoGateExt.blockID)
-						{
-							world.setBlockWithNotify(x - i, y, z, 0);
-						}
-
-						break;
-
-					case 5:
-						if (world.getBlockId(x + i, y, z) == SecretRooms.camoGateExt.blockID)
-						{
-							world.setBlockWithNotify(x + i, y, z, 0);
-						}
-
-						break;
-				}
+			if (world.getBlockId(xOffset, yOffset, zOffset) == SecretRooms.camoGateExt.blockID)
+			{
+				world.setBlockToAir(xOffset, yOffset, zOffset);
+			}
 		}
 	}
 
@@ -198,6 +162,4 @@ public class BlockCamoGate extends BlockCamoFull
 
 		return true;
 	}
-
-	private static final int	maxSize	= 10;
 }

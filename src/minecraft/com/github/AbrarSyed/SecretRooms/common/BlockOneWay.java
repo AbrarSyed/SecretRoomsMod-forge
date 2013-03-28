@@ -11,10 +11,12 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,9 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockOneWay extends BlockContainer
 {
-	public BlockOneWay(int i, int j)
+	public BlockOneWay(int i)
 	{
-		super(i, j, Material.wood);
+		super(i, Material.wood);
 		setHardness(1.0F);
 		setStepSound(Block.soundWoodFootstep);
 		setLightOpacity(0);
@@ -70,22 +72,29 @@ public class BlockOneWay extends BlockContainer
 
 	@SideOnly(value = Side.CLIENT)
 	@Override
-	public int getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int l)
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
 	{
-		TileEntityCamo entity = (TileEntityCamo) iblockaccess.getBlockTileEntity(i, j, k);
-		int metadata = iblockaccess.getBlockMetadata(i, j, k);
+		if (!SecretRooms.displayCamo)
+			return getBlockTextureFromSide(side);
+		
+		int metadata = world.getBlockMetadata(x, y, z);
+		
+		if (side != metadata)
+			return Block.glass.getBlockTextureFromSide(side);
 
-		if (l == metadata)
-			if (entity == null)
-				return glass.blockIndexInTexture;
-			else
-			{
-				if (!SecretRooms.displayCamo)
-					return 0;
-				return entity.getTexture();
-			}
+		try
+		{
+			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			int id = entity.getCopyID();
 
-		return blockIndexInTexture;
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+
+			return Block.blocksList[id].getBlockTexture(fake, x, y, z, side);
+		}
+		catch (Throwable t)
+		{
+			return blockIcon;
+		}
 	}
 
 	@SideOnly(value = Side.CLIENT)
@@ -97,15 +106,15 @@ public class BlockOneWay extends BlockContainer
 	}
 
 	@Override
-	public int getBlockTextureFromSide(int i)
+	public Icon getBlockTextureFromSideAndMetadata(int i, int meta)
 	{
 		if (i == 5)
-			return 0;
-		return blockIndexInTexture;
+			return blockIcon;
+		return Block.glass.getBlockTextureFromSide(i);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving)
+	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving, ItemStack stack)
 	{
 		int metadata = 1;
 		if (entityliving instanceof EntityPlayer)
@@ -113,65 +122,145 @@ public class BlockOneWay extends BlockContainer
 			metadata = BlockOneWay.determineOrientation(world, i, j, k, (EntityPlayer) entityliving);
 		}
 
-		world.setBlockMetadata(i, j, k, metadata);
+		world.setBlockMetadataWithNotify(i, j, k, metadata, 2);
+	}
+	
+	@Override
+	public void onBlockAdded(World world, int i, int j, int k)
+	{
+		super.onBlockAdded(world, i, j, k);
 
-		SecretRooms.proxy.handleOneWayPlace(world, i, j, k, entityliving);
+		if (world.isRemote)
+			return;
+
+		// CAMO STUFF
+		BlockHolder holder = getIdCamoStyle(world, i, j, k);
+
+		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
+
+		if (holder == null)
+		{
+			holder = new BlockHolder(1, 0, null);
+		}
+
+		entity.setBlockHolder(holder);
+		FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
+	}
+	
+	/**
+	 * annalyses surrounding blocks and decides on a BlockID for the Camo Block to copy.
+	 * @param world
+	 * @param x coord
+	 * @param y coord
+	 * @param z coord
+	 * @return the ID of the block to be copied
+	 */
+	private BlockHolder getIdCamoStyle(World world, int x, int y, int z)
+	{
+		BlockHolder[] holders = new BlockHolder[6];
+		// Only PLUS sign id checks.
+		holders[0] = BlockCamoFull.getInfo(world, x, y - 1, z); // y-1
+		holders[1] = BlockCamoFull.getInfo(world, x, y + 1, z); // y+1
+		holders[2] = BlockCamoFull.getInfo(world, x - 1, y, z); // x-1
+		holders[3] = BlockCamoFull.getInfo(world, x + 1, y, z); // x+1
+		holders[4] = BlockCamoFull.getInfo(world, x, y, z - 1); // z-1
+		holders[5] = BlockCamoFull.getInfo(world, x, y, z + 1); // z+1
+
+		// if there is only 1 in the PLUS SIGN checked.
+		if (BlockCamoFull.isOneLeft(holders))
+		{
+			holders = BlockCamoFull.truncateArray(holders);
+			// System.out.println("IDs worked early:  " + Arrays.toString(plusIds[0]));
+			return holders[0];
+		}
+
+		BlockHolder[] planeChecks = new BlockHolder[3];
+
+		// checks X's
+		if (holders[2] != null && holders[2].equals(holders[3]))
+		{
+			planeChecks[0] = holders[2];
+		}
+
+		// checks Y's
+		if (holders[0] != null && holders[0].equals(holders[1]))
+		{
+			planeChecks[1] = holders[0];
+		}
+
+		// checks Z's
+		if (holders[4] != null && holders[4].equals(holders[5]))
+		{
+			planeChecks[2] = holders[4];
+		}
+
+		BlockHolder end = null;
+
+		// part of XZ wall?
+		if (planeChecks[0] != null && planeChecks[0].equals(planeChecks[2]))
+		{
+			end = planeChecks[0];
+		}
+		// part of XY wall?
+		else if (planeChecks[0] != null && planeChecks[0].equals(planeChecks[1]))
+		{
+			end = planeChecks[0];
+		}
+		// part of YZ wall?
+		else if (planeChecks[1] != null && planeChecks[1].equals(planeChecks[2]))
+		{
+			end = planeChecks[1];
+		}
+
+		// no entire planes? lets check single lines.
+
+		// check y
+		else if (planeChecks[1] != null)
+		{
+			end = planeChecks[1];
+		}
+		// check x
+		else if (planeChecks[0] != null)
+		{
+			end = planeChecks[0];
+		}
+		// check z
+		else if (planeChecks[2] != null)
+		{
+			end = planeChecks[2];
+		}
+
+		// System.out.println("IDs are fun:  " + Arrays.toString(id));
+
+		if (end != null)
+			return end;
+
+		// GET MODE
+		holders = BlockCamoFull.truncateArray(holders);
+		return BlockCamoFull.tallyMode(holders);
 	}
 
 	@SideOnly(value = Side.CLIENT)
 	@Override
-	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z)
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
 	{
-
 		if (!SecretRooms.displayCamo)
-			return 0xffffff;
+			return super.colorMultiplier(world, x, y, z);
 
-		TileEntityCamo entityHere = (TileEntityCamo) iblockaccess.getBlockTileEntity(x, y, z);
-		iblockaccess.getBlockMetadata(x, y, z);
+		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 
-		if (entityHere == null)
-			return 0xffffff;
+		if (entity == null)
+			return super.colorMultiplier(world, x, y, z);
 
-		int texture = entityHere.getTexture();
+		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+		int id = entity.getCopyID();
 
-		if (entityHere.getTexturePath().equals("/terrain.png"))
-		{
-			// grassed
-			if (texture == 0 || texture == 3 || texture == 38)
-				return Block.grass.colorMultiplier(iblockaccess, x, y, z);
+		if (id == 0)
+			return super.colorMultiplier(world, x, y, z);
 
-			// normal leaves
-			if (texture == 52 || texture == 53)
-			{
-				int var6 = 0;
-				int var7 = 0;
-				int var8 = 0;
+		Block fakeBlock = Block.blocksList[id];
 
-				for (int var9 = -1; var9 <= 1; ++var9)
-				{
-					for (int var10 = -1; var10 <= 1; ++var10)
-					{
-						int var11 = iblockaccess.getBiomeGenForCoords(x + var10, z + var9).getBiomeFoliageColor();
-						var6 += (var11 & 16711680) >> 16;
-						var7 += (var11 & 65280) >> 8;
-						var8 += var11 & 255;
-					}
-				}
-
-				return (var6 / 9 & 255) << 16 | (var7 / 9 & 255) << 8 | var8 / 9 & 255;
-			}
-
-			// pine leaves
-			if (texture == 132 || texture == 133)
-				return ColorizerFoliage.getFoliageColorPine();
-
-			// birch leaves
-			if (texture == 196 || texture == 197)
-				return ColorizerFoliage.getFoliageColorBirch();
-
-		}
-
-		return 0xffffff;
+		return fakeBlock.colorMultiplier(fake, x, y, z);
 	}
 
 	public static int determineOrientation(World world, int i, int j, int k, EntityPlayer entityplayer)
@@ -249,291 +338,9 @@ public class BlockOneWay extends BlockContainer
 		return tempTexture;
 	}
 
-	@SideOnly(value = Side.CLIENT)
-	private Object[] getDuplicateBlock(Object[][] textures)
-	{
-		if (checkAllNull(textures))
-			// System.out.println("All Null, returning glass.");
-			return new Object[] { Block.glass.blockIndexInTexture, null };
-		else if (isOneLeft(textures))
-		{
-			// System.out.println("All Null but one, returning that.");
-			textures = truncateArrayOBJ(textures);
-			if ((Integer) textures[0][0] >= 0)
-				return textures[0];
-
-			// System.out.println("But it is null.");
-		}
-
-		int[] textureCalc = new int[4];
-		ArrayList<String> pathList = new ArrayList<String>();
-		for (int i = 0; i < 4; i++)
-		{
-			textureCalc[i] = addToList(pathList, textures[i]);
-		}
-
-		byte icon = -1;
-
-		// System.out.println("Texture side1 = "+textureCalc[2]);
-		// System.out.println("Texture side2 = "+textureCalc[3]);
-		// check sides
-		if (textureCalc[2] >= 0 && textureCalc[3] >= 0 && textureCalc[2] == textureCalc[3] && icon < 0)
-		{
-			// System.out.println("Sides Have Same texture, using that");
-			icon = 2;
-		}
-
-		// System.out.println("Texture top = "+textureCalc[0]);
-		// System.out.println("Texture bot = "+textureCalc[1]);
-		// check top and bottom
-		if (textureCalc[0] >= 0 && textureCalc[1] >= 0 && textureCalc[0] == textureCalc[1] && icon < 0)
-		{
-			// System.out.println("Top And Bottom Have Same texture, using that");
-			icon = 0;
-		}
-
-		// if all else fails, get mode.
-		if (icon < 0)
-		{
-			// System.out.println("Trying Tally");
-			textureCalc = truncateArrayINT(textureCalc);
-			int tally = -1;
-
-			try
-			{
-				// System.out.println("Trying Tally");
-				textureCalc = truncateArrayINT(textureCalc);
-				tally = tallyMode(textureCalc);
-				// System.out.println("There are "+textureCalc.length+" texures.");
-				// System.out.println("Tally is "+tally);
-			}
-			catch (Throwable throwable)
-			{
-				// System.out.println("Tally failed.");
-			}
-
-			if (tally <= textureCalc.length && tally >= 0)
-				if (textureCalc[tally - 1] >= 0)
-				{
-					icon = (byte) tally;
-					// System.out.println("tally is "+tally+" and icon is "+icon);
-				}
-		}
-
-		if (icon >= 0)
-			// textures = truncateArrayINT(textures);
-			return getFromList(pathList, textureCalc[icon]);
-		else
-		{
-			textureCalc = truncateArrayINT(textureCalc);
-			// System.out.println("Got first texture" + textures[0]);
-			return getFromList(pathList, textureCalc[0]);
-		}
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	private int addToList(ArrayList<String> list, Object[] array)
-	{
-		if (array[1] == null || array[1].equals("/terrain.png"))
-			return ((Integer) array[0]).intValue();
-
-		int index;
-
-		if (list.contains(array[1]))
-		{
-			index = list.indexOf(array[1]) + 1;
-			return index * 1000 + (Integer) array[0];
-		}
-
-		list.add((String) array[1]);
-		index = list.indexOf(array[1]) + 1;
-		return index * 1000 + (Integer) array[0];
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	private Object[] getFromList(ArrayList<String> list, int texture)
-	{
-		if (texture <= 1000)
-			return new Object[] { texture, null };
-
-		int index = texture % 1000;
-		texture = (texture - index) / 1000;
-		String path = list.get(texture - 1);
-
-		return new Object[] { index, path };
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	private boolean checkAllNull(Object[][] textures)
-	{
-		boolean flag = true;
-
-		for (Object[] num : textures)
-			if ((Integer) num[0] >= 0)
-			{
-				flag = false;
-			}
-
-		return flag;
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	private boolean isOneLeft(Object[][] textures)
-	{
-		if (!checkAllNull(textures))
-		{
-			textures = truncateArrayOBJ(textures);
-
-			if (textures.length == 1)
-				return true;
-		}
-
-		return false;
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	public Object[] getTexture(World world, int x, int y, int z, int side)
-	{
-		Object[] array = new Object[] { -1, null };
-		if (world.isAirBlock(x, y, z))
-			return array;
-
-		Block block = blocksList[world.getBlockId(x, y, z)];
-
-		if (block instanceof BlockCamoFull)
-		{
-			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
-			array[0] = block.getBlockTexture(world, x, y, z, side);
-			array[1] = Block.blocksList[entity.getCopyID()].getTextureFile();
-			return array;
-		}
-		else if (block instanceof BlockOneWay)
-		{
-			TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
-			if (side == entity.getBlockMetadata())
-			{
-				array[0] = entity.getTexture();
-				array[1] = entity.getTexturePath();
-				return array;
-			}
-		}
-
-		if (!block.isDefaultTexture)
-		{
-			array[1] = block.getTextureFile();
-		}
-
-		if (block.isOpaqueCube() && block.getRenderType() == 0)
-		{
-			array[0] = block.getBlockTexture(world, x, y, z, side);
-			array[1] = block.getTextureFile();
-			return array;
-		}
-		else
-		{
-			block.setBlockBoundsBasedOnState(world, x, y, z);
-			double[] bounds = new double[] { block.getBlockBoundsMinX(), block.getBlockBoundsMinY(), block.getBlockBoundsMinZ(), block.getBlockBoundsMaxX(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxZ() };
-
-			if (bounds[0] == 0 && bounds[1] == 0 && bounds[2] == 0 && bounds[3] == 1 && bounds[4] == 1 && bounds[5] == 1)
-			{
-				array[0] = block.getBlockTexture(world, x, y, z, side);
-				return array;
-			}
-		}
-
-		return array;
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	private Object[][] truncateArrayOBJ(Object[][] array)
-	{
-		int num = 0;
-
-		for (Object[] obj : array)
-			if ((Integer) obj[0] >= 0)
-			{
-				num++;
-			}
-
-		Object[][] truncated = new Object[num][2];
-		num = 0;
-
-		for (Object[] obj : array)
-			if ((Integer) obj[0] >= 0)
-			{
-				truncated[num] = obj;
-				num++;
-			}
-
-		return truncated;
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	private int[] truncateArrayINT(int[] array)
-	{
-		int num = 0;
-
-		for (int obj : array)
-			if (obj >= 0)
-			{
-				num++;
-			}
-
-		int[] truncated = new int[num];
-		num = 0;
-
-		for (int obj : array)
-			if (obj >= 0)
-			{
-				truncated[num] = obj;
-				num++;
-			}
-
-		return truncated;
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	private int tallyMode(int[] nums) throws Throwable
-	{
-		// create array of tallies, all initialized to zero
-		int[] tally = new int[256];
-
-		for (int i = 0; i < tally.length; i++)
-		{
-			tally[i] = 0;
-		}
-
-		// for each array entry, increment corresponding tally box
-		for (int i = 0; i < nums.length; i++)
-		{
-			int value = nums[i];
-			tally[value]++;
-		}
-
-		// now find the index of the largest tally - this is the mode
-		int maxIndex = -1;
-
-		for (int i = 1; i < tally.length; i++)
-			if (tally[i] == tally[maxIndex] && maxIndex != 0)
-				throw new Throwable("NULL");
-			else if (tally[i] > tally[maxIndex])
-			{
-				maxIndex = i;
-			}
-
-		return maxIndex;
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	private int getMode(int[] nums) throws Throwable
-	{
-		int modeIndex = tallyMode(nums);
-		return nums[modeIndex];
-	}
-
 	@Override
 	public TileEntity createNewTileEntity(World var1)
 	{
-		return new TileEntityCamo();
+		return new TileEntityCamoFull();
 	}
 }

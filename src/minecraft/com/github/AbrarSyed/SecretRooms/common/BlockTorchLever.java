@@ -22,7 +22,7 @@ public class BlockTorchLever extends BlockTorch
 {
 	protected BlockTorchLever(int i, int j)
 	{
-		super(i, j);
+		super(i);
 		setTickRandomly(true);
 		setHardness(0);
 		setLightValue(0.9375F);
@@ -151,7 +151,7 @@ public class BlockTorchLever extends BlockTorch
 		if (!canPlaceBlockAt(world, i, j, k))
 		{
 			dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
-			world.setBlockWithNotify(i, j, k, 0);
+			world.setBlockToAir(i, j, k);
 			return false;
 		}
 		else
@@ -167,7 +167,7 @@ public class BlockTorchLever extends BlockTorch
 		int l = world.getBlockMetadata(i, j, k);
 		int i1 = l & 7;
 		int j1 = 8 - (l & 8);
-		world.setBlockMetadataWithNotify(i, j, k, i1 + j1);
+		world.setBlockMetadataWithNotify(i, j, k, i1 + j1, 2);
 		world.markBlockForRenderUpdate(i, j, k);
 		world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "random.click", 0.3F, j1 <= 0 ? 0.5F : 0.6F);
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
@@ -235,9 +235,9 @@ public class BlockTorchLever extends BlockTorch
 	 * Y, Z, side
 	 */
 	@Override
-	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
+		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0 ? 15 : 0;
 	}
 
 	/**
@@ -245,16 +245,19 @@ public class BlockTorchLever extends BlockTorch
 	 * side
 	 */
 	@Override
-	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
 		int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
 		if ((var6 & 8) == 0)
-			return false;
+			return 0;
 		else
 		{
 			int var7 = var6 & 7;
-			return var7 == 0 && par5 == 0 ? true : var7 == 7 && par5 == 0 ? true : var7 == 6 && par5 == 1 ? true : var7 == 5 && par5 == 1 ? true : var7 == 4 && par5 == 2 ? true : var7 == 3 && par5 == 3 ? true : var7 == 2 && par5 == 4 ? true : var7 == 1 && par5 == 5;
+			if(var7 == 0 && par5 == 0 ? true : var7 == 7 && par5 == 0 ? true : var7 == 6 && par5 == 1 ? true : var7 == 5 && par5 == 1 ? true : var7 == 4 && par5 == 2 ? true : var7 == 3 && par5 == 3 ? true : var7 == 2 && par5 == 4 ? true : var7 == 1 && par5 == 5)
+				return 15;
+			
+			return 0;
 		}
 	}
 }
