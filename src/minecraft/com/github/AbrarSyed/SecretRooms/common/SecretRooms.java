@@ -86,12 +86,12 @@ public class SecretRooms
 	private int[]					ids;
 
 	// textures
-	public static final String		TEXTURE_ITEM_PASTE		= "CamoPaste";
-	public static final String		TEXTURE_ITEM_DOOR_WOOD	= "CamoDoorWood";
-	public static final String		TEXTURE_ITEM_DOOR_STEEL	= "CamoDoorSteel";
-	public static final String		TEXTURE_BLOCK_BASE		= "CamoBase";
-	public static final String		TEXTURE_BLOCK_STAIR		= "CamoStair";
-	public static final String		TEXTURE_BLOCK_CHEST		= "CamoChest";
+	public static final String		TEXTURE_ITEM_PASTE		= MODID+":CamoPaste";
+	public static final String		TEXTURE_ITEM_DOOR_WOOD	= MODID+":CamoDoorWood";
+	public static final String		TEXTURE_ITEM_DOOR_STEEL	= MODID+":CamoDoorSteel";
+	public static final String		TEXTURE_BLOCK_BASE		= MODID+"CamoBase";
+	public static final String		TEXTURE_BLOCK_STAIR		= MODID+":CamoStair";
+	public static final String		TEXTURE_BLOCK_CHEST		= MODID+":CamoChest";
 
 	@PreInit
 	public void preLoad(FMLPreInitializationEvent e)

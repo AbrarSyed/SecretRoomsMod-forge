@@ -83,9 +83,18 @@ public class BlockHolder
 
 	public boolean equals(BlockHolder holder)
 	{
+		if (holder == null)
+			return false;
+		
+		boolean compound = false;
+		if (nbt == null || holder.nbt == null)
+			compound = nbt == holder.nbt;
+		else
+			compound = this.nbt.equals(holder.nbt);
+		
 		if (this.blockID == holder.blockID &&
 				this.metadata == holder.metadata &&
-				this.nbt.equals(holder.nbt))
+				compound)
 			return true;
 
 		return false;

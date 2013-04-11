@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -28,6 +29,13 @@ public class BlockTorchLever extends BlockTorch
 		setLightValue(0.9375F);
 		setStepSound(Block.soundWoodFootstep);
 		setCreativeTab(SecretRooms.tab);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		blockIcon = par1IconRegister.registerIcon(Block.torchWood.getUnlocalizedName2());
 	}
 
 	@Override
