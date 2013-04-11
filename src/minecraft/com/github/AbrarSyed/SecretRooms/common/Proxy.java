@@ -31,11 +31,6 @@ public class Proxy
 		// client only...
 	}
 
-	public void handleOneWayPlace(World world, int i, int j, int k, EntityLiving entityliving)
-	{
-		// client only...
-	}
-
 	@ForgeSubscribe(priority = EventPriority.HIGHEST)
 	public void onWorldLoad(Load event)
 	{

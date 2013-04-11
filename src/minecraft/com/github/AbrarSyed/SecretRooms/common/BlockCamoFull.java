@@ -61,7 +61,7 @@ public class BlockCamoFull extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BASE);
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.MODID + ":" + SecretRooms.TEXTURE_BLOCK_BASE);
 	}
 
 	@Override

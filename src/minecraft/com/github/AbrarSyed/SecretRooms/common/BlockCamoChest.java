@@ -34,7 +34,7 @@ public class BlockCamoChest extends BlockCamoFull
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_CHEST);
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.MODID + ":" + SecretRooms.TEXTURE_BLOCK_CHEST);
 	}
 
 	/**

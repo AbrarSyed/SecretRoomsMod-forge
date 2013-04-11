@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,11 +16,9 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 
 import org.lwjgl.input.Keyboard;
 
-import com.github.AbrarSyed.SecretRooms.common.BlockOneWay;
 import com.github.AbrarSyed.SecretRooms.common.FakeWorld;
 import com.github.AbrarSyed.SecretRooms.common.Proxy;
 import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
-import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -56,18 +53,6 @@ public class SecretRooms_client extends Proxy
 	public void loadKeyStuff()
 	{
 		KeyBindingRegistry.registerKeyBinding(new SecretKey(key_OneWayFace));
-	}
-
-	@Override
-	public void handleOneWayPlace(World world, int i, int j, int k, EntityLiving entityliving)
-	{
-		int metadata = world.getBlockMetadata(i, j, k);
-		Object[] properties = ((BlockOneWay) SecretRooms.oneWay).getHoldersFromFacing(world, i, j, k, metadata);
-		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(i, j, k);
-
-		entity.setTexturePath((String) properties[1]);
-		entity.setTexture((Integer) properties[0]);
-		PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
 	}
 
 	@Override

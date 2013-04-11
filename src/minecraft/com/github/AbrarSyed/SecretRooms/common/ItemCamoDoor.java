@@ -32,11 +32,11 @@ public class ItemCamoDoor extends Item
 	{
 		if (doorMaterial.equals(Material.iron))
 		{
-			iconIndex = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_DOOR_STEEL);
+			iconIndex = par1IconRegister.registerIcon(SecretRooms.MODID + ":" + SecretRooms.TEXTURE_ITEM_DOOR_STEEL);
 		}
 		else
 		{
-			iconIndex = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_DOOR_WOOD);
+			iconIndex = par1IconRegister.registerIcon(SecretRooms.MODID + ":" + SecretRooms.TEXTURE_ITEM_DOOR_WOOD);
 		}
 	}
 

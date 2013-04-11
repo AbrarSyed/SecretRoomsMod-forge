@@ -15,8 +15,9 @@
 /src/minecraft/*
 /src/minecraft_server/*
 
-!/src/common/com/
 !/src/minecraft/com/
+!/src/minecraft/mcmod.info
+!/src/minecraft/mods/
 
 *.bat
 *.sh
