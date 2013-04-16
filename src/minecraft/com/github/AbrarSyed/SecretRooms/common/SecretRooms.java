@@ -25,8 +25,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author AbrarSyed
@@ -64,14 +62,14 @@ public class SecretRooms
 	// FullCamo Stuff
 	public static Block				camoGhost;
 	public static Block				camoLever;
-	//	public static Block				camoCurrent;
+	public static Block				camoCurrent;
 	public static Block				camoButton;
 	public static Block				camoGate;
 	public static Block				camoGateExt;
 	public static Block				camoPlateAll;
 	public static Block				camoPlatePlayer;
-	public static Block				camoStairs;									// thanks Alexbegt
-	public static Block				camoChest;										// thanks alexbegt
+	public static Block				camoStairs;										// thanks Alexbegt
+	public static Block				camoChest;											// thanks alexbegt
 
 	// render IDs
 	public static int				camoRenderId;
@@ -86,12 +84,12 @@ public class SecretRooms
 	private int[]					ids;
 
 	// textures
-	public static final String		TEXTURE_ITEM_PASTE		= MODID+":CamoPaste";
-	public static final String		TEXTURE_ITEM_DOOR_WOOD	= MODID+":CamoDoorWood";
-	public static final String		TEXTURE_ITEM_DOOR_STEEL	= MODID+":CamoDoorSteel";
-	public static final String		TEXTURE_BLOCK_BASE		= MODID+"CamoBase";
-	public static final String		TEXTURE_BLOCK_STAIR		= MODID+":CamoStair";
-	public static final String		TEXTURE_BLOCK_CHEST		= MODID+":CamoChest";
+	public static final String		TEXTURE_ITEM_PASTE		= MODID + ":CamoPaste";
+	public static final String		TEXTURE_ITEM_DOOR_WOOD	= MODID + ":CamoDoorWood";
+	public static final String		TEXTURE_ITEM_DOOR_STEEL	= MODID + ":CamoDoorSteel";
+	public static final String		TEXTURE_BLOCK_BASE		= MODID + "CamoBase";
+	public static final String		TEXTURE_BLOCK_STAIR		= MODID + ":CamoStair";
+	public static final String		TEXTURE_BLOCK_CHEST		= MODID + ":CamoChest";
 
 	@PreInit
 	public void preLoad(FMLPreInitializationEvent e)
@@ -153,7 +151,7 @@ public class SecretRooms
 		// FullCamoBlocks
 		camoGhost = new BlockCamoGhost(ids[10]).setUnlocalizedName("mod_SRM.GhostBlock");
 		camoLever = new BlockCamoLever(ids[11]).setUnlocalizedName("mod_SRM.SecretCamoLever");
-		//camoCurrent = new BlockCamoWire(ids[12]).setUnlocalizedName("mod_SRM.SecretCamoRedstone");
+		camoCurrent = new BlockCamoWire(ids[12]).setUnlocalizedName("mod_SRM.SecretCamoRedstone");
 		camoButton = new BlockCamoButton(ids[13]).setUnlocalizedName("mod_SRM.SecretCamoButton");
 
 		camoPlateAll = new BlockCamoPlate(ids[14], false).setUnlocalizedName("mod_SRM.SecretPressurePlate");
@@ -183,7 +181,7 @@ public class SecretRooms
 
 		GameRegistry.registerBlock(camoGhost, "mod_SRM.GhostBlock");
 		GameRegistry.registerBlock(camoLever, "mod_SRM.SecretCamoLever");
-		//		GameRegistry.registerBlock(camoCurrent, "mod_SRM.SecretCamoRedstone");
+		GameRegistry.registerBlock(camoCurrent, "mod_SRM.SecretCamoRedstone");
 		GameRegistry.registerBlock(camoButton, "mod_SRM.SecretCamoButton");
 
 		GameRegistry.registerBlock(camoPlateAll, "mod_SRM.SecretPressurePlate");
@@ -303,12 +301,12 @@ public class SecretRooms
 				"X0X", "0 0", "X0X", 'X', camoPaste, '0', Block.cloth });
 
 		// Camo-Redstone
-		//		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[] {
-		//				"X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh,
-		//				'@', Item.redstone });
-		//		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[] {
-		//				"X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@',
-		//				Item.redstone });
+		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[] {
+				"X0X", "0@0", "X0X", 'X', camoPaste, '0', Item.rottenFlesh,
+				'@', Item.redstone });
+		GameRegistry.addRecipe(new ItemStack(camoCurrent, 1), new Object[] {
+				"X0X", "0@0", "X0X", 'X', camoPaste, '0', Block.cloth, '@',
+				Item.redstone });
 
 		// Camo-Lever
 		GameRegistry.addRecipe(new ItemStack(camoLever, 1), new Object[] {

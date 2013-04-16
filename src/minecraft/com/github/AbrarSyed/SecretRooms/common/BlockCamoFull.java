@@ -63,6 +63,28 @@ public class BlockCamoFull extends BlockContainer
 	{
 		blockIcon = par1IconRegister.registerIcon(SecretRooms.MODID + ":" + SecretRooms.TEXTURE_BLOCK_BASE);
 	}
+	
+	@SideOnly(Side.CLIENT)
+	/**
+	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
+	 */
+	public final int idPicked(World world, int x, int y, int z)
+	{
+		try
+		{
+			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
+
+			if (entity == null)
+				return 0;
+
+			return entity.getCopyID();
+		}
+		catch (Exception e)
+		{
+			return 0;
+		}
+	}
 
 	@Override
 	public final int getLightOpacity(World world, int x, int y, int z)
