@@ -31,6 +31,9 @@ public class PacketHandlerClient implements IPacketHandler
 
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 		World world = player.worldObj;
+		
+		if (world == null)
+			return;
 
 		if (channel.equals("SRM-TE-Camo"))
 		{
