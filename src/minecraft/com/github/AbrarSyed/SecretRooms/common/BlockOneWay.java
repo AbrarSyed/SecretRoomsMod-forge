@@ -72,20 +72,27 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public int getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int l)
 	{
-		TileEntityCamo entity = (TileEntityCamo) iblockaccess.getBlockTileEntity(i, j, k);
-		int metadata = iblockaccess.getBlockMetadata(i, j, k);
+		try
+		{
+			TileEntityCamo entity = (TileEntityCamo) iblockaccess.getBlockTileEntity(i, j, k);
+			int metadata = iblockaccess.getBlockMetadata(i, j, k);
 
-		if (l == metadata)
-			if (entity == null)
-				return glass.blockIndexInTexture;
-			else
-			{
-				if (!SecretRooms.displayCamo)
-					return 0;
-				return entity.getTexture();
-			}
+			if (l == metadata)
+				if (entity == null)
+					return glass.blockIndexInTexture;
+				else
+				{
+					if (!SecretRooms.displayCamo)
+						return 0;
+					return entity.getTexture();
+				}
 
-		return blockIndexInTexture;
+			return blockIndexInTexture;
+		}
+		catch (Throwable t)
+		{
+			return Block.glass.blockIndexInTexture;
+		}
 	}
 
 	@SideOnly(value = Side.CLIENT)

@@ -59,18 +59,25 @@ public class BlockCamoFull extends BlockContainer
 	@Override
 	public final int getLightOpacity(World world, int x, int y, int z)
 	{
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
-		FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
+		try
+		{
+			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
 
-		if (entity == null)
+			if (entity == null)
+				return 255;
+
+			int id = entity.getCopyID();
+
+			if (id == 0)
+				return 255;
+
+			return Block.blocksList[id].getLightOpacity(fake, x, y, z);
+		}
+		catch (Throwable t)
+		{
 			return 255;
-
-		int id = entity.getCopyID();
-
-		if (id == 0)
-			return 255;
-
-		return Block.blocksList[id].getLightOpacity(fake, x, y, z);
+		}
 	}
 
 	@Override
@@ -92,27 +99,34 @@ public class BlockCamoFull extends BlockContainer
 		if (!SecretRooms.displayCamo)
 			return getBlockTextureFromSide(dir);
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
-		int id;
-		if (entity == null)
+		try
 		{
-			id = 1;
-		}
-		else if (entity.getCopyID() <= 0)
-		{
-			id = 1;
-		}
-		else
-		{
-			id = entity.getCopyID();
-		}
+			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			int id;
+			if (entity == null)
+			{
+				id = 1;
+			}
+			else if (entity.getCopyID() <= 0)
+			{
+				id = 1;
+			}
+			else
+			{
+				id = entity.getCopyID();
+			}
 
-		if (id == 1)
+			if (id == 1)
+				return Block.stone.blockIndexInTexture;
+
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+
+			return Block.blocksList[id].getBlockTexture(fake, x, y, z, dir);
+		}
+		catch (Throwable t)
+		{
 			return Block.stone.blockIndexInTexture;
-
-		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
-
-		return Block.blocksList[id].getBlockTexture(fake, x, y, z, dir);
+		}
 	}
 
 	/**
@@ -163,26 +177,32 @@ public class BlockCamoFull extends BlockContainer
 	{
 		if (!SecretRooms.displayCamo)
 			return super.colorMultiplier(par1IBlockAccess, x, y, z);
+		try
+		{
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) par1IBlockAccess.getBlockTileEntity(x, y, z);
+			TileEntityCamoFull entity = (TileEntityCamoFull) par1IBlockAccess.getBlockTileEntity(x, y, z);
 
-		if (entity == null)
-			return super.colorMultiplier(par1IBlockAccess, x, y, z);
+			if (entity == null)
+				return super.colorMultiplier(par1IBlockAccess, x, y, z);
 
-		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
-		int id = entity.getCopyID();
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+			int id = entity.getCopyID();
 
-		if (id == 0)
-			return super.colorMultiplier(par1IBlockAccess, x, y, z);
+			if (id == 0)
+				return super.colorMultiplier(par1IBlockAccess, x, y, z);
 
-		Block fakeBlock = Block.blocksList[id];
+			Block fakeBlock = Block.blocksList[id];
 
-		return fakeBlock.colorMultiplier(fake, x, y, z);
+			return fakeBlock.colorMultiplier(fake, x, y, z);
+		}
+		catch (Throwable t)
+		{
+			return 0xffffff;
+		}
 	}
 
 	/**
 	 * annalyses surrounding blocks and decides on a BlockID for the Camo Block to copy.
-	 * 
 	 * @param world
 	 * @param x coord
 	 * @param y coord
@@ -321,7 +341,6 @@ public class BlockCamoFull extends BlockContainer
 
 	/**
 	 * Used to specially get Ids. It returns zero if the texture cannot be copied, or if it is air.
-	 * 
 	 * @param world The world
 	 * @param x X coordinate
 	 * @param y Y Coordinate
@@ -360,9 +379,8 @@ public class BlockCamoFull extends BlockContainer
 
 	/**
 	 * This truncates an int Array so that it contains only values above zero. The size of the array is also cut down so that all of them are full.
-	 * 
 	 * @param array
-	 * The array to be truncated
+	 *            The array to be truncated
 	 * @return the truncated array.
 	 */
 	private static int[][] truncateArrayINT(int[][] array)
