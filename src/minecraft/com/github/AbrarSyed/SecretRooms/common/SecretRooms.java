@@ -154,13 +154,13 @@ public class SecretRooms
 		camoTrapDoor = new BlockCamoTrapDoor(ids[4]).setBlockName("Secret TrapDoor");
 
 		// doors, Iron AND Wood
-		camoDoorWoodItem = new ItemCamoDoor(ids[5], Material.wood).setItemName("Secret Wooden Door");
+		camoDoorWoodItem = new ItemCamoDoor(ids[5]-256, Material.wood).setItemName("Secret Wooden Door");
 		camoDoorWood = new BlockCamoDoor(ids[6], Material.wood).setBlockName("Secret Wooden Door");
-		camoDoorIronItem = new ItemCamoDoor(ids[7], Material.iron).setItemName("Secret Iron Door");
+		camoDoorIronItem = new ItemCamoDoor(ids[7]-256, Material.iron).setItemName("Secret Iron Door");
 		camoDoorIron = new BlockCamoDoor(ids[8], Material.iron).setBlockName("Secret Iron Door");
 
 		// Camo Paste
-		camoPaste = new ItemCamo(ids[9]).setItemName("Camoflauge Paste");
+		camoPaste = new ItemCamo(ids[9]-256).setItemName("Camoflauge Paste");
 
 		// FullCamoBlocks
 		camoGhost = new BlockCamoGhost(ids[10]).setBlockName("Ghost Block");
