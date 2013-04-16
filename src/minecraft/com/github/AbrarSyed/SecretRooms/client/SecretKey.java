@@ -43,6 +43,9 @@ public class SecretKey extends KeyHandler
 			return;
 
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+		
+		if(player == null)
+			return;
 
 		SecretRooms.proxy.onKeyPress(player.username);
 
