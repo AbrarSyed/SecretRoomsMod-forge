@@ -46,7 +46,7 @@ public class Proxy
 	}
 
 	@ForgeSubscribe(priority = EventPriority.LOWEST)
-	public void onWorldLoad(Unload event)
+	public void onWorldUnLoad(Unload event)
 	{
 		if (event.world instanceof FakeWorld)
 			return;

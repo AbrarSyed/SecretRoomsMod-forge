@@ -82,7 +82,7 @@ public class SecretRooms_client extends Proxy
 
 	@Override
 	@ForgeSubscribe(priority = EventPriority.LOWEST)
-	public void onWorldLoad(Unload event)
+	public void onWorldUnLoad(Unload event)
 	{
 		fake = null;
 	}

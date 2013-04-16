@@ -70,8 +70,7 @@ public class TileEntityCamo extends TileEntity
 
 			if (forged)
 			{
-				data.write(getTexturePath().length());
-				data.writeChars(getTexturePath());
+				data.writeUTF(getTexturePath());
 			}
 		}
 		catch (Exception e)

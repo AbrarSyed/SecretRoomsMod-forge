@@ -48,16 +48,7 @@ public class PacketHandlerServer implements IPacketHandler
 
 				if (forged)
 				{
-					int texturePathLength = dataStream.readInt();
-
-					char[] string = new char[texturePathLength];
-
-					for (int i = 0; i < texturePathLength; i++)
-					{
-						string[i] = dataStream.readChar();
-					}
-
-					texturePath = new String(string);
+					texturePath = dataStream.readUTF();
 				}
 			}
 			catch (Exception e)
