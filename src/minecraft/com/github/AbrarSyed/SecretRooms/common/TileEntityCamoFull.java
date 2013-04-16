@@ -88,9 +88,16 @@ public class TileEntityCamoFull extends TileEntity
 			{
 				data.writeInt(coords[a]);
 			}
-			NBTTagCompound nbt = new NBTTagCompound();
-			holder.writeToNBT(nbt);
-			NBTBase.writeNamedTag(nbt, data);
+			
+			if (holder != null)
+			{
+				data.writeBoolean(true);
+				NBTTagCompound nbt = new NBTTagCompound();
+				holder.writeToNBT(nbt);
+				NBTBase.writeNamedTag(nbt, data);
+			}
+			else
+				data.writeBoolean(false);
 			data.close();
 		}
 		catch (Exception e)

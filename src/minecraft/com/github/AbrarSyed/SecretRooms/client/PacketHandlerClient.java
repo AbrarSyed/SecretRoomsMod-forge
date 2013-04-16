@@ -31,7 +31,7 @@ public class PacketHandlerClient implements IPacketHandler
 
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 		World world = player.worldObj;
-		
+
 		if (world == null)
 			return;
 
@@ -124,8 +124,13 @@ public class PacketHandlerClient implements IPacketHandler
 					coords[i] = dataStream.readInt();
 				}
 
-				NBTTagCompound nbt = (NBTTagCompound) NBTBase.readNamedTag(dataStream);
-				holder = BlockHolder.buildFromNBT(nbt);
+				boolean hasHolder = dataStream.readBoolean();
+
+				if (hasHolder)
+				{
+					NBTTagCompound nbt = (NBTTagCompound) NBTBase.readNamedTag(dataStream);
+					holder = BlockHolder.buildFromNBT(nbt);
+				}
 
 				dataStream.close();
 
