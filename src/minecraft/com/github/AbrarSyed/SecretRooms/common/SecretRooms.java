@@ -34,7 +34,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @NetworkMod(
 		clientSideRequired = true,
 		serverSideRequired = true,
-		versionBounds = "[4.5,)",
+		versionBounds = "[4.5.1]",
 		clientPacketHandlerSpec = @SidedPacketHandler(channels =
 		{
 				"SRM-TE-CamoFull",
@@ -51,7 +51,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 				"SRM-Display"
 		},
 				packetHandler = PacketHandlerServer.class))
-@Mod(modid = SecretRooms.modid, name = "SecretRoomsMod", version = "4.5.0")
+@Mod(modid = SecretRooms.modid, name = "SecretRoomsMod", version = "4.5.1")
 public class SecretRooms
 {
 	public static final String		modid		= "SecretRoomsMod";
