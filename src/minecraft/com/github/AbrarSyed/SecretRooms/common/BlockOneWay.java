@@ -543,4 +543,10 @@ public class BlockOneWay extends BlockContainer
 	{
 		return new TileEntityCamo();
 	}
+	
+	@Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+    {
+        return 0;
+    }
 }
