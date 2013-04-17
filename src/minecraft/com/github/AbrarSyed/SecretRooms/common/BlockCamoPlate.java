@@ -48,7 +48,7 @@ public class BlockCamoPlate extends BlockCamoFull
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int i, int meta)
+	public Icon getIcon(int i, int meta)
 	{
 		if (i == 1)
 			return Block.planks.getBlockTextureFromSide(i);

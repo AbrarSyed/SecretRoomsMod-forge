@@ -538,13 +538,6 @@ public class FakeWorld extends World implements IBlockAccess
 	}
 
 	@Override
-	public List getAllCollidingBoundingBoxes(AxisAlignedBB par1AxisAlignedBB)
-	{
-
-		return world.getAllCollidingBoundingBoxes(par1AxisAlignedBB);
-	}
-
-	@Override
 	public int calculateSkylightSubtracted(float par1)
 	{
 
@@ -707,26 +700,6 @@ public class FakeWorld extends World implements IBlockAccess
 		world.updateEntityWithOptionalForce(par1Entity, par2);
 	}
 
-	@Override
-	public boolean checkIfAABBIsClear(AxisAlignedBB par1AxisAlignedBB)
-	{
-
-		return world.checkIfAABBIsClear(par1AxisAlignedBB);
-	}
-
-	@Override
-	public boolean checkIfAABBIsClearExcludingEntity(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
-	{
-
-		return world.checkIfAABBIsClearExcludingEntity(par1AxisAlignedBB, par2Entity);
-	}
-
-	@Override
-	public boolean isAABBNonEmpty(AxisAlignedBB par1AxisAlignedBB)
-	{
-
-		return world.isAABBNonEmpty(par1AxisAlignedBB);
-	}
 
 	@Override
 	public boolean isAnyLiquid(AxisAlignedBB par1AxisAlignedBB)
@@ -988,13 +961,6 @@ public class FakeWorld extends World implements IBlockAccess
 	{
 
 		return world.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB);
-	}
-
-	@Override
-	public List func_94576_a(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3iEntitySelector)
-	{
-
-		return world.func_94576_a(par1Entity, par2AxisAlignedBB, par3iEntitySelector);
 	}
 
 	@Override
@@ -1485,5 +1451,35 @@ public class FakeWorld extends World implements IBlockAccess
 	public int countEntities(EnumCreatureType type, boolean forSpawnCount)
 	{
 		return world.countEntities(type, forSpawnCount);
+	}
+
+	@Override
+	public List getCollidingBlockBounds(AxisAlignedBB par1AxisAlignedBB)
+	{
+		return world.getCollidingBlockBounds(par1AxisAlignedBB);
+	}
+
+	@Override
+	public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB)
+	{
+		return world.checkNoEntityCollision(par1AxisAlignedBB);
+	}
+
+	@Override
+	public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
+	{
+		return world.checkNoEntityCollision(par1AxisAlignedBB, par2Entity);
+	}
+
+	@Override
+	public boolean checkBlockCollision(AxisAlignedBB par1AxisAlignedBB)
+	{
+		return world.checkBlockCollision(par1AxisAlignedBB);
+	}
+
+	@Override
+	public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3iEntitySelector)
+	{
+		return world.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB, par3iEntitySelector);
 	}
 }

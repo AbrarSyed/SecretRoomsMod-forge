@@ -37,7 +37,7 @@ public class BlockCamoLever extends BlockCamoFull
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int i, int meta)
+	public Icon getIcon(int i, int meta)
 	{
 		if (i == 1)
 			return Block.lever.getBlockTextureFromSide(i);

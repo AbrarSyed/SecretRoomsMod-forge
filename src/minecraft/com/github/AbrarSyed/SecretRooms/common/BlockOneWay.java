@@ -106,7 +106,7 @@ public class BlockOneWay extends BlockContainer
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int i, int meta)
+	public Icon getIcon(int i, int meta)
 	{
 		if (i == 5)
 			return blockIcon;

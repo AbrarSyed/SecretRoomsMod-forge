@@ -42,7 +42,7 @@ public class BlockCamoButton extends BlockCamoFull
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int i, int j)
+	public Icon getIcon(int i, int j)
 	{
 		if (i == 3 || i == 1)
 			return Block.cobblestone.getBlockTextureFromSide(i);

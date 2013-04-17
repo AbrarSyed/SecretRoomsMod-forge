@@ -29,15 +29,15 @@ public class ItemCamoDoor extends Item
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void updateIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
 		if (doorMaterial.equals(Material.iron))
 		{
-			iconIndex = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_DOOR_STEEL);
+			itemIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_DOOR_STEEL);
 		}
 		else
 		{
-			iconIndex = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_DOOR_WOOD);
+			itemIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_DOOR_WOOD);
 		}
 	}
 

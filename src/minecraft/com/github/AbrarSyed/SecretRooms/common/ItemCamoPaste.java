@@ -19,9 +19,9 @@ public class ItemCamoPaste extends Item
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void updateIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		iconIndex = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_PASTE);
+		itemIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_ITEM_PASTE);
 	}
 
 }
