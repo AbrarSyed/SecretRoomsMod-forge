@@ -5,8 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import mods.SecretRoomsMod.SecretRooms;
-import mods.SecretRoomsMod.common.FakeWorld;
 import mods.SecretRoomsMod.common.ProxyCommon;
+import mods.SecretRoomsMod.common.fake.FakeWorld;
 import mods.SecretRoomsMod.network.PacketSRM2Key;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;

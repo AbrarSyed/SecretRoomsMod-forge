@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.util.logging.Level;
 
 import mods.SecretRoomsMod.SecretRooms;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -42,7 +43,7 @@ public abstract class HandlerBase implements IPacketHandler
 						break;
 				}
 
-			doAction((EntityPlayerMP) player, parsedPacket);
+			doAction((EntityPlayer) player, parsedPacket);
 			stream.close();
 			array.close();
 		}
@@ -53,5 +54,5 @@ public abstract class HandlerBase implements IPacketHandler
 
 	}
 
-	protected abstract void doAction(EntityPlayerMP player, PacketSRMBase packet);
+	protected abstract void doAction(EntityPlayer player, PacketSRMBase packet);
 }

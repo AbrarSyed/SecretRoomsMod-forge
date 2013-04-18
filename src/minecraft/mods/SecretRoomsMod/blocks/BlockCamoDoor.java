@@ -4,7 +4,7 @@ import java.util.Random;
 
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.common.BlockHolder;
-import mods.SecretRoomsMod.common.FakeWorld;
+import mods.SecretRoomsMod.common.fake.FakeWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -423,7 +423,7 @@ public class BlockCamoDoor extends BlockContainer
 			entity.setBlockHolder(holder);
 			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
 		}
-		
+		world.markBlockForRenderUpdate(x, y, z);
 	}
 
 	@Override

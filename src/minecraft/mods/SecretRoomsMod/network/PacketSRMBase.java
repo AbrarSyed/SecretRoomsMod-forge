@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 
 import mods.SecretRoomsMod.SecretRooms;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -61,7 +61,7 @@ public abstract class PacketSRMBase
 	public abstract int getID();
 
 	@SideOnly(Side.CLIENT)
-	public abstract void actionClient(World world, EntityPlayerMP player);
+	public abstract void actionClient(World world, EntityPlayer player);
 
-	public abstract void actionServer(World world, EntityPlayerMP player);
+	public abstract void actionServer(World world, EntityPlayer player);
 }

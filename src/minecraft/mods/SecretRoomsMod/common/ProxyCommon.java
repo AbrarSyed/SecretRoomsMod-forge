@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
+import mods.SecretRoomsMod.common.fake.FakeWorld;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 import net.minecraftforge.event.EventPriority;

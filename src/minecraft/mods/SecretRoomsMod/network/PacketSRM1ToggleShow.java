@@ -5,20 +5,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import mods.SecretRoomsMod.SecretRooms;
-import mods.SecretRoomsMod.blocks.TileEntityCamoFull;
-import mods.SecretRoomsMod.common.BlockHolder;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketSRM1ToggleShow extends PacketSRMBase
 {
-	
-	public static final String COLOR = "\u00a7e";
-	
+
+	public static final String	COLOR	= "\u00a7e";
+
 	public PacketSRM1ToggleShow()
 	{
 	}
@@ -40,17 +36,17 @@ public class PacketSRM1ToggleShow extends PacketSRMBase
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void actionClient(World world, EntityPlayerMP player)
+	public void actionClient(World world, EntityPlayer player)
 	{
 		SecretRooms.displayCamo = !SecretRooms.displayCamo;
 
 		if (SecretRooms.displayCamo)
 		{
-			player.addChatMessage(COLOR+"Camo blocks made secret");
+			player.addChatMessage(COLOR + "Camo blocks made secret");
 		}
 		else
 		{
-			player.addChatMessage(COLOR+"Camo blocks made obvious");
+			player.addChatMessage(COLOR + "Camo blocks made obvious");
 		}
 
 		int rad = 20; // update radius
@@ -58,7 +54,7 @@ public class PacketSRM1ToggleShow extends PacketSRMBase
 	}
 
 	@Override
-	public void actionServer(World world, EntityPlayerMP player)
+	public void actionServer(World world, EntityPlayer player)
 	{
 		// nothing.
 	}

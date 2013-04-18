@@ -2,7 +2,7 @@ package mods.SecretRoomsMod.blocks;
 
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.common.BlockHolder;
-import mods.SecretRoomsMod.common.FakeWorld;
+import mods.SecretRoomsMod.common.fake.FakeWorld;
 import mods.SecretRoomsMod.network.PacketSRM0UpdateCamo;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;

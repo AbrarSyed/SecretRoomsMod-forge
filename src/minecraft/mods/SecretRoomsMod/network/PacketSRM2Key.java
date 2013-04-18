@@ -5,7 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import mods.SecretRoomsMod.SecretRooms;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,13 +37,13 @@ public class PacketSRM2Key extends PacketSRMBase
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void actionClient(World world, EntityPlayerMP player)
+	public void actionClient(World world, EntityPlayer player)
 	{
 		// nothing
 	}
 
 	@Override
-	public void actionServer(World world, EntityPlayerMP player)
+	public void actionServer(World world, EntityPlayer player)
 	{
 		SecretRooms.proxy.onKeyPress(player.username);
 	}

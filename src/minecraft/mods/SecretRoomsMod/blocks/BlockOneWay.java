@@ -5,7 +5,7 @@ import java.util.Random;
 
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.common.BlockHolder;
-import mods.SecretRoomsMod.common.FakeWorld;
+import mods.SecretRoomsMod.common.fake.FakeWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockPistonBase;
@@ -21,6 +21,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -134,16 +135,7 @@ public class BlockOneWay extends BlockContainer
 		}
 
 		world.setBlockMetadataWithNotify(i, j, k, metadata, 2);
-	}
-	
-	@Override
-	public void onBlockAdded(World world, int i, int j, int k)
-	{
-		super.onBlockAdded(world, i, j, k);
-
-		if (world.isRemote)
-			return;
-
+		
 		// CAMO STUFF
 		BlockHolder holder = getIdCamoStyle(world, i, j, k);
 
@@ -155,7 +147,13 @@ public class BlockOneWay extends BlockContainer
 		}
 
 		entity.setBlockHolder(holder);
-		FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
+		PacketDispatcher.sendPacketToAllInDimension(entity.getDescriptionPacket(), world.provider.dimensionId);
+	}
+	
+	@Override
+	public void onBlockAdded(World world, int i, int j, int k)
+	{
+		super.onBlockAdded(world, i, j, k);
 	}
 	
 	/**
@@ -181,11 +179,11 @@ public class BlockOneWay extends BlockContainer
 		BlockHolder end = null;
 		
 		// first line.
-		if (holders[0].equals(holders[1]))
+		if (holders[0] != null && holders[0].equals(holders[1]))
 		{
 			end = holders[0];
 		}
-		else if (holders[2].equals(holders[3]))
+		else if (holders[2] != null && holders[2].equals(holders[3]))
 		{
 			end = holders[0];
 		}

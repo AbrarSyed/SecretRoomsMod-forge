@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 
 import mods.SecretRoomsMod.blocks.TileEntityCamoFull;
 import mods.SecretRoomsMod.common.BlockHolder;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -70,13 +70,13 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void actionClient(World world, EntityPlayerMP player)
+	public void actionClient(World world, EntityPlayer player)
 	{
 		// nothing...
 	}
 
 	@Override
-	public void actionServer(World world, EntityPlayerMP player)
+	public void actionServer(World world, EntityPlayer player)
 	{
 		if (world == null)
 			return;

@@ -1,4 +1,4 @@
-package mods.SecretRoomsMod.common;
+package mods.SecretRoomsMod.common.fake;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import mods.SecretRoomsMod.common.BlockHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.IEntitySelector;
@@ -36,6 +37,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -57,9 +59,9 @@ public class FakeWorld extends World implements IBlockAccess
 	private final World									world;
 	private final HashMap<ChunkPosition, BlockHolder>	overrideMap;
 
-	private FakeWorld(World world, WorldSettings settings)
+	private FakeWorld(World world, FakeProvider provider, FakeSaveHandler handler)
 	{
-		super(null, "SRM_FAKE_" + world.getWorldInfo().getWorldName(), null, settings, null, null);
+		super(handler, "fake", new WorldSettings(world.getWorldInfo()), provider, null, null);
 		this.world = world;
 		overrideMap = new HashMap<ChunkPosition, BlockHolder>();
 		worldInfo = world.getWorldInfo();
@@ -67,8 +69,9 @@ public class FakeWorld extends World implements IBlockAccess
 
 	public static FakeWorld getFakeWorldFor(World world)
 	{
-		WorldSettings settings = new WorldSettings(world.getWorldInfo());
-		return new FakeWorld(world, settings);
+		FakeProvider provider = new FakeProvider(world.provider);
+		FakeSaveHandler handler = new FakeSaveHandler(world.getWorldInfo());
+		return new FakeWorld(world, provider, handler);
 	}
 
 	// actual stuff...
@@ -130,6 +133,19 @@ public class FakeWorld extends World implements IBlockAccess
 	public Entity getEntityByID(int i)
 	{
 		return world.getEntityByID(i);
+	}
+	
+
+	@Override
+	public ISaveHandler getSaveHandler()
+	{
+		return this.saveHandler;
+	}
+
+	@Override
+	public WorldInfo getWorldInfo()
+	{
+		return this.worldInfo;
 	}
 
 	// extra necessary overrides
@@ -540,7 +556,6 @@ public class FakeWorld extends World implements IBlockAccess
 	@Override
 	public int calculateSkylightSubtracted(float par1)
 	{
-
 		return world.calculateSkylightSubtracted(par1);
 	}
 
@@ -700,7 +715,6 @@ public class FakeWorld extends World implements IBlockAccess
 		world.updateEntityWithOptionalForce(par1Entity, par2);
 	}
 
-
 	@Override
 	public boolean isAnyLiquid(AxisAlignedBB par1AxisAlignedBB)
 	{
@@ -847,8 +861,7 @@ public class FakeWorld extends World implements IBlockAccess
 	@Override
 	public void calculateInitialSkylight()
 	{
-
-		world.calculateInitialSkylight();
+		// nothing
 	}
 
 	@Override
@@ -868,8 +881,7 @@ public class FakeWorld extends World implements IBlockAccess
 	@Override
 	public void calculateInitialWeatherBody()
 	{
-
-		world.calculateInitialWeatherBody();
+		// nothing
 	}
 
 	@Override
@@ -1218,18 +1230,6 @@ public class FakeWorld extends World implements IBlockAccess
 	public void addBlockEvent(int par1, int par2, int par3, int par4, int par5, int par6)
 	{
 		world.addBlockEvent(par1, par2, par3, par4, par5, par6);
-	}
-
-	@Override
-	public ISaveHandler getSaveHandler()
-	{
-		return world.getSaveHandler();
-	}
-
-	@Override
-	public WorldInfo getWorldInfo()
-	{
-		return world.getWorldInfo();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package mods.SecretRoomsMod.network;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -11,7 +11,7 @@ public class HandlerClient extends HandlerBase
 {
 
 	@Override
-	protected void doAction(EntityPlayerMP player, PacketSRMBase packet)
+	protected void doAction(EntityPlayer player, PacketSRMBase packet)
 	{
 		World world = FMLClientHandler.instance().getClient().theWorld;
 		packet.actionClient(world, player);
