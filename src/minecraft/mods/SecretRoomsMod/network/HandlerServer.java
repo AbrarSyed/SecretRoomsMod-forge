@@ -11,7 +11,7 @@ public class HandlerServer extends HandlerBase
 {
 
 	@Override
-	protected void doAction(EntityPlayerMP player, PacketSCBase packet)
+	protected void doAction(EntityPlayerMP player, PacketSRMBase packet)
 	{
 		World world = player.worldObj;
 		packet.actionServer(world, player);

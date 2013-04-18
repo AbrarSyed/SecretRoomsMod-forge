@@ -18,7 +18,7 @@ public abstract class HandlerBase implements IPacketHandler
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 	{
 		// no packet stuff
-		if (!packet.channel.equals(PacketSCBase.CHANNEL))
+		if (!packet.channel.equals(PacketSRMBase.CHANNEL))
 			return;
 
 		try
@@ -27,21 +27,18 @@ public abstract class HandlerBase implements IPacketHandler
 			ObjectInputStream stream = new ObjectInputStream(array);
 			int id = stream.readInt();
 
-			PacketSCBase parsedPacket = null;
+			PacketSRMBase parsedPacket = null;
 
 			switch (id)
 				{
 					case 0:
-						parsedPacket = new PacketSC0MountEntity(stream);
+						parsedPacket = new PacketSRM0UpdateCamo(stream);
 						break;
 					case 1:
-						parsedPacket = new PacketSC1StartBoat(stream);
+						parsedPacket = new PacketSRM1ToggleShow(stream);
 						break;
 					case 2:
-						parsedPacket = new PacketSC2BuildBoat(stream);
-						break;
-					case 3:
-						parsedPacket = new PacketSC3ToggleAnchor(stream);
+						parsedPacket = new PacketSRM2Key(stream);
 						break;
 				}
 
@@ -56,5 +53,5 @@ public abstract class HandlerBase implements IPacketHandler
 
 	}
 
-	protected abstract void doAction(EntityPlayerMP player, PacketSCBase packet);
+	protected abstract void doAction(EntityPlayerMP player, PacketSRMBase packet);
 }

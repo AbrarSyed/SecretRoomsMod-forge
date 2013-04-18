@@ -13,11 +13,11 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class PacketSCBase
+public abstract class PacketSRMBase
 {
-	public static final String	CHANNEL	= "SeaCraft";
+	public static final String	CHANNEL	= "SecretRooms";
 
-	public PacketSCBase()
+	public PacketSRMBase()
 	{
 		// for other constructors.
 	}
@@ -27,7 +27,7 @@ public abstract class PacketSCBase
 	 * Another constructor is usually good as well.
 	 * @param stream
 	 */
-	public PacketSCBase(ObjectInputStream stream) throws IOException
+	public PacketSRMBase(ObjectInputStream stream) throws IOException
 	{
 		// to be filled by something else...
 	}

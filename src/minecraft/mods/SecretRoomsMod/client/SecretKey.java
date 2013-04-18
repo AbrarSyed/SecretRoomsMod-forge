@@ -3,11 +3,9 @@ package mods.SecretRoomsMod.client;
 import java.util.EnumSet;
 
 import mods.SecretRoomsMod.SecretRooms;
-import mods.SecretRoomsMod.network.PacketHandlerClient;
+import mods.SecretRoomsMod.network.PacketSRM1ToggleShow;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
@@ -49,12 +47,12 @@ public class SecretKey extends KeyHandler
 
 		if (SecretRooms.proxy.getFaceAway(player.username))
 		{
-			chat(PacketHandlerClient.getColorThing() + "-- !!! OneWayBlock facing set to Towards !!! --");
+			chat(PacketSRM1ToggleShow.COLOR + "-- !!! OneWayBlock facing set to Towards !!! --");
 			System.out.println("chat true");
 		}
 		else
 		{
-			chat(PacketHandlerClient.getColorThing() + "-- !!! OneWayBlock facing set to Away !!! --");
+			chat(PacketSRM1ToggleShow.COLOR + "-- !!! OneWayBlock facing set to Away !!! --");
 			System.out.println("chat false");
 		}
 	}

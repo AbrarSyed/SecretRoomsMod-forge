@@ -11,7 +11,7 @@ public class HandlerClient extends HandlerBase
 {
 
 	@Override
-	protected void doAction(EntityPlayerMP player, PacketSCBase packet)
+	protected void doAction(EntityPlayerMP player, PacketSRMBase packet)
 	{
 		World world = FMLClientHandler.instance().getClient().theWorld;
 		packet.actionClient(world, player);

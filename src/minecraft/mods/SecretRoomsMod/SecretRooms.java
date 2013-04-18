@@ -22,8 +22,9 @@ import mods.SecretRoomsMod.common.TileEntityCamoChest;
 import mods.SecretRoomsMod.common.TileEntityCamoFull;
 import mods.SecretRoomsMod.items.ItemCamoDoor;
 import mods.SecretRoomsMod.items.ItemCamoPaste;
-import mods.SecretRoomsMod.network.PacketHandlerClient;
-import mods.SecretRoomsMod.network.PacketHandlerServer;
+import mods.SecretRoomsMod.network.HandlerClient;
+import mods.SecretRoomsMod.network.HandlerServer;
+import mods.SecretRoomsMod.network.PacketSRMBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -50,74 +51,72 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * @author AbrarSyed
  */
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.6,)",
-		clientPacketHandlerSpec = @SidedPacketHandler(channels = {
-				"SRM-TE-CamoFull", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerClient.class),
-		serverPacketHandlerSpec = @SidedPacketHandler(channels = {
-				"SRM-TE-CamoFull", "SRM-KeyEvents", "SRM-Display" }, packetHandler = PacketHandlerServer.class))
+		clientPacketHandlerSpec = @SidedPacketHandler(channels = { PacketSRMBase.CHANNEL }, packetHandler = HandlerClient.class),
+		serverPacketHandlerSpec = @SidedPacketHandler(channels = { PacketSRMBase.CHANNEL }, packetHandler = HandlerServer.class))
 @Mod(modid = SecretRooms.MODID, name = "SecretRoomsMod", version = "4.6.0")
 public class SecretRooms
 {
-	public static final String		MODID					= "SecretRoomsMod";
 
-	@SidedProxy(clientSide = "mods.SecretRoomsMods.client.ProxyClient", serverSide = "mods.SecretRoomsMod.common.ProxyCommon")
-	public static ProxyCommon				proxy;
+	@SidedProxy(clientSide = "mods.SecretRoomsMod.client.ProxyClient", serverSide = "mods.SecretRoomsMod.common.ProxyCommon")
+	public static ProxyCommon	proxy;
 
-	@Instance(value = MODID)
-	public static SecretRooms		instance;
+	public static final String	MODID					= "SecretRoomsMod";
 	
-	public static Logger logger;
+	@Instance(value = MODID)
+	public static SecretRooms	instance;
+
+	public static Logger		logger;
+
+	// textures
+	public static final String	TEXTURE_ITEM_PASTE		= MODID + ":CamoPaste";
+	public static final String	TEXTURE_ITEM_DOOR_WOOD	= MODID + ":CamoDoorWood";
+	public static final String	TEXTURE_ITEM_DOOR_STEEL	= MODID + ":CamoDoorSteel";
+	public static final String	TEXTURE_BLOCK_BASE		= MODID + ":CamoBase";
+	public static final String	TEXTURE_BLOCK_STAIR		= MODID + ":CamoStair";
+	public static final String	TEXTURE_BLOCK_CHEST		= MODID + ":CamoChest";
+	
+	// render IDs
+	public static boolean		displayCamo				= true;
+	public static int			camoRenderId;
+	public static int			torchRenderId;
 
 	// misc
-	public static Block				torchLever;
-	public static Block				oneWay;
+	public static Block			torchLever;
+	public static Block			oneWay;
 
 	// doors and Trap-Doors
-	public static Block				camoTrapDoor;
-	public static Block				camoDoorWood;
-	public static Item				camoDoorWoodItem;
-	public static Block				camoDoorIron;
-	public static Item				camoDoorIronItem;
+	public static Block			camoTrapDoor;
+	public static Block			camoDoorWood;
+	public static Item			camoDoorWoodItem;
+	public static Block			camoDoorIron;
+	public static Item			camoDoorIronItem;
 
 	// Camo Paste
-	public static Item				camoPaste;
+	public static Item			camoPaste;
 
 	// FullCamo Stuff
-	public static Block				camoGhost;
-	public static Block				camoLever;
-	public static Block				camoCurrent;
-	public static Block				camoButton;
-	public static Block				camoGate;
-	public static Block				camoGateExt;
-	public static Block				camoPlateAll;
-	public static Block				camoPlatePlayer;
-	public static Block				camoStairs;											// thanks Alexbegt
-	public static Block				camoChest;											// thanks alexbegt
-
-	// render IDs
-	public static int				camoRenderId;
-	public static int				torchRenderId;
-
-	public static boolean			displayCamo				= true;
+	public static Block			camoGhost;
+	public static Block			camoLever;
+	public static Block			camoCurrent;
+	public static Block			camoButton;
+	public static Block			camoGate;
+	public static Block			camoGateExt;
+	public static Block			camoPlateAll;
+	public static Block			camoPlatePlayer;
+	public static Block			camoStairs;										// thanks Alexbegt
+	public static Block			camoChest;											// thanks alexbegt
 
 	// creative tab
 	public static CreativeTabs	tab;
 
 	// ids
-	private int[]					ids;
-
-	// textures
-	public static final String		TEXTURE_ITEM_PASTE		= MODID + ":CamoPaste";
-	public static final String		TEXTURE_ITEM_DOOR_WOOD	= MODID + ":CamoDoorWood";
-	public static final String		TEXTURE_ITEM_DOOR_STEEL	= MODID + ":CamoDoorSteel";
-	public static final String		TEXTURE_BLOCK_BASE		= MODID + ":CamoBase";
-	public static final String		TEXTURE_BLOCK_STAIR		= MODID + ":CamoStair";
-	public static final String		TEXTURE_BLOCK_CHEST		= MODID + ":CamoChest";
+	private int[]				ids;
 
 	@PreInit
 	public void preLoad(FMLPreInitializationEvent e)
 	{
 		logger = e.getModLog();
-		
+
 		Configuration config = new Configuration(
 				e.getSuggestedConfigurationFile());
 		ids = new int[] {
