@@ -81,17 +81,21 @@ public class BlockCamoPlate extends BlockCamoFull
      * Ticks the block if it's been scheduled
      */
 	@Override
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void updateTick(World world, int x, int y, int z, Random par5Random)
     {
-        if (!par1World.isRemote)
+        if (world.isRemote)
         {
-            int power = this.getPowerFromMeta(par1World.getBlockMetadata(par2, par3, par4));
-
-            if (power > 0)
-            {
-                this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4, power);
-            }
+        	world.scheduleBlockUpdate(x, y, z, blockID, 0);
         }
+
+        int power = this.getPowerFromMeta(world.getBlockMetadata(x, y, z));
+		setStateIfMobInteractsWithPlate(world, x, y, z, power);
+		if (world.getBlockMetadata(x, y, z) > 0)
+		{
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+		}
+		else
+			world.scheduleBlockUpdate(x, y, z, blockID, 0);
     }
 
     /**
@@ -114,7 +118,7 @@ public class BlockCamoPlate extends BlockCamoFull
 	protected AxisAlignedBB getSensetiveAABB(int x, int y, int z)
 	{
 		float f = 0.125F;
-		return AxisAlignedBB.getAABBPool().getAABB(x + f, y + 1, z + f, x + 1 - f, y + 1.25D, z + 1 - f);
+		return AxisAlignedBB.getAABBPool().getAABB(x, y + 1, z, x+1, y + 2, z+1);
 	}
 
 	/**
