@@ -15,7 +15,7 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class BlockCamoGate extends BlockCamoFull
 {
-	private static final int	maxSize	= 10;
+	private static final int	MAX_SIZE	= 10;
 
 	public BlockCamoGate(int i)
 	{
@@ -46,11 +46,23 @@ public class BlockCamoGate extends BlockCamoFull
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, int l)
+	public void onNeighborBlockChange(World world, int x, int y, int z, int side)
 	{
-		if (l > 0 && Block.blocksList[l].canProvidePower())
+		boolean powerred = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		int direction = meta & 7;
+		boolean oldState = (world.getBlockMetadata(x, y, z) & 8) == 1;
+
+		if (powerred && !oldState)
 		{
-			world.scheduleBlockUpdate(i, j, k, blockID, 0);
+			world.scheduleBlockUpdate(x, y, z, this.blockID, 1);
+			world.setBlockMetadataWithNotify(x, y, z, direction + 8, 4);
+		}
+		else if (!powerred && oldState)
+		{
+			world.scheduleBlockUpdate(x, y, z, this.blockID, 1);
+			int newMeta = direction & -9;
+			world.setBlockMetadataWithNotify(x, y, z, direction - 8, 4);
 		}
 	}
 
@@ -93,7 +105,10 @@ public class BlockCamoGate extends BlockCamoFull
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random)
 	{
-		boolean flag = !world.isRemote && (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k));
+		if (world.isRemote)
+			return;
+		
+		boolean flag = world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k);
 
 		if (flag)
 		{
@@ -107,35 +122,38 @@ public class BlockCamoGate extends BlockCamoFull
 
 	public void buildGate(World world, int x, int y, int z)
 	{
-		int data = world.getBlockMetadata(x, y, z);
+		int data = world.getBlockMetadata(x, y, z) & 7;
 		boolean stop = false;
 		ForgeDirection dir = ForgeDirection.getOrientation(data);
-		int xOffset, yOffset, zOffset;
+		int xOffset, yOffset, zOffset, addX, addY, addZ;
 
-		for (int i = 1; i <= maxSize && stop == false; i++)
+		for (int i = 1; i <= MAX_SIZE && stop == false; i++)
 		{
-			xOffset = x + (dir.offsetX * i);
-			yOffset = y + (dir.offsetY * i);
-			zOffset = z + (dir.offsetZ * i);
+			addX = dir.offsetX * i;
+			addY = dir.offsetY * i;
+			addZ = dir.offsetZ * i;
+			xOffset = x + addX;
+			yOffset = y + addY;
+			zOffset = z + addZ;
 
-			if (world.isAirBlock(xOffset, yOffset, zOffset) || isBreakable(world, xOffset, yOffset, zOffset))
+			if (!world.isBlockSolidOnSide(xOffset, yOffset, zOffset, dir.getOpposite()))
 			{
 				world.setBlock(yOffset, xOffset, zOffset, SecretRooms.camoGateExt.blockID);
 			}
 			else
 			{
-				break;
+				stop = true;
 			}
 		}
 	}
 
 	public void destroyGate(World world, int x, int y, int z)
 	{
-		int data = world.getBlockMetadata(x, y, z);
+		int data = world.getBlockMetadata(x, y, z) & 7;
 		ForgeDirection dir = ForgeDirection.getOrientation(data);
 		int xOffset, yOffset, zOffset;
 
-		for (int i = 1; i <= maxSize; i++)
+		for (int i = 1; i <= MAX_SIZE; i++)
 		{
 			xOffset = x + (dir.offsetX * i);
 			yOffset = y + (dir.offsetY * i);
@@ -146,21 +164,5 @@ public class BlockCamoGate extends BlockCamoFull
 				world.setBlockToAir(xOffset, yOffset, zOffset);
 			}
 		}
-	}
-
-	public boolean isBreakable(World world, int x, int y, int z)
-	{
-		int id = world.getBlockId(x, y, z);
-
-		if (id == 0)
-			return true;
-
-		if (id == SecretRooms.oneWay.blockID || Block.blocksList[id] instanceof BlockCamoFull)
-			return false;
-
-		if (world.isBlockNormalCube(x, y, z))
-			return false;
-
-		return true;
 	}
 }

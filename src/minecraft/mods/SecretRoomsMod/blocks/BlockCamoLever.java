@@ -57,6 +57,7 @@ public class BlockCamoLever extends BlockCamoFull
 			int meta = world.getBlockMetadata(i, j, k);
 			world.setBlockMetadataWithNotify(i, j, k, 1-meta, 2);
 			world.markBlockForUpdate(i, j, k);
+			notifyArround(world, i, j, k);
 			world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "random.click", 0.3F, meta > 0 ? 0.6F : 0.5F);
 
 			return true;
