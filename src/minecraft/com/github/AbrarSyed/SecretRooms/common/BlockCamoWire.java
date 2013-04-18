@@ -147,27 +147,34 @@ public class BlockCamoWire extends Block
 			return;
 
 		calcPower(world, x, y, z);
-		//world.notifyBlocksOfNeighborChange(x, y, z, blockID);
 	}
 
 	private void calcPower(World world, int x, int y, int z)
 	{
+		int oldPower = world.getBlockMetadata(x, y, z);
+
 		setRedstoneProvidePower(false);
 		int nonWirePower = world.getStrongestIndirectPower(x, y, z);
 		setRedstoneProvidePower(true);
-		int wirePower = world.getStrongestIndirectPower(x, y, z);
+		int power = world.getStrongestIndirectPower(x, y, z);
 
-		int power;
-		if (nonWirePower >= wirePower)
+        if (nonWirePower > 0 && nonWirePower > power - 1)
 			power = nonWirePower;
-		else
-			power = wirePower - 1;
+        else if (power > 0)
+			power--;
+        	
 
-		if (wirePower < 0)
-			wirePower = 0;
-
-		world.setBlockMetadataWithNotify(x, y, z, wirePower, 0x02);
-		notifyArround(world, x, y, z);
+		if (oldPower != power)
+		{
+			world.setBlockMetadataWithNotify(x, y, z, power, 2);
+			world.notifyBlocksOfNeighborChange(x, y, z, blockID);
+		}
+	}
+	
+	public static int getInputPower(World world, int x, int y, int z)
+	{
+		
+		return 0;
 	}
 
 	public static void setRedstoneProvidePower(boolean bool)
@@ -175,21 +182,10 @@ public class BlockCamoWire extends Block
 		ObfuscationReflectionHelper.setPrivateValue(BlockRedstoneWire.class, Block.redstoneWire, bool, 0);
 	}
 
-	public void notifyArround(World world, int x, int y, int z)
-	{
-		for (int pX = x - 1; pX <= x + 1; pX++)
-			for (int pY = y - 1; pY <= y + 1; pY++)
-				for (int pZ = z - 1; pZ <= z + 1; pZ++)
-					if (x == pX && y == pY && z == pZ)
-						continue;
-					else
-						world.notifyBlockOfNeighborChange(pX, pY, pZ, blockID);
-	}
-
 	@Override
 	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side)
 	{
-		return world.getBlockMetadata(x, y, z);
+		return canProvidePower() ? world.getBlockMetadata(x, y, z) : 0;
 	}
 
 	@Override
