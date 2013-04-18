@@ -10,6 +10,8 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 
+import com.github.AbrarSyed.SecretRooms.common.fake.FakeWorld;
+
 public class Proxy
 {
 	private HashMap<Integer, FakeWorld>	fakes;

@@ -19,10 +19,10 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 import org.lwjgl.input.Keyboard;
 
 import com.github.AbrarSyed.SecretRooms.common.BlockOneWay;
-import com.github.AbrarSyed.SecretRooms.common.FakeWorld;
 import com.github.AbrarSyed.SecretRooms.common.Proxy;
 import com.github.AbrarSyed.SecretRooms.common.SecretRooms;
 import com.github.AbrarSyed.SecretRooms.common.TileEntityCamo;
+import com.github.AbrarSyed.SecretRooms.common.fake.FakeWorld;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;

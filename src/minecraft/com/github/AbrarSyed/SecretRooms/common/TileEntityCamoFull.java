@@ -13,6 +13,8 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 
+import com.github.AbrarSyed.SecretRooms.common.fake.FakeWorld;
+
 /**
  * @author AbrarSyed
  */
@@ -88,7 +90,7 @@ public class TileEntityCamoFull extends TileEntity
 			{
 				data.writeInt(coords[a]);
 			}
-			
+
 			if (holder != null)
 			{
 				data.writeBoolean(true);
@@ -138,7 +140,7 @@ public class TileEntityCamoFull extends TileEntity
 		}
 		super.invalidate();
 	}
-	
+
 	@Override
 	public void validate()
 	{
@@ -162,10 +164,10 @@ public class TileEntityCamoFull extends TileEntity
 	}
 
 	private BlockHolder	holder;
-	
-	private boolean hasCoords;
-	private int tempX;
-	private int tempY;
-	private int tempZ;
+
+	private boolean		hasCoords;
+	private int			tempX;
+	private int			tempY;
+	private int			tempZ;
 
 }
