@@ -3,6 +3,8 @@ package mods.SecretRoomsMod.common;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 import net.minecraftforge.event.EventPriority;
@@ -13,12 +15,12 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 public class ProxyCommon
 {
 	private HashMap<Integer, FakeWorld>	fakes;
-	private HashSet<String>				awaySet;
+	private HashSet<String>				towardSet;
 
 	public ProxyCommon()
 	{
 		fakes = new HashMap<Integer, FakeWorld>();
-		awaySet = new HashSet<String>();
+		towardSet = new HashSet<String>();
 	}
 
 	public void loadRenderStuff()
@@ -29,6 +31,12 @@ public class ProxyCommon
 	public void loadKeyStuff()
 	{
 		// client only...
+	}
+	
+	public void onServerStop(FMLServerStoppingEvent e)
+	{
+		fakes.clear();
+		towardSet.clear();
 	}
 
 	@ForgeSubscribe(priority = EventPriority.HIGHEST)
@@ -41,7 +49,7 @@ public class ProxyCommon
 	}
 
 	@ForgeSubscribe(priority = EventPriority.LOWEST)
-	public void onWorldLoad(Unload event)
+	public void onWorldUnLoad(Unload event)
 	{
 		if (event.world instanceof FakeWorld)
 			return;
@@ -58,18 +66,18 @@ public class ProxyCommon
 
 	public void onKeyPress(String username)
 	{
-		if (awaySet.contains(username))
+		if (towardSet.contains(username))
 		{
-			awaySet.remove(username);
+			towardSet.remove(username);
 		}
 		else
 		{
-			awaySet.add(username);
+			towardSet.add(username);
 		}
 	}
 
 	public boolean getFaceAway(String username)
 	{
-		return awaySet.contains(username);
+		return towardSet.contains(username);
 	}
 }

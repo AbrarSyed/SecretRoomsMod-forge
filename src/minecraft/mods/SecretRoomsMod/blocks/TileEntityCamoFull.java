@@ -1,19 +1,17 @@
-package mods.SecretRoomsMod.common;
-
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
+package mods.SecretRoomsMod.blocks;
 
 import mods.SecretRoomsMod.SecretRooms;
-import net.minecraft.nbt.NBTBase;
+import mods.SecretRoomsMod.common.BlockHolder;
+import mods.SecretRoomsMod.common.FakeWorld;
+import mods.SecretRoomsMod.network.PacketSRM0UpdateCamo;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityCamoFull extends TileEntity
 {
 	private BlockHolder	holder;
-	
+
 	public TileEntityCamoFull()
 	{
 		super();
@@ -51,35 +49,7 @@ public class TileEntityCamoFull extends TileEntity
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		Packet250CustomPayload packet = new Packet250CustomPayload();
-
-		packet.isChunkDataPacket = true;
-
-		packet.channel = "SRM-TE-CamoFull";
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		try
-		{
-			ObjectOutputStream data = new ObjectOutputStream(bytes);
-			int[] coords = { xCoord, yCoord, zCoord };
-			for (int a = 0; a < coords.length; a++)
-			{
-				data.writeInt(coords[a]);
-			}
-			NBTTagCompound nbt = new NBTTagCompound();
-			holder.writeToNBT(nbt);
-			NBTBase.writeNamedTag(nbt, data);
-			data.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		packet.data = bytes.toByteArray();
-
-		packet.length = packet.data.length;
-		return packet;
+		return new PacketSRM0UpdateCamo(this).getPacket250();
 	}
 
 	public void setBlockHolder(BlockHolder holder)

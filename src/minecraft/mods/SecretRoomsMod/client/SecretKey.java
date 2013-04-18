@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.network.PacketSRM1ToggleShow;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -42,6 +43,9 @@ public class SecretKey extends KeyHandler
 			return;
 
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+		
+		if (player == null || player.worldObj == null || Minecraft.getMinecraft().currentScreen == null)
+			return;
 
 		SecretRooms.proxy.onKeyPress(player.username);
 

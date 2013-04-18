@@ -3,7 +3,7 @@ package mods.SecretRoomsMod.client;
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.blocks.BlockCamoFull;
 import mods.SecretRoomsMod.blocks.BlockOneWay;
-import mods.SecretRoomsMod.common.TileEntityCamoFull;
+import mods.SecretRoomsMod.blocks.TileEntityCamoFull;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;

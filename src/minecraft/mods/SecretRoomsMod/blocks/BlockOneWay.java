@@ -6,7 +6,6 @@ import java.util.Random;
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.common.BlockHolder;
 import mods.SecretRoomsMod.common.FakeWorld;
-import mods.SecretRoomsMod.common.TileEntityCamoFull;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockPistonBase;
@@ -293,5 +292,11 @@ public class BlockOneWay extends BlockContainer
 	public TileEntity createNewTileEntity(World var1)
 	{
 		return new TileEntityCamoFull();
+	}
+	
+	@Override
+	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+	{
+		return 0;
 	}
 }

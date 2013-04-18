@@ -15,11 +15,11 @@ import mods.SecretRoomsMod.blocks.BlockCamoTrapDoor;
 import mods.SecretRoomsMod.blocks.BlockCamoWire;
 import mods.SecretRoomsMod.blocks.BlockOneWay;
 import mods.SecretRoomsMod.blocks.BlockTorchLever;
+import mods.SecretRoomsMod.blocks.TileEntityCamoChest;
+import mods.SecretRoomsMod.blocks.TileEntityCamoFull;
 import mods.SecretRoomsMod.client.CreativeTabCamo;
 import mods.SecretRoomsMod.common.CommandShow;
 import mods.SecretRoomsMod.common.ProxyCommon;
-import mods.SecretRoomsMod.common.TileEntityCamoChest;
-import mods.SecretRoomsMod.common.TileEntityCamoFull;
 import mods.SecretRoomsMod.items.ItemCamoDoor;
 import mods.SecretRoomsMod.items.ItemCamoPaste;
 import mods.SecretRoomsMod.network.HandlerClient;
@@ -38,10 +38,12 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
+import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -120,24 +122,25 @@ public class SecretRooms
 		Configuration config = new Configuration(
 				e.getSuggestedConfigurationFile());
 		ids = new int[] {
-				config.getBlock("CamoBlocks", "torchLever", 200).getInt(),
-				config.getBlock("CamoBlocks", "oneWay", 201).getInt(),
-				config.getBlock("CamoBlocks", "camoGate", 202).getInt(),
-				config.getBlock("CamoBlocks", "camoGateExt", 203).getInt(),
-				config.getBlock("CamoBlocks", "camoTrapDoor", 204).getInt(),
-				config.getItem("CamoItems", "camoWoodDoor", 3850 + 256).getInt(),
-				config.getBlock("CamoBlocks", "camoWoodDoor", 205).getInt(),
-				config.getItem("CamoItems", "camoIronDoor", 3851 + 256).getInt(),
-				config.getBlock("CamoBlocks", "camoIronDoor", 206).getInt(),
-				config.getItem("CamoItems", "camoPasteID", 3852 + 256).getInt(),
-				config.getBlock("CamoBlocks", "ghostBlock", 207).getInt(),
-				config.getBlock("CamoBlocks", "camoLeverBlock", 208).getInt(),
-				config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).getInt(),
-				config.getBlock("CamoBlocks", "camoButtonBlock", 210).getInt(),
-				config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).getInt(),
-				config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).getInt(),
-				config.getBlock("CamoBlocks", "camoStairBlock", 213).getInt(),
-				config.getBlock("CamoBlocks", "camoChestBlock", 214).getInt() };
+				config.getBlock("CamoBlocks", "torchLever",           200 ).getInt(),
+				config.getBlock("CamoBlocks", "oneWay",               201 ).getInt(),
+				config.getBlock("CamoBlocks", "camoGate",             202 ).getInt(),
+				config.getBlock("CamoBlocks", "camoGateExt",          203 ).getInt(),
+				config.getBlock("CamoBlocks", "camoTrapDoor",         204 ).getInt(),
+				config.getItem( "CamoItems",  "camoWoodDoor",         4106).getInt(),
+				config.getBlock("CamoBlocks", "camoWoodDoor",         205 ).getInt(),
+				config.getItem( "CamoItems",  "camoIronDoor",         4107).getInt(),
+				config.getBlock("CamoBlocks", "camoIronDoor",         206 ).getInt(),
+				config.getItem( "CamoItems",  "camoPasteID",          4108).getInt(),
+				config.getBlock("CamoBlocks", "ghostBlock",           207 ).getInt(),
+				config.getBlock("CamoBlocks", "camoLeverBlock",       208 ).getInt(),
+				config.getBlock("CamoBlocks", "camoRedstoneBlock",    209 ).getInt(),
+				config.getBlock("CamoBlocks", "camoButtonBlock",      210 ).getInt(),
+				config.getBlock("CamoBlocks", "camoPlateAllBlock",    211 ).getInt(),
+				config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212 ).getInt(),
+				config.getBlock("CamoBlocks", "camoStairBlock",       213 ).getInt(),
+				config.getBlock("CamoBlocks", "camoChestBlock",       214 ).getInt()
+				};
 		config.save();
 
 		MinecraftForge.EVENT_BUS.register(proxy);
@@ -163,12 +166,12 @@ public class SecretRooms
 
 		// doors, Iron AND Wood
 		camoDoorWoodItem = new ItemCamoDoor(ids[5], Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorItem");
-		camoDoorWood = new BlockCamoDoor(ids[6], Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorBlock");
-		camoDoorIronItem = new ItemCamoDoor(ids[7], Material.iron).setUnlocalizedName("mod_SRM.SecretIronDoorItem");
+		camoDoorWood = new BlockCamoDoor(ids[6] - 256, Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorBlock");
+		camoDoorIronItem = new ItemCamoDoor(ids[7] - 256, Material.iron).setUnlocalizedName("mod_SRM.SecretIronDoorItem");
 		camoDoorIron = new BlockCamoDoor(ids[8], Material.iron).setUnlocalizedName("mod_SRM.SecretIronDoorBlock");
 
 		// Camo Paste
-		camoPaste = new ItemCamoPaste(ids[9]).setUnlocalizedName("mod_SRM.CamoflaugePaste");
+		camoPaste = new ItemCamoPaste(ids[9] - 256).setUnlocalizedName("mod_SRM.CamoflaugePaste");
 
 		// FullCamoBlocks
 		camoGhost = new BlockCamoGhost(ids[10]).setUnlocalizedName("mod_SRM.GhostBlock");
@@ -266,6 +269,12 @@ public class SecretRooms
 	public void registerCommand(FMLServerStartingEvent e)
 	{
 		e.registerServerCommand(new CommandShow());
+	}
+	
+	@ServerStopping
+	public void registerCommand(FMLServerStoppingEvent e)
+	{
+		proxy.onServerStop(e);
 	}
 
 	public static void addrecipes()

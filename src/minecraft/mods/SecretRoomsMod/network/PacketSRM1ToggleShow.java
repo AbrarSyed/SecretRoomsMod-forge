@@ -5,8 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import mods.SecretRoomsMod.SecretRooms;
+import mods.SecretRoomsMod.blocks.TileEntityCamoFull;
 import mods.SecretRoomsMod.common.BlockHolder;
-import mods.SecretRoomsMod.common.TileEntityCamoFull;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

@@ -7,6 +7,7 @@ import java.io.IOException;
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.common.FakeWorld;
 import mods.SecretRoomsMod.common.ProxyCommon;
+import mods.SecretRoomsMod.network.PacketSRM2Key;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -22,6 +23,7 @@ import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,7 +32,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ProxyClient extends ProxyCommon
 {
 	public static KeyBinding	key_OneWayFace;
-	private FakeWorld			fake;
 	private boolean				oneWayFaceAway	= true;
 
 	public ProxyClient()
@@ -54,53 +55,19 @@ public class ProxyClient extends ProxyCommon
 	{
 		KeyBindingRegistry.registerKeyBinding(new SecretKey(key_OneWayFace));
 	}
-
-	@Override
-	@ForgeSubscribe(priority = EventPriority.HIGHEST)
-	public void onWorldLoad(Load event)
+	
+	public void onServerStop(FMLServerStoppingEvent e)
 	{
-		fake = FakeWorld.getFakeWorldFor(event.world);
+		super.onServerStop(e);
+		oneWayFaceAway = true;
 	}
 
-	@Override
-	@ForgeSubscribe(priority = EventPriority.LOWEST)
-	public void onWorldLoad(Unload event)
-	{
-		fake = null;
-	}
-
-	@Override
-	public FakeWorld getFakeWorld(World world)
-	{
-		if (fake == null)
-		{
-			fake = FakeWorld.getFakeWorldFor(Minecraft.getMinecraft().theWorld);
-		}
-		return fake;
-	}
 
 	@Override
 	public void onKeyPress(String username)
 	{
 		oneWayFaceAway = !oneWayFaceAway;
-
-		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = "SRM-KeyEvents";
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream data = new DataOutputStream(bytes);
-		try
-		{
-			data.writeUTF(username);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		packet.data = bytes.toByteArray();
-		packet.length = packet.data.length;
-
-		PacketDispatcher.sendPacketToServer(packet);
-
+		PacketDispatcher.sendPacketToServer(new PacketSRM2Key().getPacket250());
 	}
 
 	@Override

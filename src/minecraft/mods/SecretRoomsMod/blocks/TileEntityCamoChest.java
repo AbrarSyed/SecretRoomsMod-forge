@@ -1,4 +1,4 @@
-package mods.SecretRoomsMod.common;
+package mods.SecretRoomsMod.blocks;
 
 import mods.SecretRoomsMod.SecretRooms;
 import net.minecraft.entity.player.EntityPlayer;

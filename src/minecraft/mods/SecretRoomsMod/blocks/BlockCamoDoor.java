@@ -5,7 +5,6 @@ import java.util.Random;
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.common.BlockHolder;
 import mods.SecretRoomsMod.common.FakeWorld;
-import mods.SecretRoomsMod.common.TileEntityCamoFull;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

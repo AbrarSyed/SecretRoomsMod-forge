@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import mods.SecretRoomsMod.blocks.TileEntityCamoFull;
 import mods.SecretRoomsMod.common.BlockHolder;
-import mods.SecretRoomsMod.common.TileEntityCamoFull;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,10 +17,12 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 {
 	public final int			x, y, z;
 	public final BlockHolder	holder;
+	public final boolean		hasHolder;
 
 	public PacketSRM0UpdateCamo(TileEntityCamoFull entity)
 	{
 		holder = entity.getBlockHolder();
+		hasHolder = holder != null;
 		x = entity.xCoord;
 		y = entity.yCoord;
 		z = entity.zCoord;
@@ -31,9 +33,16 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 		x = stream.readInt();
 		y = stream.readInt();
 		z = stream.readInt();
-		
-		NBTTagCompound nbt = (NBTTagCompound) NBTBase.readNamedTag(stream);
-		holder = BlockHolder.buildFromNBT(nbt);
+
+		hasHolder = stream.readBoolean();
+
+		if (hasHolder)
+		{
+			NBTTagCompound nbt = (NBTTagCompound) NBTBase.readNamedTag(stream);
+			holder = BlockHolder.buildFromNBT(nbt);
+		}
+		else
+			holder = null;
 	}
 
 	@Override
@@ -42,10 +51,15 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 		stream.writeInt(x);
 		stream.writeInt(y);
 		stream.writeInt(z);
-		
-		NBTTagCompound nbt = new NBTTagCompound();
-		holder.writeToNBT(nbt);
-		NBTBase.writeNamedTag(nbt, stream);
+
+		stream.writeBoolean(hasHolder);
+
+		if (hasHolder)
+		{
+			NBTTagCompound nbt = new NBTTagCompound();
+			holder.writeToNBT(nbt);
+			NBTBase.writeNamedTag(nbt, stream);
+		}
 	}
 
 	@Override
@@ -64,6 +78,9 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 	@Override
 	public void actionServer(World world, EntityPlayerMP player)
 	{
+		if (world == null)
+			return;
+
 		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
 
 		if (entity == null || holder == null)
