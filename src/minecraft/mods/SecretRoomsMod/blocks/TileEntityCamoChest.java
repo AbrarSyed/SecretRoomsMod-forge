@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagList;
 /**
  * @author AbrarSyed
  */
-public class TileEntityCamoChest extends TileEntityCamoFull implements IInventory
+public class TileEntityCamoChest extends TileEntityFull implements IInventory
 {
 	private ItemStack[]	chestContents	= new ItemStack[36];
 

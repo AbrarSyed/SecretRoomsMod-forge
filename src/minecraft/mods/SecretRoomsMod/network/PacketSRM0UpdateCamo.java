@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import mods.SecretRoomsMod.blocks.TileEntityCamoFull;
+import mods.SecretRoomsMod.blocks.TileEntityFull;
 import mods.SecretRoomsMod.common.BlockHolder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
@@ -18,14 +18,18 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 	public final int			x, y, z;
 	public final BlockHolder	holder;
 	public final boolean		hasHolder;
+	public final boolean[]		sides = new boolean[6];
 
-	public PacketSRM0UpdateCamo(TileEntityCamoFull entity)
+	public PacketSRM0UpdateCamo(TileEntityFull entity)
 	{
 		holder = entity.getBlockHolder();
 		hasHolder = holder != null;
 		x = entity.xCoord;
 		y = entity.yCoord;
 		z = entity.zCoord;
+		
+		for (int i = 0; i < 6; i++)
+			sides[i] = entity.isCamo[i];
 	}
 
 	public PacketSRM0UpdateCamo(ObjectInputStream stream) throws IOException
@@ -43,6 +47,9 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 		}
 		else
 			holder = null;
+		
+		for (int i = 0; i < 6; i++)
+			sides[i] = stream.readBoolean();
 	}
 
 	@Override
@@ -60,6 +67,9 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 			holder.writeToNBT(nbt);
 			NBTBase.writeNamedTag(nbt, stream);
 		}
+		
+		for (int i = 0; i < 6; i++)
+			stream.writeBoolean(sides[i]);
 	}
 
 	@Override
@@ -72,7 +82,18 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 	@SideOnly(Side.CLIENT)
 	public void actionClient(World world, EntityPlayer player)
 	{
-		// nothing...
+		if (world == null)
+			return;
+
+		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+
+		if (entity == null || holder == null)
+			return;
+
+		entity.setBlockHolder(holder);
+		entity.isCamo = sides;
+
+		world.markBlockForRenderUpdate(x, y, z);
 	}
 
 	@Override
@@ -81,12 +102,13 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 		if (world == null)
 			return;
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 
 		if (entity == null || holder == null)
 			return;
 
 		entity.setBlockHolder(holder);
+		entity.isCamo = sides;
 
 		world.markBlockForRenderUpdate(x, y, z);
 	}

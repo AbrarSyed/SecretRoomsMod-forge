@@ -1,5 +1,7 @@
 package mods.SecretRoomsMod.blocks;
 
+import java.util.Arrays;
+
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.common.BlockHolder;
 import mods.SecretRoomsMod.common.fake.FakeWorld;
@@ -8,14 +10,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityCamoFull extends TileEntity
+public class TileEntityFull extends TileEntity
 {
 	private BlockHolder	holder;
+	public boolean[]	isCamo;
 
-	public TileEntityCamoFull()
+	public TileEntityFull()
 	{
 		super();
 		holder = null;
+		isCamo = new boolean[6];
+		Arrays.fill(isCamo, true);
 	}
 
 	@Override
@@ -30,17 +35,28 @@ public class TileEntityCamoFull extends TileEntity
 		super.readFromNBT(nbt);
 
 		// backwards compat...
-		holder = BlockHolder.buildFromNBT(nbt);
+		boolean hasHolder = nbt.getBoolean("hasHolder");
+		
+		if (hasHolder)
+			holder = BlockHolder.buildFromNBT(nbt);
+		
+		for (int i = 0; i < isCamo.length; i++)
+			isCamo[i] = nbt.getBoolean("isCamo"+i);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound)
+	public void writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(nbttagcompound);
+		super.writeToNBT(nbt);
+		
+		nbt.setBoolean("hasHolder", holder != null);
 		if (holder != null)
 		{
-			holder.writeToNBT(nbttagcompound);
+			holder.writeToNBT(nbt);
 		}
+		
+		for (int i = 0; i < isCamo.length; i++)
+			nbt.setBoolean("isCamo"+i, isCamo[i]);
 	}
 
 	/**
@@ -94,5 +110,13 @@ public class TileEntityCamoFull extends TileEntity
 	public int getCopyID()
 	{
 		return holder == null ? 0 : holder.blockID;
+	}
+	
+	public boolean isCamoSide(int side)
+	{
+		if (side >= 0 && side <= 5)
+			return isCamo[side];
+		else
+			return false;
 	}
 }

@@ -51,7 +51,7 @@ public class BlockCamoFull extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{
-		return new TileEntityCamoFull();
+		return new TileEntityFull();
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class BlockCamoFull extends BlockContainer
 	{
 		try
 		{
-			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 			FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
 
 			if (entity == null)
@@ -94,7 +94,7 @@ public class BlockCamoFull extends BlockContainer
 	{
 		try
 		{
-			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 			FakeWorld fake = SecretRooms.proxy.getFakeWorld(world);
 
 			if (entity == null)
@@ -140,8 +140,11 @@ public class BlockCamoFull extends BlockContainer
 
 		try
 		{
-			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 			int id = entity.getCopyID();
+			
+			if (id == 0)
+				return blockIcon;
 
 			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
 
@@ -173,7 +176,7 @@ public class BlockCamoFull extends BlockContainer
 		// CAMO STUFF
 		BlockHolder holder = getIdCamoStyle(world, i, j, k);
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
+		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(i, j, k);
 
 		if (holder == null)
 		{
@@ -190,7 +193,7 @@ public class BlockCamoFull extends BlockContainer
 		if (!SecretRooms.displayCamo)
 			return super.colorMultiplier(par1IBlockAccess, x, y, z);
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) par1IBlockAccess.getBlockTileEntity(x, y, z);
+		TileEntityFull entity = (TileEntityFull) par1IBlockAccess.getBlockTileEntity(x, y, z);
 
 		if (entity == null)
 			return super.colorMultiplier(par1IBlockAccess, x, y, z);
@@ -349,9 +352,9 @@ public class BlockCamoFull extends BlockContainer
 			int id = world.getBlockId(x, y, z);
 			Block block = Block.blocksList[id];
 
-			if (block instanceof BlockCamoFull)
+			if (block instanceof BlockCamoFull || block instanceof BlockOneWay)
 			{
-				TileEntityCamoFull te = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+				TileEntityFull te = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 				return te.getBlockHolder();
 			}
 			else if (block.isOpaqueCube())
@@ -419,7 +422,7 @@ public class BlockCamoFull extends BlockContainer
 	@Override
 	public int getFlammability(IBlockAccess iba, int x, int y, int z, int metadata, ForgeDirection face)
 	{
-		TileEntityCamoFull entity = (TileEntityCamoFull) iba.getBlockTileEntity(x, y, z);
+		TileEntityFull entity = (TileEntityFull) iba.getBlockTileEntity(x, y, z);
 
 		if (entity != null)
 		{

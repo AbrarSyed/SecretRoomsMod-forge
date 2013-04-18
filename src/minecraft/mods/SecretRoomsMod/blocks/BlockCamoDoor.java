@@ -74,18 +74,21 @@ public class BlockCamoDoor extends BlockContainer
 
 		try
 		{
-			TileEntityCamoFull entity;
+			TileEntityFull entity;
 			
 			if (flag)
 			{
-				entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y-1, z);
+				entity = (TileEntityFull) world.getBlockTileEntity(x, y-1, z);
 			}
 			else
 			{
-				entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+				entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 			}
 			
 			int id = entity.getCopyID();
+			
+			if (id == 0)
+				return blockIcon;
 
 			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
 
@@ -407,7 +410,7 @@ public class BlockCamoDoor extends BlockContainer
 		// is the bototm one.
 		if (!flag)
 		{
-			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 
 			int id = world.getBlockId(x, y - 1, z);
 
@@ -429,7 +432,7 @@ public class BlockCamoDoor extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{
-		return new TileEntityCamoFull();
+		return new TileEntityFull();
 	}
 
 	/**

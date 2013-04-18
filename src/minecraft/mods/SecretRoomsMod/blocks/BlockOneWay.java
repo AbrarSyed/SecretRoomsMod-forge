@@ -16,11 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -81,16 +79,19 @@ public class BlockOneWay extends BlockContainer
 	{
 		if (!SecretRooms.displayCamo)
 			return getBlockTextureFromSide(side);
-		
+
 		int metadata = world.getBlockMetadata(x, y, z);
-		
+
 		if (side != metadata)
 			return Block.glass.getBlockTextureFromSide(side);
 
 		try
 		{
-			TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 			int id = entity.getCopyID();
+			
+			if (id == 0)
+				return blockIcon;
 
 			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
 
@@ -117,7 +118,7 @@ public class BlockOneWay extends BlockContainer
 			return blockIcon;
 		return Block.glass.getBlockTextureFromSide(i);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
@@ -135,11 +136,11 @@ public class BlockOneWay extends BlockContainer
 		}
 
 		world.setBlockMetadataWithNotify(i, j, k, metadata, 2);
-		
+
 		// CAMO STUFF
 		BlockHolder holder = getIdCamoStyle(world, i, j, k);
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(i, j, k);
+		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(i, j, k);
 
 		if (holder == null)
 		{
@@ -147,15 +148,12 @@ public class BlockOneWay extends BlockContainer
 		}
 
 		entity.setBlockHolder(holder);
-		PacketDispatcher.sendPacketToAllInDimension(entity.getDescriptionPacket(), world.provider.dimensionId);
+		if (world.isRemote)
+			PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
+		else
+			PacketDispatcher.sendPacketToAllInDimension(entity.getDescriptionPacket(), world.provider.dimensionId);
 	}
-	
-	@Override
-	public void onBlockAdded(World world, int i, int j, int k)
-	{
-		super.onBlockAdded(world, i, j, k);
-	}
-	
+
 	/**
 	 * annalyses surrounding blocks and decides on a BlockID for the Camo Block to copy.
 	 * @param world
@@ -177,7 +175,7 @@ public class BlockOneWay extends BlockContainer
 		}
 
 		BlockHolder end = null;
-		
+
 		// first line.
 		if (holders[0] != null && holders[0].equals(holders[1]))
 		{
@@ -203,7 +201,7 @@ public class BlockOneWay extends BlockContainer
 		if (!SecretRooms.displayCamo)
 			return super.colorMultiplier(world, x, y, z);
 
-		TileEntityCamoFull entity = (TileEntityCamoFull) world.getBlockTileEntity(x, y, z);
+		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 
 		if (entity == null)
 			return super.colorMultiplier(world, x, y, z);
@@ -236,49 +234,49 @@ public class BlockOneWay extends BlockContainer
 	public BlockHolder[] getHoldersFromFacing(World world, int i, int j, int k, int direction)
 	{
 		BlockHolder[] holders = new BlockHolder[4];
-		
+
 		switch (direction)
 			{
 				case 0:
-					holders[0] = BlockCamoFull.getInfo(world, i + 1, j, k);
-					holders[1] = BlockCamoFull.getInfo(world, i - 1, j, k);
-					holders[2] = BlockCamoFull.getInfo(world, i, j, k + 1);
-					holders[3] = BlockCamoFull.getInfo(world, i, j, k - 1);
+					holders[0] = getInfo(world, i + 1, j, k);
+					holders[1] = getInfo(world, i - 1, j, k);
+					holders[2] = getInfo(world, i, j, k + 1);
+					holders[3] = getInfo(world, i, j, k - 1);
 					break;
 
 				case 1:
-					holders[0] = BlockCamoFull.getInfo(world, i + 1, j, k);
-					holders[1] = BlockCamoFull.getInfo(world, i - 1, j, k);
-					holders[2] = BlockCamoFull.getInfo(world, i, j, k + 1);
-					holders[3] = BlockCamoFull.getInfo(world, i, j, k - 1);
+					holders[0] = getInfo(world, i + 1, j, k);
+					holders[1] = getInfo(world, i - 1, j, k);
+					holders[2] = getInfo(world, i, j, k + 1);
+					holders[3] = getInfo(world, i, j, k - 1);
 					break;
 
 				case 2:
-					holders[0] = BlockCamoFull.getInfo(world, i, j + 1, k);
-					holders[1] = BlockCamoFull.getInfo(world, i, j - 1, k);
-					holders[2] = BlockCamoFull.getInfo(world, i + 1, j, k);
-					holders[3] = BlockCamoFull.getInfo(world, i - 1, j, k);
+					holders[0] = getInfo(world, i, j + 1, k);
+					holders[1] = getInfo(world, i, j - 1, k);
+					holders[2] = getInfo(world, i + 1, j, k);
+					holders[3] = getInfo(world, i - 1, j, k);
 					break;
 
 				case 3:
-					holders[0] = BlockCamoFull.getInfo(world, i, j + 1, k);
-					holders[1] = BlockCamoFull.getInfo(world, i, j - 1, k);
-					holders[2] = BlockCamoFull.getInfo(world, i + 1, j, k);
-					holders[3] = BlockCamoFull.getInfo(world, i - 1, j, k);
+					holders[0] = getInfo(world, i, j + 1, k);
+					holders[1] = getInfo(world, i, j - 1, k);
+					holders[2] = getInfo(world, i + 1, j, k);
+					holders[3] = getInfo(world, i - 1, j, k);
 					break;
 
 				case 4:
-					holders[0] = BlockCamoFull.getInfo(world, i, j + 1, k);
-					holders[1] = BlockCamoFull.getInfo(world, i, j - 1, k);
-					holders[2] = BlockCamoFull.getInfo(world, i, j, k + 1);
-					holders[3] = BlockCamoFull.getInfo(world, i, j, k - 1);
+					holders[0] = getInfo(world, i, j + 1, k);
+					holders[1] = getInfo(world, i, j - 1, k);
+					holders[2] = getInfo(world, i, j, k + 1);
+					holders[3] = getInfo(world, i, j, k - 1);
 					break;
 
 				case 5:
-					holders[0] = BlockCamoFull.getInfo(world, i, j + 1, k);
-					holders[1] = BlockCamoFull.getInfo(world, i, j - 1, k);
-					holders[2] = BlockCamoFull.getInfo(world, i, j, k + 1);
-					holders[3] = BlockCamoFull.getInfo(world, i, j, k - 1);
+					holders[0] = getInfo(world, i, j + 1, k);
+					holders[1] = getInfo(world, i, j - 1, k);
+					holders[2] = getInfo(world, i, j, k + 1);
+					holders[3] = getInfo(world, i, j, k - 1);
 					break;
 			}
 
@@ -286,12 +284,53 @@ public class BlockOneWay extends BlockContainer
 		return holders;
 	}
 
+	/**
+	 * Used to specially get Ids. It returns zero if the texture cannot be copied, or if it is air.
+	 * @param world The world
+	 * @param x X coordinate
+	 * @param y Y Coordinate
+	 * @param z Z Coordinate
+	 * @return
+	 */
+	protected static BlockHolder getInfo(World world, int x, int y, int z)
+	{
+		// if its an air block, return 0
+		if (world.isAirBlock(x, y, z))
+			return null;
+		else
+		{
+			int id = world.getBlockId(x, y, z);
+			Block block = Block.blocksList[id];
+			TileEntity entity = world.getBlockTileEntity(x, y, z);
+
+			if (entity != null && entity instanceof TileEntityFull)
+			{
+				TileEntityFull te = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+				return te.getBlockHolder();
+			}
+			else if (block.isOpaqueCube())
+				return new BlockHolder(world, x, y, z);
+			else
+			{
+				if (block.getBlockBoundsMinX() == 0 &&
+						block.getBlockBoundsMinY() == 0 &&
+						block.getBlockBoundsMinZ() == 0 &&
+						block.getBlockBoundsMaxX() == 1 &&
+						block.getBlockBoundsMaxY() == 1 &&
+						block.getBlockBoundsMaxZ() == 1)
+					return new BlockHolder(world, x, y, z);
+				else
+					return null;
+			}
+		}
+	}
+
 	@Override
 	public TileEntity createNewTileEntity(World var1)
 	{
-		return new TileEntityCamoFull();
+		return new TileEntityFull();
 	}
-	
+
 	@Override
 	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
 	{
