@@ -72,7 +72,7 @@ public class BlockCamoDoor extends BlockContainer
 
 		try
 		{
-			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+			TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 			
 			int id = entity.getCopyID();
 			
@@ -387,54 +387,10 @@ public class BlockCamoDoor extends BlockContainer
 		return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3D, par6Vec3D);
 	}
 
-	/**
-	 * Called whenever the block is added into the world. Args: world, x, y, z
-	 */
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z)
-	{
-		super.onBlockAdded(world, x, y, z);
-
-		if (!world.isRemote)
-			return;
-
-		int i = world.getBlockMetadata(x, y, z);
-		boolean flag = (i & 8) != 0;
-
-		// is the bottom one.
-		if (!flag)
-		{
-			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
-
-			BlockHolder holder = new BlockHolder(world, x, y - 1, z);
-
-			// replace
-			if (holder.blockID == Block.grass.blockID)
-			{
-				world.setBlock(x, y - 1, z, Block.dirt.blockID);
-				holder.blockID = Block.dirt.blockID;
-			}
-			
-			// CAMO STUFF
-			entity.setBlockHolder(holder);
-			PacketDispatcher.sendPacketToAllPlayers(entity.getDescriptionPacket());
-		}
-		else
-		{
-			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
-			TileEntityFull entityBottom = (TileEntityFull) world.getBlockTileEntity(x, y-1, z);
-			
-			entity.setBlockHolder(entityBottom.getBlockHolder());
-
-			BlockHolder holder = new BlockHolder(world, x, y - 1, z);
-		}
-		world.markBlockForRenderUpdate(x, y, z);
-	}
-
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{
-		return new TileEntityFull();
+		return new TileEntityCamo();
 	}
 
 	/**

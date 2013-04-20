@@ -1,6 +1,8 @@
 package mods.SecretRoomsMod.items;
 
 import mods.SecretRoomsMod.SecretRooms;
+import mods.SecretRoomsMod.blocks.TileEntityCamo;
+import mods.SecretRoomsMod.common.BlockHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -121,14 +123,19 @@ public class ItemCamoDoor extends Item
 		}
 
 		world.setBlock(x, y, z, block.blockID, meta, 2);
-		block.onBlockAdded(world, x, y, z);
 		world.setBlock(x, y + 1, z, block.blockID, 8 | (flag2 ? 1 : 0), 2);
-		block.onBlockAdded(world, x, y+1, z);
+		
+		BlockHolder holder = new BlockHolder(world, x, y-1, z);
+		
+		TileEntityCamo te = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
+		te.setBlockHolder(holder);
+		PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+		
+		te = (TileEntityCamo) world.getBlockTileEntity(x, y+1, z);
+		te.setBlockHolder(holder);
+		PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+		
 		world.notifyBlocksOfNeighborChange(x, y, z, block.blockID);
 		world.notifyBlocksOfNeighborChange(x, y + 1, z, block.blockID);
-
-		if (!world.isRemote)
-			return;
-
 	}
 }

@@ -87,7 +87,7 @@ public class BlockOneWay extends BlockContainer
 
 		try
 		{
-			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+			TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 			int id = entity.getCopyID();
 			
 			if (id == 0)
@@ -140,7 +140,7 @@ public class BlockOneWay extends BlockContainer
 		// CAMO STUFF
 		BlockHolder holder = getIdCamoStyle(world, i, j, k);
 
-		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(i, j, k);
+		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(i, j, k);
 
 		if (holder == null)
 		{
@@ -201,7 +201,7 @@ public class BlockOneWay extends BlockContainer
 		if (!SecretRooms.displayCamo)
 			return super.colorMultiplier(world, x, y, z);
 
-		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 
 		if (entity == null)
 			return super.colorMultiplier(world, x, y, z);
@@ -303,9 +303,9 @@ public class BlockOneWay extends BlockContainer
 			Block block = Block.blocksList[id];
 			TileEntity entity = world.getBlockTileEntity(x, y, z);
 
-			if (entity != null && entity instanceof TileEntityFull)
+			if (entity != null && entity instanceof TileEntityCamo)
 			{
-				TileEntityFull te = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+				TileEntityCamo te = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 				return te.getBlockHolder();
 			}
 			else if (block.isOpaqueCube())
@@ -328,7 +328,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity(World var1)
 	{
-		return new TileEntityFull();
+		return new TileEntityCamo();
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package mods.SecretRoomsMod.client;
 import mods.SecretRoomsMod.SecretRooms;
 import mods.SecretRoomsMod.blocks.BlockCamoFull;
 import mods.SecretRoomsMod.blocks.BlockOneWay;
-import mods.SecretRoomsMod.blocks.TileEntityFull;
+import mods.SecretRoomsMod.blocks.TileEntityCamo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.client.Minecraft;
@@ -95,7 +95,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		float whiteColor = 0xff / 255F;
 
 		// get Copied Texture
-		TileEntityFull entity = (TileEntityFull) blockAccess.getBlockTileEntity(i, j, k);
+		TileEntityCamo entity = (TileEntityCamo) blockAccess.getBlockTileEntity(i, j, k);
 		boolean grassed = entity.getCopyID() == Block.grass.blockID;
 		boolean currentlyBound = false;
 
@@ -279,7 +279,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 		float blockColorGreen = (rawColors >> 8 & 0xff) / 255F;
 		float blockColorBlue = (rawColors & 0xff) / 255F;
 		// get Copied ID
-		int copyId = ((TileEntityFull) blockAccess.getBlockTileEntity(i, j, k)).getCopyID();
+		int copyId = ((TileEntityCamo) blockAccess.getBlockTileEntity(i, j, k)).getCopyID();
 		if (copyId == 0)
 			return renderblocks.renderStandardBlock(block, i, j, k);
 		Block fakeBlock = Block.blocksList[copyId];

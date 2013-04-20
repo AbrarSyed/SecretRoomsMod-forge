@@ -5,12 +5,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import mods.SecretRoomsMod.blocks.BlockCamoDoor;
-import mods.SecretRoomsMod.blocks.TileEntityFull;
+import mods.SecretRoomsMod.blocks.TileEntityCamo;
 import mods.SecretRoomsMod.common.BlockHolder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,7 +22,7 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 	public final boolean		hasHolder;
 	public final boolean[]		sides	= new boolean[6];
 
-	public PacketSRM0UpdateCamo(TileEntityFull entity)
+	public PacketSRM0UpdateCamo(TileEntityCamo entity)
 	{
 		holder = entity.getBlockHolder();
 		hasHolder = holder != null;
@@ -86,16 +87,13 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 		if (world == null)
 			return;
 
-		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 
 		if (entity == null || holder == null)
 			return;
 
 		entity.setBlockHolder(holder);
 		entity.isCamo = sides;
-
-		if (entity.blockType instanceof BlockCamoDoor)
-			world.markBlockForRenderUpdate(x, y + 1, z);
 
 		world.markBlockForRenderUpdate(x, y, z);
 	}
@@ -106,15 +104,15 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 		if (world == null)
 			return;
 
-		TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 
 		if (entity == null || holder == null)
 			return;
 
 		entity.setBlockHolder(holder);
 		entity.isCamo = sides;
-
-		world.markBlockForRenderUpdate(x, y, z);
+		
+		PacketDispatcher.sendPacketToAllInDimension(getPacket250(), world.provider.dimensionId);
 	}
 
 }

@@ -16,7 +16,7 @@ import mods.SecretRoomsMod.blocks.BlockCamoWire;
 import mods.SecretRoomsMod.blocks.BlockOneWay;
 import mods.SecretRoomsMod.blocks.BlockTorchLever;
 import mods.SecretRoomsMod.blocks.TileEntityCamoChest;
-import mods.SecretRoomsMod.blocks.TileEntityFull;
+import mods.SecretRoomsMod.blocks.TileEntityCamo;
 import mods.SecretRoomsMod.client.CreativeTabCamo;
 import mods.SecretRoomsMod.common.CommandShow;
 import mods.SecretRoomsMod.common.ProxyCommon;
@@ -217,7 +217,7 @@ public class SecretRooms
 		GameRegistry.registerBlock(camoChest, "mod_SRM.SecretCamoChest");
 
 		// Tile Entities
-		GameRegistry.registerTileEntity(TileEntityFull.class, "mod_SRM.TE_CamoFull");
+		GameRegistry.registerTileEntity(TileEntityCamo.class, "mod_SRM.TE_CamoFull");
 		GameRegistry.registerTileEntity(TileEntityCamoChest.class, "mod_SRM.TE_CamoChest");
 
 		// Names

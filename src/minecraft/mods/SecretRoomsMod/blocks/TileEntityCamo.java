@@ -10,12 +10,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityFull extends TileEntity
+public class TileEntityCamo extends TileEntity
 {
 	private BlockHolder	holder;
 	public boolean[]	isCamo;
 
-	public TileEntityFull()
+	public TileEntityCamo()
 	{
 		super();
 		holder = null;
