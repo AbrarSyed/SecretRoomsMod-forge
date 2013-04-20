@@ -125,15 +125,24 @@ public class ItemCamoDoor extends Item
 		world.setBlock(x, y, z, block.blockID, meta, 2);
 		world.setBlock(x, y + 1, z, block.blockID, 8 | (flag2 ? 1 : 0), 2);
 		
+		if (world.getBlockId(x, y-1, z) == Block.grass.blockID)
+			world.setBlock(x, y-1, z, Block.dirt.blockID);
+		
 		BlockHolder holder = new BlockHolder(world, x, y-1, z);
 		
 		TileEntityCamo te = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 		te.setBlockHolder(holder);
-		PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+		if (world.isRemote)
+			PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+		else
+			PacketDispatcher.sendPacketToAllInDimension(te.getDescriptionPacket(), world.provider.dimensionId);
 		
 		te = (TileEntityCamo) world.getBlockTileEntity(x, y+1, z);
 		te.setBlockHolder(holder);
-		PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+		if (world.isRemote)
+			PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+		else
+			PacketDispatcher.sendPacketToAllInDimension(te.getDescriptionPacket(), world.provider.dimensionId);
 		
 		world.notifyBlocksOfNeighborChange(x, y, z, block.blockID);
 		world.notifyBlocksOfNeighborChange(x, y + 1, z, block.blockID);
