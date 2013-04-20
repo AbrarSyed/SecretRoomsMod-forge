@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import mods.SecretRoomsMod.blocks.BlockCamoDoor;
 import mods.SecretRoomsMod.blocks.TileEntityFull;
 import mods.SecretRoomsMod.common.BlockHolder;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +19,7 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 	public final int			x, y, z;
 	public final BlockHolder	holder;
 	public final boolean		hasHolder;
-	public final boolean[]		sides = new boolean[6];
+	public final boolean[]		sides	= new boolean[6];
 
 	public PacketSRM0UpdateCamo(TileEntityFull entity)
 	{
@@ -27,7 +28,7 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 		x = entity.xCoord;
 		y = entity.yCoord;
 		z = entity.zCoord;
-		
+
 		for (int i = 0; i < 6; i++)
 			sides[i] = entity.isCamo[i];
 	}
@@ -47,7 +48,7 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 		}
 		else
 			holder = null;
-		
+
 		for (int i = 0; i < 6; i++)
 			sides[i] = stream.readBoolean();
 	}
@@ -67,7 +68,7 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 			holder.writeToNBT(nbt);
 			NBTBase.writeNamedTag(nbt, stream);
 		}
-		
+
 		for (int i = 0; i < 6; i++)
 			stream.writeBoolean(sides[i]);
 	}
@@ -92,6 +93,9 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 
 		entity.setBlockHolder(holder);
 		entity.isCamo = sides;
+
+		if (entity.blockType instanceof BlockCamoDoor)
+			world.markBlockForRenderUpdate(x, y + 1, z);
 
 		world.markBlockForRenderUpdate(x, y, z);
 	}

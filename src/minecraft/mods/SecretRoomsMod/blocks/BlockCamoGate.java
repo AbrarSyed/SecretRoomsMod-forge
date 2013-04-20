@@ -138,7 +138,8 @@ public class BlockCamoGate extends BlockCamoFull
 
 			if (!world.isBlockSolidOnSide(xOffset, yOffset, zOffset, dir.getOpposite()))
 			{
-				world.setBlock(yOffset, xOffset, zOffset, SecretRooms.camoGateExt.blockID);
+				world.destroyBlock(xOffset, yOffset, zOffset, true);
+				world.setBlock(xOffset, yOffset, zOffset, SecretRooms.camoGateExt.blockID);
 			}
 			else
 			{

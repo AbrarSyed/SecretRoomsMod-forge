@@ -78,7 +78,7 @@ public class BlockCamoDoor extends BlockContainer
 			
 			if (flag)
 			{
-				entity = (TileEntityFull) world.getBlockTileEntity(x, y-1, z);
+				return getBlockTexture(world, x, y-1, z, side);
 			}
 			else
 			{
@@ -407,24 +407,23 @@ public class BlockCamoDoor extends BlockContainer
 		int i = world.getBlockMetadata(x, y, z);
 		boolean flag = (i & 8) != 0;
 
-		// is the bototm one.
+		// is the bottom one.
 		if (!flag)
 		{
 			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 
-			int id = world.getBlockId(x, y - 1, z);
-
-			// replace
-			if (id == Block.grass.blockID)
-			{
-				world.setBlock(x, y - 1, z, Block.dirt.blockID);
-				id = Block.dirt.blockID;
-			}
-			// CAMO STUFF
 			BlockHolder holder = new BlockHolder(world, x, y - 1, z);
 
+			// replace
+			if (holder.blockID == Block.grass.blockID)
+			{
+				world.setBlock(x, y - 1, z, Block.dirt.blockID);
+				holder.blockID = Block.dirt.blockID;
+			}
+			
+			// CAMO STUFF
 			entity.setBlockHolder(holder);
-			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
+			PacketDispatcher.sendPacketToAllPlayers(entity.getDescriptionPacket());
 		}
 		world.markBlockForRenderUpdate(x, y, z);
 	}

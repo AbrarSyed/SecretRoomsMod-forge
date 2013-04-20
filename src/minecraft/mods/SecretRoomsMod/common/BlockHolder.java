@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class BlockHolder
 {
 	private final NBTTagCompound	nbt;
-	public final int				blockID;
+	public int						blockID;
 	public final int				metadata;
 
 	public BlockHolder(IBlockAccess world, int x, int y, int z)
@@ -25,12 +25,12 @@ public class BlockHolder
 		{
 			nbt = new NBTTagCompound();
 			te.writeToNBT(nbt);
-			
+
 			// strip location
 			nbt.setInteger("x", 0);
 			nbt.setInteger("y", 0);
 			nbt.setInteger("z", 0);
-			
+
 		}
 		else
 		{
@@ -55,7 +55,7 @@ public class BlockHolder
 			return null;
 
 		TileEntity te = TileEntity.createAndLoadEntity(nbt);
-		
+
 		te.worldObj = world;
 		te.xCoord = x;
 		te.yCoord = y;
@@ -85,13 +85,13 @@ public class BlockHolder
 	{
 		if (holder == null)
 			return false;
-		
+
 		boolean compound = false;
 		if (nbt == null || holder.nbt == null)
 			compound = nbt == holder.nbt;
 		else
 			compound = this.nbt.equals(holder.nbt);
-		
+
 		if (this.blockID == holder.blockID &&
 				this.metadata == holder.metadata &&
 				compound)
