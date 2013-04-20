@@ -121,13 +121,14 @@ public class ItemCamoDoor extends Item
 		}
 
 		world.setBlock(x, y, z, block.blockID, meta, 2);
+		block.onBlockAdded(world, x, y, z);
 		world.setBlock(x, y + 1, z, block.blockID, 8 | (flag2 ? 1 : 0), 2);
+		block.onBlockAdded(world, x, y+1, z);
 		world.notifyBlocksOfNeighborChange(x, y, z, block.blockID);
 		world.notifyBlocksOfNeighborChange(x, y + 1, z, block.blockID);
 
 		if (!world.isRemote)
 			return;
 
-		block.onBlockAdded(world, x, y, z);
 	}
 }

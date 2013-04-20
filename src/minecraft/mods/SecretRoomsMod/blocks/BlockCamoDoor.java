@@ -70,20 +70,9 @@ public class BlockCamoDoor extends BlockContainer
 		int i = world.getBlockMetadata(x, y, z);
 		int j;
 
-		boolean flag = (i & 8) != 0;
-
 		try
 		{
-			TileEntityFull entity;
-			
-			if (flag)
-			{
-				return getBlockTexture(world, x, y-1, z, side);
-			}
-			else
-			{
-				entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
-			}
+			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
 			
 			int id = entity.getCopyID();
 			
@@ -315,6 +304,11 @@ public class BlockCamoDoor extends BlockContainer
 	public void onNeighborBlockChange(World world, int x, int y, int z, int id)
 	{
 		int i = world.getBlockMetadata(x, y, z);
+		
+		{
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			System.out.println("lala");
+		}
 
 		if ((i & 8) != 0)
 		{
@@ -424,6 +418,15 @@ public class BlockCamoDoor extends BlockContainer
 			// CAMO STUFF
 			entity.setBlockHolder(holder);
 			PacketDispatcher.sendPacketToAllPlayers(entity.getDescriptionPacket());
+		}
+		else
+		{
+			TileEntityFull entity = (TileEntityFull) world.getBlockTileEntity(x, y, z);
+			TileEntityFull entityBottom = (TileEntityFull) world.getBlockTileEntity(x, y-1, z);
+			
+			entity.setBlockHolder(entityBottom.getBlockHolder());
+
+			BlockHolder holder = new BlockHolder(world, x, y - 1, z);
 		}
 		world.markBlockForRenderUpdate(x, y, z);
 	}
