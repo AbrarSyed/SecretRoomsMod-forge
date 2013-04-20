@@ -257,48 +257,48 @@ public class BlockCamoTrapDoor extends Block
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
-	{
-		if (par1World.isRemote)
-			return;
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    {
+        if (!par1World.isRemote)
+        {
+            int i1 = par1World.getBlockMetadata(par2, par3, par4);
+            int j1 = par2;
+            int k1 = par4;
 
-		int i = par1World.getBlockMetadata(par2, par3, par4);
-		int j = par2;
-		int k = par4;
+            if ((i1 & 3) == 0)
+            {
+                k1 = par4 + 1;
+            }
 
-		if ((i & 3) == 0)
-		{
-			k++;
-		}
+            if ((i1 & 3) == 1)
+            {
+                --k1;
+            }
 
-		if ((i & 3) == 1)
-		{
-			k--;
-		}
+            if ((i1 & 3) == 2)
+            {
+                j1 = par2 + 1;
+            }
 
-		if ((i & 3) == 2)
-		{
-			j++;
-		}
+            if ((i1 & 3) == 3)
+            {
+                --j1;
+            }
 
-		if ((i & 3) == 3)
-		{
-			j--;
-		}
+            if (!(isValidSupportBlock(par1World.getBlockId(j1, par3, k1)) || par1World.isBlockSolidOnSide(j1, par3, k1, ForgeDirection.getOrientation((i1 & 3) + 2))))
+            {
+                par1World.setBlockToAir(par2, par3, par4);
+                this.dropBlockAsItem(par1World, par2, par3, par4, i1, 0);
+            }
 
-		if (!isValidSupportBlock(par1World.getBlockId(j, par3, k)))
-		{
-			par1World.setBlockToAir(par2, par3, par4);
-			dropBlockAsItem(par1World, par2, par3, par4, i, 0);
-		}
+            boolean flag = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4);
 
-		boolean flag = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4);
-
-		if (flag || par5 > 0 && Block.blocksList[par5].canProvidePower() || par5 == 0)
-		{
-			onPoweredBlockChange(par1World, par2, par3, par4, flag);
-		}
-	}
+            if (flag || par5 > 0 && Block.blocksList[par5].canProvidePower())
+            {
+                this.onPoweredBlockChange(par1World, par2, par3, par4, flag);
+            }
+        }
+    }
 
 	/**
 	 * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
@@ -352,36 +352,41 @@ public class BlockCamoTrapDoor extends Block
 	 * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
 	 */
 	@Override
-	public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
-	{
-		if (par5 == 0)
-			return false;
+    public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
+    {
+        if (par5 == 0)
+        {
+            return false;
+        }
+        else if (par5 == 1)
+        {
+            return false;
+        }
+        else
+        {
+            if (par5 == 2)
+            {
+                ++par4;
+            }
 
-		if (par5 == 1)
-			return false;
+            if (par5 == 3)
+            {
+                --par4;
+            }
 
-		if (par5 == 2)
-		{
-			par4++;
-		}
+            if (par5 == 4)
+            {
+                ++par2;
+            }
 
-		if (par5 == 3)
-		{
-			par4--;
-		}
+            if (par5 == 5)
+            {
+                --par2;
+            }
 
-		if (par5 == 4)
-		{
-			par2++;
-		}
-
-		if (par5 == 5)
-		{
-			par2--;
-		}
-
-		return isValidSupportBlock(par1World.getBlockId(par2, par3, par4)) || par1World.isBlockSolidOnSide(par2, par3, par4, ForgeDirection.UP);
-	}
+            return isValidSupportBlock(par1World.getBlockId(par2, par3, par4)) || par1World.isBlockSolidOnSide(par2, par3, par4, ForgeDirection.UP);
+        }
+    }
 
 	public static boolean isTrapdoorOpen(int par0)
 	{
@@ -392,15 +397,17 @@ public class BlockCamoTrapDoor extends Block
 	 * Checks if the block ID is a valid support block for the trap door to connect with. If it is not the trapdoor is
 	 * dropped into the world.
 	 */
-	private static boolean isValidSupportBlock(int par0)
+	private static boolean isValidSupportBlock(int id)
 	{
-		if (par0 <= 0)
-			return false;
-		else
-		{
-			Block block = Block.blocksList[par0];
-			return block != null && block.blockMaterial.isOpaque() && block.renderAsNormalBlock() || block == Block.glowStone || block instanceof BlockHalfSlab || block instanceof BlockStairs;
-		}
+        if (id <= 0)
+        {
+            return false;
+        }
+        else
+        {
+            Block block = Block.blocksList[id];
+            return block != null && block.blockMaterial.isOpaque() && block.renderAsNormalBlock() || block == Block.glowStone || block instanceof BlockHalfSlab || block instanceof BlockStairs;
+        }
 	}
 
 }

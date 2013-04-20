@@ -301,66 +301,61 @@ public class BlockCamoDoor extends BlockContainer
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int id)
-	{
-		int i = world.getBlockMetadata(x, y, z);
-		
-		{
-			TileEntity te = world.getBlockTileEntity(x, y, z);
-			System.out.println("lala");
-		}
+    public void onNeighborBlockChange(World world, int x, int y, int z, int id)
+    {
+        int i1 = world.getBlockMetadata(x, y, z);
 
-		if ((i & 8) != 0)
-		{
-			if (world.getBlockId(x, y - 1, z) != blockID)
-			{
-				world.setBlockToAir(x, y, z);
-			}
+        if ((i1 & 8) == 0)
+        {
+            boolean flag = false;
 
-			if (id > 0 && id != blockID)
-			{
-				onNeighborBlockChange(world, x, y - 1, z, id);
-			}
-		}
-		else
-		{
-			boolean flag = false;
+            if (world.getBlockId(x, y + 1, z) != this.blockID)
+            {
+                world.setBlockToAir(x, y, z);
+                flag = true;
+            }
 
-			if (world.getBlockId(x, y + 1, z) != blockID)
-			{
-				world.setBlockToAir(x, y, z);
-				flag = true;
-			}
+            if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z))
+            {
+                world.setBlockToAir(x, y, z);
+                flag = true;
 
-			if (!world.isBlockNormalCube(x, y - 1, z))
-			{
-				world.setBlockToAir(x, y, z);
-				flag = true;
+                if (world.getBlockId(x, y + 1, z) == this.blockID)
+                {
+                    world.setBlockToAir(x, y + 1, z);
+                }
+            }
 
-				if (world.getBlockId(x, y + 1, z) == blockID)
-				{
-					world.setBlockToAir(x, y+1, z);
-				}
-			}
+            if (flag)
+            {
+                if (!world.isRemote)
+                {
+                    this.dropBlockAsItem(world, x, y, z, i1, 0);
+                }
+            }
+            else
+            {
+                boolean flag1 = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
 
-			if (flag)
-			{
-				if (!world.isRemote)
-				{
-					dropBlockAsItem(world, x, y, z, i, 0);
-				}
-			}
-			else
-			{
-				boolean flag1 = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
+                if ((flag1 || id > 0 && Block.blocksList[id].canProvidePower()) && id != this.blockID)
+                {
+                    this.onPoweredBlockChange(world, x, y, z, flag1);
+                }
+            }
+        }
+        else
+        {
+            if (world.getBlockId(x, y - 1, z) != this.blockID)
+            {
+                world.setBlockToAir(x, y, z);
+            }
 
-				if ((flag1 || id > 0 && Block.blocksList[id].canProvidePower() || id == 0) && id != blockID)
-				{
-					onPoweredBlockChange(world, x, y, z, flag1);
-				}
-			}
-		}
-	}
+            if (id > 0 && id != this.blockID)
+            {
+                this.onNeighborBlockChange(world, x, y - 1, z, id);
+            }
+        }
+    }
 
 	/**
 	 * Returns the ID of the items to drop on destruction.
@@ -397,13 +392,13 @@ public class BlockCamoDoor extends BlockContainer
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
 	@Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
-	{
-		if (par3 >= par1World.getHeight() || par3 >= par1World.getHeight() - 1)
+    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    {
+		if (y >= 255)
 			return false;
-		else
-			return par1World.isBlockNormalCube(par2, par3 - 1, par4) && super.canPlaceBlockAt(par1World, par2, par3, par4) && super.canPlaceBlockAt(par1World, par2, par3 + 1, par4);
-	}
+		
+		return world.doesBlockHaveSolidTopSurface(x, y - 1, z) && super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z);
+    }
 
 	/**
 	 * Returns the mobility information of the block, 0 = free, 1 = can't push but can move over, 2 = total immobility
@@ -440,4 +435,13 @@ public class BlockCamoDoor extends BlockContainer
 		int l = j & 7 | (flag ? 8 : 0) | (flag1 ? 0x10 : 0);
 		return l;
 	}
+	
+	@Override
+    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player)
+    {
+        if (player.capabilities.isCreativeMode && (meta & 8) != 0 && world.getBlockId(x, y - 1, z) == this.blockID)
+        {
+            world.setBlockToAir(x, y - 1, z);
+        }
+    }
 }
