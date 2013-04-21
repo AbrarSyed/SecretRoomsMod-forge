@@ -11,7 +11,7 @@ public class TileEntityCamoDetector extends TileEntityCamo
 		{
 			this.blockType = this.getBlockType();
 
-			if (this.blockType != null && this.blockType instanceof BlockDaylightDetector)
+			if (this.blockType != null && this.blockType instanceof BlockCamoLightDetector)
 			{
 				((BlockCamoLightDetector) this.blockType).updateLightLevel(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			}

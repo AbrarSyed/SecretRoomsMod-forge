@@ -20,6 +20,7 @@ import mods.secretroomsmod.blocks.BlockOneWay;
 import mods.secretroomsmod.blocks.BlockTorchLever;
 import mods.secretroomsmod.blocks.TileEntityCamo;
 import mods.secretroomsmod.blocks.TileEntityCamoChest;
+import mods.secretroomsmod.blocks.TileEntityCamoDetector;
 import mods.secretroomsmod.client.CreativeTabCamo;
 import mods.secretroomsmod.common.CommandShow;
 import mods.secretroomsmod.common.ProxyCommon;
@@ -241,11 +242,13 @@ public class SecretRooms
 
 		GameRegistry.registerBlock(camoChest, "mod_SRM.SecretChest");
 		GameRegistry.registerBlock(camoTrappedChest, "mod_SRM.SecretTrappedChest");
+		
+		GameRegistry.registerBlock(camoLightDetector, "mod_SRM.SecretLightDetector");
 
 		// Tile Entities
 		GameRegistry.registerTileEntity(TileEntityCamo.class, "mod_SRM.TE_CamoFull");
 		GameRegistry.registerTileEntity(TileEntityCamoChest.class, "mod_SRM.TE_CamoChest");
-		GameRegistry.registerTileEntity(TileEntityCamoChest.class, "mod_SRM.TE_CamoDetector");
+		GameRegistry.registerTileEntity(TileEntityCamoDetector.class, "mod_SRM.TE_CamoDetector");
 
 		// Names
 		LanguageRegistry.instance().addNameForObject(torchLever, "en_US", "Torch Lever");
@@ -621,7 +624,7 @@ public class SecretRooms
 		}));
 		
 		// Trapped Chests
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoTrappedChest, 1), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoLightDetector, 1), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
@@ -629,7 +632,7 @@ public class SecretRooms
 				'0', Item.rottenFlesh,
 				'@', Block.daylightSensor
 		}));
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoTrappedChest, 1), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoLightDetector, 1), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",

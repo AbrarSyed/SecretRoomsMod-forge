@@ -20,43 +20,58 @@ public class BlockCamoLightDetector extends BlockCamoFull
 		super(par1, material);
 	}
 
+	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side)
 	{
 		return world.getBlockMetadata(x, y, z);
+	}
+	
+	@Override
+	public boolean canProvidePower()
+	{
+		return true;
 	}
 
 	public void updateLightLevel(World world, int x, int y, int z)
 	{
 		if (!world.provider.hasNoSky)
 		{
-			int l = world.getBlockMetadata(x, y, z);
-			int i1 = world.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) - world.skylightSubtracted;
-			float f = world.getCelestialAngleRadians(1.0F);
+			int meta = world.getBlockMetadata(x, y, z);
+			int lightValue = world.getSavedLightValue(EnumSkyBlock.Sky, x, y+1, z) - world.skylightSubtracted;
+			float angle = world.getCelestialAngleRadians(1.0F);
 
-			if (f < (float) Math.PI)
+			if (angle < (float) Math.PI)
 			{
-				f += (0.0F - f) * 0.2F;
+				angle += (0.0F - angle) * 0.2F;
 			}
 			else
 			{
-				f += (((float) Math.PI * 2F) - f) * 0.2F;
+				angle += (((float) Math.PI * 2F) - angle) * 0.2F;
 			}
 
-			i1 = Math.round((float) i1 * MathHelper.cos(f));
+			lightValue = Math.round((float) lightValue * MathHelper.cos(angle));
 
-			if (i1 < 0)
+			if (lightValue < 0)
 			{
-				i1 = 0;
+				lightValue = 0;
 			}
 
-			if (i1 > 15)
+			if (lightValue > 15)
 			{
-				i1 = 15;
+				lightValue = 15;
 			}
 
-			if (l != i1)
+			if (meta != lightValue)
 			{
-				world.setBlockMetadataWithNotify(x, y, z, i1, 3);
+				world.setBlockMetadataWithNotify(x, y, z, lightValue, 3);
+				world.notifyBlockChange(x - 1, y - 1, z+1, blockID);
+				world.notifyBlockChange(x + 1, y - 1, z+1, blockID);
+				world.notifyBlockChange(x - 1, y + 1, z+1, blockID);
+				world.notifyBlockChange(x + 1, y + 1, z+1, blockID);
+				world.notifyBlockChange(x - 1, y - 1, z+1, blockID);
+				world.notifyBlockChange(x + 1, y - 1, z-1, blockID);
+				world.notifyBlockChange(x - 1, y + 1, z-1, blockID);
+				world.notifyBlockChange(x + 1, y + 1, z-1, blockID);
 			}
 		}
 	}
