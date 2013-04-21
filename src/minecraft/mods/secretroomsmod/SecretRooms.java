@@ -10,6 +10,7 @@ import mods.secretroomsmod.blocks.BlockCamoGate;
 import mods.secretroomsmod.blocks.BlockCamoGateExt;
 import mods.secretroomsmod.blocks.BlockCamoGhost;
 import mods.secretroomsmod.blocks.BlockCamoLever;
+import mods.secretroomsmod.blocks.BlockCamoLightDetector;
 import mods.secretroomsmod.blocks.BlockCamoPlate;
 import mods.secretroomsmod.blocks.BlockCamoPlateWeighted;
 import mods.secretroomsmod.blocks.BlockCamoStair;
@@ -115,6 +116,7 @@ public class SecretRooms
 	public static Block			camoStairs;
 	public static Block			camoChest;
 	public static Block			camoTrappedChest;
+	public static Block			camoLightDetector;
 
 	public static final String	CAMO_PASTE				= "camoPaste";
 
@@ -151,7 +153,8 @@ public class SecretRooms
 				config.getBlock("CamoBlocks", "camoPlateWeightedBlock_heavy", 214).getInt(),
 				config.getBlock("CamoBlocks", "camoStairBlock", 215).getInt(),
 				config.getBlock("CamoBlocks", "camoChestBlock", 216).getInt(),
-				config.getBlock("CamoBlocks", "camoChestTrappedBlock", 217).getInt()
+				config.getBlock("CamoBlocks", "camoChestTrappedBlock", 217).getInt(),
+				config.getBlock("CamoBlocks", "camoLightDetectorBlock", 218).getInt()
 		};
 		config.save();
 
@@ -190,19 +193,21 @@ public class SecretRooms
 
 		// FullCamoBlocks
 		camoGhost = new BlockCamoGhost(ids[10]).setUnlocalizedName("mod_SRM.GhostBlock");
-		camoLever = new BlockCamoLever(ids[11]).setUnlocalizedName("mod_SRM.SecretCamoLever");
-		camoCurrent = new BlockCamoWire(ids[12]).setUnlocalizedName("mod_SRM.SecretCamoRedstone");
-		camoButton = new BlockCamoButton(ids[13]).setUnlocalizedName("mod_SRM.SecretCamoButton");
+		camoLever = new BlockCamoLever(ids[11]).setUnlocalizedName("mod_SRM.SecretLever");
+		camoCurrent = new BlockCamoWire(ids[12]).setUnlocalizedName("mod_SRM.SecretRedstone");
+		camoButton = new BlockCamoButton(ids[13]).setUnlocalizedName("mod_SRM.SecretButton");
 
 		camoPlateAll = new BlockCamoPlate(ids[14], false).setUnlocalizedName("mod_SRM.SecretPressurePlate");
 		camoPlatePlayer = new BlockCamoPlate(ids[15], true).setUnlocalizedName("mod_SRM.SecretPlayerPlate");
 		camoPlateLight = new BlockCamoPlateWeighted(ids[16], 64).setUnlocalizedName("mod_SRM.SecretLightPlate");
 		camoPlateHeavy = new BlockCamoPlateWeighted(ids[17], 640).setUnlocalizedName("mod_SRM.SecretHeavyPlate");
 
-		camoStairs = new BlockCamoStair(ids[18]).setUnlocalizedName("mod_SRM.SecretCamoStair");
+		camoStairs = new BlockCamoStair(ids[18]).setUnlocalizedName("mod_SRM.SecretStair");
 
-		camoChest = new BlockCamoChest(ids[19], false).setUnlocalizedName("mod_SRM.SecretCamoChest");
-		camoTrappedChest = new BlockCamoChest(ids[20], true).setUnlocalizedName("mod_SRM.SecretCamoTrappedChest");
+		camoChest = new BlockCamoChest(ids[19], false).setUnlocalizedName("mod_SRM.SecretChest");
+		camoTrappedChest = new BlockCamoChest(ids[20], true).setUnlocalizedName("mod_SRM.SecretTrappedChest");
+		
+		camoLightDetector = new BlockCamoLightDetector(ids[21]).setUnlocalizedName("mod_SRM.SecretLightDetector");
 
 		// key Events
 		proxy.loadKeyStuff();
@@ -232,14 +237,15 @@ public class SecretRooms
 		GameRegistry.registerBlock(camoPlateLight, "mod_SRM.SecretLightPlate");
 		GameRegistry.registerBlock(camoPlateHeavy, "mod_SRM.SecretHeavyPlate");
 
-		GameRegistry.registerBlock(camoStairs, "mod_SRM.SecretCamoStair");
+		GameRegistry.registerBlock(camoStairs, "mod_SRM.SecretStair");
 
-		GameRegistry.registerBlock(camoChest, "mod_SRM.SecretCamoChest");
-		GameRegistry.registerBlock(camoTrappedChest, "mod_SRM.SecretCamoTrappedChest");
+		GameRegistry.registerBlock(camoChest, "mod_SRM.SecretChest");
+		GameRegistry.registerBlock(camoTrappedChest, "mod_SRM.SecretTrappedChest");
 
 		// Tile Entities
 		GameRegistry.registerTileEntity(TileEntityCamo.class, "mod_SRM.TE_CamoFull");
 		GameRegistry.registerTileEntity(TileEntityCamoChest.class, "mod_SRM.TE_CamoChest");
+		GameRegistry.registerTileEntity(TileEntityCamoChest.class, "mod_SRM.TE_CamoDetector");
 
 		// Names
 		LanguageRegistry.instance().addNameForObject(torchLever, "en_US", "Torch Lever");
@@ -269,6 +275,8 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(camoChest, "en_US", "Secret Chest");
 		LanguageRegistry.instance().addNameForObject(camoTrappedChest, "en_US", "Secret Trapped Chest");
 		LanguageRegistry.instance().addStringLocalization("container.CamoChest", "en_US", "Hidden Chest");
+		
+		LanguageRegistry.instance().addNameForObject(camoLightDetector, "en_US", "Secret Light Detector");
 
 		// Renders
 		proxy.loadRenderStuff();
@@ -594,7 +602,7 @@ public class SecretRooms
 				'@', Block.chest
 		}));
 
-		// CamoChests
+		// Trapped Chests
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoTrappedChest, 1), new Object[] {
 				"X0X",
 				"0@0",
@@ -610,6 +618,24 @@ public class SecretRooms
 				'X', CAMO_PASTE,
 				'0', Block.cloth,
 				'@', Block.chestTrapped
+		}));
+		
+		// Trapped Chests
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoTrappedChest, 1), new Object[] {
+				"X0X",
+				"0@0",
+				"X0X",
+				'X', CAMO_PASTE,
+				'0', Item.rottenFlesh,
+				'@', Block.daylightSensor
+		}));
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoTrappedChest, 1), new Object[] {
+				"X0X",
+				"0@0",
+				"X0X",
+				'X', CAMO_PASTE,
+				'0', Block.cloth,
+				'@', Block.daylightSensor
 		}));
 
 		for (IRecipe r : recipes)
