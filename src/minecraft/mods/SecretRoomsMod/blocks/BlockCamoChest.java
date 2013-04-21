@@ -12,7 +12,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,10 +26,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockCamoChest extends BlockCamoFull
 {
 	private Random	random	= new Random();
+	public final boolean isTrapped;
 
-	public BlockCamoChest(int par1)
+	public BlockCamoChest(int par1, boolean trapped)
 	{
 		super(par1);
+		isTrapped = trapped;
 		setHardness(1.5F);
 		setCreativeTab(SecretRooms.tab);
 	}
@@ -118,6 +123,41 @@ public class BlockCamoChest extends BlockCamoFull
 	{
 		return new TileEntityCamoChest();
 	}
+	
+    /**
+     * Can this block provide power. Only wire currently seems to have this change based on its state.
+     */
+    public boolean canProvidePower()
+    {
+        return this.isTrapped;
+    }
+
+    /**
+     * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
+     * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
+     * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
+     */
+    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+        if (!this.canProvidePower())
+        {
+            return 0;
+        }
+        else
+        {
+            int i1 = ((TileEntityCamoChest)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).numUsingPlayers;
+            return MathHelper.clamp_int(i1, 0, 15);
+        }
+    }
+
+    /**
+     * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+     * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
+     */
+    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+        return par5 == 1 ? this.isProvidingWeakPower(par1IBlockAccess, par2, par3, par4, par5) : 0;
+    }
 
 	/**
 	 * Looks for a sitting ocelot within certain bounds. Such an ocelot is considered to be blocking access to the

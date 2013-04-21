@@ -6,6 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 
 /**
  * @author AbrarSyed
@@ -109,7 +110,7 @@ public class TileEntityCamoChest extends TileEntityCamo implements IInventory
 	@Override
 	public String getInvName()
 	{
-		return "container.CamoChest";
+		return StatCollector.translateToLocal("container.CamoChest");
 	}
 
 	/**

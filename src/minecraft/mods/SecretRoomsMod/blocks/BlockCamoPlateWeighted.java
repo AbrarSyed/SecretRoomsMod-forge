@@ -3,10 +3,12 @@ package mods.SecretRoomsMod.blocks;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.EnumMobType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -14,10 +16,24 @@ public class BlockCamoPlateWeighted extends BlockCamoPlate
 {
 	private int	maxWeight;
 
-	protected BlockCamoPlateWeighted(int par1, int weight)
+	public BlockCamoPlateWeighted(int par1, int weight)
 	{
 		super(par1, false);
 		maxWeight = weight;
+	}
+	
+	@Override
+	public Icon getIcon(int i, int meta)
+	{
+		if (i == 1)
+			return Block.planks.getBlockTextureFromSide(i);
+
+		if (maxWeight > 100 && i == 3)
+			return Block.blockIron.getBlockTextureFromSide(i);
+		else if (i == 3)
+			return Block.blockGold.getBlockTextureFromSide(i);
+
+		return this.blockIcon;
 	}
 
 	protected int getCurrentWeight(World world, int x, int y, int z)
