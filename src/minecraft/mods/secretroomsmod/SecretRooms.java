@@ -7,7 +7,7 @@ import mods.secretroomsmod.blocks.BlockCamoButton;
 import mods.secretroomsmod.blocks.BlockCamoChest;
 import mods.secretroomsmod.blocks.BlockCamoDoor;
 import mods.secretroomsmod.blocks.BlockCamoGate;
-import mods.secretroomsmod.blocks.BlockCamoGateExt;
+import mods.secretroomsmod.blocks.BlockCamoDummy;
 import mods.secretroomsmod.blocks.BlockCamoGhost;
 import mods.secretroomsmod.blocks.BlockCamoLever;
 import mods.secretroomsmod.blocks.BlockCamoLightDetector;
@@ -140,7 +140,7 @@ public class SecretRooms
 				config.getBlock("CamoBlocks", "torchLever", 200).getInt(),
 				config.getBlock("CamoBlocks", "oneWay", 201).getInt(),
 				config.getBlock("CamoBlocks", "camoGate", 202).getInt(),
-				config.getBlock("CamoBlocks", "camoGateExt", 203).getInt(),
+				config.getBlock("CamoBlocks", "camoDummy", 203).getInt(),
 				config.getBlock("CamoBlocks", "camoTrapDoor", 204).getInt(),
 				config.getItem("CamoItems", "camoWoodDoor", 4106).getInt(),
 				config.getBlock("CamoBlocks", "camoWoodDoor", 205).getInt(),
@@ -182,7 +182,7 @@ public class SecretRooms
 
 		// gates
 		camoGate = new BlockCamoGate(ids[2]).setUnlocalizedName("mod_SRM.CamoGate");
-		camoGateExt = new BlockCamoGateExt(ids[3]).setUnlocalizedName("mod_SRM.CamoGateExtension");
+		camoGateExt = new BlockCamoDummy(ids[3]).setUnlocalizedName("mod_SRM.CamoDummy");
 
 		// TrapDoor
 		camoTrapDoor = new BlockCamoTrapDoor(ids[4]).setUnlocalizedName("mod_SRM.SecretTrapDoor");
@@ -223,7 +223,7 @@ public class SecretRooms
 		GameRegistry.registerBlock(torchLever, "TorchLever");
 		GameRegistry.registerBlock(oneWay, "OneWayGlass");
 		GameRegistry.registerBlock(camoGate, "CamoGate");
-		GameRegistry.registerBlock(camoGateExt, "CamoGateExtension");
+		GameRegistry.registerBlock(camoGateExt, "CamoDummy");
 
 		GameRegistry.registerBlock(camoTrapDoor, "SecretTrapDoor");
 
@@ -262,7 +262,7 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(torchLever, "en_US", "Torch Lever");
 		LanguageRegistry.instance().addNameForObject(oneWay, "en_US", "One-Way Glass");
 		LanguageRegistry.instance().addNameForObject(camoGate, "en_US", "Camo Gate");
-		LanguageRegistry.instance().addNameForObject(camoGateExt, "en_US", "Camo Gate Extension");
+		LanguageRegistry.instance().addNameForObject(camoGateExt, "en_US", "Dummy Camo block (does nothing)");
 		LanguageRegistry.instance().addNameForObject(camoTrapDoor, "en_US", "Secret TrapDoor");
 
 		LanguageRegistry.instance().addNameForObject(camoDoorWoodItem, "en_US", "Secret Wooden Door");
@@ -638,6 +638,26 @@ public class SecretRooms
 				'0', Block.cloth,
 				'@', Block.daylightSensor
 		}));
+		
+		// Solid Air
+		recipes.add(new ShapelessOreRecipe(new ItemStack(solidAir, 1),
+				new Object[] {
+						CAMO_PASTE,
+						Item.blazePowder,
+						Item.bucketWater
+				}));
+		recipes.add(new ShapelessOreRecipe(new ItemStack(solidAir, 1),
+				new Object[] {
+						CAMO_PASTE,
+						Item.blazeRod,
+						Item.bucketWater
+				}));
+		recipes.add(new ShapelessOreRecipe(new ItemStack(solidAir, 1),
+				new Object[] {
+						CAMO_PASTE,
+						Item.magmaCream,
+						Item.bucketWater
+				}));
 
 		for (IRecipe r : recipes)
 		{

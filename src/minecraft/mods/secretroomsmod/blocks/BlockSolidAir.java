@@ -25,7 +25,7 @@ public class BlockSolidAir extends Block
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3)
 	{
-		return blockID;
+		return 0;
 	}
 
 	@Override

@@ -7,9 +7,9 @@ import net.minecraft.block.Block;
 /**
  * @author AbrarSyed
  */
-public class BlockCamoGateExt extends BlockCamoFull
+public class BlockCamoDummy extends BlockCamoFull
 {
-	public BlockCamoGateExt(int i)
+	public BlockCamoDummy(int i)
 	{
 		super(i);
 		setHardness(2.5F);
