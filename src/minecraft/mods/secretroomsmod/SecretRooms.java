@@ -17,6 +17,7 @@ import mods.secretroomsmod.blocks.BlockCamoStair;
 import mods.secretroomsmod.blocks.BlockCamoTrapDoor;
 import mods.secretroomsmod.blocks.BlockCamoWire;
 import mods.secretroomsmod.blocks.BlockOneWay;
+import mods.secretroomsmod.blocks.BlockSolidAir;
 import mods.secretroomsmod.blocks.BlockTorchLever;
 import mods.secretroomsmod.blocks.TileEntityCamo;
 import mods.secretroomsmod.blocks.TileEntityCamoChest;
@@ -118,6 +119,8 @@ public class SecretRooms
 	public static Block			camoChest;
 	public static Block			camoTrappedChest;
 	public static Block			camoLightDetector;
+	
+	public static Block			solidAir;
 
 	public static final String	CAMO_PASTE				= "camoPaste";
 
@@ -155,7 +158,8 @@ public class SecretRooms
 				config.getBlock("CamoBlocks", "camoStairBlock", 215).getInt(),
 				config.getBlock("CamoBlocks", "camoChestBlock", 216).getInt(),
 				config.getBlock("CamoBlocks", "camoChestTrappedBlock", 217).getInt(),
-				config.getBlock("CamoBlocks", "camoLightDetectorBlock", 218).getInt()
+				config.getBlock("CamoBlocks", "camoLightDetectorBlock", 218).getInt(),
+				config.getBlock("CamoBlocks", "solidAir", 219).getInt()
 		};
 		config.save();
 
@@ -209,41 +213,45 @@ public class SecretRooms
 		camoTrappedChest = new BlockCamoChest(ids[20], true).setUnlocalizedName("mod_SRM.SecretTrappedChest");
 		
 		camoLightDetector = new BlockCamoLightDetector(ids[21]).setUnlocalizedName("mod_SRM.SecretLightDetector");
+		
+		solidAir = new BlockSolidAir(ids[22]).setUnlocalizedName("mod_SRM.SolidAir");
 
 		// key Events
 		proxy.loadKeyStuff();
 
 		// registers
-		GameRegistry.registerBlock(torchLever, "mod_SRM.TorchLever");
-		GameRegistry.registerBlock(oneWay, "mod_SRM.OneWayGlass");
-		GameRegistry.registerBlock(camoGate, "mod_SRM.CamoGate");
-		GameRegistry.registerBlock(camoGateExt, "mod_SRM.CamoGateExtension");
+		GameRegistry.registerBlock(torchLever, "TorchLever");
+		GameRegistry.registerBlock(oneWay, "OneWayGlass");
+		GameRegistry.registerBlock(camoGate, "CamoGate");
+		GameRegistry.registerBlock(camoGateExt, "CamoGateExtension");
 
-		GameRegistry.registerBlock(camoTrapDoor, "mod_SRM.SecretTrapDoor");
+		GameRegistry.registerBlock(camoTrapDoor, "SecretTrapDoor");
 
-		GameRegistry.registerBlock(camoDoorWood, "mod_SRM.SecretWoodenDoorBlock");
-		GameRegistry.registerItem(camoDoorWoodItem, "mod_SRM.SecretWoodenDoorItem");
-		GameRegistry.registerBlock(camoDoorIron, "mod_SRM.SecretIronDoorBlock");
-		GameRegistry.registerItem(camoDoorIronItem, "mod_SRM.SecretWoodenIronItem");
+		GameRegistry.registerBlock(camoDoorWood, "SecretWoodenDoorBlock");
+		GameRegistry.registerItem(camoDoorWoodItem, "SecretWoodenDoorItem");
+		GameRegistry.registerBlock(camoDoorIron, "SecretIronDoorBlock");
+		GameRegistry.registerItem(camoDoorIronItem, "SecretWoodenIronItem");
 
-		GameRegistry.registerItem(camoPaste, "mod_SRM.CamoflaugePaste");
+		GameRegistry.registerItem(camoPaste, "CamoflaugePaste");
 
-		GameRegistry.registerBlock(camoGhost, "mod_SRM.GhostBlock");
-		GameRegistry.registerBlock(camoLever, "mod_SRM.SecretCamoLever");
-		GameRegistry.registerBlock(camoCurrent, "mod_SRM.SecretCamoRedstone");
-		GameRegistry.registerBlock(camoButton, "mod_SRM.SecretCamoButton");
+		GameRegistry.registerBlock(camoGhost, "GhostBlock");
+		GameRegistry.registerBlock(camoLever, "SecretCamoLever");
+		GameRegistry.registerBlock(camoCurrent, "SecretCamoRedstone");
+		GameRegistry.registerBlock(camoButton, "SecretCamoButton");
 
-		GameRegistry.registerBlock(camoPlateAll, "mod_SRM.SecretPressurePlate");
-		GameRegistry.registerBlock(camoPlatePlayer, "mod_SRM.SecretPlayerPlate");
-		GameRegistry.registerBlock(camoPlateLight, "mod_SRM.SecretLightPlate");
-		GameRegistry.registerBlock(camoPlateHeavy, "mod_SRM.SecretHeavyPlate");
+		GameRegistry.registerBlock(camoPlateAll, "SecretPressurePlate");
+		GameRegistry.registerBlock(camoPlatePlayer, "SecretPlayerPlate");
+		GameRegistry.registerBlock(camoPlateLight, "SecretLightPlate");
+		GameRegistry.registerBlock(camoPlateHeavy, "SecretHeavyPlate");
 
-		GameRegistry.registerBlock(camoStairs, "mod_SRM.SecretStair");
+		GameRegistry.registerBlock(camoStairs, "SecretStair");
 
-		GameRegistry.registerBlock(camoChest, "mod_SRM.SecretChest");
-		GameRegistry.registerBlock(camoTrappedChest, "mod_SRM.SecretTrappedChest");
+		GameRegistry.registerBlock(camoChest, "SecretChest");
+		GameRegistry.registerBlock(camoTrappedChest, "SecretTrappedChest");
 		
-		GameRegistry.registerBlock(camoLightDetector, "mod_SRM.SecretLightDetector");
+		GameRegistry.registerBlock(camoLightDetector, "SecretLightDetector");
+		
+		GameRegistry.registerBlock(solidAir, "SolidAir");
 
 		// Tile Entities
 		GameRegistry.registerTileEntity(TileEntityCamo.class, "mod_SRM.TE_CamoFull");
@@ -274,26 +282,16 @@ public class SecretRooms
 
 		LanguageRegistry.instance().addNameForObject(camoStairs, "en_US", "Secret Stairs");
 
-		// Names -- Added by Alexbegt (Camo Chest)
 		LanguageRegistry.instance().addNameForObject(camoChest, "en_US", "Secret Chest");
 		LanguageRegistry.instance().addNameForObject(camoTrappedChest, "en_US", "Secret Trapped Chest");
 		LanguageRegistry.instance().addStringLocalization("container.CamoChest", "en_US", "Hidden Chest");
 		
 		LanguageRegistry.instance().addNameForObject(camoLightDetector, "en_US", "Secret Light Detector");
+		
+		LanguageRegistry.instance().addNameForObject(solidAir, "en_US", "Solid Air");
 
 		// Renders
 		proxy.loadRenderStuff();
-
-		// Recipes
-		/*
-		 * TESTING RECIPES recipes.add(new ShapedOreRecipe(new ItemStack(fullCamoGhost),
-		 * new Object[] { "#", '#', Block.dirt })); GameRegistry.addRecipe(new
-		 * ItemStack(oneWay), new Object[] { "##", '#', Block.dirt }));
-		 * recipes.add(new ShapedOreRecipe(new ItemStack(torchLever), new Object[] { "#",
-		 * "#", '#', Block.dirt })); GameRegistry.addRecipe(new
-		 * ItemStack(camoCurrent), new Object[] { "##", "##", '#', Block.dirt
-		 * }));
-		 */
 
 		addrecipes();
 
