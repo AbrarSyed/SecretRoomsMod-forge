@@ -1,5 +1,7 @@
 package mods.secretroomsmod.blocks;
 
+import static net.minecraftforge.common.ForgeDirection.DOWN;
+
 import java.util.Iterator;
 import java.util.Random;
 
@@ -8,10 +10,13 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -96,22 +101,21 @@ public class BlockCamoChest extends BlockCamoFull
 	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
-		Object var10 = par1World.getBlockTileEntity(par2, par3, par4);
+        if (par1World.isRemote)
+        {
+            return true;
+        }
+        else
+        {
+            IInventory iinventory = this.getInventory(par1World, par2, par3, par4);
 
-		if (var10 == null)
-			return true;
-		else if (isOcelotBlockingChest(par1World, par2, par3, par4))
-			return true;
-		else
-		{
-			if (par1World.isRemote)
-				return true;
-			else
-			{
-				par5EntityPlayer.displayGUIChest((IInventory) var10);
-			}
-			return true;
-		}
+            if (iinventory != null)
+            {
+                par5EntityPlayer.displayGUIChest(iinventory);
+            }
+
+            return true;
+        }
 	}
 
 	/**
@@ -146,6 +150,7 @@ public class BlockCamoChest extends BlockCamoFull
 		{
 			int i1 = ((TileEntityCamoChest) par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).numUsingPlayers;
 			return MathHelper.clamp_int(i1, 0, 15);
+			//return i1 > 0 ? 15 : 0;
 		}
 	}
 
@@ -156,8 +161,28 @@ public class BlockCamoChest extends BlockCamoFull
 	@Override
 	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		return par5 == 1 ? isProvidingWeakPower(par1IBlockAccess, par2, par3, par4, par5) : 0;
+		return isProvidingWeakPower(par1IBlockAccess, par2, par3, par4, par5);
 	}
+	
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+	@Override
+    public boolean hasComparatorInputOverride()
+    {
+        return true;
+    }
+
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    @Override
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
+    {
+        return Container.func_94526_b(this.getInventory(par1World, par2, par3, par4));
+    }
 
 	/**
 	 * Looks for a sitting ocelot within certain bounds. Such an ocelot is considered to be blocking access to the
@@ -179,5 +204,27 @@ public class BlockCamoChest extends BlockCamoFull
 
 		return true;
 	}
+    
+    /**
+     * Gets the inventory of the chest at the specified coords, accounting for blocks or ocelots on top of the chest,
+     * and double chests.
+     */
+    public IInventory getInventory(World par1World, int par2, int par3, int par4)
+    {
+        IInventory object = (TileEntityCamoChest)par1World.getBlockTileEntity(par2, par3, par4);
+
+        if (object == null)
+        {
+            return null;
+        }
+        else if (isOcelotBlockingChest(par1World, par2, par3, par4))
+        {
+            return null;
+        }
+        else
+        {
+            return (IInventory)object;
+        }
+    }
 
 }

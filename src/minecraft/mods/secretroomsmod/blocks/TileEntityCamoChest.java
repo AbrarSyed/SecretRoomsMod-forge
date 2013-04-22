@@ -1,11 +1,17 @@
 package mods.secretroomsmod.blocks;
 
+import java.util.Iterator;
+import java.util.List;
+
 import mods.secretroomsmod.SecretRooms;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 
 /**
@@ -17,6 +23,7 @@ public class TileEntityCamoChest extends TileEntityCamo implements IInventory
 
 	/** The number of players currently using this chest */
 	public int			numUsingPlayers;
+	private int			ticksSinceSync;
 
 	/**
 	 * Returns the number of slots in the inventory.
@@ -177,6 +184,47 @@ public class TileEntityCamoChest extends TileEntityCamo implements IInventory
 		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this ? false : par1EntityPlayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D;
 	}
 
+	@Override
+	public boolean canUpdate()
+	{
+		return true;
+	}
+
+	/**
+	 * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+	 * ticks and creates a new spawn inside its implementation.
+	 */
+	@Override
+	public void updateEntity()
+	{
+		super.updateEntity();
+		++this.ticksSinceSync;
+		float f;
+
+		if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticksSinceSync + this.xCoord + this.yCoord + this.zCoord) % 200 == 0)
+		{
+			this.numUsingPlayers = 0;
+			f = 5.0F;
+			List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double) ((float) this.xCoord - f), (double) ((float) this.yCoord - f), (double) ((float) this.zCoord - f), (double) ((float) (this.xCoord + 1) + f), (double) ((float) (this.yCoord + 1) + f), (double) ((float) (this.zCoord + 1) + f)));
+			Iterator iterator = list.iterator();
+
+			while (iterator.hasNext())
+			{
+				EntityPlayer entityplayer = (EntityPlayer) iterator.next();
+
+				if (entityplayer.openContainer instanceof ContainerChest)
+				{
+					IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
+
+					if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest) iinventory).isPartOfLargeChest(this))
+					{
+						++this.numUsingPlayers;
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Called when a client event is received with the event number and argument, see World.sendClientEvent
 	 * @return
@@ -198,6 +246,7 @@ public class TileEntityCamoChest extends TileEntityCamo implements IInventory
 	{
 		++numUsingPlayers;
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, SecretRooms.camoChest.blockID, 1, numUsingPlayers);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, SecretRooms.camoChest.blockID);
 	}
 
 	@Override
@@ -205,6 +254,7 @@ public class TileEntityCamoChest extends TileEntityCamo implements IInventory
 	{
 		--numUsingPlayers;
 		worldObj.addBlockEvent(xCoord, yCoord, zCoord, SecretRooms.camoChest.blockID, 1, numUsingPlayers);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, SecretRooms.camoChest.blockID);
 	}
 
 	@Override
