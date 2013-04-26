@@ -163,10 +163,7 @@ public class SecretRooms
 		};
 		config.save();
 
-		MinecraftForge.EVENT_BUS.register(proxy);
-
-		// camo paste to the ore dictionary...
-		OreDictionary.registerOre("camoPaste", new ItemStack(ids[9] - 256, 1, 0));
+		MinecraftForge.EVENT_BUS.register(proxy);		
 	}
 
 	@Init
@@ -289,6 +286,9 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(camoLightDetector, "en_US", "Secret Light Detector");
 		
 		LanguageRegistry.instance().addNameForObject(solidAir, "en_US", "Solid Air");
+		
+		// ore dictionary
+		OreDictionary.registerOre("CAMO_PASTE", camoPaste);
 
 		// Renders
 		proxy.loadRenderStuff();
