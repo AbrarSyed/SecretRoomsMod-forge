@@ -1,12 +1,16 @@
 package mods.secretroomsmod.blocks;
 
+import mods.secretroomsmod.SecretRooms;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockCamoWire extends BlockCamoFull
 {
@@ -22,6 +26,13 @@ public class BlockCamoWire extends BlockCamoFull
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
 	{
 		return true;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_REDSTONE);
 	}
 
 	@Override

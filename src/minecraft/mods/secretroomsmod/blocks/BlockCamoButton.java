@@ -3,9 +3,13 @@ package mods.secretroomsmod.blocks;
 import java.util.ArrayList;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import mods.secretroomsmod.SecretRooms;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -37,12 +41,10 @@ public class BlockCamoButton extends BlockCamoFull
 	}
 
 	@Override
-	public Icon getIcon(int i, int j)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		if (i == 3 || i == 1)
-			return Block.cobblestone.getBlockTextureFromSide(i);
-		else
-			return blockIcon;
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BUTTON);
 	}
 
 	@Override

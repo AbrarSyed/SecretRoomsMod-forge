@@ -2,8 +2,13 @@ package mods.secretroomsmod.blocks;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import mods.secretroomsmod.SecretRooms;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -27,16 +32,12 @@ public class BlockCamoLever extends BlockCamoFull
 	{
 		itemList.add(new ItemStack(this));
 	}
-
+	
 	@Override
-	public Icon getIcon(int i, int meta)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		if (i == 1)
-			return Block.lever.getBlockTextureFromSide(i);
-		else if (i == 3)
-			return Block.planks.getBlockTextureFromSide(i);
-		else
-			return blockIcon;
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_LEVER);
 	}
 
 	@Override

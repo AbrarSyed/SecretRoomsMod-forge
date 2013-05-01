@@ -87,11 +87,17 @@ public class SecretRooms
 	public static final String	TEXTURE_BLOCK_CHEST			= MODID + ":CamoChest";
 	public static final String	TEXTURE_BLOCK_DETECTOR		= MODID + ":CamoDetector";
 	public static final String	TEXTURE_BLOCK_GATE			= MODID + ":CamoGate";
+	public static final String	TEXTURE_BLOCK_LEVER			= MODID + ":CamoLever";
+	public static final String	TEXTURE_BLOCK_REDSTONE		= MODID + ":CamoRedstone";
+	public static final String	TEXTURE_BLOCK_BUTTON		= MODID + ":CamoButton";
+	
 	public static final String	TEXTURE_BLOCK_PLATE_PLAYER	= MODID + ":CamoPlatePlayer";
 	public static final String	TEXTURE_BLOCK_PLATE_WOOD	= MODID + ":CamoPlateWood";
 	public static final String	TEXTURE_BLOCK_PLATE_IRON	= MODID + ":CamoPlateIron";
 	public static final String	TEXTURE_BLOCK_PLATE_GOLD	= MODID + ":CamoPlateGold";
 	
+	public static final String	TEXTURE_BLOCK_TORCH			= MODID + ":TorchLever";
+
 	public static final String	TEXTURE_BLOCK_SOLID_AIR		= MODID + ":SolidAir";
 	public static final String	TEXTURE_BLOCK_CLEAR			= MODID + ":clear";
 

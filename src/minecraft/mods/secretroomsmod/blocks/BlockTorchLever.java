@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -22,6 +23,8 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockTorchLever extends BlockTorch
 {
+	private Icon	unCamo;
+
 	public BlockTorchLever(int i, int j)
 	{
 		super(i);
@@ -36,7 +39,25 @@ public class BlockTorchLever extends BlockTorch
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		blockIcon = par1IconRegister.registerIcon(Block.torchWood.getUnlocalizedName2());
+		super.registerIcons(par1IconRegister);
+		unCamo = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_TORCH);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		if (SecretRooms.displayCamo)
+			return super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
+		else
+			return unCamo;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIcon(int par1, int par2)
+	{
+		return unCamo;
 	}
 
 	@Override
@@ -84,6 +105,9 @@ public class BlockTorchLever extends BlockTorch
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random)
 	{
+		if (!SecretRooms.displayCamo)
+			return;
+
 		int l = world.getBlockMetadata(i, j, k) & 7;
 		double d = i + 0.5F;
 		double d1 = j + 0.7F;
