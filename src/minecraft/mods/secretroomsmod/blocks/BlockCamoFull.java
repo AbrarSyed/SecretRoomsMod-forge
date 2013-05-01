@@ -358,11 +358,12 @@ public class BlockCamoFull extends BlockContainer
 				TileEntityCamo te = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
 				return te.getBlockHolder();
 			}
-			else if (block.isOpaqueCube())
+			else if (block.isOpaqueCube() || block.getRenderType() == 1)
 				return new BlockHolder(world, x, y, z);
 			else
 			{
-
+				block.setBlockBoundsBasedOnState(world, x, y, z);
+				
 				if (block.getBlockBoundsMinX() == 0 &&
 						block.getBlockBoundsMinY() == 0 &&
 						block.getBlockBoundsMinZ() == 0 &&

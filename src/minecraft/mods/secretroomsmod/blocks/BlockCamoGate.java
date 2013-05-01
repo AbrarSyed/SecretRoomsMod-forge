@@ -3,8 +3,12 @@ package mods.secretroomsmod.blocks;
 import java.util.ArrayList;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import mods.secretroomsmod.SecretRooms;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -35,14 +39,12 @@ public class BlockCamoGate extends BlockCamoFull
 	{
 		destroyGate(world, i, j, k);
 	}
-
+	
 	@Override
-	public Icon getIcon(int side, int meta)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		if (side <= 1)
-			return Block.wood.getBlockTextureFromSide(side);
-		else
-			return blockIcon;
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_GATE);
 	}
 
 	@Override

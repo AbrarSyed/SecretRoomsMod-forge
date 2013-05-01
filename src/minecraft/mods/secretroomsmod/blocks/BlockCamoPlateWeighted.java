@@ -3,11 +3,15 @@ package mods.secretroomsmod.blocks;
 import java.util.Iterator;
 import java.util.List;
 
+import mods.secretroomsmod.SecretRooms;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockCamoPlateWeighted extends BlockCamoPlate
 {
@@ -20,17 +24,13 @@ public class BlockCamoPlateWeighted extends BlockCamoPlate
 	}
 
 	@Override
-	public Icon getIcon(int i, int meta)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		if (i == 1)
-			return Block.planks.getBlockTextureFromSide(i);
-
-		if (maxWeight > 100 && i == 3)
-			return Block.blockIron.getBlockTextureFromSide(i);
-		else if (i == 3)
-			return Block.blockGold.getBlockTextureFromSide(i);
-
-		return blockIcon;
+		if (maxWeight > 100)
+			blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_PLATE_IRON);
+		else
+			blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_PLATE_GOLD);
 	}
 
 	@Override

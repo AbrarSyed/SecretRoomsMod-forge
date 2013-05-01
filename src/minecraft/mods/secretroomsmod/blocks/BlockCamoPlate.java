@@ -5,8 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import mods.secretroomsmod.SecretRooms;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,6 +34,16 @@ public class BlockCamoPlate extends BlockCamoFull
 		setTickRandomly(true);
 		setHardness(0.5F);
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		if (players)
+			blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_PLATE_PLAYER);
+		else
+			blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_PLATE_WOOD);
+	}
 
 	@Override
 	public void addCreativeItems(ArrayList itemList)
@@ -43,20 +58,6 @@ public class BlockCamoPlate extends BlockCamoFull
 	public int tickRate(World world)
 	{
 		return 20;
-	}
-
-	@Override
-	public Icon getIcon(int i, int meta)
-	{
-		if (i == 1)
-			return Block.planks.getBlockTextureFromSide(i);
-
-		if (players && i == 3)
-			return Block.oreDiamond.getBlockTextureFromSide(i);
-		else if (i == 3)
-			return Block.planks.getBlockTextureFromSide(i);
-
-		return blockIcon;
 	}
 
 	@Override

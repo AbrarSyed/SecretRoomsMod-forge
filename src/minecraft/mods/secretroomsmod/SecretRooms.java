@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 import mods.secretroomsmod.blocks.BlockCamoButton;
 import mods.secretroomsmod.blocks.BlockCamoChest;
 import mods.secretroomsmod.blocks.BlockCamoDoor;
-import mods.secretroomsmod.blocks.BlockCamoGate;
 import mods.secretroomsmod.blocks.BlockCamoDummy;
+import mods.secretroomsmod.blocks.BlockCamoGate;
 import mods.secretroomsmod.blocks.BlockCamoGhost;
 import mods.secretroomsmod.blocks.BlockCamoLever;
 import mods.secretroomsmod.blocks.BlockCamoLightDetector;
@@ -70,7 +70,7 @@ public class SecretRooms
 	@SidedProxy(clientSide = "mods.secretroomsmod.client.ProxyClient", serverSide = "mods.secretroomsmod.common.ProxyCommon")
 	public static ProxyCommon	proxy;
 
-	public static final String	MODID					= "secretroomsmod";
+	public static final String	MODID						= "secretroomsmod";
 
 	@Instance(value = MODID)
 	public static SecretRooms	instance;
@@ -78,15 +78,25 @@ public class SecretRooms
 	public static Logger		logger;
 
 	// textures
-	public static final String	TEXTURE_ITEM_PASTE		= MODID + ":CamoPaste";
-	public static final String	TEXTURE_ITEM_DOOR_WOOD	= MODID + ":CamoDoorWood";
-	public static final String	TEXTURE_ITEM_DOOR_STEEL	= MODID + ":CamoDoorSteel";
-	public static final String	TEXTURE_BLOCK_BASE		= MODID + ":CamoBase";
-	public static final String	TEXTURE_BLOCK_STAIR		= MODID + ":CamoStair";
-	public static final String	TEXTURE_BLOCK_CHEST		= MODID + ":CamoChest";
+	public static final String	TEXTURE_ITEM_PASTE			= MODID + ":CamoPaste";
+	public static final String	TEXTURE_ITEM_DOOR_WOOD		= MODID + ":CamoDoorWood";
+	public static final String	TEXTURE_ITEM_DOOR_STEEL		= MODID + ":CamoDoorSteel";
+
+	public static final String	TEXTURE_BLOCK_BASE			= MODID + ":CamoBase";
+	public static final String	TEXTURE_BLOCK_STAIR			= MODID + ":CamoStair";
+	public static final String	TEXTURE_BLOCK_CHEST			= MODID + ":CamoChest";
+	public static final String	TEXTURE_BLOCK_DETECTOR		= MODID + ":CamoDetector";
+	public static final String	TEXTURE_BLOCK_GATE			= MODID + ":CamoGate";
+	public static final String	TEXTURE_BLOCK_PLATE_PLAYER	= MODID + ":CamoPlatePlayer";
+	public static final String	TEXTURE_BLOCK_PLATE_WOOD	= MODID + ":CamoPlateWood";
+	public static final String	TEXTURE_BLOCK_PLATE_IRON	= MODID + ":CamoPlateIron";
+	public static final String	TEXTURE_BLOCK_PLATE_GOLD	= MODID + ":CamoPlateGold";
+	
+	public static final String	TEXTURE_BLOCK_SOLID_AIR		= MODID + ":SolidAir";
+	public static final String	TEXTURE_BLOCK_CLEAR			= MODID + ":clear";
 
 	// render IDs
-	public static boolean		displayCamo				= true;
+	public static boolean		displayCamo					= true;
 	public static int			camoRenderId;
 	public static int			torchRenderId;
 
@@ -119,10 +129,10 @@ public class SecretRooms
 	public static Block			camoChest;
 	public static Block			camoTrappedChest;
 	public static Block			camoLightDetector;
-	
+
 	public static Block			solidAir;
 
-	public static final String	CAMO_PASTE				= "camoPaste";
+	public static final String	CAMO_PASTE					= "camoPaste";
 
 	// creative tab
 	public static CreativeTabs	tab;
@@ -163,7 +173,7 @@ public class SecretRooms
 		};
 		config.save();
 
-		MinecraftForge.EVENT_BUS.register(proxy);		
+		MinecraftForge.EVENT_BUS.register(proxy);
 	}
 
 	@Init
@@ -208,9 +218,9 @@ public class SecretRooms
 
 		camoChest = new BlockCamoChest(ids[19], false).setUnlocalizedName("mod_SRM.SecretChest");
 		camoTrappedChest = new BlockCamoChest(ids[20], true).setUnlocalizedName("mod_SRM.SecretTrappedChest");
-		
+
 		camoLightDetector = new BlockCamoLightDetector(ids[21]).setUnlocalizedName("mod_SRM.SecretLightDetector");
-		
+
 		solidAir = new BlockSolidAir(ids[22]).setUnlocalizedName("mod_SRM.SolidAir");
 
 		// key Events
@@ -245,9 +255,9 @@ public class SecretRooms
 
 		GameRegistry.registerBlock(camoChest, "SecretChest");
 		GameRegistry.registerBlock(camoTrappedChest, "SecretTrappedChest");
-		
+
 		GameRegistry.registerBlock(camoLightDetector, "SecretLightDetector");
-		
+
 		GameRegistry.registerBlock(solidAir, "SolidAir");
 
 		// Tile Entities
@@ -282,11 +292,11 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(camoChest, "en_US", "Secret Chest");
 		LanguageRegistry.instance().addNameForObject(camoTrappedChest, "en_US", "Secret Trapped Chest");
 		LanguageRegistry.instance().addStringLocalization("container.CamoChest", "en_US", "Hidden Chest");
-		
+
 		LanguageRegistry.instance().addNameForObject(camoLightDetector, "en_US", "Secret Light Detector");
-		
+
 		LanguageRegistry.instance().addNameForObject(solidAir, "en_US", "Solid Air");
-		
+
 		// ore dictionary
 		OreDictionary.registerOre("CAMO_PASTE", camoPaste);
 
@@ -620,7 +630,7 @@ public class SecretRooms
 				'0', Block.cloth,
 				'@', Block.chestTrapped
 		}));
-		
+
 		// Trapped Chests
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoLightDetector, 1), new Object[] {
 				"X0X",
@@ -638,7 +648,7 @@ public class SecretRooms
 				'0', Block.cloth,
 				'@', Block.daylightSensor
 		}));
-		
+
 		// Solid Air
 		recipes.add(new ShapelessOreRecipe(new ItemStack(solidAir, 1),
 				new Object[] {
@@ -659,6 +669,7 @@ public class SecretRooms
 						Item.bucketWater
 				}));
 
+		// actually add the recipe
 		for (IRecipe r : recipes)
 		{
 			GameRegistry.addRecipe(r);
