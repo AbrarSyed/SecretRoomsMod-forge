@@ -53,7 +53,7 @@ public class BlockCamoGate extends BlockCamoFull
 		boolean powerred = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
 		int meta = world.getBlockMetadata(x, y, z);
 		int direction = meta & 7;
-		boolean oldState = (world.getBlockMetadata(x, y, z) & 8) == 1;
+		boolean oldState = (world.getBlockMetadata(x, y, z) & 8) > 1;
 
 		if (powerred && !oldState)
 		{
@@ -63,7 +63,7 @@ public class BlockCamoGate extends BlockCamoFull
 		else if (!powerred && oldState)
 		{
 			world.scheduleBlockUpdate(x, y, z, blockID, 1);
-			world.setBlockMetadataWithNotify(x, y, z, direction - 8, 4);
+			world.setBlockMetadataWithNotify(x, y, z, direction, 4);
 		}
 	}
 
