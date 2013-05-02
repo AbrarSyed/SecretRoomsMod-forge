@@ -39,7 +39,7 @@ public class BlockTorchLever extends BlockTorch
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		super.registerIcons(par1IconRegister);
+		blockIcon = par1IconRegister.registerIcon(Block.torchWood.getUnlocalizedName2());
 		unCamo = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_TORCH);
 	}
 
