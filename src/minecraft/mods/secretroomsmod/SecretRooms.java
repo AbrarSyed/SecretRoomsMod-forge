@@ -246,6 +246,7 @@ public class SecretRooms
 		GameRegistry.registerItem(camoDoorIronItem, "SecretWoodenIronItem");
 
 		GameRegistry.registerItem(camoPaste, "CamoflaugePaste");
+		OreDictionary.registerOre("CAMO_PASTE", camoPaste);
 
 		GameRegistry.registerBlock(camoGhost, "GhostBlock");
 		GameRegistry.registerBlock(camoLever, "SecretCamoLever");
@@ -304,7 +305,8 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(solidAir, "en_US", "Solid Air");
 
 		// ore dictionary
-		OreDictionary.registerOre("CAMO_PASTE", camoPaste);
+		
+		OreDictionary.registerOre(CAMO_PASTE, camoPaste);
 
 		// Renders
 		proxy.loadRenderStuff();
@@ -328,8 +330,6 @@ public class SecretRooms
 
 	public static void addrecipes()
 	{
-		// init recipe..
-		IRecipe recipe;
 		ArrayList<IRecipe> recipes = new ArrayList<IRecipe>();
 
 		// Camo gate
@@ -434,7 +434,7 @@ public class SecretRooms
 				"0 0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE)
 		}));
 
 		// Camo-Redstone
@@ -451,7 +451,7 @@ public class SecretRooms
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Item.redstone
 		}));
 
@@ -469,7 +469,7 @@ public class SecretRooms
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.lever
 		}));
 
@@ -487,7 +487,7 @@ public class SecretRooms
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.stoneButton }));
 
 		// pressure plates
@@ -504,7 +504,7 @@ public class SecretRooms
 				"0 0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.pressurePlatePlanks }));
 
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlatePlayer, 1), new Object[] {
@@ -521,7 +521,7 @@ public class SecretRooms
 				"0#0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.pressurePlatePlanks,
 				'#', Item.ingotIron
 		}));
@@ -541,7 +541,8 @@ public class SecretRooms
 				"0#0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
+				// new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE)
 				'@', Block.pressurePlateGold,
 				'#', Item.ingotIron
 		}));
@@ -560,30 +561,28 @@ public class SecretRooms
 				"0#0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.pressurePlateIron,
 				'#', Item.ingotIron
 		}));
 
 		// CamoStairs
-		recipe = new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', Item.rottenFlesh,
 				'@', "stairWood"
-		});
-		GameRegistry.addRecipe(recipe); // add the recipe..
-		recipe = new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[] {
+		}));
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', "stairWood"
-		});
-		GameRegistry.addRecipe(recipe); // add the recipe..
+		}));
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoStairs, 4), new Object[] {
 				"X0X",
 				"0@0",
@@ -597,7 +596,7 @@ public class SecretRooms
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.stairsCobblestone
 		}));
 
@@ -615,7 +614,7 @@ public class SecretRooms
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.chest
 		}));
 
@@ -633,7 +632,7 @@ public class SecretRooms
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.chestTrapped
 		}));
 
@@ -651,7 +650,7 @@ public class SecretRooms
 				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
-				'0', Block.cloth,
+				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.daylightSensor
 		}));
 
