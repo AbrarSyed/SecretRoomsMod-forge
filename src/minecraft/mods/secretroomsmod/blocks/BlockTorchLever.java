@@ -23,8 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockTorchLever extends BlockTorch
 {
-	private Icon	unCamo;
-
 	public BlockTorchLever(int i, int j)
 	{
 		super(i);
@@ -39,8 +37,7 @@ public class BlockTorchLever extends BlockTorch
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		blockIcon = par1IconRegister.registerIcon(Block.torchWood.getUnlocalizedName2());
-		unCamo = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_TORCH);
+		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_TORCH);
 	}
 
 	@Override
@@ -48,16 +45,9 @@ public class BlockTorchLever extends BlockTorch
 	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
 	{
 		if (SecretRooms.displayCamo)
-			return super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
+			return Block.torchWood.getIcon(par5, 0);
 		else
-			return unCamo;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
-	{
-		return unCamo;
+			return super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
 	}
 
 	@Override
