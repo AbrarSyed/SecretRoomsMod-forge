@@ -90,12 +90,12 @@ public class SecretRooms
 	public static final String	TEXTURE_BLOCK_LEVER			= MODID + ":CamoLever";
 	public static final String	TEXTURE_BLOCK_REDSTONE		= MODID + ":CamoRedstone";
 	public static final String	TEXTURE_BLOCK_BUTTON		= MODID + ":CamoButton";
-	
+
 	public static final String	TEXTURE_BLOCK_PLATE_PLAYER	= MODID + ":CamoPlatePlayer";
 	public static final String	TEXTURE_BLOCK_PLATE_WOOD	= MODID + ":CamoPlateWood";
 	public static final String	TEXTURE_BLOCK_PLATE_IRON	= MODID + ":CamoPlateIron";
 	public static final String	TEXTURE_BLOCK_PLATE_GOLD	= MODID + ":CamoPlateGold";
-	
+
 	public static final String	TEXTURE_BLOCK_TORCH			= MODID + ":TorchLever";
 
 	public static final String	TEXTURE_BLOCK_SOLID_AIR		= MODID + ":SolidAir";
@@ -305,7 +305,7 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(solidAir, "en_US", "Solid Air");
 
 		// ore dictionary
-		
+
 		OreDictionary.registerOre(CAMO_PASTE, camoPaste);
 
 		// Renders
@@ -492,78 +492,72 @@ public class SecretRooms
 
 		// pressure plates
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlateAll, 1), new Object[] {
-				"X@X",
-				"0 0",
+				"X0X",
+				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', Item.rottenFlesh,
 				'@', Block.pressurePlatePlanks
 		}));
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlateAll, 1), new Object[] {
-				"X@X",
-				"0 0",
+				"X0X",
+				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.pressurePlatePlanks }));
 
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlatePlayer, 1), new Object[] {
-				"X@X",
-				"0#0",
+				"X0X",
+				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', Item.rottenFlesh,
-				'@', Block.pressurePlatePlanks,
-				'#', Item.ingotIron
+				'@', Block.pressurePlateStone,
 		}));
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlatePlayer, 1), new Object[] {
-				"X@X",
-				"0#0",
+				"X0X",
+				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
-				'@', Block.pressurePlatePlanks,
-				'#', Item.ingotIron
+				'@', Block.pressurePlateStone,
 		}));
 
 		// weighted pressure plates
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlateLight, 1), new Object[] {
-				"X@X",
-				"0#0",
+				"X0X",
+				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', Item.rottenFlesh,
 				'@', Block.pressurePlateGold,
-				'#', Item.ingotIron
 		}));
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlateLight, 1), new Object[] {
-				"X@X",
-				"0#0",
+				"X0X",
+				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				// new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE)
 				'@', Block.pressurePlateGold,
-				'#', Item.ingotIron
 		}));
 
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlateHeavy, 1), new Object[] {
-				"X@X",
-				"0#0",
+				"X0X",
+				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', Item.rottenFlesh,
 				'@', Block.pressurePlateIron,
-				'#', Item.ingotIron
 		}));
 		recipes.add(new ShapedOreRecipe(new ItemStack(camoPlateHeavy, 1), new Object[] {
-				"X@X",
-				"0#0",
+				"X0X",
+				"0@0",
 				"X0X",
 				'X', CAMO_PASTE,
 				'0', new ItemStack(Block.cloth.blockID, 1, OreDictionary.WILDCARD_VALUE),
 				'@', Block.pressurePlateIron,
-				'#', Item.ingotIron
 		}));
 
 		// CamoStairs
