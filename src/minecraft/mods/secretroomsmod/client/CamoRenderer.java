@@ -11,9 +11,6 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
-
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,39 +22,41 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
+		// no longer necessary....
+
 		// copied vanilla render code....
-
-		Tessellator tessellator = Tessellator.instance;
-
-		block.setBlockBoundsForItemRender();
-		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, -1F, 0.0F);
-		renderer.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, metadata));
-		tessellator.draw();
-
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		renderer.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, metadata));
-		tessellator.draw();
-
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 0.0F, -1F);
-		renderer.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, metadata));
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		renderer.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, metadata));
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(-1F, 0.0F, 0.0F);
-		renderer.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, metadata));
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		renderer.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, metadata));
-		tessellator.draw();
-		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		//
+		//		Tessellator tessellator = Tessellator.instance;
+		//
+		//		block.setBlockBoundsForItemRender();
+		//		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		//		tessellator.startDrawingQuads();
+		//		tessellator.setNormal(0.0F, -1F, 0.0F);
+		//		renderer.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, metadata));
+		//		tessellator.draw();
+		//
+		//		tessellator.startDrawingQuads();
+		//		tessellator.setNormal(0.0F, 1.0F, 0.0F);
+		//		renderer.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, metadata));
+		//		tessellator.draw();
+		//
+		//		tessellator.startDrawingQuads();
+		//		tessellator.setNormal(0.0F, 0.0F, -1F);
+		//		renderer.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, metadata));
+		//		tessellator.draw();
+		//		tessellator.startDrawingQuads();
+		//		tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		//		renderer.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, metadata));
+		//		tessellator.draw();
+		//		tessellator.startDrawingQuads();
+		//		tessellator.setNormal(-1F, 0.0F, 0.0F);
+		//		renderer.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, metadata));
+		//		tessellator.draw();
+		//		tessellator.startDrawingQuads();
+		//		tessellator.setNormal(1.0F, 0.0F, 0.0F);
+		//		renderer.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, metadata));
+		//		tessellator.draw();
+		//		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class CamoRenderer implements ISimpleBlockRenderingHandler
 	@Override
 	public boolean shouldRender3DInInventory()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
