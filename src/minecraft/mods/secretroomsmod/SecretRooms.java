@@ -438,7 +438,7 @@ public class SecretRooms
 		}));
 
 		// Camo-Redstone
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoCurrent, 1), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoCurrent, 4), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
@@ -446,7 +446,7 @@ public class SecretRooms
 				'0', Item.rottenFlesh,
 				'@', Item.redstone
 		}));
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoCurrent, 1), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoCurrent, 4), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
@@ -456,7 +456,7 @@ public class SecretRooms
 		}));
 
 		// Camo-Lever
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoLever, 1), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoLever, 4), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
@@ -464,7 +464,7 @@ public class SecretRooms
 				'0', Item.rottenFlesh,
 				'@', Block.lever
 		}));
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoLever, 1), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoLever, 4), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
@@ -474,7 +474,7 @@ public class SecretRooms
 		}));
 
 		// Camo-Button stuff
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoButton, 1), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoButton, 4), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
@@ -482,7 +482,7 @@ public class SecretRooms
 				'0', Item.rottenFlesh,
 				'@', Block.stoneButton
 		}));
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoButton, 1), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoButton, 4), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
@@ -666,6 +666,24 @@ public class SecretRooms
 						CAMO_PASTE,
 						Item.magmaCream,
 						Item.bucketWater
+				}));
+		recipes.add(new ShapelessOreRecipe(new ItemStack(solidAir, 1),
+				new Object[] {
+						CAMO_PASTE,
+						Item.blazePowder,
+						Item.potion
+				}));
+		recipes.add(new ShapelessOreRecipe(new ItemStack(solidAir, 1),
+				new Object[] {
+						CAMO_PASTE,
+						Item.blazeRod,
+						Item.potion
+				}));
+		recipes.add(new ShapelessOreRecipe(new ItemStack(solidAir, 1),
+				new Object[] {
+						CAMO_PASTE,
+						Item.magmaCream,
+						Item.potion
 				}));
 
 		// actually add the recipe
