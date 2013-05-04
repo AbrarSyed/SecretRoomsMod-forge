@@ -25,6 +25,7 @@ import mods.secretroomsmod.blocks.TileEntityCamoDetector;
 import mods.secretroomsmod.client.CreativeTabCamo;
 import mods.secretroomsmod.common.CommandShow;
 import mods.secretroomsmod.common.ProxyCommon;
+import mods.secretroomsmod.items.ItemBlockCamoButton;
 import mods.secretroomsmod.items.ItemCamoDoor;
 import mods.secretroomsmod.items.ItemCamoPaste;
 import mods.secretroomsmod.network.HandlerClient;
@@ -251,7 +252,8 @@ public class SecretRooms
 		GameRegistry.registerBlock(camoGhost, "GhostBlock");
 		GameRegistry.registerBlock(camoLever, "SecretCamoLever");
 		GameRegistry.registerBlock(camoCurrent, "SecretCamoRedstone");
-		GameRegistry.registerBlock(camoButton, "SecretCamoButton");
+		
+		GameRegistry.registerBlock(camoButton, ItemBlockCamoButton.class,  "SecretCamoButton");
 
 		GameRegistry.registerBlock(camoPlateAll, "SecretPressurePlate");
 		GameRegistry.registerBlock(camoPlatePlayer, "SecretPlayerPlate");
@@ -288,6 +290,9 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(camoLever, "en_US", "Secret Lever");
 		LanguageRegistry.instance().addNameForObject(camoCurrent, "en_US", "Secret Redstone");
 		LanguageRegistry.instance().addNameForObject(camoButton, "en_US", "Secret Button");
+		
+		LanguageRegistry.instance().addStringLocalization("mod_SRM.SecretButton.stone","Secret Stone Button");
+		LanguageRegistry.instance().addStringLocalization("mod_SRM.SecretButton.wood","Secret Wood Button");
 
 		LanguageRegistry.instance().addNameForObject(camoPlateAll, "en_US", "Secret PressurePlate");
 		LanguageRegistry.instance().addNameForObject(camoPlatePlayer, "en_US", "Secret PlayerPlate");
