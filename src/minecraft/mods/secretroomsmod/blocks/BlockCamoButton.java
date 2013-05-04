@@ -77,8 +77,8 @@ public class BlockCamoButton extends BlockCamoFull
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		stone = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BUTTON);
-		wood = par1IconRegister.registerIcon(Block.wood.getUnlocalizedName2());
+		stone = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BUTTON+"Stone");
+		wood = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BUTTON+"Wood");
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class BlockCamoButton extends BlockCamoFull
 	public Icon getIcon(int par1, int par2)
 	{
 		if (par2 == 1)
-			return Block.planks.getIcon(par1, par2);
+			return wood;
 		else
 			return stone;
 	}
