@@ -291,8 +291,8 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(camoCurrent, "en_US", "Secret Redstone");
 		LanguageRegistry.instance().addNameForObject(camoButton, "en_US", "Secret Button");
 		
-		LanguageRegistry.instance().addStringLocalization("mod_SRM.SecretButton.stone","Secret Stone Button");
-		LanguageRegistry.instance().addStringLocalization("mod_SRM.SecretButton.wood","Secret Wood Button");
+		LanguageRegistry.instance().addStringLocalization(camoButton.getUnlocalizedName()+".stone","Secret Stone Button");
+		LanguageRegistry.instance().addStringLocalization(camoButton.getUnlocalizedName()+".wood","Secret Wood Button");
 
 		LanguageRegistry.instance().addNameForObject(camoPlateAll, "en_US", "Secret PressurePlate");
 		LanguageRegistry.instance().addNameForObject(camoPlatePlayer, "en_US", "Secret PlayerPlate");

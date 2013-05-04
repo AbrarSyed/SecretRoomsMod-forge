@@ -86,7 +86,7 @@ public class BlockCamoButton extends BlockCamoFull
 	public Icon getIcon(int par1, int par2)
 	{
 		if (par2 == 1)
-			return wood;
+			return Block.planks.getIcon(par1, par2);
 		else
 			return stone;
 	}
@@ -148,7 +148,7 @@ public class BlockCamoButton extends BlockCamoFull
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side)
 	{
-		return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
+		return (world.getBlockMetadata(x, y, z) & 8) > 0 ? 15 : 0;
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class BlockCamoButton extends BlockCamoFull
 	@Override
 	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side)
 	{
-		return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
+		return isProvidingWeakPower(world, x, y, z, side);
 	}
 
 	@Override
@@ -190,8 +190,8 @@ public class BlockCamoButton extends BlockCamoFull
 		int meta = world.getBlockMetadata(x, y, z);
 		int type = meta & 7;
 		boolean on = (meta & 8) != 0;
-		double radius = .1;
-		List list = world.getEntitiesWithinAABB(EntityArrow.class, AxisAlignedBB.getAABBPool().getAABB(x + this.minX - radius, y + this.minY - radius, z + this.minZ - radius, x + this.maxX + radius, y + this.maxY + radius, z + this.maxZ + radius));
+		this.setBlockBoundsBasedOnState(world, x, y, z);
+		List list = world.getEntitiesWithinAABB(EntityArrow.class, AxisAlignedBB.getAABBPool().getAABB(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ));
 		boolean arrowExists = !list.isEmpty();
 
 		if (arrowExists && !on)
