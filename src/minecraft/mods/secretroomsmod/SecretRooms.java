@@ -291,8 +291,10 @@ public class SecretRooms
 		LanguageRegistry.instance().addNameForObject(camoCurrent, "en_US", "Secret Redstone");
 		LanguageRegistry.instance().addNameForObject(camoButton, "en_US", "Secret Button");
 		
-		LanguageRegistry.instance().addStringLocalization(camoButton.getUnlocalizedName()+".stone","Secret Stone Button");
-		LanguageRegistry.instance().addStringLocalization(camoButton.getUnlocalizedName()+".wood","Secret Wood Button");
+		LanguageRegistry.instance().addStringLocalization(camoButton.getUnlocalizedName2()+".stone", "Secret Stone Button");
+		LanguageRegistry.instance().addStringLocalization(camoButton.getUnlocalizedName2()+".wood", "Secret Wood Button");
+		LanguageRegistry.instance().addStringLocalization(camoButton.getUnlocalizedName2()+".stone", "en_us", "Secret Stone Button");
+		LanguageRegistry.instance().addStringLocalization(camoButton.getUnlocalizedName2()+".wood", "en_us", "Secret Wood Button");
 
 		LanguageRegistry.instance().addNameForObject(camoPlateAll, "en_US", "Secret PressurePlate");
 		LanguageRegistry.instance().addNameForObject(camoPlatePlayer, "en_US", "Secret PlayerPlate");
