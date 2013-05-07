@@ -7,6 +7,7 @@ import mods.secretroomsmod.network.PacketSRM1ToggleShow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
@@ -44,20 +45,20 @@ public class SecretKey extends KeyHandler
 
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 
-		if (player == null || player.worldObj == null || Minecraft.getMinecraft().currentScreen == null)
+		if (player == null || player.worldObj == null || Minecraft.getMinecraft().currentScreen != null)
 			return;
 
 		SecretRooms.proxy.onKeyPress(player.username);
 
-		if (SecretRooms.proxy.getFaceAway(player.username))
+		if (SecretRooms.proxy.getFaceTowards(player.username))
 		{
-			chat(PacketSRM1ToggleShow.COLOR + "-- !!! OneWayBlock facing set to Towards !!! --");
-			System.out.println("chat true");
+			chat(EnumChatFormatting.YELLOW + "-- !!! OneWayBlock facing set to Towards !!! --");
+			//System.out.println("chat true");
 		}
 		else
 		{
-			chat(PacketSRM1ToggleShow.COLOR + "-- !!! OneWayBlock facing set to Away !!! --");
-			System.out.println("chat false");
+			chat(EnumChatFormatting.YELLOW + "-- !!! OneWayBlock facing set to Away !!! --");
+			//System.out.println("chat false");
 		}
 	}
 

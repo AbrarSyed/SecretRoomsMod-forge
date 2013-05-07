@@ -26,9 +26,9 @@ public class ItemBlockCamoButton extends ItemBlockWithMetadata
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		if (stack.getItemDamage() == 1)
-			return SecretRooms.camoButton.getUnlocalizedName2() + ".wood";
+			return "mod_SRM.SecretButton.wood";
 
-		return SecretRooms.camoButton.getUnlocalizedName2() + ".stone";
+		return "mod_SRM.SecretButton.stone";
 	}
 	
 	@Override

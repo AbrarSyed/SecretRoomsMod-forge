@@ -6,14 +6,13 @@ import java.io.ObjectOutputStream;
 
 import mods.secretroomsmod.SecretRooms;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketSRM1ToggleShow extends PacketSRMBase
 {
-
-	public static final String	COLOR	= "\u00a7e";
 
 	public PacketSRM1ToggleShow()
 	{
@@ -42,11 +41,11 @@ public class PacketSRM1ToggleShow extends PacketSRMBase
 
 		if (SecretRooms.displayCamo)
 		{
-			player.addChatMessage(COLOR + "Camo blocks made secret");
+			player.addChatMessage(EnumChatFormatting.YELLOW + "Camo blocks made secret");
 		}
 		else
 		{
-			player.addChatMessage(COLOR + "Camo blocks made obvious");
+			player.addChatMessage(EnumChatFormatting.YELLOW + "Camo blocks made obvious");
 		}
 
 		int rad = 20; // update radius

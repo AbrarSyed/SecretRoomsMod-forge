@@ -132,7 +132,7 @@ public class BlockOneWay extends BlockContainer
 		int metadata = 1;
 		if (entityliving instanceof EntityPlayer)
 		{
-			metadata = BlockOneWay.determineOrientation(world, i, j, k, (EntityPlayer) entityliving);
+			metadata = determineOrientation(world, i, j, k, (EntityPlayer) entityliving);
 		}
 
 		world.setBlockMetadataWithNotify(i, j, k, metadata, 2);
@@ -227,7 +227,7 @@ public class BlockOneWay extends BlockContainer
 
 		ForgeDirection dir = ForgeDirection.getOrientation(direction);
 
-		if (!SecretRooms.proxy.getFaceAway(entityplayer.username))
+		if (!SecretRooms.proxy.getFaceTowards(entityplayer.username))
 		{
 			dir = dir.getOpposite();
 		}

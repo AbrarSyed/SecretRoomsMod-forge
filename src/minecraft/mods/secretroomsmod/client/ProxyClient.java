@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ProxyClient extends ProxyCommon
 {
 	public static KeyBinding	key_OneWayFace;
-	private boolean				oneWayFaceAway	= true;
+	private boolean				oneWayFaceTowards	= true;
 
 	public ProxyClient()
 	{
@@ -47,20 +47,20 @@ public class ProxyClient extends ProxyCommon
 	public void onServerStop(FMLServerStoppingEvent e)
 	{
 		super.onServerStop(e);
-		oneWayFaceAway = true;
+		oneWayFaceTowards = true;
 	}
 
 	@Override
 	public void onKeyPress(String username)
 	{
-		oneWayFaceAway = !oneWayFaceAway;
+		oneWayFaceTowards = !oneWayFaceTowards;
 		PacketDispatcher.sendPacketToServer(new PacketSRM2Key().getPacket250());
 	}
 
 	@Override
-	public boolean getFaceAway(String username)
+	public boolean getFaceTowards(String username)
 	{
-		return oneWayFaceAway;
+		return oneWayFaceTowards;
 	}
 
 }

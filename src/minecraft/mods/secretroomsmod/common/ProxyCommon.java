@@ -14,12 +14,12 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 public class ProxyCommon
 {
 	private HashMap<Integer, FakeWorld>	fakes;
-	private HashSet<String>				towardSet;
+	private HashSet<String>				awaySet;
 
 	public ProxyCommon()
 	{
 		fakes = new HashMap<Integer, FakeWorld>();
-		towardSet = new HashSet<String>();
+		awaySet = new HashSet<String>();
 	}
 
 	public void loadRenderStuff()
@@ -35,7 +35,7 @@ public class ProxyCommon
 	public void onServerStop(FMLServerStoppingEvent e)
 	{
 		fakes.clear();
-		towardSet.clear();
+		awaySet.clear();
 	}
 
 	@ForgeSubscribe(priority = EventPriority.HIGHEST)
@@ -65,18 +65,18 @@ public class ProxyCommon
 
 	public void onKeyPress(String username)
 	{
-		if (towardSet.contains(username))
+		if (awaySet.contains(username))
 		{
-			towardSet.remove(username);
+			awaySet.remove(username);
 		}
 		else
 		{
-			towardSet.add(username);
+			awaySet.add(username);
 		}
 	}
 
-	public boolean getFaceAway(String username)
+	public boolean getFaceTowards(String username)
 	{
-		return towardSet.contains(username);
+		return !awaySet.contains(username);
 	}
 }
