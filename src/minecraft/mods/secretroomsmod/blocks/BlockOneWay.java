@@ -64,7 +64,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public int getRenderType()
 	{
-		return SecretRooms.camoRenderId;
+		return SecretRooms.render3DId;
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public Icon getIcon(int i, int meta)
 	{
-		if (i == 5)
+		if (i == 3)
 			return blockIcon;
 		return Block.glass.getBlockTextureFromSide(i);
 	}

@@ -123,7 +123,7 @@ public class BlockCamoFull extends BlockContainer
 	@Override
 	public final int getRenderType()
 	{
-		return SecretRooms.camoRenderId;
+		return SecretRooms.renderFlatId;
 	}
 
 	@Override

@@ -24,6 +24,7 @@ import mods.secretroomsmod.blocks.TileEntityCamoChest;
 import mods.secretroomsmod.blocks.TileEntityCamoDetector;
 import mods.secretroomsmod.client.CreativeTabCamo;
 import mods.secretroomsmod.common.CommandShow;
+import mods.secretroomsmod.common.MaterialFakeAir;
 import mods.secretroomsmod.common.ProxyCommon;
 import mods.secretroomsmod.items.ItemBlockCamoButton;
 import mods.secretroomsmod.items.ItemCamoDoor;
@@ -104,8 +105,8 @@ public class SecretRooms
 
 	// render IDs
 	public static boolean		displayCamo					= true;
-	public static int			camoRenderId;
-	public static int			torchRenderId;
+	public static int			render3DId;
+	public static int			renderFlatId;
 
 	// misc
 	public static Block			torchLever;
@@ -143,6 +144,9 @@ public class SecretRooms
 
 	// creative tab
 	public static CreativeTabs	tab;
+	
+	// material
+	public static final MaterialFakeAir AIR_MAT = new MaterialFakeAir(); 
 
 	// ids
 	private int[]				ids;

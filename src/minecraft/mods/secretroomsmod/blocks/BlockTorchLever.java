@@ -88,7 +88,7 @@ public class BlockTorchLever extends BlockTorch
 	@Override
 	public int getRenderType()
 	{
-		return SecretRooms.torchRenderId;
+		return SecretRooms.renderFlatId;
 	}
 
 	@SideOnly(value = Side.CLIENT)

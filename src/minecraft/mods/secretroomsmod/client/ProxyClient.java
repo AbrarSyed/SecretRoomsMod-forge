@@ -30,11 +30,11 @@ public class ProxyClient extends ProxyCommon
 	@Override
 	public void loadRenderStuff()
 	{
-		SecretRooms.camoRenderId = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new CamoRenderer());
+		SecretRooms.render3DId = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(new Render3D());
 
-		SecretRooms.torchRenderId = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new TorchRenderer());
+		SecretRooms.renderFlatId = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(new RenderFlat());
 	}
 
 	@Override

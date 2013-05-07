@@ -3,13 +3,10 @@ package mods.secretroomsmod.blocks;
 import java.util.Random;
 
 import mods.secretroomsmod.SecretRooms;
-import mods.secretroomsmod.common.fake.FakeWorld;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -23,7 +20,7 @@ public class BlockSolidAir extends Block
 
 	public BlockSolidAir(int par1)
 	{
-		super(par1, Material.air);
+		super(par1, SecretRooms.AIR_MAT);
 		this.setCreativeTab(SecretRooms.tab);
 	}
 
@@ -32,9 +29,9 @@ public class BlockSolidAir extends Block
 	public void registerIcons(IconRegister par1IconRegister)
 	{
 		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_SOLID_AIR);
-		clear = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_CLEAR); 
+		clear = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_CLEAR);
 	}
-	
+
 	@Override
 	@SideOnly(value = Side.CLIENT)
 	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
@@ -43,6 +40,13 @@ public class BlockSolidAir extends Block
 			return clear;
 		else
 			return blockIcon;
+	}
+
+	@Override
+	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+	{
+		// TODO Auto-generated method stub
+		return super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
 	}
 
 	@Override
@@ -95,12 +99,6 @@ public class BlockSolidAir extends Block
 	}
 
 	@Override
-	public boolean isAirBlock(World world, int x, int y, int z)
-	{
-		return true;
-	}
-
-	@Override
 	public boolean isGenMineableReplaceable(World world, int x, int y, int z, int target)
 	{
 		return true;
@@ -110,12 +108,6 @@ public class BlockSolidAir extends Block
 	public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
 	{
 		return true;
-	}
-
-	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		return null;
 	}
 
 	@Override
