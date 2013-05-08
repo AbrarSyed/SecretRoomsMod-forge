@@ -14,7 +14,7 @@ public class MaterialFakeAir extends Material
 	@Override
 	public boolean isSolid()
 	{
-		return false;
+		return true;
 	}
 
 	/**
