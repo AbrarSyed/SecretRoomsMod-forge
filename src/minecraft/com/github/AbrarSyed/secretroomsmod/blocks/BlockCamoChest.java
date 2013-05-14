@@ -5,7 +5,7 @@ import static net.minecraftforge.common.ForgeDirection.DOWN;
 import java.util.Iterator;
 import java.util.Random;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;

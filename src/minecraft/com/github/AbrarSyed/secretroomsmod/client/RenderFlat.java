@@ -1,8 +1,8 @@
 package com.github.AbrarSyed.secretroomsmod.client;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.blocks.BlockCamoFull;
 import com.github.AbrarSyed.secretroomsmod.blocks.BlockOneWay;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;

@@ -2,7 +2,7 @@ package com.github.AbrarSyed.secretroomsmod.blocks;
 
 import java.util.List;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;

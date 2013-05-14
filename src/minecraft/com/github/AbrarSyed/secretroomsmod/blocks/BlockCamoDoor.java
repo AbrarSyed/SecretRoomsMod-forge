@@ -2,7 +2,7 @@ package com.github.AbrarSyed.secretroomsmod.blocks;
 
 import java.util.Random;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
 
 import net.minecraft.block.Block;

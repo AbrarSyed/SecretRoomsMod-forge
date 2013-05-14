@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

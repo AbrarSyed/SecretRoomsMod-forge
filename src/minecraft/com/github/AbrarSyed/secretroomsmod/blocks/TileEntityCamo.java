@@ -2,8 +2,8 @@ package com.github.AbrarSyed.secretroomsmod.blocks;
 
 import java.util.Arrays;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
 import com.github.AbrarSyed.secretroomsmod.network.PacketSRM0UpdateCamo;
 

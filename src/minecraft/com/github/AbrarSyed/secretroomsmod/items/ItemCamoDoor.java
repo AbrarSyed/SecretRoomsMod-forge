@@ -1,8 +1,8 @@
 package com.github.AbrarSyed.secretroomsmod.items;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamo;
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

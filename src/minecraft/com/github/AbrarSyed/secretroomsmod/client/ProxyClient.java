@@ -5,8 +5,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.input.Keyboard;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.common.ProxyCommon;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.network.PacketSRM2Key;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;

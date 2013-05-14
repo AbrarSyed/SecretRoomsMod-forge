@@ -2,7 +2,7 @@ package com.github.AbrarSyed.secretroomsmod.blocks;
 
 import java.util.ArrayList;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

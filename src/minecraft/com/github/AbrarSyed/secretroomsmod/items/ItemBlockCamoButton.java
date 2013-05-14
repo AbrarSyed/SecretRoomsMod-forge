@@ -1,6 +1,6 @@
 package com.github.AbrarSyed.secretroomsmod.items;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 import com.google.common.base.Strings;
 
 import net.minecraft.block.Block;

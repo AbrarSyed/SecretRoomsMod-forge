@@ -2,7 +2,7 @@ package com.github.AbrarSyed.secretroomsmod.client;
 
 import java.util.EnumSet;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.network.PacketSRM1ToggleShow;
 
 import net.minecraft.client.Minecraft;

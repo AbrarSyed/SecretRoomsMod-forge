@@ -1,6 +1,6 @@
 package com.github.AbrarSyed.secretroomsmod.items;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;

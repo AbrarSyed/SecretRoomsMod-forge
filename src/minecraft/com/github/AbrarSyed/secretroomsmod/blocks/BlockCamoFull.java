@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
 
 import net.minecraft.block.Block;

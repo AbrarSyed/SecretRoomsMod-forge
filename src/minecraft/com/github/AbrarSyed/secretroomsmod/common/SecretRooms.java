@@ -1,4 +1,4 @@
-package com.github.AbrarSyed.secretroomsmod;
+package com.github.AbrarSyed.secretroomsmod.common;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -23,9 +23,6 @@ import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamo;
 import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamoChest;
 import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamoDetector;
 import com.github.AbrarSyed.secretroomsmod.client.CreativeTabCamo;
-import com.github.AbrarSyed.secretroomsmod.common.CommandShow;
-import com.github.AbrarSyed.secretroomsmod.common.MaterialFakeAir;
-import com.github.AbrarSyed.secretroomsmod.common.ProxyCommon;
 import com.github.AbrarSyed.secretroomsmod.items.ItemBlockCamoButton;
 import com.github.AbrarSyed.secretroomsmod.items.ItemCamoDoor;
 import com.github.AbrarSyed.secretroomsmod.items.ItemCamoPaste;
@@ -159,29 +156,29 @@ public class SecretRooms
 
 		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
 		ids = new int[] {
-				config.getBlock("CamoBlocks", "torchLever", 200).getInt(),
-				config.getBlock("CamoBlocks", "oneWay", 201).getInt(),
-				config.getBlock("CamoBlocks", "camoGate", 202).getInt(),
-				config.getBlock("CamoBlocks", "camoDummy", 203).getInt(),
-				config.getBlock("CamoBlocks", "camoTrapDoor", 204).getInt(),
+				config.getBlock("CamoBlocks", "torchLever", 2020).getInt(),
+				config.getBlock("CamoBlocks", "oneWay", 2021).getInt(),
+				config.getBlock("CamoBlocks", "camoGate", 2022).getInt(),
+				config.getBlock("CamoBlocks", "camoDummy", 2023).getInt(),
+				config.getBlock("CamoBlocks", "camoTrapDoor", 2024).getInt(),
 				config.getItem("CamoItems", "camoWoodDoor", 4106).getInt(),
-				config.getBlock("CamoBlocks", "camoWoodDoor", 205).getInt(),
+				config.getBlock("CamoBlocks", "camoWoodDoor", 2025).getInt(),
 				config.getItem("CamoItems", "camoIronDoor", 4107).getInt(),
-				config.getBlock("CamoBlocks", "camoIronDoor", 206).getInt(),
+				config.getBlock("CamoBlocks", "camoIronDoor", 2026).getInt(),
 				config.getItem("CamoItems", "camoPasteID", 4108).getInt(),
-				config.getBlock("CamoBlocks", "ghostBlock", 207).getInt(),
-				config.getBlock("CamoBlocks", "camoLeverBlock", 208).getInt(),
-				config.getBlock("CamoBlocks", "camoRedstoneBlock", 209).getInt(),
-				config.getBlock("CamoBlocks", "camoButtonBlock", 210).getInt(),
-				config.getBlock("CamoBlocks", "camoPlateAllBlock", 211).getInt(),
-				config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 212).getInt(),
-				config.getBlock("CamoBlocks", "camoPlateWeightedBlock_light", 213).getInt(),
-				config.getBlock("CamoBlocks", "camoPlateWeightedBlock_heavy", 214).getInt(),
-				config.getBlock("CamoBlocks", "camoStairBlock", 215).getInt(),
-				config.getBlock("CamoBlocks", "camoChestBlock", 216).getInt(),
-				config.getBlock("CamoBlocks", "camoChestTrappedBlock", 217).getInt(),
-				config.getBlock("CamoBlocks", "camoLightDetectorBlock", 218).getInt(),
-				config.getBlock("CamoBlocks", "solidAir", 219).getInt()
+				config.getBlock("CamoBlocks", "ghostBlock", 2027).getInt(),
+				config.getBlock("CamoBlocks", "camoLeverBlock", 2028).getInt(),
+				config.getBlock("CamoBlocks", "camoRedstoneBlock", 2029).getInt(),
+				config.getBlock("CamoBlocks", "camoButtonBlock", 2030).getInt(),
+				config.getBlock("CamoBlocks", "camoPlateAllBlock", 2031).getInt(),
+				config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 2032).getInt(),
+				config.getBlock("CamoBlocks", "camoPlateWeightedBlock_light", 2033).getInt(),
+				config.getBlock("CamoBlocks", "camoPlateWeightedBlock_heavy", 2034).getInt(),
+				config.getBlock("CamoBlocks", "camoStairBlock", 2035).getInt(),
+				config.getBlock("CamoBlocks", "camoChestBlock", 2036).getInt(),
+				config.getBlock("CamoBlocks", "camoChestTrappedBlock", 2037).getInt(),
+				config.getBlock("CamoBlocks", "camoLightDetectorBlock", 2038).getInt(),
+				config.getBlock("CamoBlocks", "solidAir", 2039).getInt()
 		};
 		config.save();
 

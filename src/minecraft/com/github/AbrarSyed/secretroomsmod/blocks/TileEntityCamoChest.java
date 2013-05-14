@@ -3,7 +3,7 @@ package com.github.AbrarSyed.secretroomsmod.blocks;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerChest;

@@ -10,10 +10,10 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
-import com.github.AbrarSyed.secretroomsmod.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.blocks.BlockCamoFull;
 import com.github.AbrarSyed.secretroomsmod.blocks.BlockOneWay;
 import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamo;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
