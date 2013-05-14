@@ -67,7 +67,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class SecretRooms
 {
 
-	@SidedProxy(clientSide = "mods.secretroomsmod.client.ProxyClient", serverSide = "mods.secretroomsmod.common.ProxyCommon")
+	@SidedProxy(clientSide = "com.github.AbrarSyed.secretroomsmod.client.ProxyClient", serverSide = "com.github.AbrarSyed.secretroomsmod.common.ProxyCommon")
 	public static ProxyCommon	proxy;
 
 	public static final String	MODID						= "secretroomsmod";
