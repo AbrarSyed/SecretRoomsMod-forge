@@ -570,7 +570,7 @@ public class SecretRooms
 		}));
 
 		// CamoStairs
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoStairs, 4), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
@@ -578,7 +578,7 @@ public class SecretRooms
 				'0', Item.rottenFlesh,
 				'@', "stairWood"
 		}));
-		recipes.add(new ShapedOreRecipe(new ItemStack(camoPaste, 9), new Object[] {
+		recipes.add(new ShapedOreRecipe(new ItemStack(camoStairs, 4), new Object[] {
 				"X0X",
 				"0@0",
 				"X0X",
