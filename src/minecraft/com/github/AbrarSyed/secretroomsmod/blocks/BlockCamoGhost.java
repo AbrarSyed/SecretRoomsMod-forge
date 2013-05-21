@@ -72,7 +72,7 @@ public class BlockCamoGhost extends BlockCamoFull
 		}
 		else
 		{
-			world.setBlockToAir(i, j, k);
+			world.setBlockMetadataWithNotify(i, j, k, 0, 4);
 		}
 	}
 }
