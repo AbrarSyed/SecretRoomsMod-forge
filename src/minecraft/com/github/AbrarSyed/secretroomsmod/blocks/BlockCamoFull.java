@@ -361,6 +361,8 @@ public class BlockCamoFull extends BlockContainer
 			}
 			else if (block.isOpaqueCube() || block.getRenderType() == 1)
 				return new BlockHolder(world, x, y, z);
+			else if (block.getRenderType() != 0)
+				return null;
 			else
 			{
 				block.setBlockBoundsBasedOnState(world, x, y, z);

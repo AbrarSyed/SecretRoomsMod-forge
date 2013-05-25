@@ -49,7 +49,7 @@ public abstract class HandlerBase implements IPacketHandler
 		}
 		catch (Throwable t)
 		{
-			SecretRooms.logger.log(Level.SEVERE, "Error receiving SeaCraft packet! " + toString(), t);
+			SecretRooms.logger.log(Level.SEVERE, "Error receiving SecretRoomsMod packet! " + toString(), t);
 		}
 
 	}
