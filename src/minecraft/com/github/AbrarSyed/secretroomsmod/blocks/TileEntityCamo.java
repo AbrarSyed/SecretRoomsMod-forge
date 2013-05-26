@@ -106,7 +106,12 @@ public class TileEntityCamo extends TileEntity
 	@Override
 	public void validate()
 	{
-		SecretRooms.proxy.getFakeWorld(worldObj).addOverrideBlock(xCoord, yCoord, zCoord, holder);
+		FakeWorld fake = SecretRooms.proxy.getFakeWorld(worldObj);
+		if (fake != null)
+		{
+			fake.addOverrideBlock(xCoord, yCoord, zCoord, holder);
+		}
+		super.validate();
 	}
 
 	public BlockHolder getBlockHolder()
