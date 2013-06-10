@@ -842,14 +842,6 @@ public class FakeWorld extends World implements IBlockAccess
 	}
 
 	@Override
-	@Deprecated
-	public boolean func_102026_a(Block par1Block, int par2)
-	{
-
-		return world.func_102026_a(par1Block, par2);
-	}
-
-	@Override
 	public boolean isBlockNormalCubeDefault(int par1, int par2, int par3, boolean par4)
 	{
 

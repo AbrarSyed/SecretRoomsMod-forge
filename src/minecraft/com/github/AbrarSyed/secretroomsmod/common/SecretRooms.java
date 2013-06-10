@@ -64,7 +64,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, versionBounds = "[4.6,)",
 		clientPacketHandlerSpec = @SidedPacketHandler(channels = { PacketSRMBase.CHANNEL }, packetHandler = HandlerClient.class),
 		serverPacketHandlerSpec = @SidedPacketHandler(channels = { PacketSRMBase.CHANNEL }, packetHandler = HandlerServer.class))
-@Mod(modid = SecretRooms.MODID, name = "SecretRoomsMod", version = "4.6.1")
+@Mod(modid = SecretRooms.MODID, name = "SecretRoomsMod", version = "4.6.2")
 public class SecretRooms
 {
 
