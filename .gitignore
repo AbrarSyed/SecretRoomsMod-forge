@@ -1,23 +1,12 @@
-/bin/*
-/conf/*
-/docs/*
-/eclipse/*
-/forge/*
-/jars/*
-/lib/*
-/logs/*
-/modsrc/*
-/reobf/*
-/runtime/*
-/temp/*
+# gradle stuff
+build
+.gradle
 
-/src/common/*
-/src/minecraft/*
-/src/minecraft_server/*
+# eclipse stuff
+.classpath
+.project
+.settings
+bin
 
-!/src/minecraft/com/
-!/src/minecraft/mcmod.info
-!/src/minecraft/mods/
-
-*.bat
-*.sh
+# GMCP plugin stuff
+minecraft
