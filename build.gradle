@@ -18,13 +18,12 @@ archivesBaseName = 'SecretRoomsMod'
 
 minecraft { minecraftVersion = "1.5.2" }
 
-processResources{
-
-	// specify a sub-filter so that it doesn't try to replace stuff in images.
-	// unfortunately it doesnt know the difference between text and binary files.
-	with {
-		exclude '**/*.png'
-		expand version: version, mcversion: minecraft.minecraftVersion
+processResources
+{
+	// Itterrate through files to expand version on things not PNGs
+	eachFile { file ->
+		if (!file.getPath().endsWith('png'))
+			expand 'version':project.version
 	}
 }
 
