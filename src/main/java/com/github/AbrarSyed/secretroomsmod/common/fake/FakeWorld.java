@@ -124,7 +124,7 @@ public class FakeWorld extends World implements IBlockAccess
 	@Override
 	protected IChunkProvider createChunkProvider()
 	{
-		// hope noone ever calls this....
+		// hope no one ever calls this....
 		return null;
 	}
 
@@ -332,10 +332,10 @@ public class FakeWorld extends World implements IBlockAccess
 	}
 
 	@Override
-	public boolean isBlockTickScheduled(int par1, int par2, int par3, int par4)
+	public boolean isBlockTickScheduledThisTick(int par1, int par2, int par3, int par4)
 	{
 
-		return world.isBlockTickScheduled(par1, par2, par3, par4);
+		return world.isBlockTickScheduledThisTick(par1, par2, par3, par4);
 	}
 
 	@Override
@@ -440,17 +440,17 @@ public class FakeWorld extends World implements IBlockAccess
 	}
 
 	@Override
-	public MovingObjectPosition rayTraceBlocks(Vec3 par1Vec3, Vec3 par2Vec3)
+	public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3)
 	{
 
-		return world.rayTraceBlocks(par1Vec3, par2Vec3);
+		return world.clip(par1Vec3, par2Vec3);
 	}
 
 	@Override
-	public MovingObjectPosition rayTraceBlocks_do(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
+	public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
 	{
 
-		return world.rayTraceBlocks_do(par1Vec3, par2Vec3, par3);
+		return world.clip(par1Vec3, par2Vec3, par3);
 	}
 
 	@Override
@@ -517,10 +517,10 @@ public class FakeWorld extends World implements IBlockAccess
 	}
 
 	@Override
-	public void releaseEntitySkin(Entity par1Entity)
+	public void onEntityRemoved(Entity par1Entity)
 	{
 
-		world.releaseEntitySkin(par1Entity);
+		world.onEntityRemoved(par1Entity);
 	}
 
 	@Override
@@ -672,10 +672,10 @@ public class FakeWorld extends World implements IBlockAccess
 	}
 
 	@Override
-	public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6)
+	public void scheduleBlockUpdateWithPriority(int par1, int par2, int par3, int par4, int par5, int par6)
 	{
 
-		world.func_82740_a(par1, par2, par3, par4, par5, par6);
+		world.scheduleBlockUpdateWithPriority(par1, par2, par3, par4, par5, par6);
 	}
 
 	@Override
@@ -828,10 +828,10 @@ public class FakeWorld extends World implements IBlockAccess
 	}
 
 	@Override
-	public boolean func_85174_u(int par1, int par2, int par3)
+	public boolean isBlockFullCube(int par1, int par2, int par3)
 	{
 
-		return world.func_85174_u(par1, par2, par3);
+		return world.isBlockFullCube(par1, par2, par3);
 	}
 
 	@Override
