@@ -21,10 +21,10 @@ minecraft { minecraftVersion = "1.6.2" }
 processResources
 {
 	// Itterrate through files to expand version on things not PNGs
-	eachFile { file ->
-		if (!file.getPath().endsWith('png'))
-			expand 'version':project.version
-	}
+//	eachFile { file ->
+//		if (!file.getPath().endsWith('png'))
+//			expand 'version':project.version
+//	}
 }
 
 jar { appendix = 'universal' }
