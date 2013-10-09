@@ -3,7 +3,7 @@
 
 buildscript {
 	repositories { mavenCentral() }
-	dependencies { classpath 'com.github.abrarsyed.gmcp:GMCP:0.6.2' }
+	dependencies { classpath 'com.github.abrarsyed.gmcp:GMCP:0.8' }
 }
 
 // these 3 plugins are added automatically by GMCP
@@ -16,7 +16,7 @@ group = 'com.github.abrarsyed.secretroomsmod'
 version = '4.6.1'
 archivesBaseName = 'SecretRoomsMod'
 
-minecraft { minecraftVersion = "1.6.2" }
+minecraft { minecraftVersion = "1.6.4" }
 
 processResources
 {
@@ -45,21 +45,9 @@ task deobfJar(type: Jar) {
 	appendix = 'deobf'
 }
 
-// an example for anyone who wants obfuscated jar.
-//task obfJar(type: Jar) {
-//	from sourceSets.main.output
-//	appendix = 'universal_obf'
-//
-//	doLast GMCP.reobfSRGJarClosure()  // uses SRG names
-//	//doLast GMCP.reobfJarClosure() uses the MC names
-//}
-
 artifacts {
 	archives sourceJar
 	archives deobfJar
 	archives javadocJar
 	//archives obfJar
 }
-
-// wrapper
-task wrapper(type: Wrapper){ gradleVersion = '1.6' }
