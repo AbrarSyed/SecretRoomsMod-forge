@@ -3,7 +3,7 @@
 
 buildscript {
 	repositories { mavenCentral() }
-	dependencies { classpath 'com.github.abrarsyed.gmcp:GMCP:0.8' }
+	dependencies { classpath 'com.github.abrarsyed.gmcp:GMCP:0.8.1' }
 }
 
 // these 3 plugins are added automatically by GMCP
