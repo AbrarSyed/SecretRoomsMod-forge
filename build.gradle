@@ -47,10 +47,10 @@ task sourceJar(type: Jar) {
 	appendix = 'src'
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-	appendix = 'javadoc'
-	from 'build/docs/javadoc'
-}
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//	appendix = 'javadoc'
+//	from 'build/docs/javadoc'
+//}
 
 // because the normal default jar task has been modified to be obfuscated
 task deobfJar(type: Jar) {
@@ -61,6 +61,6 @@ task deobfJar(type: Jar) {
 artifacts {
 	archives sourceJar
 	archives deobfJar
-	archives javadocJar
+	//archives javadocJar
 	//archives obfJar
 }
