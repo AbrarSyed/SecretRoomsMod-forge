@@ -55,1421 +55,1431 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class FakeWorld extends World implements IBlockAccess
 {
-	private final World									world;
-	private final HashMap<ChunkPosition, BlockHolder>	overrideMap;
-
-	private FakeWorld(World world, FakeProvider provider, FakeSaveHandler handler)
-	{
-		super(handler, "fake", new WorldSettings(world.getWorldInfo()), provider, null, null);
-		this.world = world;
-		overrideMap = new HashMap<ChunkPosition, BlockHolder>();
-		worldInfo = world.getWorldInfo();
-	}
-
-	public static FakeWorld getFakeWorldFor(World world)
-	{
-		FakeProvider provider = new FakeProvider(world.provider);
-		FakeSaveHandler handler = new FakeSaveHandler(world.getWorldInfo());
-		return new FakeWorld(world, provider, handler);
-	}
-
-	// actual stuff...
-
-	public void addOverrideBlock(int x, int y, int z, BlockHolder holder)
-	{
-		ChunkPosition position = new ChunkPosition(x, y, z);
-		overrideMap.put(position, holder);
-	}
-
-	public void removeOverrideBlock(int x, int y, int z)
-	{
-		ChunkPosition position = new ChunkPosition(x, y, z);
-		overrideMap.remove(position);
-	}
-
-	// overrides...
-
-	@Override
-	public int getBlockId(int x, int y, int z)
-	{
-		ChunkPosition pos = new ChunkPosition(x, y, z);
-		if (overrideMap.containsKey(pos))
-			return overrideMap.get(pos).blockID;
-		else
-			return world.getBlockId(x, y, z);
-	}
-
-	@Override
-	public TileEntity getBlockTileEntity(int x, int y, int z)
-	{
-		ChunkPosition pos = new ChunkPosition(x, y, z);
-		if (overrideMap.containsKey(pos))
-			return overrideMap.get(pos).getTileEntity(world, x, y, z);
-		else
-			return world.getBlockTileEntity(x, y, z);
-	}
-
-	@Override
-	public int getBlockMetadata(int x, int y, int z)
-	{
-		ChunkPosition pos = new ChunkPosition(x, y, z);
-		if (overrideMap.containsKey(pos))
-			return overrideMap.get(pos).metadata;
-		else
-			return world.getBlockMetadata(x, y, z);
-	}
-
-	// SUPER necessary overrides
-
-	@Override
-	protected IChunkProvider createChunkProvider()
-	{
-		// hope no one ever calls this....
-		return null;
-	}
-
-	@Override
-	public Entity getEntityByID(int i)
-	{
-		return world.getEntityByID(i);
-	}
-
-	@Override
-	public ISaveHandler getSaveHandler()
-	{
-		return saveHandler;
-	}
-
-	@Override
-	public WorldInfo getWorldInfo()
-	{
-		return worldInfo;
-	}
-
-	// extra necessary overrides
-
-	@Override
-	public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
-	{
-
-		return world.getBiomeGenForCoords(par1, par2);
-	}
-
-	@Override
-	public BiomeGenBase getBiomeGenForCoordsBody(int par1, int par2)
-	{
+    private final World world;
+    private final HashMap<ChunkPosition, BlockHolder> overrideMap;
+
+    private FakeWorld(World world, FakeProvider provider, FakeSaveHandler handler)
+    {
+        super(handler, "fake", new WorldSettings(world.getWorldInfo()), provider, null, null);
+        this.world = world;
+        overrideMap = new HashMap<ChunkPosition, BlockHolder>();
+        worldInfo = world.getWorldInfo();
+    }
+
+    public static FakeWorld getFakeWorldFor(World world)
+    {
+        FakeProvider provider = new FakeProvider(world.provider);
+        FakeSaveHandler handler = new FakeSaveHandler(world.getWorldInfo());
+        return new FakeWorld(world, provider, handler);
+    }
+
+    // actual stuff...
+
+    public void addOverrideBlock(int x, int y, int z, BlockHolder holder)
+    {
+        ChunkPosition position = new ChunkPosition(x, y, z);
+        overrideMap.put(position, holder);
+    }
+
+    public void removeOverrideBlock(int x, int y, int z)
+    {
+        ChunkPosition position = new ChunkPosition(x, y, z);
+        overrideMap.remove(position);
+    }
+
+    // overrides...
+
+    @Override
+    public int getBlockId(int x, int y, int z)
+    {
+        ChunkPosition pos = new ChunkPosition(x, y, z);
+        if (overrideMap.containsKey(pos))
+        {
+            return overrideMap.get(pos).blockID;
+        }
+        else
+        {
+            return world.getBlockId(x, y, z);
+        }
+    }
+
+    @Override
+    public TileEntity getBlockTileEntity(int x, int y, int z)
+    {
+        ChunkPosition pos = new ChunkPosition(x, y, z);
+        if (overrideMap.containsKey(pos))
+        {
+            return overrideMap.get(pos).getTileEntity(world, x, y, z);
+        }
+        else
+        {
+            return world.getBlockTileEntity(x, y, z);
+        }
+    }
+
+    @Override
+    public int getBlockMetadata(int x, int y, int z)
+    {
+        ChunkPosition pos = new ChunkPosition(x, y, z);
+        if (overrideMap.containsKey(pos))
+        {
+            return overrideMap.get(pos).metadata;
+        }
+        else
+        {
+            return world.getBlockMetadata(x, y, z);
+        }
+    }
+
+    // SUPER necessary overrides
+
+    @Override
+    protected IChunkProvider createChunkProvider()
+    {
+        // hope no one ever calls this....
+        return null;
+    }
+
+    @Override
+    public Entity getEntityByID(int i)
+    {
+        return world.getEntityByID(i);
+    }
+
+    @Override
+    public ISaveHandler getSaveHandler()
+    {
+        return saveHandler;
+    }
+
+    @Override
+    public WorldInfo getWorldInfo()
+    {
+        return worldInfo;
+    }
 
-		return world.getBiomeGenForCoordsBody(par1, par2);
-	}
+    // extra necessary overrides
 
-	@Override
-	public WorldChunkManager getWorldChunkManager()
-	{
+    @Override
+    public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
+    {
 
-		return world.getWorldChunkManager();
-	}
+        return world.getBiomeGenForCoords(par1, par2);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void setSpawnLocation()
-	{
+    @Override
+    public BiomeGenBase getBiomeGenForCoordsBody(int par1, int par2)
+    {
 
-		world.setSpawnLocation();
-	}
+        return world.getBiomeGenForCoordsBody(par1, par2);
+    }
 
-	@Override
-	public int getFirstUncoveredBlock(int par1, int par2)
-	{
+    @Override
+    public WorldChunkManager getWorldChunkManager()
+    {
 
-		return world.getFirstUncoveredBlock(par1, par2);
-	}
+        return world.getWorldChunkManager();
+    }
 
-	@Override
-	public boolean isAirBlock(int par1, int par2, int par3)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void setSpawnLocation()
+    {
 
-		return world.isAirBlock(par1, par2, par3);
-	}
+        world.setSpawnLocation();
+    }
 
-	@Override
-	public boolean blockHasTileEntity(int par1, int par2, int par3)
-	{
+    @Override
+    public int getFirstUncoveredBlock(int par1, int par2)
+    {
 
-		return world.blockHasTileEntity(par1, par2, par3);
-	}
+        return world.getFirstUncoveredBlock(par1, par2);
+    }
 
-	@Override
-	public int blockGetRenderType(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean isAirBlock(int par1, int par2, int par3)
+    {
 
-		return world.blockGetRenderType(par1, par2, par3);
-	}
+        return world.isAirBlock(par1, par2, par3);
+    }
 
-	@Override
-	public boolean blockExists(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean blockHasTileEntity(int par1, int par2, int par3)
+    {
 
-		return world.blockExists(par1, par2, par3);
-	}
+        return world.blockHasTileEntity(par1, par2, par3);
+    }
 
-	@Override
-	public boolean doChunksNearChunkExist(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public int blockGetRenderType(int par1, int par2, int par3)
+    {
 
-		return world.doChunksNearChunkExist(par1, par2, par3, par4);
-	}
+        return world.blockGetRenderType(par1, par2, par3);
+    }
 
-	@Override
-	public boolean checkChunksExist(int par1, int par2, int par3, int par4, int par5, int par6)
-	{
+    @Override
+    public boolean blockExists(int par1, int par2, int par3)
+    {
 
-		return world.checkChunksExist(par1, par2, par3, par4, par5, par6);
-	}
+        return world.blockExists(par1, par2, par3);
+    }
 
-	@Override
-	public Chunk getChunkFromBlockCoords(int par1, int par2)
-	{
+    @Override
+    public boolean doChunksNearChunkExist(int par1, int par2, int par3, int par4)
+    {
 
-		return world.getChunkFromBlockCoords(par1, par2);
-	}
+        return world.doChunksNearChunkExist(par1, par2, par3, par4);
+    }
 
-	@Override
-	public Chunk getChunkFromChunkCoords(int par1, int par2)
-	{
+    @Override
+    public boolean checkChunksExist(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
 
-		return world.getChunkFromChunkCoords(par1, par2);
-	}
+        return world.checkChunksExist(par1, par2, par3, par4, par5, par6);
+    }
 
-	@Override
-	public boolean setBlock(int par1, int par2, int par3, int par4, int par5, int par6)
-	{
+    @Override
+    public Chunk getChunkFromBlockCoords(int par1, int par2)
+    {
 
-		return world.setBlock(par1, par2, par3, par4, par5, par6);
-	}
+        return world.getChunkFromBlockCoords(par1, par2);
+    }
 
-	@Override
-	public Material getBlockMaterial(int par1, int par2, int par3)
-	{
+    @Override
+    public Chunk getChunkFromChunkCoords(int par1, int par2)
+    {
 
-		return world.getBlockMaterial(par1, par2, par3);
-	}
+        return world.getChunkFromChunkCoords(par1, par2);
+    }
 
-	@Override
-	public boolean setBlockMetadataWithNotify(int par1, int par2, int par3, int par4, int par5)
-	{
+    @Override
+    public boolean setBlock(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
 
-		return world.setBlockMetadataWithNotify(par1, par2, par3, par4, par5);
-	}
+        return world.setBlock(par1, par2, par3, par4, par5, par6);
+    }
 
-	@Override
-	public boolean setBlockToAir(int par1, int par2, int par3)
-	{
+    @Override
+    public Material getBlockMaterial(int par1, int par2, int par3)
+    {
 
-		return world.setBlockToAir(par1, par2, par3);
-	}
+        return world.getBlockMaterial(par1, par2, par3);
+    }
 
-	@Override
-	public boolean destroyBlock(int par1, int par2, int par3, boolean par4)
-	{
+    @Override
+    public boolean setBlockMetadataWithNotify(int par1, int par2, int par3, int par4, int par5)
+    {
 
-		return world.destroyBlock(par1, par2, par3, par4);
-	}
+        return world.setBlockMetadataWithNotify(par1, par2, par3, par4, par5);
+    }
 
-	@Override
-	public boolean setBlock(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public boolean setBlockToAir(int par1, int par2, int par3)
+    {
 
-		return world.setBlock(par1, par2, par3, par4);
-	}
+        return world.setBlockToAir(par1, par2, par3);
+    }
 
-	@Override
-	public void markBlockForUpdate(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean destroyBlock(int par1, int par2, int par3, boolean par4)
+    {
 
-		world.markBlockForUpdate(par1, par2, par3);
-	}
+        return world.destroyBlock(par1, par2, par3, par4);
+    }
 
-	@Override
-	public void notifyBlockChange(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public boolean setBlock(int par1, int par2, int par3, int par4)
+    {
 
-		world.notifyBlockChange(par1, par2, par3, par4);
-	}
+        return world.setBlock(par1, par2, par3, par4);
+    }
 
-	@Override
-	public void markBlocksDirtyVertical(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public void markBlockForUpdate(int par1, int par2, int par3)
+    {
 
-		world.markBlocksDirtyVertical(par1, par2, par3, par4);
-	}
+        world.markBlockForUpdate(par1, par2, par3);
+    }
 
-	@Override
-	public void markBlockRangeForRenderUpdate(int par1, int par2, int par3, int par4, int par5, int par6)
-	{
+    @Override
+    public void notifyBlockChange(int par1, int par2, int par3, int par4)
+    {
 
-		world.markBlockRangeForRenderUpdate(par1, par2, par3, par4, par5, par6);
-	}
+        world.notifyBlockChange(par1, par2, par3, par4);
+    }
 
-	@Override
-	public void notifyBlocksOfNeighborChange(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public void markBlocksDirtyVertical(int par1, int par2, int par3, int par4)
+    {
 
-		world.notifyBlocksOfNeighborChange(par1, par2, par3, par4);
-	}
+        world.markBlocksDirtyVertical(par1, par2, par3, par4);
+    }
 
-	@Override
-	public void notifyBlocksOfNeighborChange(int par1, int par2, int par3, int par4, int par5)
-	{
+    @Override
+    public void markBlockRangeForRenderUpdate(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
 
-		world.notifyBlocksOfNeighborChange(par1, par2, par3, par4, par5);
-	}
+        world.markBlockRangeForRenderUpdate(par1, par2, par3, par4, par5, par6);
+    }
 
-	@Override
-	public void notifyBlockOfNeighborChange(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public void notifyBlocksOfNeighborChange(int par1, int par2, int par3, int par4)
+    {
 
-		world.notifyBlockOfNeighborChange(par1, par2, par3, par4);
-	}
+        world.notifyBlocksOfNeighborChange(par1, par2, par3, par4);
+    }
 
-	@Override
-	public boolean isBlockTickScheduledThisTick(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public void notifyBlocksOfNeighborChange(int par1, int par2, int par3, int par4, int par5)
+    {
 
-		return world.isBlockTickScheduledThisTick(par1, par2, par3, par4);
-	}
+        world.notifyBlocksOfNeighborChange(par1, par2, par3, par4, par5);
+    }
 
-	@Override
-	public boolean canBlockSeeTheSky(int par1, int par2, int par3)
-	{
+    @Override
+    public void notifyBlockOfNeighborChange(int par1, int par2, int par3, int par4)
+    {
 
-		return world.canBlockSeeTheSky(par1, par2, par3);
-	}
+        world.notifyBlockOfNeighborChange(par1, par2, par3, par4);
+    }
 
-	@Override
-	public int getFullBlockLightValue(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean isBlockTickScheduledThisTick(int par1, int par2, int par3, int par4)
+    {
 
-		return world.getFullBlockLightValue(par1, par2, par3);
-	}
+        return world.isBlockTickScheduledThisTick(par1, par2, par3, par4);
+    }
 
-	@Override
-	public int getBlockLightValue(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean canBlockSeeTheSky(int par1, int par2, int par3)
+    {
 
-		return world.getBlockLightValue(par1, par2, par3);
-	}
+        return world.canBlockSeeTheSky(par1, par2, par3);
+    }
 
-	@Override
-	public int getBlockLightValue_do(int par1, int par2, int par3, boolean par4)
-	{
+    @Override
+    public int getFullBlockLightValue(int par1, int par2, int par3)
+    {
 
-		return world.getBlockLightValue_do(par1, par2, par3, par4);
-	}
+        return world.getFullBlockLightValue(par1, par2, par3);
+    }
 
-	@Override
-	public int getHeightValue(int par1, int par2)
-	{
+    @Override
+    public int getBlockLightValue(int par1, int par2, int par3)
+    {
 
-		return world.getHeightValue(par1, par2);
-	}
+        return world.getBlockLightValue(par1, par2, par3);
+    }
 
-	@Override
-	public int getChunkHeightMapMinimum(int par1, int par2)
-	{
+    @Override
+    public int getBlockLightValue_do(int par1, int par2, int par3, boolean par4)
+    {
 
-		return world.getChunkHeightMapMinimum(par1, par2);
-	}
+        return world.getBlockLightValue_do(par1, par2, par3, par4);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
-	{
+    @Override
+    public int getHeightValue(int par1, int par2)
+    {
 
-		return world.getSkyBlockTypeBrightness(par1EnumSkyBlock, par2, par3, par4);
-	}
+        return world.getHeightValue(par1, par2);
+    }
 
-	@Override
-	public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
-	{
+    @Override
+    public int getChunkHeightMapMinimum(int par1, int par2)
+    {
 
-		return world.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
-	}
+        return world.getChunkHeightMapMinimum(par1, par2);
+    }
 
-	@Override
-	public void setLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4, int par5)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
+    {
 
-		world.setLightValue(par1EnumSkyBlock, par2, par3, par4, par5);
-	}
+        return world.getSkyBlockTypeBrightness(par1EnumSkyBlock, par2, par3, par4);
+    }
 
-	@Override
-	public void markBlockForRenderUpdate(int par1, int par2, int par3)
-	{
+    @Override
+    public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
+    {
 
-		world.markBlockForRenderUpdate(par1, par2, par3);
-	}
+        return world.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getLightBrightnessForSkyBlocks(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public void setLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4, int par5)
+    {
 
-		return world.getLightBrightnessForSkyBlocks(par1, par2, par3, par4);
-	}
+        world.setLightValue(par1EnumSkyBlock, par2, par3, par4, par5);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getBrightness(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public void markBlockForRenderUpdate(int par1, int par2, int par3)
+    {
 
-		return world.getBrightness(par1, par2, par3, par4);
-	}
+        world.markBlockForRenderUpdate(par1, par2, par3);
+    }
 
-	@Override
-	public float getLightBrightness(int par1, int par2, int par3)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getLightBrightnessForSkyBlocks(int par1, int par2, int par3, int par4)
+    {
 
-		return world.getLightBrightness(par1, par2, par3);
-	}
+        return world.getLightBrightnessForSkyBlocks(par1, par2, par3, par4);
+    }
 
-	@Override
-	public boolean isDaytime()
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getBrightness(int par1, int par2, int par3, int par4)
+    {
 
-		return world.isDaytime();
-	}
+        return world.getBrightness(par1, par2, par3, par4);
+    }
 
-	@Override
-	public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3)
-	{
+    @Override
+    public float getLightBrightness(int par1, int par2, int par3)
+    {
 
-		return world.clip(par1Vec3, par2Vec3);
-	}
+        return world.getLightBrightness(par1, par2, par3);
+    }
 
-	@Override
-	public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
-	{
+    @Override
+    public boolean isDaytime()
+    {
 
-		return world.clip(par1Vec3, par2Vec3, par3);
-	}
+        return world.isDaytime();
+    }
 
-	@Override
-	public MovingObjectPosition rayTraceBlocks_do_do(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3, boolean par4)
-	{
+    @Override
+    public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3)
+    {
 
-		return world.rayTraceBlocks_do_do(par1Vec3, par2Vec3, par3, par4);
-	}
+        return world.clip(par1Vec3, par2Vec3);
+    }
 
-	@Override
-	public void playSoundAtEntity(Entity par1Entity, String par2Str, float par3, float par4)
-	{
+    @Override
+    public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
+    {
 
-		world.playSoundAtEntity(par1Entity, par2Str, par3, par4);
-	}
+        return world.clip(par1Vec3, par2Vec3, par3);
+    }
 
-	@Override
-	public void playSoundToNearExcept(EntityPlayer par1EntityPlayer, String par2Str, float par3, float par4)
-	{
+    @Override
+    public MovingObjectPosition rayTraceBlocks_do_do(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3, boolean par4)
+    {
 
-		world.playSoundToNearExcept(par1EntityPlayer, par2Str, par3, par4);
-	}
+        return world.rayTraceBlocks_do_do(par1Vec3, par2Vec3, par3, par4);
+    }
 
-	@Override
-	public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9)
-	{
+    @Override
+    public void playSoundAtEntity(Entity par1Entity, String par2Str, float par3, float par4)
+    {
 
-		world.playSoundEffect(par1, par3, par5, par7Str, par8, par9);
-	}
+        world.playSoundAtEntity(par1Entity, par2Str, par3, par4);
+    }
 
-	@Override
-	public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9, boolean par10)
-	{
+    @Override
+    public void playSoundToNearExcept(EntityPlayer par1EntityPlayer, String par2Str, float par3, float par4)
+    {
 
-		world.playSound(par1, par3, par5, par7Str, par8, par9, par10);
-	}
+        world.playSoundToNearExcept(par1EntityPlayer, par2Str, par3, par4);
+    }
 
-	@Override
-	public void playRecord(String par1Str, int par2, int par3, int par4)
-	{
+    @Override
+    public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9)
+    {
 
-		world.playRecord(par1Str, par2, par3, par4);
-	}
+        world.playSoundEffect(par1, par3, par5, par7Str, par8, par9);
+    }
 
-	@Override
-	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
-	{
+    @Override
+    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9, boolean par10)
+    {
 
-		world.spawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
-	}
+        world.playSound(par1, par3, par5, par7Str, par8, par9, par10);
+    }
 
-	@Override
-	public boolean addWeatherEffect(Entity par1Entity)
-	{
+    @Override
+    public void playRecord(String par1Str, int par2, int par3, int par4)
+    {
 
-		return world.addWeatherEffect(par1Entity);
-	}
+        world.playRecord(par1Str, par2, par3, par4);
+    }
 
-	@Override
-	public boolean spawnEntityInWorld(Entity par1Entity)
-	{
+    @Override
+    public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
+    {
 
-		return world.spawnEntityInWorld(par1Entity);
-	}
+        world.spawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
+    }
 
-	@Override
-	public void onEntityRemoved(Entity par1Entity)
-	{
+    @Override
+    public boolean addWeatherEffect(Entity par1Entity)
+    {
 
-		world.onEntityRemoved(par1Entity);
-	}
+        return world.addWeatherEffect(par1Entity);
+    }
 
-	@Override
-	public void removeEntity(Entity par1Entity)
-	{
+    @Override
+    public boolean spawnEntityInWorld(Entity par1Entity)
+    {
 
-		world.removeEntity(par1Entity);
-	}
+        return world.spawnEntityInWorld(par1Entity);
+    }
 
-	@Override
-	public void removePlayerEntityDangerously(Entity par1Entity)
-	{
+    @Override
+    public void onEntityRemoved(Entity par1Entity)
+    {
 
-		world.removePlayerEntityDangerously(par1Entity);
-	}
+        world.onEntityRemoved(par1Entity);
+    }
 
-	@Override
-	public void addWorldAccess(IWorldAccess par1iWorldAccess)
-	{
+    @Override
+    public void removeEntity(Entity par1Entity)
+    {
 
-		world.addWorldAccess(par1iWorldAccess);
-	}
+        world.removeEntity(par1Entity);
+    }
 
-	@Override
-	public List getCollidingBoundingBoxes(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
-	{
+    @Override
+    public void removePlayerEntityDangerously(Entity par1Entity)
+    {
 
-		return world.getCollidingBoundingBoxes(par1Entity, par2AxisAlignedBB);
-	}
+        world.removePlayerEntityDangerously(par1Entity);
+    }
 
-	@Override
-	public int calculateSkylightSubtracted(float par1)
-	{
-		return world.calculateSkylightSubtracted(par1);
-	}
+    @Override
+    public void addWorldAccess(IWorldAccess par1iWorldAccess)
+    {
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void removeWorldAccess(IWorldAccess par1iWorldAccess)
-	{
+        world.addWorldAccess(par1iWorldAccess);
+    }
 
-		world.removeWorldAccess(par1iWorldAccess);
-	}
+    @Override
+    public List getCollidingBoundingBoxes(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
+    {
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getSunBrightness(float par1)
-	{
+        return world.getCollidingBoundingBoxes(par1Entity, par2AxisAlignedBB);
+    }
 
-		return world.getSunBrightness(par1);
-	}
+    @Override
+    public int calculateSkylightSubtracted(float par1)
+    {
+        return world.calculateSkylightSubtracted(par1);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Vec3 getSkyColor(Entity par1Entity, float par2)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void removeWorldAccess(IWorldAccess par1iWorldAccess)
+    {
 
-		return world.getSkyColor(par1Entity, par2);
-	}
+        world.removeWorldAccess(par1iWorldAccess);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Vec3 getSkyColorBody(Entity par1Entity, float par2)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getSunBrightness(float par1)
+    {
 
-		return world.getSkyColorBody(par1Entity, par2);
-	}
+        return world.getSunBrightness(par1);
+    }
 
-	@Override
-	public float getCelestialAngle(float par1)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Vec3 getSkyColor(Entity par1Entity, float par2)
+    {
 
-		return world.getCelestialAngle(par1);
-	}
+        return world.getSkyColor(par1Entity, par2);
+    }
 
-	@Override
-	public int getMoonPhase()
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Vec3 getSkyColorBody(Entity par1Entity, float par2)
+    {
 
-		return world.getMoonPhase();
-	}
+        return world.getSkyColorBody(par1Entity, par2);
+    }
 
-	@Override
-	public float getCelestialAngleRadians(float par1)
-	{
+    @Override
+    public float getCelestialAngle(float par1)
+    {
 
-		return world.getCelestialAngleRadians(par1);
-	}
+        return world.getCelestialAngle(par1);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Vec3 getCloudColour(float par1)
-	{
+    @Override
+    public int getMoonPhase()
+    {
 
-		return world.getCloudColour(par1);
-	}
+        return world.getMoonPhase();
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Vec3 drawCloudsBody(float par1)
-	{
+    @Override
+    public float getCelestialAngleRadians(float par1)
+    {
 
-		return world.drawCloudsBody(par1);
-	}
+        return world.getCelestialAngleRadians(par1);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Vec3 getFogColor(float par1)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Vec3 getCloudColour(float par1)
+    {
 
-		return world.getFogColor(par1);
-	}
+        return world.getCloudColour(par1);
+    }
 
-	@Override
-	public int getPrecipitationHeight(int par1, int par2)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Vec3 drawCloudsBody(float par1)
+    {
 
-		return world.getPrecipitationHeight(par1, par2);
-	}
+        return world.drawCloudsBody(par1);
+    }
 
-	@Override
-	public int getTopSolidOrLiquidBlock(int par1, int par2)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Vec3 getFogColor(float par1)
+    {
 
-		return world.getTopSolidOrLiquidBlock(par1, par2);
-	}
+        return world.getFogColor(par1);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getStarBrightness(float par1)
-	{
+    @Override
+    public int getPrecipitationHeight(int par1, int par2)
+    {
 
-		return world.getStarBrightness(par1);
-	}
+        return world.getPrecipitationHeight(par1, par2);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getStarBrightnessBody(float par1)
-	{
+    @Override
+    public int getTopSolidOrLiquidBlock(int par1, int par2)
+    {
 
-		return world.getStarBrightnessBody(par1);
-	}
+        return world.getTopSolidOrLiquidBlock(par1, par2);
+    }
 
-	@Override
-	public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getStarBrightness(float par1)
+    {
 
-		world.scheduleBlockUpdate(par1, par2, par3, par4, par5);
-	}
+        return world.getStarBrightness(par1);
+    }
 
-	@Override
-	public void scheduleBlockUpdateWithPriority(int par1, int par2, int par3, int par4, int par5, int par6)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getStarBrightnessBody(float par1)
+    {
 
-		world.scheduleBlockUpdateWithPriority(par1, par2, par3, par4, par5, par6);
-	}
+        return world.getStarBrightnessBody(par1);
+    }
 
-	@Override
-	public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5, int par6)
-	{
+    @Override
+    public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
+    {
 
-		world.scheduleBlockUpdateFromLoad(par1, par2, par3, par4, par5, par6);
-	}
+        world.scheduleBlockUpdate(par1, par2, par3, par4, par5);
+    }
 
-	@Override
-	public void updateEntities()
-	{
+    @Override
+    public void scheduleBlockUpdateWithPriority(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
 
-		world.updateEntities();
-	}
+        world.scheduleBlockUpdateWithPriority(par1, par2, par3, par4, par5, par6);
+    }
 
-	@Override
-	public void addTileEntity(Collection par1Collection)
-	{
+    @Override
+    public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
 
-		world.addTileEntity(par1Collection);
-	}
+        world.scheduleBlockUpdateFromLoad(par1, par2, par3, par4, par5, par6);
+    }
 
-	@Override
-	public void updateEntity(Entity par1Entity)
-	{
+    @Override
+    public void updateEntities()
+    {
 
-		world.updateEntity(par1Entity);
-	}
+        world.updateEntities();
+    }
 
-	@Override
-	public void updateEntityWithOptionalForce(Entity par1Entity, boolean par2)
-	{
+    @Override
+    public void addTileEntity(Collection par1Collection)
+    {
 
-		world.updateEntityWithOptionalForce(par1Entity, par2);
-	}
+        world.addTileEntity(par1Collection);
+    }
 
-	@Override
-	public boolean isAnyLiquid(AxisAlignedBB par1AxisAlignedBB)
-	{
+    @Override
+    public void updateEntity(Entity par1Entity)
+    {
 
-		return world.isAnyLiquid(par1AxisAlignedBB);
-	}
+        world.updateEntity(par1Entity);
+    }
 
-	@Override
-	public boolean isBoundingBoxBurning(AxisAlignedBB par1AxisAlignedBB)
-	{
+    @Override
+    public void updateEntityWithOptionalForce(Entity par1Entity, boolean par2)
+    {
 
-		return world.isBoundingBoxBurning(par1AxisAlignedBB);
-	}
+        world.updateEntityWithOptionalForce(par1Entity, par2);
+    }
 
-	@Override
-	public boolean handleMaterialAcceleration(AxisAlignedBB par1AxisAlignedBB, Material par2Material, Entity par3Entity)
-	{
+    @Override
+    public boolean isAnyLiquid(AxisAlignedBB par1AxisAlignedBB)
+    {
 
-		return world.handleMaterialAcceleration(par1AxisAlignedBB, par2Material, par3Entity);
-	}
+        return world.isAnyLiquid(par1AxisAlignedBB);
+    }
 
-	@Override
-	public boolean isMaterialInBB(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
-	{
+    @Override
+    public boolean isBoundingBoxBurning(AxisAlignedBB par1AxisAlignedBB)
+    {
 
-		return world.isMaterialInBB(par1AxisAlignedBB, par2Material);
-	}
+        return world.isBoundingBoxBurning(par1AxisAlignedBB);
+    }
 
-	@Override
-	public boolean isAABBInMaterial(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
-	{
+    @Override
+    public boolean handleMaterialAcceleration(AxisAlignedBB par1AxisAlignedBB, Material par2Material, Entity par3Entity)
+    {
 
-		return world.isAABBInMaterial(par1AxisAlignedBB, par2Material);
-	}
+        return world.handleMaterialAcceleration(par1AxisAlignedBB, par2Material, par3Entity);
+    }
 
-	@Override
-	public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
-	{
+    @Override
+    public boolean isMaterialInBB(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
+    {
 
-		return world.createExplosion(par1Entity, par2, par4, par6, par8, par9);
-	}
+        return world.isMaterialInBB(par1AxisAlignedBB, par2Material);
+    }
 
-	@Override
-	public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10)
-	{
+    @Override
+    public boolean isAABBInMaterial(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
+    {
 
-		return world.newExplosion(par1Entity, par2, par4, par6, par8, par9, par10);
-	}
+        return world.isAABBInMaterial(par1AxisAlignedBB, par2Material);
+    }
 
-	@Override
-	public float getBlockDensity(Vec3 par1Vec3, AxisAlignedBB par2AxisAlignedBB)
-	{
+    @Override
+    public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
+    {
 
-		return world.getBlockDensity(par1Vec3, par2AxisAlignedBB);
-	}
+        return world.createExplosion(par1Entity, par2, par4, par6, par8, par9);
+    }
 
-	@Override
-	public boolean extinguishFire(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5)
-	{
+    @Override
+    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10)
+    {
 
-		return world.extinguishFire(par1EntityPlayer, par2, par3, par4, par5);
-	}
+        return world.newExplosion(par1Entity, par2, par4, par6, par8, par9, par10);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public String getDebugLoadedEntities()
-	{
+    @Override
+    public float getBlockDensity(Vec3 par1Vec3, AxisAlignedBB par2AxisAlignedBB)
+    {
 
-		return world.getDebugLoadedEntities();
-	}
+        return world.getBlockDensity(par1Vec3, par2AxisAlignedBB);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public String getProviderName()
-	{
+    @Override
+    public boolean extinguishFire(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5)
+    {
 
-		return world.getProviderName();
-	}
+        return world.extinguishFire(par1EntityPlayer, par2, par3, par4, par5);
+    }
 
-	@Override
-	public void setBlockTileEntity(int par1, int par2, int par3, TileEntity par4TileEntity)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getDebugLoadedEntities()
+    {
 
-		world.setBlockTileEntity(par1, par2, par3, par4TileEntity);
-	}
+        return world.getDebugLoadedEntities();
+    }
 
-	@Override
-	public void removeBlockTileEntity(int par1, int par2, int par3)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getProviderName()
+    {
 
-		world.removeBlockTileEntity(par1, par2, par3);
-	}
+        return world.getProviderName();
+    }
 
-	@Override
-	public void markTileEntityForDespawn(TileEntity par1TileEntity)
-	{
+    @Override
+    public void setBlockTileEntity(int par1, int par2, int par3, TileEntity par4TileEntity)
+    {
 
-		world.markTileEntityForDespawn(par1TileEntity);
-	}
+        world.setBlockTileEntity(par1, par2, par3, par4TileEntity);
+    }
 
-	@Override
-	public boolean isBlockOpaqueCube(int par1, int par2, int par3)
-	{
+    @Override
+    public void removeBlockTileEntity(int par1, int par2, int par3)
+    {
 
-		return world.isBlockOpaqueCube(par1, par2, par3);
-	}
+        world.removeBlockTileEntity(par1, par2, par3);
+    }
 
-	@Override
-	public boolean isBlockNormalCube(int par1, int par2, int par3)
-	{
+    @Override
+    public void markTileEntityForDespawn(TileEntity par1TileEntity)
+    {
 
-		return world.isBlockNormalCube(par1, par2, par3);
-	}
+        world.markTileEntityForDespawn(par1TileEntity);
+    }
 
-	@Override
-	public boolean isBlockFullCube(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean isBlockOpaqueCube(int par1, int par2, int par3)
+    {
 
-		return world.isBlockFullCube(par1, par2, par3);
-	}
+        return world.isBlockOpaqueCube(par1, par2, par3);
+    }
 
-	@Override
-	public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean isBlockNormalCube(int par1, int par2, int par3)
+    {
 
-		return world.doesBlockHaveSolidTopSurface(par1, par2, par3);
-	}
+        return world.isBlockNormalCube(par1, par2, par3);
+    }
 
-	@Override
-	public boolean isBlockNormalCubeDefault(int par1, int par2, int par3, boolean par4)
-	{
+    @Override
+    public boolean isBlockFullCube(int par1, int par2, int par3)
+    {
 
-		return world.isBlockNormalCubeDefault(par1, par2, par3, par4);
-	}
+        return world.isBlockFullCube(par1, par2, par3);
+    }
 
-	@Override
-	public void calculateInitialSkylight()
-	{
-		// nothing
-	}
+    @Override
+    public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
+    {
 
-	@Override
-	public void setAllowedSpawnTypes(boolean par1, boolean par2)
-	{
+        return world.doesBlockHaveSolidTopSurface(par1, par2, par3);
+    }
 
-		world.setAllowedSpawnTypes(par1, par2);
-	}
+    @Override
+    public boolean isBlockNormalCubeDefault(int par1, int par2, int par3, boolean par4)
+    {
 
-	@Override
-	public void tick()
-	{
+        return world.isBlockNormalCubeDefault(par1, par2, par3, par4);
+    }
 
-		world.tick();
-	}
+    @Override
+    public void calculateInitialSkylight()
+    {
+        // nothing
+    }
 
-	@Override
-	public void calculateInitialWeatherBody()
-	{
-		// nothing
-	}
+    @Override
+    public void setAllowedSpawnTypes(boolean par1, boolean par2)
+    {
 
-	@Override
-	public void updateWeatherBody()
-	{
+        world.setAllowedSpawnTypes(par1, par2);
+    }
 
-		world.updateWeatherBody();
-	}
+    @Override
+    public void tick()
+    {
 
-	@Override
-	public void toggleRain()
-	{
+        world.tick();
+    }
 
-		world.toggleRain();
-	}
+    @Override
+    public void calculateInitialWeatherBody()
+    {
+        // nothing
+    }
 
-	@Override
-	public boolean isBlockFreezable(int par1, int par2, int par3)
-	{
+    @Override
+    public void updateWeatherBody()
+    {
 
-		return world.isBlockFreezable(par1, par2, par3);
-	}
+        world.updateWeatherBody();
+    }
 
-	@Override
-	public boolean isBlockFreezableNaturally(int par1, int par2, int par3)
-	{
+    @Override
+    public void toggleRain()
+    {
 
-		return world.isBlockFreezableNaturally(par1, par2, par3);
-	}
+        world.toggleRain();
+    }
 
-	@Override
-	public boolean canBlockFreeze(int par1, int par2, int par3, boolean par4)
-	{
+    @Override
+    public boolean isBlockFreezable(int par1, int par2, int par3)
+    {
 
-		return world.canBlockFreeze(par1, par2, par3, par4);
-	}
+        return world.isBlockFreezable(par1, par2, par3);
+    }
 
-	@Override
-	public boolean canBlockFreezeBody(int par1, int par2, int par3, boolean par4)
-	{
+    @Override
+    public boolean isBlockFreezableNaturally(int par1, int par2, int par3)
+    {
 
-		return world.canBlockFreezeBody(par1, par2, par3, par4);
-	}
+        return world.isBlockFreezableNaturally(par1, par2, par3);
+    }
 
-	@Override
-	public boolean canSnowAt(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean canBlockFreeze(int par1, int par2, int par3, boolean par4)
+    {
 
-		return world.canSnowAt(par1, par2, par3);
-	}
+        return world.canBlockFreeze(par1, par2, par3, par4);
+    }
 
-	@Override
-	public boolean canSnowAtBody(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean canBlockFreezeBody(int par1, int par2, int par3, boolean par4)
+    {
 
-		return world.canSnowAtBody(par1, par2, par3);
-	}
+        return world.canBlockFreezeBody(par1, par2, par3, par4);
+    }
 
-	@Override
-	public void updateAllLightTypes(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean canSnowAt(int par1, int par2, int par3)
+    {
 
-		world.updateAllLightTypes(par1, par2, par3);
-	}
+        return world.canSnowAt(par1, par2, par3);
+    }
 
-	@Override
-	public void updateLightByType(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
-	{
+    @Override
+    public boolean canSnowAtBody(int par1, int par2, int par3)
+    {
 
-		world.updateLightByType(par1EnumSkyBlock, par2, par3, par4);
-	}
+        return world.canSnowAtBody(par1, par2, par3);
+    }
 
-	@Override
-	public boolean tickUpdates(boolean par1)
-	{
+    @Override
+    public void updateAllLightTypes(int par1, int par2, int par3)
+    {
 
-		return world.tickUpdates(par1);
-	}
+        world.updateAllLightTypes(par1, par2, par3);
+    }
 
-	@Override
-	public List getPendingBlockUpdates(Chunk par1Chunk, boolean par2)
-	{
+    @Override
+    public void updateLightByType(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
+    {
 
-		return world.getPendingBlockUpdates(par1Chunk, par2);
-	}
+        world.updateLightByType(par1EnumSkyBlock, par2, par3, par4);
+    }
 
-	@Override
-	public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
-	{
+    @Override
+    public boolean tickUpdates(boolean par1)
+    {
 
-		return world.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB);
-	}
+        return world.tickUpdates(par1);
+    }
 
-	@Override
-	public List getEntitiesWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB)
-	{
+    @Override
+    public List getPendingBlockUpdates(Chunk par1Chunk, boolean par2)
+    {
 
-		return world.getEntitiesWithinAABB(par1Class, par2AxisAlignedBB);
-	}
+        return world.getPendingBlockUpdates(par1Chunk, par2);
+    }
 
-	@Override
-	public List selectEntitiesWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3iEntitySelector)
-	{
+    @Override
+    public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
+    {
 
-		return world.selectEntitiesWithinAABB(par1Class, par2AxisAlignedBB, par3iEntitySelector);
-	}
+        return world.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB);
+    }
 
-	@Override
-	public Entity findNearestEntityWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, Entity par3Entity)
-	{
+    @Override
+    public List getEntitiesWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB)
+    {
 
-		return world.findNearestEntityWithinAABB(par1Class, par2AxisAlignedBB, par3Entity);
-	}
+        return world.getEntitiesWithinAABB(par1Class, par2AxisAlignedBB);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public List getLoadedEntityList()
-	{
+    @Override
+    public List selectEntitiesWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3iEntitySelector)
+    {
 
-		return world.getLoadedEntityList();
-	}
+        return world.selectEntitiesWithinAABB(par1Class, par2AxisAlignedBB, par3iEntitySelector);
+    }
 
-	@Override
-	public void updateTileEntityChunkAndDoNothing(int par1, int par2, int par3, TileEntity par4TileEntity)
-	{
+    @Override
+    public Entity findNearestEntityWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, Entity par3Entity)
+    {
 
-		world.updateTileEntityChunkAndDoNothing(par1, par2, par3, par4TileEntity);
-	}
+        return world.findNearestEntityWithinAABB(par1Class, par2AxisAlignedBB, par3Entity);
+    }
 
-	@Override
-	public int countEntities(Class par1Class)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public List getLoadedEntityList()
+    {
 
-		return world.countEntities(par1Class);
-	}
+        return world.getLoadedEntityList();
+    }
 
-	@Override
-	public void addLoadedEntities(List par1List)
-	{
+    @Override
+    public void markTileEntityChunkModified(int par1, int par2, int par3, TileEntity par4TileEntity)
+    {
+        world.markTileEntityChunkModified(par1, par2, par3, par4TileEntity);
+    }
 
-		world.addLoadedEntities(par1List);
-	}
+    @Override
+    public int countEntities(Class par1Class)
+    {
+        return world.countEntities(par1Class);
+    }
 
-	@Override
-	public void unloadEntities(List par1List)
-	{
+    @Override
+    public void addLoadedEntities(List par1List)
+    {
 
-		world.unloadEntities(par1List);
-	}
+        world.addLoadedEntities(par1List);
+    }
 
-	@Override
-	public boolean canPlaceEntityOnSide(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity, ItemStack par8ItemStack)
-	{
+    @Override
+    public void unloadEntities(List par1List)
+    {
 
-		return world.canPlaceEntityOnSide(par1, par2, par3, par4, par5, par6, par7Entity, par8ItemStack);
-	}
+        world.unloadEntities(par1List);
+    }
 
-	@Override
-	public PathEntity getPathEntityToEntity(Entity par1Entity, Entity par2Entity, float par3, boolean par4, boolean par5, boolean par6, boolean par7)
-	{
+    @Override
+    public boolean canPlaceEntityOnSide(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity, ItemStack par8ItemStack)
+    {
 
-		return world.getPathEntityToEntity(par1Entity, par2Entity, par3, par4, par5, par6, par7);
-	}
+        return world.canPlaceEntityOnSide(par1, par2, par3, par4, par5, par6, par7Entity, par8ItemStack);
+    }
 
-	@Override
-	public PathEntity getEntityPathToXYZ(Entity par1Entity, int par2, int par3, int par4, float par5, boolean par6, boolean par7, boolean par8, boolean par9)
-	{
+    @Override
+    public PathEntity getPathEntityToEntity(Entity par1Entity, Entity par2Entity, float par3, boolean par4, boolean par5, boolean par6, boolean par7)
+    {
 
-		return world.getEntityPathToXYZ(par1Entity, par2, par3, par4, par5, par6, par7, par8, par9);
-	}
+        return world.getPathEntityToEntity(par1Entity, par2Entity, par3, par4, par5, par6, par7);
+    }
 
-	@Override
-	public int isBlockProvidingPowerTo(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public PathEntity getEntityPathToXYZ(Entity par1Entity, int par2, int par3, int par4, float par5, boolean par6, boolean par7, boolean par8, boolean par9)
+    {
 
-		return world.isBlockProvidingPowerTo(par1, par2, par3, par4);
-	}
+        return world.getEntityPathToXYZ(par1Entity, par2, par3, par4, par5, par6, par7, par8, par9);
+    }
 
-	@Override
-	public int getBlockPowerInput(int par1, int par2, int par3)
-	{
+    @Override
+    public int isBlockProvidingPowerTo(int par1, int par2, int par3, int par4)
+    {
 
-		return world.getBlockPowerInput(par1, par2, par3);
-	}
+        return world.isBlockProvidingPowerTo(par1, par2, par3, par4);
+    }
 
-	@Override
-	public boolean getIndirectPowerOutput(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public int getBlockPowerInput(int par1, int par2, int par3)
+    {
 
-		return world.getIndirectPowerOutput(par1, par2, par3, par4);
-	}
+        return world.getBlockPowerInput(par1, par2, par3);
+    }
 
-	@Override
-	public int getIndirectPowerLevelTo(int par1, int par2, int par3, int par4)
-	{
+    @Override
+    public boolean getIndirectPowerOutput(int par1, int par2, int par3, int par4)
+    {
 
-		return world.getIndirectPowerLevelTo(par1, par2, par3, par4);
-	}
+        return world.getIndirectPowerOutput(par1, par2, par3, par4);
+    }
 
-	@Override
-	public boolean isBlockIndirectlyGettingPowered(int par1, int par2, int par3)
-	{
+    @Override
+    public int getIndirectPowerLevelTo(int par1, int par2, int par3, int par4)
+    {
 
-		return world.isBlockIndirectlyGettingPowered(par1, par2, par3);
-	}
+        return world.getIndirectPowerLevelTo(par1, par2, par3, par4);
+    }
 
-	@Override
-	public int getStrongestIndirectPower(int par1, int par2, int par3)
-	{
+    @Override
+    public boolean isBlockIndirectlyGettingPowered(int par1, int par2, int par3)
+    {
 
-		return world.getStrongestIndirectPower(par1, par2, par3);
-	}
+        return world.isBlockIndirectlyGettingPowered(par1, par2, par3);
+    }
 
-	@Override
-	public EntityPlayer getClosestPlayerToEntity(Entity par1Entity, double par2)
-	{
+    @Override
+    public int getStrongestIndirectPower(int par1, int par2, int par3)
+    {
 
-		return world.getClosestPlayerToEntity(par1Entity, par2);
-	}
+        return world.getStrongestIndirectPower(par1, par2, par3);
+    }
 
-	@Override
-	public EntityPlayer getClosestPlayer(double par1, double par3, double par5, double par7)
-	{
+    @Override
+    public EntityPlayer getClosestPlayerToEntity(Entity par1Entity, double par2)
+    {
 
-		return world.getClosestPlayer(par1, par3, par5, par7);
-	}
+        return world.getClosestPlayerToEntity(par1Entity, par2);
+    }
 
-	@Override
-	public EntityPlayer getClosestVulnerablePlayerToEntity(Entity par1Entity, double par2)
-	{
+    @Override
+    public EntityPlayer getClosestPlayer(double par1, double par3, double par5, double par7)
+    {
 
-		return world.getClosestVulnerablePlayerToEntity(par1Entity, par2);
-	}
+        return world.getClosestPlayer(par1, par3, par5, par7);
+    }
 
-	@Override
-	public EntityPlayer getClosestVulnerablePlayer(double par1, double par3, double par5, double par7)
-	{
+    @Override
+    public EntityPlayer getClosestVulnerablePlayerToEntity(Entity par1Entity, double par2)
+    {
 
-		return world.getClosestVulnerablePlayer(par1, par3, par5, par7);
-	}
+        return world.getClosestVulnerablePlayerToEntity(par1Entity, par2);
+    }
 
-	@Override
-	public EntityPlayer getPlayerEntityByName(String par1Str)
-	{
+    @Override
+    public EntityPlayer getClosestVulnerablePlayer(double par1, double par3, double par5, double par7)
+    {
 
-		return world.getPlayerEntityByName(par1Str);
-	}
+        return world.getClosestVulnerablePlayer(par1, par3, par5, par7);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void sendQuittingDisconnectingPacket()
-	{
+    @Override
+    public EntityPlayer getPlayerEntityByName(String par1Str)
+    {
 
-		world.sendQuittingDisconnectingPacket();
-	}
+        return world.getPlayerEntityByName(par1Str);
+    }
 
-	@Override
-	public void checkSessionLock() throws MinecraftException
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void sendQuittingDisconnectingPacket()
+    {
 
-		world.checkSessionLock();
-	}
+        world.sendQuittingDisconnectingPacket();
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void func_82738_a(long par1)
-	{
+    @Override
+    public void checkSessionLock() throws MinecraftException
+    {
 
-		world.func_82738_a(par1);
-	}
+        world.checkSessionLock();
+    }
 
-	@Override
-	public long getSeed()
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void func_82738_a(long par1)
+    {
 
-		return world.getSeed();
-	}
+        world.func_82738_a(par1);
+    }
 
-	@Override
-	public long getTotalWorldTime()
-	{
+    @Override
+    public long getSeed()
+    {
 
-		return world.getTotalWorldTime();
-	}
+        return world.getSeed();
+    }
 
-	@Override
-	public long getWorldTime()
-	{
+    @Override
+    public long getTotalWorldTime()
+    {
 
-		return world.getWorldTime();
-	}
+        return world.getTotalWorldTime();
+    }
 
-	@Override
-	public void setWorldTime(long par1)
-	{
+    @Override
+    public long getWorldTime()
+    {
 
-		world.setWorldTime(par1);
-	}
+        return world.getWorldTime();
+    }
 
-	@Override
-	public ChunkCoordinates getSpawnPoint()
-	{
+    @Override
+    public void setWorldTime(long par1)
+    {
 
-		return world.getSpawnPoint();
-	}
+        world.setWorldTime(par1);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void setSpawnLocation(int par1, int par2, int par3)
-	{
-		world.setSpawnLocation(par1, par2, par3);
-	}
+    @Override
+    public ChunkCoordinates getSpawnPoint()
+    {
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void joinEntityInSurroundings(Entity par1Entity)
-	{
-		world.joinEntityInSurroundings(par1Entity);
-	}
+        return world.getSpawnPoint();
+    }
 
-	@Override
-	public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int par4)
-	{
-		return world.canMineBlock(par1EntityPlayer, par2, par3, par4);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void setSpawnLocation(int par1, int par2, int par3)
+    {
+        world.setSpawnLocation(par1, par2, par3);
+    }
 
-	@Override
-	public boolean canMineBlockBody(EntityPlayer par1EntityPlayer, int par2, int par3, int par4)
-	{
-		return world.canMineBlockBody(par1EntityPlayer, par2, par3, par4);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void joinEntityInSurroundings(Entity par1Entity)
+    {
+        world.joinEntityInSurroundings(par1Entity);
+    }
 
-	@Override
-	public void setEntityState(Entity par1Entity, byte par2)
-	{
-		world.setEntityState(par1Entity, par2);
-	}
+    @Override
+    public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int par4)
+    {
+        return world.canMineBlock(par1EntityPlayer, par2, par3, par4);
+    }
 
-	@Override
-	public IChunkProvider getChunkProvider()
-	{
-		return world.getChunkProvider();
-	}
+    @Override
+    public boolean canMineBlockBody(EntityPlayer par1EntityPlayer, int par2, int par3, int par4)
+    {
+        return world.canMineBlockBody(par1EntityPlayer, par2, par3, par4);
+    }
 
-	@Override
-	public void addBlockEvent(int par1, int par2, int par3, int par4, int par5, int par6)
-	{
-		world.addBlockEvent(par1, par2, par3, par4, par5, par6);
-	}
+    @Override
+    public void setEntityState(Entity par1Entity, byte par2)
+    {
+        world.setEntityState(par1Entity, par2);
+    }
 
-	@Override
-	public GameRules getGameRules()
-	{
-		return world.getGameRules();
-	}
+    @Override
+    public IChunkProvider getChunkProvider()
+    {
+        return world.getChunkProvider();
+    }
 
-	@Override
-	public void updateAllPlayersSleepingFlag()
-	{
-		world.updateAllPlayersSleepingFlag();
-	}
+    @Override
+    public void addBlockEvent(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
+        world.addBlockEvent(par1, par2, par3, par4, par5, par6);
+    }
 
-	@Override
-	public float getWeightedThunderStrength(float par1)
-	{
-		return world.getWeightedThunderStrength(par1);
-	}
+    @Override
+    public GameRules getGameRules()
+    {
+        return world.getGameRules();
+    }
 
-	@Override
-	public float getRainStrength(float par1)
-	{
-		return world.getRainStrength(par1);
-	}
+    @Override
+    public void updateAllPlayersSleepingFlag()
+    {
+        world.updateAllPlayersSleepingFlag();
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void setRainStrength(float par1)
-	{
-		world.setRainStrength(par1);
-	}
+    @Override
+    public float getWeightedThunderStrength(float par1)
+    {
+        return world.getWeightedThunderStrength(par1);
+    }
 
-	@Override
-	public boolean isThundering()
-	{
-		return world.isThundering();
-	}
+    @Override
+    public float getRainStrength(float par1)
+    {
+        return world.getRainStrength(par1);
+    }
 
-	@Override
-	public boolean isRaining()
-	{
-		return world.isRaining();
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void setRainStrength(float par1)
+    {
+        world.setRainStrength(par1);
+    }
 
-	@Override
-	public boolean canLightningStrikeAt(int par1, int par2, int par3)
-	{
-		return world.canLightningStrikeAt(par1, par2, par3);
-	}
+    @Override
+    public boolean isThundering()
+    {
+        return world.isThundering();
+    }
 
-	@Override
-	public boolean isBlockHighHumidity(int par1, int par2, int par3)
-	{
-		return world.isBlockHighHumidity(par1, par2, par3);
-	}
+    @Override
+    public boolean isRaining()
+    {
+        return world.isRaining();
+    }
 
-	@Override
-	public void setItemData(String par1Str, WorldSavedData par2WorldSavedData)
-	{
-		world.setItemData(par1Str, par2WorldSavedData);
-	}
+    @Override
+    public boolean canLightningStrikeAt(int par1, int par2, int par3)
+    {
+        return world.canLightningStrikeAt(par1, par2, par3);
+    }
 
-	@Override
-	public WorldSavedData loadItemData(Class par1Class, String par2Str)
-	{
-		return world.loadItemData(par1Class, par2Str);
-	}
+    @Override
+    public boolean isBlockHighHumidity(int par1, int par2, int par3)
+    {
+        return world.isBlockHighHumidity(par1, par2, par3);
+    }
 
-	@Override
-	public int getUniqueDataId(String par1Str)
-	{
-		return world.getUniqueDataId(par1Str);
-	}
+    @Override
+    public void setItemData(String par1Str, WorldSavedData par2WorldSavedData)
+    {
+        world.setItemData(par1Str, par2WorldSavedData);
+    }
 
-	@Override
-	public void func_82739_e(int par1, int par2, int par3, int par4, int par5)
-	{
-		world.func_82739_e(par1, par2, par3, par4, par5);
-	}
+    @Override
+    public WorldSavedData loadItemData(Class par1Class, String par2Str)
+    {
+        return world.loadItemData(par1Class, par2Str);
+    }
 
-	@Override
-	public void playAuxSFX(int par1, int par2, int par3, int par4, int par5)
-	{
-		world.playAuxSFX(par1, par2, par3, par4, par5);
-	}
+    @Override
+    public int getUniqueDataId(String par1Str)
+    {
+        return world.getUniqueDataId(par1Str);
+    }
 
-	@Override
-	public void playAuxSFXAtEntity(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
-	{
-		world.playAuxSFXAtEntity(par1EntityPlayer, par2, par3, par4, par5, par6);
-	}
+    @Override
+    public void func_82739_e(int par1, int par2, int par3, int par4, int par5)
+    {
+        world.func_82739_e(par1, par2, par3, par4, par5);
+    }
 
-	@Override
-	public int getHeight()
-	{
-		return world.getHeight();
-	}
+    @Override
+    public void playAuxSFX(int par1, int par2, int par3, int par4, int par5)
+    {
+        world.playAuxSFX(par1, par2, par3, par4, par5);
+    }
 
-	@Override
-	public int getActualHeight()
-	{
-		return world.getActualHeight();
-	}
+    @Override
+    public void playAuxSFXAtEntity(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
+    {
+        world.playAuxSFXAtEntity(par1EntityPlayer, par2, par3, par4, par5, par6);
+    }
 
-	@Override
-	public IUpdatePlayerListBox func_82735_a(EntityMinecart par1EntityMinecart)
-	{
-		return world.func_82735_a(par1EntityMinecart);
-	}
+    @Override
+    public int getHeight()
+    {
+        return world.getHeight();
+    }
 
-	@Override
-	public Random setRandomSeed(int par1, int par2, int par3)
-	{
-		return world.setRandomSeed(par1, par2, par3);
-	}
+    @Override
+    public int getActualHeight()
+    {
+        return world.getActualHeight();
+    }
 
-	@Override
-	public ChunkPosition findClosestStructure(String par1Str, int par2, int par3, int par4)
-	{
-		return world.findClosestStructure(par1Str, par2, par3, par4);
-	}
+    @Override
+    public IUpdatePlayerListBox getMinecartSoundUpdater(EntityMinecart par1EntityMinecart)
+    {
+        return world.getMinecartSoundUpdater(par1EntityMinecart);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean extendedLevelsInChunkCache()
-	{
+    @Override
+    public Random setRandomSeed(int par1, int par2, int par3)
+    {
+        return world.setRandomSeed(par1, par2, par3);
+    }
 
-		return world.extendedLevelsInChunkCache();
-	}
+    @Override
+    public ChunkPosition findClosestStructure(String par1Str, int par2, int par3, int par4)
+    {
+        return world.findClosestStructure(par1Str, par2, par3, par4);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public double getHorizon()
-	{
-		return world.getHorizon();
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean extendedLevelsInChunkCache()
+    {
 
-	@Override
-	public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport)
-	{
-		return world.addWorldInfoToCrashReport(par1CrashReport);
-	}
+        return world.extendedLevelsInChunkCache();
+    }
 
-	@Override
-	public void destroyBlockInWorldPartially(int par1, int par2, int par3, int par4, int par5)
-	{
-		world.destroyBlockInWorldPartially(par1, par2, par3, par4, par5);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getHorizon()
+    {
+        return world.getHorizon();
+    }
 
-	@Override
-	public Vec3Pool getWorldVec3Pool()
-	{
-		return world.getWorldVec3Pool();
-	}
+    @Override
+    public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport)
+    {
+        return world.addWorldInfoToCrashReport(par1CrashReport);
+    }
 
-	@Override
-	public Calendar getCurrentDate()
-	{
-		return world.getCurrentDate();
-	}
+    @Override
+    public void destroyBlockInWorldPartially(int par1, int par2, int par3, int par4, int par5)
+    {
+        world.destroyBlockInWorldPartially(par1, par2, par3, par4, par5);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13nbtTagCompound)
-	{
-		world.func_92088_a(par1, par3, par5, par7, par9, par11, par13nbtTagCompound);
-	}
+    @Override
+    public Vec3Pool getWorldVec3Pool()
+    {
+        return world.getWorldVec3Pool();
+    }
 
-	@Override
-	public Scoreboard getScoreboard()
-	{
-		return world.getScoreboard();
-	}
+    @Override
+    public Calendar getCurrentDate()
+    {
+        return world.getCurrentDate();
+    }
 
-	@Override
-	public void func_96440_m(int par1, int par2, int par3, int par4)
-	{
-		world.func_96440_m(par1, par2, par3, par4);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13nbtTagCompound)
+    {
+        world.func_92088_a(par1, par3, par5, par7, par9, par11, par13nbtTagCompound);
+    }
 
-	@Override
-	public ILogAgent getWorldLogAgent()
-	{
-		return world.getWorldLogAgent();
-	}
+    @Override
+    public Scoreboard getScoreboard()
+    {
+        return world.getScoreboard();
+    }
 
-	@Override
-	public void addTileEntity(TileEntity entity)
-	{
-		world.addTileEntity(entity);
-	}
+    @Override
+    public void func_96440_m(int par1, int par2, int par3, int par4)
+    {
+        world.func_96440_m(par1, par2, par3, par4);
+    }
 
-	@Override
-	public boolean isBlockSolidOnSide(int x, int y, int z, ForgeDirection side)
-	{
-		return world.isBlockSolidOnSide(x, y, z, side);
-	}
+    @Override
+    public ILogAgent getWorldLogAgent()
+    {
+        return world.getWorldLogAgent();
+    }
 
-	@Override
-	public boolean isBlockSolidOnSide(int x, int y, int z, ForgeDirection side, boolean _default)
-	{
-		return world.isBlockSolidOnSide(x, y, z, side, _default);
-	}
+    @Override
+    public void addTileEntity(TileEntity entity)
+    {
+        world.addTileEntity(entity);
+    }
 
-	@Override
-	public ImmutableSetMultimap<ChunkCoordIntPair, Ticket> getPersistentChunks()
-	{
-		return world.getPersistentChunks();
-	}
+    @Override
+    public boolean isBlockSolidOnSide(int x, int y, int z, ForgeDirection side)
+    {
+        return world.isBlockSolidOnSide(x, y, z, side);
+    }
 
-	@Override
-	public int getBlockLightOpacity(int x, int y, int z)
-	{
-		return world.getBlockLightOpacity(x, y, z);
-	}
+    @Override
+    public boolean isBlockSolidOnSide(int x, int y, int z, ForgeDirection side, boolean _default)
+    {
+        return world.isBlockSolidOnSide(x, y, z, side, _default);
+    }
 
-	@Override
-	public int countEntities(EnumCreatureType type, boolean forSpawnCount)
-	{
-		return world.countEntities(type, forSpawnCount);
-	}
+    @Override
+    public ImmutableSetMultimap<ChunkCoordIntPair, Ticket> getPersistentChunks()
+    {
+        return world.getPersistentChunks();
+    }
 
-	@Override
-	public List getCollidingBlockBounds(AxisAlignedBB par1AxisAlignedBB)
-	{
-		return world.getCollidingBlockBounds(par1AxisAlignedBB);
-	}
+    @Override
+    public int getBlockLightOpacity(int x, int y, int z)
+    {
+        return world.getBlockLightOpacity(x, y, z);
+    }
 
-	@Override
-	public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB)
-	{
-		return world.checkNoEntityCollision(par1AxisAlignedBB);
-	}
+    @Override
+    public int countEntities(EnumCreatureType type, boolean forSpawnCount)
+    {
+        return world.countEntities(type, forSpawnCount);
+    }
 
-	@Override
-	public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
-	{
-		return world.checkNoEntityCollision(par1AxisAlignedBB, par2Entity);
-	}
+    @Override
+    public List getCollidingBlockBounds(AxisAlignedBB par1AxisAlignedBB)
+    {
+        return world.getCollidingBlockBounds(par1AxisAlignedBB);
+    }
 
-	@Override
-	public boolean checkBlockCollision(AxisAlignedBB par1AxisAlignedBB)
-	{
-		return world.checkBlockCollision(par1AxisAlignedBB);
-	}
+    @Override
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB)
+    {
+        return world.checkNoEntityCollision(par1AxisAlignedBB);
+    }
 
-	@Override
-	public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3iEntitySelector)
-	{
-		return world.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB, par3iEntitySelector);
-	}
+    @Override
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
+    {
+        return world.checkNoEntityCollision(par1AxisAlignedBB, par2Entity);
+    }
+
+    @Override
+    public boolean checkBlockCollision(AxisAlignedBB par1AxisAlignedBB)
+    {
+        return world.checkBlockCollision(par1AxisAlignedBB);
+    }
+
+    @Override
+    public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3iEntitySelector)
+    {
+        return world.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB, par3iEntitySelector);
+    }
 }

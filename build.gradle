@@ -13,19 +13,32 @@ buildscript {
 apply plugin: "gmcp"
 
 group = 'com.github.abrarsyed.secretroomsmod'
-version = '4.6.1'
+version = '4.6.2'
 archivesBaseName = 'SecretRoomsMod'
 
 minecraft { minecraftVersion = "1.6.4" }
 
 processResources
 {
-	// Itterrate through files to expand version on things not PNGs
-//	eachFile { file ->
-//		if (!file.getPath().endsWith('png'))
-//			expand 'version':project.version
-//	}
+	// replace stuff in text files, not binary ones.
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.lang'
+        include '**/*.info'
+		
+		// replace version and MCVersion
+		// forge version is also accessible via project.minecraftforgeVersion
+		// it contains the full minecraft version, including buildNumber
+        expand 'version':project.version, 'mcversion':project.minecraft.minecraftVersion
+    }
+	
+	// copy everything else, thats not text
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/*.lang'
+        exclude '**/*.info'
+    }
 }
+
+repositories { mavenCentral() }
 
 jar { appendix = 'universal' }
 

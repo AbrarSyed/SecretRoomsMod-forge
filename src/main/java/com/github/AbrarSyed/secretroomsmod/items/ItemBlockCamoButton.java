@@ -34,7 +34,7 @@ public class ItemBlockCamoButton extends ItemBlockWithMetadata
 	@Override
     public String getItemDisplayName(ItemStack par1ItemStack)
     {
-        return this.getLocalizedName(par1ItemStack);
+        return this.getUnlocalizedNameInefficiently(par1ItemStack);
     }
 
 }

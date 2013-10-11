@@ -10,3 +10,8 @@ bin
 
 # GMCP plugin stuff
 minecraft
+
+# intellij stuff
+.idea
+out
+*.iml
