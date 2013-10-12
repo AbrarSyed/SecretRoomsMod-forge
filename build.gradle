@@ -13,10 +13,10 @@ buildscript {
 apply plugin: "gmcp"
 
 group = 'com.github.abrarsyed.secretroomsmod'
-version = '4.6.2'
-if (System.env.hasProperty("BUILD_NUMBER"))
-	version += System.env.BUILD_NUMBER
+version = "4.6.2.${System.getenv().BUILD_NUMBER}"
 archivesBaseName = 'SecretRoomsMod'
+
+logger.lifecycle ""+version
 
 minecraft { minecraftVersion = "1.6.4" }
 
