@@ -14,6 +14,8 @@ apply plugin: "gmcp"
 
 group = 'com.github.abrarsyed.secretroomsmod'
 version = '4.6.2'
+if (System.env.hasProperty("BUILD_NUMBER"))
+	version += System.env.BUILD_NUMBER
 archivesBaseName = 'SecretRoomsMod'
 
 minecraft { minecraftVersion = "1.6.4" }
@@ -40,22 +42,22 @@ processResources
 
 repositories { mavenCentral() }
 
-jar { appendix = 'universal' }
+jar { appendix = 'universal-'+project.minecraft.minecraftVersion }
 
 task sourceJar(type: Jar) {
 	from sourceSets.main.allSource
-	appendix = 'src'
+	appendix = 'src-'+project.minecraft.minecraftVersion
 }
 
 //task javadocJar(type: Jar, dependsOn: javadoc) {
-//	appendix = 'javadoc'
+//	appendix = 'javadoc-'+project.minecraft.minecraftVersion
 //	from 'build/docs/javadoc'
 //}
 
 // because the normal default jar task has been modified to be obfuscated
 task deobfJar(type: Jar) {
 	from sourceSets.main.output
-	appendix = 'deobf'
+	appendix = 'deobf-'+project.minecraft.minecraftVersion
 }
 
 artifacts {
