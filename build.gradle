@@ -3,7 +3,7 @@
 
 buildscript {
 	repositories { mavenCentral() }
-	dependencies { classpath 'com.github.abrarsyed.gmcp:GMCP:0.8.1' }
+	dependencies { classpath 'com.github.abrarsyed.gmcp:GMCP:0.8.+' }
 }
 
 // these 3 plugins are added automatically by GMCP
@@ -13,12 +13,15 @@ buildscript {
 apply plugin: "gmcp"
 
 group = 'com.github.abrarsyed.secretroomsmod'
-version = "4.6.2.${System.getenv().BUILD_NUMBER}"
+version = "4.6.2"
 archivesBaseName = 'SecretRoomsMod'
 
 logger.lifecycle ""+version
 
 minecraft { minecraftVersion = "1.6.4" }
+
+// add some stff to the version
+version = "${minecraft.minecraftVersion}-$version.${System.getenv().BUILD_NUMBER}"
 
 processResources
 {
@@ -46,7 +49,7 @@ jar { appendix = 'universal-'+project.minecraft.minecraftVersion }
 
 task sourceJar(type: Jar) {
 	from sourceSets.main.allSource
-	appendix = 'src-'+project.minecraft.minecraftVersion
+	appendix = 'src'
 }
 
 //task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -57,7 +60,7 @@ task sourceJar(type: Jar) {
 // because the normal default jar task has been modified to be obfuscated
 task deobfJar(type: Jar) {
 	from sourceSets.main.output
-	appendix = 'deobf-'+project.minecraft.minecraftVersion
+	appendix = 'deobf'
 }
 
 artifacts {
