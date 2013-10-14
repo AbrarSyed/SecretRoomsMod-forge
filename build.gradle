@@ -45,7 +45,7 @@ processResources
 
 repositories { mavenCentral() }
 
-jar { appendix = 'universal-'+project.minecraft.minecraftVersion }
+jar { appendix = 'universal'}
 
 task sourceJar(type: Jar) {
 	from sourceSets.main.allSource
