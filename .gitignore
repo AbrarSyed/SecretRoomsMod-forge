@@ -8,8 +8,8 @@ build
 .settings
 bin
 
-# GMCP plugin stuff
-minecraft
+# run place
+run
 
 # intellij stuff
 .idea

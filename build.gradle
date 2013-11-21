@@ -1,27 +1,34 @@
-//import com.github.abrarsyed.gmcp.GMCP
-// this is required for adding obfuscated jar classes.
-
+// this part adds in ForgeGradle
 buildscript {
-	repositories { mavenCentral() }
-	dependencies { classpath 'com.github.abrarsyed.gmcp:GMCP:0.8.+' }
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+    }
 }
 
-// these 3 plugins are added automatically by GMCP
-//apply plugin: "java"
-//apply plugin: "eclipse"
-//apply plugin: "idea"
-apply plugin: "gmcp"
+apply plugin: "forge"
 
+// stuff specific to my mod
 group = 'com.github.abrarsyed.secretroomsmod'
 version = "4.6.2"
 archivesBaseName = 'SecretRoomsMod'
 
+// spit out the version for debugging sake
 logger.lifecycle ""+version
 
-minecraft { minecraftVersion = "1.6.4" }
+minecraft {
+	version = "1.6.4-LATEST" // grab latest forge
+	assetDir = "run/assets"
+}
 
-// add some stff to the version
-version = "${minecraft.minecraftVersion}-$version.${System.getenv().BUILD_NUMBER}"
+// add some stuff to the version
+version = "${minecraft.version}-$version.${System.getenv().BUILD_NUMBER}"
 
 processResources
 {
@@ -33,7 +40,7 @@ processResources
 		// replace version and MCVersion
 		// forge version is also accessible via project.minecraftforgeVersion
 		// it contains the full minecraft version, including buildNumber
-        expand 'version':project.version, 'mcversion':project.minecraft.minecraftVersion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
 	
 	// copy everything else, thats not text
@@ -43,29 +50,47 @@ processResources
     }
 }
 
-repositories { mavenCentral() }
+repositories {
+	mavenCentral()
+}
 
-jar { appendix = 'universal'}
+// change the name of my obfuscated jar
+jar {
+	appendix = 'universal'
+}
 
+// add a source jar
 task sourceJar(type: Jar) {
 	from sourceSets.main.allSource
 	appendix = 'src'
 }
 
-//task javadocJar(type: Jar, dependsOn: javadoc) {
-//	appendix = 'javadoc-'+project.minecraft.minecraftVersion
-//	from 'build/docs/javadoc'
-//}
+// add a javadoc jar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	appendix = 'javadoc'
+	from 'build/docs/javadoc'
+}
 
-// because the normal default jar task has been modified to be obfuscated
+// because the normal output has been made to be obfuscated
 task deobfJar(type: Jar) {
 	from sourceSets.main.output
 	appendix = 'deobf'
 }
 
+// another obf jar
+//task obfJar(type: Jar) {
+//	from sourceSets.main.output
+//	appendix = 'obfAgain'
+//}
+
+//reobf
+//{
+//	reobf obfJar
+//}
+
 artifacts {
 	archives sourceJar
 	archives deobfJar
-	//archives javadocJar
+	archives javadocJar
 	//archives obfJar
 }
