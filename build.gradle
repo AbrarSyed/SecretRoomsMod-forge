@@ -23,7 +23,7 @@ archivesBaseName = 'SecretRoomsMod'
 logger.lifecycle ""+version
 
 minecraft {
-	version = "1.6.4-LATEST" // grab latest forge
+	version = "1.6.4-9.11.1.964" // grab latest forge
 	assetDir = "run/assets"
 }
 
