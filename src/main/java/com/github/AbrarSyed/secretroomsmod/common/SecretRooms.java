@@ -43,11 +43,8 @@ import com.github.AbrarSyed.secretroomsmod.network.HandlerServer;
 import com.github.AbrarSyed.secretroomsmod.network.PacketSRMBase;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarting;
-import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -150,7 +147,7 @@ public class SecretRooms
 	// ids
 	private int[]						ids;
 
-	@PreInit
+	@EventHandler
 	public void preLoad(FMLPreInitializationEvent e)
 	{
 		logger = e.getModLog();
@@ -186,7 +183,7 @@ public class SecretRooms
 		MinecraftForge.EVENT_BUS.register(proxy);
 	}
 
-	@Init
+	@EventHandler
 	public void load(FMLInitializationEvent e)
 	{
 		// make creative tab.
@@ -326,13 +323,13 @@ public class SecretRooms
 		ids = null;
 	}
 
-	@ServerStarting
+	@EventHandler
 	public void registerCommand(FMLServerStartingEvent e)
 	{
 		e.registerServerCommand(new CommandShow());
 	}
 
-	@ServerStopping
+	@EventHandler
 	public void registerCommand(FMLServerStoppingEvent e)
 	{
 		proxy.onServerStop(e);
