@@ -151,32 +151,35 @@ public class SecretRooms
 	public void preLoad(FMLPreInitializationEvent e)
 	{
 		logger = e.getModLog();
+		
+		final String catBlock = "CamoBlocks";
+		final String catItem = "CamoItems";
 
 		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
 		ids = new int[] {
-				config.getBlock("CamoBlocks", "torchLever", 2020).getInt(),
-				config.getBlock("CamoBlocks", "oneWay", 2021).getInt(),
-				config.getBlock("CamoBlocks", "camoGate", 2022).getInt(),
-				config.getBlock("CamoBlocks", "camoDummy", 2023).getInt(),
-				config.getBlock("CamoBlocks", "camoTrapDoor", 2024).getInt(),
-				config.getItem("CamoItems", "camoWoodDoor", 4106).getInt(),
-				config.getBlock("CamoBlocks", "camoWoodDoor", 2025).getInt(),
-				config.getItem("CamoItems", "camoIronDoor", 4107).getInt(),
-				config.getBlock("CamoBlocks", "camoIronDoor", 2026).getInt(),
-				config.getItem("CamoItems", "camoPasteID", 4108).getInt(),
-				config.getBlock("CamoBlocks", "ghostBlock", 2027).getInt(),
-				config.getBlock("CamoBlocks", "camoLeverBlock", 2028).getInt(),
-				config.getBlock("CamoBlocks", "camoRedstoneBlock", 2029).getInt(),
-				config.getBlock("CamoBlocks", "camoButtonBlock", 2030).getInt(),
-				config.getBlock("CamoBlocks", "camoPlateAllBlock", 2031).getInt(),
-				config.getBlock("CamoBlocks", "camoPlatePlayerBlock", 2032).getInt(),
-				config.getBlock("CamoBlocks", "camoPlateWeightedBlock_light", 2033).getInt(),
-				config.getBlock("CamoBlocks", "camoPlateWeightedBlock_heavy", 2034).getInt(),
-				config.getBlock("CamoBlocks", "camoStairBlock", 2035).getInt(),
-				config.getBlock("CamoBlocks", "camoChestBlock", 2036).getInt(),
-				config.getBlock("CamoBlocks", "camoChestTrappedBlock", 2037).getInt(),
-				config.getBlock("CamoBlocks", "camoLightDetectorBlock", 2038).getInt(),
-				config.getBlock("CamoBlocks", "solidAir", 2039).getInt()
+				config.getBlock(catBlock, "torchLever", 2020).getInt(),
+				config.getBlock(catBlock, "oneWay", 2021).getInt(),
+				config.getBlock(catBlock, "camoGate", 2022).getInt(),
+				config.getBlock(catBlock, "camoDummy", 2023).getInt(),
+				config.getBlock(catBlock, "camoTrapDoor", 2024).getInt(),
+				config.getItem(catItem, "camoWoodDoor", 4106).getInt(),
+				config.getBlock(catBlock, "camoWoodDoor", 2025).getInt(),
+				config.getItem(catItem, "camoIronDoor", 4107).getInt(),
+				config.getBlock(catBlock, "camoIronDoor", 2026).getInt(),
+				config.getItem(catItem, "camoPasteID", 4108).getInt(),
+				config.getBlock(catBlock, "ghostBlock", 2027).getInt(),
+				config.getBlock(catBlock, "camoLeverBlock", 2028).getInt(),
+				config.getBlock(catBlock, "camoRedstoneBlock", 2029).getInt(),
+				config.getBlock(catBlock, "camoButtonBlock", 2030).getInt(),
+				config.getBlock(catBlock, "camoPlateAllBlock", 2031).getInt(),
+				config.getBlock(catBlock, "camoPlatePlayerBlock", 2032).getInt(),
+				config.getBlock(catBlock, "camoPlateWeightedBlock_light", 2033).getInt(),
+				config.getBlock(catBlock, "camoPlateWeightedBlock_heavy", 2034).getInt(),
+				config.getBlock(catBlock, "camoStairBlock", 2035).getInt(),
+				config.getBlock(catBlock, "camoChestBlock", 2036).getInt(),
+				config.getBlock(catBlock, "camoChestTrappedBlock", 2037).getInt(),
+				config.getBlock(catBlock, "camoLightDetectorBlock", 2038).getInt(),
+				config.getBlock(catBlock, "solidAir", 2039).getInt()
 		};
 		config.save();
 
@@ -202,8 +205,8 @@ public class SecretRooms
 		camoTrapDoor = new BlockCamoTrapDoor(ids[4]).setUnlocalizedName("mod_SRM.SecretTrapDoor");
 
 		// doors, Iron AND Wood
-		camoDoorWoodItem = new ItemCamoDoor(ids[5], Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorItem");
-		camoDoorWood = new BlockCamoDoor(ids[6] - 256, Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorBlock");
+		camoDoorWoodItem = new ItemCamoDoor(ids[5] - 256, Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorItem");
+		camoDoorWood = new BlockCamoDoor(ids[6], Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorBlock");
 		camoDoorIronItem = new ItemCamoDoor(ids[7] - 256, Material.iron).setUnlocalizedName("mod_SRM.SecretIronDoorItem");
 		camoDoorIron = new BlockCamoDoor(ids[8], Material.iron).setUnlocalizedName("mod_SRM.SecretIronDoorBlock");
 
