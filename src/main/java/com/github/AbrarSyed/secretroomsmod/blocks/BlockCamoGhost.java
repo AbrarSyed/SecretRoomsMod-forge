@@ -1,11 +1,9 @@
 package com.github.AbrarSyed.secretroomsmod.blocks;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
@@ -19,13 +17,7 @@ public class BlockCamoGhost extends BlockCamoFull
 	{
 		super(Material.wood);
 		setHardness(1.5F);
-		setStepSound(Block.soundWoodFootstep);
-	}
-
-	@Override
-	public void addCreativeItems(ArrayList itemList)
-	{
-		itemList.add(new ItemStack(this));
+		setStepSound(Block.soundTypeWood);
 	}
 
 	/**
@@ -53,11 +45,11 @@ public class BlockCamoGhost extends BlockCamoFull
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, int l)
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block changed)
 	{
-		if (l > 0 && Block.blocksList[l].canProvidePower())
+		if (changed != null && changed.canProvidePower())
 		{
-			world.scheduleBlockUpdate(i, j, k, blockID, 0);
+			world.scheduleBlockUpdate(x, y, z, changed, 0);
 		}
 	}
 

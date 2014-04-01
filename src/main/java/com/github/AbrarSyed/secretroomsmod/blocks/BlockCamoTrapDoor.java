@@ -294,7 +294,7 @@ public class BlockCamoTrapDoor extends Block
 
 			boolean flag = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4);
 
-			if (flag || par5 > 0 && Block.blocksList[par5].canProvidePower())
+			if (flag || par5 > 0 && Block.getBlockById(par5).canProvidePower())
 			{
 				onPoweredBlockChange(par1World, par2, par3, par4, flag);
 			}
@@ -400,7 +400,7 @@ public class BlockCamoTrapDoor extends Block
 			return false;
 		else
 		{
-			Block block = Block.blocksList[id];
+			Block block = Block.getBlockById(id);
 			return block != null && block.blockMaterial.isOpaque() && block.renderAsNormalBlock() || block == Block.glowStone || block instanceof BlockHalfSlab || block instanceof BlockStairs;
 		}
 	}

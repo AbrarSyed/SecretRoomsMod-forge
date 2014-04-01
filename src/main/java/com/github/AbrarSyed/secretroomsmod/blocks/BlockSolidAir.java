@@ -2,23 +2,24 @@ package com.github.AbrarSyed.secretroomsmod.blocks;
 
 import java.util.Random;
 
-import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Icon;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSolidAir extends Block
 {
 
-	private Icon	clear;
+	private IIcon	clear;
 
 	public BlockSolidAir(Material mat)
 	{
@@ -28,7 +29,7 @@ public class BlockSolidAir extends Block
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_SOLID_AIR);
 		clear = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_CLEAR);
@@ -36,26 +37,18 @@ public class BlockSolidAir extends Block
 
 	@Override
 	@SideOnly(value = Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int dir)
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int dir)
 	{
 		if (SecretRooms.displayCamo)
 			return clear;
 		else
 			return blockIcon;
 	}
-
-	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-	{
-		// TODO Auto-generated method stub
-		return super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
-	}
-
-	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
-	{
-		return 0;
-	}
+	
+    public Item getItemDropped(int i, Random random, int j)
+    {
+        return null;
+    }
 
 	@Override
 	public boolean getBlocksMovement(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
@@ -89,19 +82,19 @@ public class BlockSolidAir extends Block
 	}
 
 	@Override
-	public boolean isBlockNormalCube(World world, int x, int y, int z)
+	public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side)
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean isGenMineableReplaceable(World world, int x, int y, int z, int target)
+	public boolean isReplaceableOreGen(World world, int x, int y, int z, Block target)
 	{
 		return true;
 	}
@@ -113,7 +106,7 @@ public class BlockSolidAir extends Block
 	}
 
 	@Override
-	public int getLightOpacity(World world, int x, int y, int z)
+	public int getLightOpacity(IBlockAccess world, int x, int y, int z)
 	{
 		return 0;
 	}

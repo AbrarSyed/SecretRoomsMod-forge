@@ -11,20 +11,95 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
+import com.github.AbrarSyed.secretroomsmod.blocks.BlockCamoFull;
+import com.github.AbrarSyed.secretroomsmod.blocks.BlockOneWay;
 import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamo;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
-public final class SRMRenderHelper
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@SideOnly(value = Side.CLIENT)
+public class BlockRenderer implements ISimpleBlockRenderingHandler
 {
+    int renderID;
 
-    private SRMRenderHelper()
+    public BlockRenderer(int renderID)
     {
-        // nothing
+        this.renderID = renderID;
+    }
+
+    @Override
+    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
+    {
+        render3DInventory(block, metadata, modelID, renderer);
+    }
+
+    @Override
+    public boolean shouldRender3DInInventory(int modelID)
+    {
+        return renderID == SecretRooms.render3DId;
+    }
+
+    @Override
+    public int getRenderId()
+    {
+        return renderID;
+    }
+
+    @Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+    {
+        if (block == SecretRooms.torchLever)
+            return renderTorch(world, x, y, z, block);
+        else if (block instanceof BlockCamoFull)
+            return renderFullCamo(world, x, y, z, renderer, block);
+        else if (block instanceof BlockOneWay)
+            return renderOneSideCamo(world, x, y, z, renderer, block);
+        else
+            return renderer.renderStandardBlock(block, x, y, z);
+    }
+
+    private boolean renderTorch(IBlockAccess world, int x, int y, int z, Block block)
+    {
+        IIcon icon = block.getIcon(world, x, y, z, 0);
+        int metadata = world.getBlockMetadata(x, y, z) & 7;
+        Tessellator teselator = Tessellator.instance;
+        teselator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
+        teselator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        double var7 = 0.4000000059604645D;
+        double var9 = 0.5D - var7;
+        double var11 = 0.20000000298023224D;
+
+        if (metadata == 1)
+        {
+            renderTorchAtAngle(icon, block, x - var9, y + var11, z, -var7, 0.0D, 0);
+        }
+        else if (metadata == 2)
+        {
+            renderTorchAtAngle(icon, block, x + var9, y + var11, z, var7, 0.0D, 0);
+        }
+        else if (metadata == 3)
+        {
+            renderTorchAtAngle(icon, block, x, y + var11, z - var9, 0.0D, -var7, 0);
+        }
+        else if (metadata == 4)
+        {
+            renderTorchAtAngle(icon, block, x, y + var11, z + var9, 0.0D, var7, 0);
+        }
+        else if (metadata == 5)
+        {
+            renderTorchAtAngle(icon, block, x, y, z, 0.0D, 0.0D, 0);
+        }
+
+        return true;
     }
 
     /**
      * Renders a torch at the given coordinates, with the base slanting at the given delta
      */
-    public static void renderTorchAtAngle(IIcon icon, Block block, double par2, double par4, double par6, double par8, double par10, int par12)
+    private static void renderTorchAtAngle(IIcon icon, Block block, double par2, double par4, double par6, double par8, double par10, int par12)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -74,7 +149,7 @@ public final class SRMRenderHelper
         tessellator.addVertexWithUV(d17, par4 + 1.0D, par6 - d21, d7, d6);
     }
 
-    public static void render3DInventory(Block block, int metadata, int modelID, RenderBlocks renderer)
+    private static void render3DInventory(Block block, int metadata, int modelID, RenderBlocks renderer)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -109,7 +184,7 @@ public final class SRMRenderHelper
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     }
 
-    public static boolean renderFullCamo(IBlockAccess world, int x, int y, int z, RenderBlocks renderblocks, Block block)
+    private static boolean renderFullCamo(IBlockAccess world, int x, int y, int z, RenderBlocks renderblocks, Block block)
     {
         int rawColors = block.colorMultiplier(world, x, y, z);
         float blockColorRed = (rawColors >> 16 & 0xff) / 255F;
@@ -230,7 +305,7 @@ public final class SRMRenderHelper
         return flag;
     }
 
-    public static boolean renderOneSideCamo(IBlockAccess blockAccess, int i, int j, int k, RenderBlocks renderblocks, Block block)
+    private static boolean renderOneSideCamo(IBlockAccess blockAccess, int i, int j, int k, RenderBlocks renderblocks, Block block)
     {
         // get colors
         int rawColors = block.colorMultiplier(blockAccess, i, j, k);

@@ -1,5 +1,7 @@
 package com.github.AbrarSyed.secretroomsmod.client;
 
+import java.util.UUID;
+
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -9,10 +11,8 @@ import com.github.AbrarSyed.secretroomsmod.common.ProxyCommon;
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.network.PacketSRM2Key;
 
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,10 +32,9 @@ public class ProxyClient extends ProxyCommon
 	public void loadRenderStuff()
 	{
 		SecretRooms.render3DId = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new Render3D());
-
 		SecretRooms.renderFlatId = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new RenderFlat());
+		RenderingRegistry.registerBlockHandler(new BlockRenderer(SecretRooms.render3DId));
+		RenderingRegistry.registerBlockHandler(new BlockRenderer(SecretRooms.renderFlatId));
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class ProxyClient extends ProxyCommon
 	}
 
 	@Override
-	public void onKeyPress(String username)
+	public void onKeyPress(UUID uuid)
 	{
 		oneWayFaceTowards = !oneWayFaceTowards;
 		PacketDispatcher.sendPacketToServer(new PacketSRM2Key().getPacket250());

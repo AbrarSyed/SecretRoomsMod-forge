@@ -98,7 +98,7 @@ public class BlockOneWay extends BlockContainer
 
 			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
 
-			return Block.blocksList[id].getBlockTexture(fake, x, y, z, side);
+			return Block.getBlockById(id).getBlockTexture(fake, x, y, z, side);
 		}
 		catch (Throwable t)
 		{
@@ -219,7 +219,7 @@ public class BlockOneWay extends BlockContainer
 		if (id == 0)
 			return super.colorMultiplier(world, x, y, z);
 
-		Block fakeBlock = Block.blocksList[id];
+		Block fakeBlock = Block.getBlockById(id);
 
 		return fakeBlock.colorMultiplier(fake, x, y, z);
 	}
@@ -307,7 +307,7 @@ public class BlockOneWay extends BlockContainer
 		else
 		{
 			int id = world.getBlockId(x, y, z);
-			Block block = Block.blocksList[id];
+			Block block = Block.getBlockById(id);
 			TileEntity entity = world.getBlockTileEntity(x, y, z);
 
 			if (entity != null && entity instanceof TileEntityCamo)

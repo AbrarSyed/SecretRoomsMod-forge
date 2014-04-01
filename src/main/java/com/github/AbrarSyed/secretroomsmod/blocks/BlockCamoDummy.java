@@ -3,6 +3,7 @@ package com.github.AbrarSyed.secretroomsmod.blocks;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 
 /**
  * @author AbrarSyed
@@ -13,7 +14,7 @@ public class BlockCamoDummy extends BlockCamoFull
 	{
 		super();
 		setHardness(2.5F);
-		setStepSound(Block.soundWoodFootstep);
+		setStepSound(Block.soundTypeWood);
 		setCreativeTab(null);
 	}
 
@@ -22,12 +23,11 @@ public class BlockCamoDummy extends BlockCamoFull
 	{
 		return 0;
 	}
-
-	@Override
-	public int idDropped(int i, Random random, int j)
-	{
-		return 0;
-	}
+	
+    public Item getItemDropped(int i, Random random, int j)
+    {
+        return null;
+    }
 
 	@Override
 	public int getMobilityFlag()
