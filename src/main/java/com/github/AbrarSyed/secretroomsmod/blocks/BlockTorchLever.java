@@ -24,9 +24,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockTorchLever extends BlockTorch
 {
-	public BlockTorchLever(int i, int j)
+	public BlockTorchLever(int j)
 	{
-		super(i);
+		super();
 		setTickRandomly(true);
 		setHardness(0);
 		setLightValue(0.9375F);

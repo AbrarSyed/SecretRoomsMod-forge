@@ -6,7 +6,7 @@
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://www.minecraftforum.net/topic/546192-",
-  "updateUrl": "http://files.minecraftforge.net/SecretRoomsMod/SecretRoomsMod-universal-latest.zip",
+  "updateUrl": "http://files.minecraftforge.net/SecretRoomsMod/",
   "authors": ["AbrarSyed", "alexbegt"],
   "credits": "Authored by AbrarSyed, based on an original idea by iampeppino. Help provided by alexbegt.",
   "logoFile": "",

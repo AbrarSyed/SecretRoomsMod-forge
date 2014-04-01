@@ -21,9 +21,9 @@ import net.minecraft.world.World;
  */
 public class BlockCamoLever extends BlockCamoFull
 {
-	public BlockCamoLever(int i)
+	public BlockCamoLever()
 	{
-		super(i, Material.circuits);
+		super(Material.circuits);
 		setHardness(1.5F);
 		setStepSound(Block.soundWoodFootstep);
 	}

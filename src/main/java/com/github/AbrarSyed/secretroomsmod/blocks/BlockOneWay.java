@@ -31,9 +31,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockOneWay extends BlockContainer
 {
-	public BlockOneWay(int i)
+	public BlockOneWay()
 	{
-		super(i, Material.wood);
+		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(Block.soundWoodFootstep);
 		setLightOpacity(0);

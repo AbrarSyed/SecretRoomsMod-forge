@@ -24,9 +24,9 @@ public class ItemCamoDoor extends Item
 {
 	private Material	doorMaterial;
 
-	public ItemCamoDoor(int par1, Material par2Material)
+	public ItemCamoDoor(Material par2Material)
 	{
-		super(par1);
+		super();
 		doorMaterial = par2Material;
 		setCreativeTab(SecretRooms.tab);
 	}

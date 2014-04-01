@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 public class BlockCamoGhost extends BlockCamoFull
 {
 
-	public BlockCamoGhost(int par1)
+	public BlockCamoGhost()
 	{
-		super(par1, Material.wood);
+		super(Material.wood);
 		setHardness(1.5F);
 		setStepSound(Block.soundWoodFootstep);
 	}

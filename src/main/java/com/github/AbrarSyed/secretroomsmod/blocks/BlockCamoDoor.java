@@ -26,9 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockCamoDoor extends BlockContainer
 {
 
-	public BlockCamoDoor(int par1, Material mat)
+	public BlockCamoDoor(Material mat)
 	{
-		super(par1, mat);
+		super(mat);
 		setHardness(3F);
 
 		if (mat.equals(Material.iron))

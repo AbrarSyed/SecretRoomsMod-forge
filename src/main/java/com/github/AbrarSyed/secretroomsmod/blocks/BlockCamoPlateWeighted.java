@@ -18,9 +18,9 @@ public class BlockCamoPlateWeighted extends BlockCamoPlate
 {
 	private int	maxWeight;
 
-	public BlockCamoPlateWeighted(int par1, int weight)
+	public BlockCamoPlateWeighted(int weight)
 	{
-		super(par1, false);
+		super(false);
 		maxWeight = weight;
 	}
 

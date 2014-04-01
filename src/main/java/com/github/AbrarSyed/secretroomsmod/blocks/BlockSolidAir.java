@@ -19,9 +19,9 @@ public class BlockSolidAir extends Block
 
 	private Icon	clear;
 
-	public BlockSolidAir(int par1)
+	public BlockSolidAir()
 	{
-		super(par1, SecretRooms.AIR_MAT);
+		super(SecretRooms.AIR_MAT);
 		this.setCreativeTab(SecretRooms.tab);
 	}
 

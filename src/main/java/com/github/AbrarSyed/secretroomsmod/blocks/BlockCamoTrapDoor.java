@@ -26,9 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockCamoTrapDoor extends Block
 {
-	public BlockCamoTrapDoor(int par1)
+	public BlockCamoTrapDoor()
 	{
-		super(par1, Material.wood);
+		super(Material.wood);
 
 		disableStats();
 		setHardness(3.0F);

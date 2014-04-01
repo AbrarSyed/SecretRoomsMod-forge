@@ -14,17 +14,6 @@ import net.minecraft.world.World;
 
 public class BlockCamoLightDetector extends BlockCamoFull
 {
-
-	public BlockCamoLightDetector(int par1)
-	{
-		super(par1);
-	}
-
-	public BlockCamoLightDetector(int par1, Material material)
-	{
-		super(par1, material);
-	}
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)

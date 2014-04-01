@@ -9,9 +9,9 @@ import net.minecraft.block.Block;
  */
 public class BlockCamoDummy extends BlockCamoFull
 {
-	public BlockCamoDummy(int i)
+	public BlockCamoDummy()
 	{
-		super(i);
+		super();
 		setHardness(2.5F);
 		setStepSound(Block.soundWoodFootstep);
 		setCreativeTab(null);

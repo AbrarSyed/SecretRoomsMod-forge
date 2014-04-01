@@ -29,16 +29,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockCamoFull extends BlockContainer
 {
 
-	public BlockCamoFull(int par1)
+	public BlockCamoFull()
 	{
-		super(par1, Material.wood);
+		super(Material.wood);
 		setLightOpacity(255);
 		setCreativeTab(SecretRooms.tab);
 	}
 
-	public BlockCamoFull(int par1, Material material)
+	public BlockCamoFull(Material material)
 	{
-		super(par1, material);
+		super(material);
 		setLightOpacity(255);
 		setCreativeTab(SecretRooms.tab);
 	}

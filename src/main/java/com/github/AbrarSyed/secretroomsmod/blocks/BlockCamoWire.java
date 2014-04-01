@@ -17,9 +17,9 @@ public class BlockCamoWire extends BlockCamoFull
 {
 	private boolean	shouldPower;
 
-	public BlockCamoWire(int id)
+	public BlockCamoWire()
 	{
-		super(id, Material.circuits);
+		super(Material.circuits);
 		shouldPower = true;
 	}
 

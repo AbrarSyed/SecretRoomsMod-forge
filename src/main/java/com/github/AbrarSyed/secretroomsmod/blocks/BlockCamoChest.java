@@ -33,9 +33,9 @@ public class BlockCamoChest extends BlockCamoFull
 	private Random			random	= new Random();
 	public final boolean	isTrapped;
 
-	public BlockCamoChest(int par1, boolean trapped)
+	public BlockCamoChest(boolean trapped)
 	{
-		super(par1);
+		super();
 		isTrapped = trapped;
 		setHardness(1.5F);
 		setCreativeTab(SecretRooms.tab);

@@ -35,9 +35,9 @@ public class BlockCamoStair extends BlockCamoFull
 													{ 4, 5 }
 													};
 
-	public BlockCamoStair(int par1)
+	public BlockCamoStair()
 	{
-		super(par1);
+		super();
 		setHardness(1.5F);
 		setLightOpacity(15);
 	}

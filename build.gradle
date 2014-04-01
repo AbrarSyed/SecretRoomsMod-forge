@@ -6,91 +6,156 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
-    }
+    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
 }
 
 apply plugin: "forge"
 
 // stuff specific to my mod
 group = 'com.github.abrarsyed.secretroomsmod'
-version = "4.6.2"
+version = "4.6.3"
 archivesBaseName = 'SecretRoomsMod'
 
-// spit out the version for debugging sake
-logger.lifecycle ""+version
-
 minecraft {
-	version = "1.6.4-9.11.1.964" // grab latest forge
-	assetDir = "run/assets"
+    version = "1.7.2-10.12.0.1048" // grab latest forge
+    assetDir = "run/assets"
+
+    // replacing
+    replace "@CHANGE_VERSION@", "[4.6,)"
+    replace "@MC_VERSION@", project.minecraft.version
+    replace "@VERSION@", project.version
+    replaceIn "SecretRoomsMod.java"
 }
 
 // add some stuff to the version
+// spit out the version for debugging sake
+logger.lifecycle ""+version
 version = "${minecraft.version}-$version.${System.getenv().BUILD_NUMBER}"
+logger.lifecycle ""+version
 
 processResources
 {
-	// replace stuff in text files, not binary ones.
-    from(sourceSets.main.resources.srcDirs) {
-        include '**/*.lang'
-        include '**/*.info'
-		
-		// replace version and MCVersion
-		// forge version is also accessible via project.minecraftforgeVersion
-		// it contains the full minecraft version, including buildNumber
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-	
-	// copy everything else, thats not text
-    from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.lang'
-        exclude '**/*.info'
-    }
+    inputs.
+
+            // replace stuff in text files, not binary ones.
+            from(sourceSets.main.resources.srcDirs) {
+                include '**/*.info'
+
+                // replace version and MCVersion
+                // forge version is also accessible via project.minecraftforgeVersion
+                // it contains the full minecraft version, including buildNumber
+                expand 'version':project.version, 'mcversion':project.minecraft.version
+            }
+
+    // copy everything else, thats not text
+    from(sourceSets.main.resources.srcDirs) { exclude '**/*.info' }
 }
 
-repositories {
-	mavenCentral()
-}
+repositories { mavenCentral() }
 
 // change the name of my obfuscated jar
-jar {
-	appendix = 'universal'
+jar { appendix = 'universal' }
+
+// because the normal output has been made to be obfuscated
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    appendix = 'dev'
 }
 
 // add a source jar
 task sourceJar(type: Jar) {
-	from sourceSets.main.allSource
-	appendix = 'src'
+    from sourceSets.main.allSource
+    appendix = 'sources'
 }
 
 // add a javadoc jar
 task javadocJar(type: Jar, dependsOn: javadoc) {
-	appendix = 'javadoc'
-	from 'build/docs/javadoc'
+    appendix = 'javadoc'
+    from 'build/docs/javadoc'
 }
 
-// because the normal output has been made to be obfuscated
-task deobfJar(type: Jar) {
-	from sourceSets.main.output
-	appendix = 'deobf'
-}
+// deployement stuff
 
-// another obf jar
-//task obfJar(type: Jar) {
-//	from sourceSets.main.output
-//	appendix = 'obfAgain'
-//}
+configurations { deployJars }
 
-//reobf
-//{
-//	reobf obfJar
-//}
+dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
 
 artifacts {
-	archives sourceJar
-	archives deobfJar
-	archives javadocJar
-	//archives obfJar
+    archives sourceJar
+    archives deobfJar
+    archives javadocJar
+}
+
+uploadArchives {
+    repositories {
+        if (project.hasProperty("filesmaven")) {
+            logger.info('Publishing to files server')
+
+            mavenDeployer {
+                configuration = configurations.deployerJars
+
+                repository(url: project.filesmaven.url) {
+                    authentication(userName: project.filesmaven.username, privateKey: project.filesmaven.key)
+                }
+
+                pom {
+                    groupId = project.group
+                    version = project.version
+                    artifactId = project.archivesBaseName
+                    project {
+                        name project.archivesBaseName
+                        packaging 'jar'
+                        description 'SecretRoomsMod '
+                        url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
+
+                        scm {
+                            url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
+                            connection 'scm:git:git://github.com/AbrarSyed/SecretRoomsMod-forge.git'
+                            developerConnection 'scm:git:git@github.com:AbrarSyed/SecretRoomsMod-forge.git'
+                        }
+
+                        issueManagement {
+                            system 'github'
+                            url 'https://github.com/AbrarSyed/SecretRoomsMod-forge/issues'
+                        }
+
+                        licenses {
+                            license {
+                                name 'The Eclipse Public Liscence'
+                                url 'http://www.eclipse.org/legal/epl-v10.html'
+                                distribution 'repo'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'AbrarSyed'
+                                name 'AbrarSyed'
+                                roles { role 'developer' }
+                            }
+                            developer {
+                                id 'AlexBegt'
+                                name 'AlexBegt'
+                                roles { role 'contributor' }
+                            }
+                            developer {
+                                id 'CaptainShadows'
+                                name 'CaptainShadows'
+                                roles { role 'contributor' }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            add project.repositories.mavenLocal()
+        }
+    }
 }

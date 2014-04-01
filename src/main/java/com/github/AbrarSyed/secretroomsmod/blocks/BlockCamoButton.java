@@ -30,9 +30,9 @@ public class BlockCamoButton extends BlockCamoFull
 	private Icon	stone;
 	private Icon	wood;
 
-	public BlockCamoButton(int i)
+	public BlockCamoButton()
 	{
-		super(i, Material.circuits);
+		super(Material.circuits);
 		setCreativeTab(SecretRooms.tab);
 	}
 

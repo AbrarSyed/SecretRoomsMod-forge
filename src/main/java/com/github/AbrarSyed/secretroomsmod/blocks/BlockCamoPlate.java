@@ -28,9 +28,9 @@ public class BlockCamoPlate extends BlockCamoFull
 {
 	private boolean	players;
 
-	public BlockCamoPlate(int par1, boolean players)
+	public BlockCamoPlate(boolean players)
 	{
-		super(par1, Material.circuits);
+		super(Material.circuits);
 		this.players = players;
 		setTickRandomly(true);
 		setHardness(0.5F);

@@ -23,9 +23,9 @@ public class BlockCamoGate extends BlockCamoFull
 {
 	private static final int	MAX_SIZE	= 10;
 
-	public BlockCamoGate(int i)
+	public BlockCamoGate()
 	{
-		super(i);
+		super();
 		setHardness(1.5F);
 		setStepSound(Block.soundWoodFootstep);
 	}
