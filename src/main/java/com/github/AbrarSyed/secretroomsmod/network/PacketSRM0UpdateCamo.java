@@ -46,7 +46,7 @@ public class PacketSRM0UpdateCamo extends PacketSRMBase
 
 		if (hasHolder)
 		{
-			NBTTagCompound nbt = (NBTTagCompound) NBTBase.readNamedTag(stream);
+			NBTTagCompound nbt = (NBTTagCompound) NBTBase.load(stream);
 			holder = BlockHolder.buildFromNBT(nbt);
 		}
 		else

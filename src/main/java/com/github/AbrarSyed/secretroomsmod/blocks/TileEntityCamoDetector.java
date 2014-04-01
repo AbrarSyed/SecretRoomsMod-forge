@@ -1,7 +1,5 @@
 package com.github.AbrarSyed.secretroomsmod.blocks;
 
-import net.minecraft.block.BlockDaylightDetector;
-
 public class TileEntityCamoDetector extends TileEntityCamo
 {
 	@Override

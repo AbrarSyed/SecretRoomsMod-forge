@@ -1,6 +1,7 @@
 package com.github.AbrarSyed.secretroomsmod.common;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -13,9 +14,9 @@ public class CreativeTabCamo extends CreativeTabs
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public int getTabIconItemIndex()
+	public Item getTabIconItem()
 	{
-		return SecretRooms.camoPaste.itemID;
+		return SecretRooms.camoPaste;
 	}
 
 }

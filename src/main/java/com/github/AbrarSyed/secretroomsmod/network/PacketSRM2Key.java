@@ -48,7 +48,7 @@ public class PacketSRM2Key extends PacketSRMBase
 	public void actionServer(World world, EntityPlayer player)
 	{
 		if (FMLCommonHandler.instance().getSide().isServer())
-			SecretRooms.proxy.onKeyPress(player.username);
+			SecretRooms.proxy.onKeyPress(player.getUniqueID());
 	}
 
 }

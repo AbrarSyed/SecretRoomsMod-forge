@@ -1,5 +1,6 @@
 package com.github.AbrarSyed.secretroomsmod.common;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -17,10 +18,10 @@ public class BlockHolder
 
 	public BlockHolder(IBlockAccess world, int x, int y, int z)
 	{
-		blockID = world.getBlockId(x, y, z);
+		blockID = Block.getIdFromBlock(world.getBlock(x, y, z));
 		metadata = world.getBlockMetadata(x, y, z);
 
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		if (te != null)
 		{
 			nbt = new NBTTagCompound();
@@ -56,7 +57,7 @@ public class BlockHolder
 
 		TileEntity te = TileEntity.createAndLoadEntity(nbt);
 
-		te.worldObj = world;
+		te.setWorldObj(world);
 		te.xCoord = x;
 		te.yCoord = y;
 		te.zCoord = z;
@@ -72,7 +73,7 @@ public class BlockHolder
 
 		if (nbt != null)
 		{
-			compound.setCompoundTag("copyTE", nbt);
+			compound.setTag("copyTE", nbt);
 		}
 	}
 

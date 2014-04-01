@@ -37,130 +37,121 @@ public class SecretRooms
 {
 
     @SidedProxy(clientSide = "com.github.AbrarSyed.secretroomsmod.client.ProxyClient", serverSide = "com.github.AbrarSyed.secretroomsmod.common.ProxyCommon")
-    public static ProxyCommon           proxy;
+    public static ProxyCommon  proxy;
 
-    public static final String          MODID                      = "secretroomsmod";
+    public static final String MODID                      = "secretroomsmod";
 
     @Instance(value = MODID)
-    public static SecretRooms           instance;
+    public static SecretRooms  instance;
 
     // textures
-    public static final String          TEXTURE_ITEM_PASTE         = MODID + ":CamoPaste";
-    public static final String          TEXTURE_ITEM_DOOR_WOOD     = MODID + ":CamoDoorWood";
-    public static final String          TEXTURE_ITEM_DOOR_STEEL    = MODID + ":CamoDoorSteel";
+    public static final String TEXTURE_ITEM_PASTE         = MODID + ":CamoPaste";
+    public static final String TEXTURE_ITEM_DOOR_WOOD     = MODID + ":CamoDoorWood";
+    public static final String TEXTURE_ITEM_DOOR_STEEL    = MODID + ":CamoDoorSteel";
 
-    public static final String          TEXTURE_BLOCK_BASE         = MODID + ":CamoBase";
-    public static final String          TEXTURE_BLOCK_STAIR        = MODID + ":CamoStair";
-    public static final String          TEXTURE_BLOCK_CHEST        = MODID + ":CamoChest";
-    public static final String          TEXTURE_BLOCK_DETECTOR     = MODID + ":CamoDetector";
-    public static final String          TEXTURE_BLOCK_GATE         = MODID + ":CamoGate";
-    public static final String          TEXTURE_BLOCK_LEVER        = MODID + ":CamoLever";
-    public static final String          TEXTURE_BLOCK_REDSTONE     = MODID + ":CamoRedstone";
-    public static final String          TEXTURE_BLOCK_BUTTON       = MODID + ":CamoButton";
+    public static final String TEXTURE_BLOCK_BASE         = MODID + ":CamoBase";
+    public static final String TEXTURE_BLOCK_STAIR        = MODID + ":CamoStair";
+    public static final String TEXTURE_BLOCK_CHEST        = MODID + ":CamoChest";
+    public static final String TEXTURE_BLOCK_DETECTOR     = MODID + ":CamoDetector";
+    public static final String TEXTURE_BLOCK_GATE         = MODID + ":CamoGate";
+    public static final String TEXTURE_BLOCK_LEVER        = MODID + ":CamoLever";
+    public static final String TEXTURE_BLOCK_REDSTONE     = MODID + ":CamoRedstone";
+    public static final String TEXTURE_BLOCK_BUTTON       = MODID + ":CamoButton";
 
-    public static final String          TEXTURE_BLOCK_PLATE_PLAYER = MODID + ":CamoPlatePlayer";
-    public static final String          TEXTURE_BLOCK_PLATE_WOOD   = MODID + ":CamoPlateWood";
-    public static final String          TEXTURE_BLOCK_PLATE_IRON   = MODID + ":CamoPlateIron";
-    public static final String          TEXTURE_BLOCK_PLATE_GOLD   = MODID + ":CamoPlateGold";
+    public static final String TEXTURE_BLOCK_PLATE_PLAYER = MODID + ":CamoPlatePlayer";
+    public static final String TEXTURE_BLOCK_PLATE_WOOD   = MODID + ":CamoPlateWood";
+    public static final String TEXTURE_BLOCK_PLATE_IRON   = MODID + ":CamoPlateIron";
+    public static final String TEXTURE_BLOCK_PLATE_GOLD   = MODID + ":CamoPlateGold";
 
-    public static final String          TEXTURE_BLOCK_TORCH        = MODID + ":TorchLever";
+    public static final String TEXTURE_BLOCK_TORCH        = MODID + ":TorchLever";
 
-    public static final String          TEXTURE_BLOCK_SOLID_AIR    = MODID + ":SolidAir";
-    public static final String          TEXTURE_BLOCK_CLEAR        = MODID + ":clear";
+    public static final String TEXTURE_BLOCK_SOLID_AIR    = MODID + ":SolidAir";
+    public static final String TEXTURE_BLOCK_CLEAR        = MODID + ":clear";
 
     // render IDs
-    public static boolean               displayCamo                = true;
-    public static int                   render3DId;
-    public static int                   renderFlatId;
+    public static boolean      displayCamo                = true;
+    public static int          render3DId;
+    public static int          renderFlatId;
 
     // misc
-    public static Block                 torchLever;
-    public static Block                 oneWay;
+    public static Block        torchLever, oneWay;
 
     // doors and Trap-Doors
-    public static Block                 camoTrapDoor;
-    public static Block                 camoDoorWood;
-    public static Item                  camoDoorWoodItem;
-    public static Block                 camoDoorIron;
-    public static Item                  camoDoorIronItem;
+    public static Block        camoTrapDoor;
+    public static Block        camoDoorWood, camoDoorIron;
+    public static Item         camoDoorWoodItem, camoDoorIronItem;
 
     // Camo Paste
-    public static Item                  camoPaste;
+    public static Item         camoPaste;
 
     // FullCamo Stuff
-    public static Block                 camoGhost;
-    public static Block                 camoLever;
-    public static Block                 camoCurrent;
-    public static Block                 camoButton;
-    public static Block                 camoGate;
-    public static Block                 camoGateExt;
-    public static Block                 camoPlateAll;
-    public static Block                 camoPlatePlayer;
-    public static Block                 camoPlateLight;
-    public static Block                 camoPlateHeavy;
-    public static Block                 camoStairs;
-    public static Block                 camoChest;
-    public static Block                 camoTrappedChest;
-    public static Block                 camoLightDetector;
+    public static Block        camoGhost;
+    public static Block        camoLever;
+    public static Block        camoCurrent;
+    public static Block        camoButton;
+    public static Block        camoGate, camoGateExt;
+    public static Block        camoPlateAll, camoPlatePlayer;
+    public static Block        camoPlateLight, camoPlateHeavy;
+    public static Block        camoStairs;
+    public static Block        camoChest;
+    public static Block        camoTrappedChest;
+    public static Block        camoLightDetector;
 
-    public static Block                 solidAir;
+    public static Block        solidAir;
 
-    public static final String          CAMO_PASTE                 = "camoPaste";
+    public static final String CAMO_PASTE                 = "camoPaste";
 
     // creative tab
-    public static CreativeTabs          tab;
-
-    // material
-    public static final MaterialFakeAir AIR_MAT                    = new MaterialFakeAir();
+    public static CreativeTabs tab;
 
     @EventHandler
     public void preLoad(FMLPreInitializationEvent e)
     {
         MinecraftForge.EVENT_BUS.register(proxy);
-        
+
         // make creative tab.
         tab = new CreativeTabCamo();
 
-        torchLever = new BlockTorchLever(80).setBlockName("mod_SRM.TorchLever");
+        torchLever = new BlockTorchLever(80).setBlockName("TorchLever");
 
         // Camo oneWay
-        oneWay = new BlockOneWay().setBlockName("mod_SRM.OneWayGlass");
+        oneWay = new BlockOneWay().setBlockName("OneWayGlass");
 
         // gates
-        camoGate = new BlockCamoGate().setBlockName("mod_SRM.CamoGate");
-        camoGateExt = new BlockCamoDummy().setBlockName("mod_SRM.CamoDummy");
+        camoGate = new BlockCamoGate().setBlockName("CamoGate");
+        camoGateExt = new BlockCamoDummy().setBlockName("CamoDummy");
 
         // TrapDoor
-        camoTrapDoor = new BlockCamoTrapDoor().setBlockName("mod_SRM.SecretTrapDoor");
+        camoTrapDoor = new BlockCamoTrapDoor().setBlockName("SecretTrapDoor");
 
         // doors, Iron AND Wood
-        camoDoorWoodItem = new ItemCamoDoor(Material.wood).setUnlocalizedName("mod_SRM.SecretWoodenDoorItem");
-        camoDoorWood = new BlockCamoDoor(Material.wood).setBlockName("mod_SRM.SecretWoodenDoorBlock");
-        camoDoorIronItem = new ItemCamoDoor(Material.iron).setUnlocalizedName("mod_SRM.SecretIronDoorItem");
-        camoDoorIron = new BlockCamoDoor(Material.iron).setBlockName("mod_SRM.SecretIronDoorBlock");
+        camoDoorWoodItem = new ItemCamoDoor(Material.wood).setUnlocalizedName("SecretWoodenDoorItem");
+        camoDoorWood = new BlockCamoDoor(Material.wood).setBlockName("SecretWoodenDoorBlock");
+        camoDoorIronItem = new ItemCamoDoor(Material.iron).setUnlocalizedName("SecretIronDoorItem");
+        camoDoorIron = new BlockCamoDoor(Material.iron).setBlockName("SecretIronDoorBlock");
 
         // Camo Paste
-        camoPaste = new Item().setUnlocalizedName("mod_SRM.CamoflaugePaste").setCreativeTab(SecretRooms.tab).setTextureName(TEXTURE_ITEM_PASTE);
+        camoPaste = new Item().setUnlocalizedName("CamoflaugePaste").setCreativeTab(SecretRooms.tab).setTextureName(TEXTURE_ITEM_PASTE);
 
         // FullCamoBlocks
-        camoGhost = new BlockCamoGhost().setBlockName("mod_SRM.GhostBlock");
-        camoLever = new BlockCamoLever().setBlockName("mod_SRM.SecretLever");
-        camoCurrent = new BlockCamoWire().setBlockName("mod_SRM.SecretRedstone");
-        camoButton = new BlockCamoButton().setBlockName("mod_SRM.SecretButton");
+        camoGhost = new BlockCamoGhost().setBlockName("GhostBlock");
+        camoLever = new BlockCamoLever().setBlockName("SecretLever");
+        camoCurrent = new BlockCamoWire().setBlockName("SecretRedstone");
+        camoButton = new BlockCamoButton().setBlockName("SecretButton");
 
-        camoPlateAll = new BlockCamoPlate(false).setBlockName("mod_SRM.SecretPressurePlate");
-        camoPlatePlayer = new BlockCamoPlate(true).setBlockName("mod_SRM.SecretPlayerPlate");
-        camoPlateLight = new BlockCamoPlateWeighted(64).setBlockName("mod_SRM.SecretLightPlate");
-        camoPlateHeavy = new BlockCamoPlateWeighted(640).setBlockName("mod_SRM.SecretHeavyPlate");
+        camoPlateAll = new BlockCamoPlate(false).setBlockName("SecretPressurePlate");
+        camoPlatePlayer = new BlockCamoPlate(true).setBlockName("SecretPlayerPlate");
+        camoPlateLight = new BlockCamoPlateWeighted(64).setBlockName("SecretLightPlate");
+        camoPlateHeavy = new BlockCamoPlateWeighted(640).setBlockName("SecretHeavyPlate");
 
-        camoStairs = new BlockCamoStair().setBlockName("mod_SRM.SecretStair");
+        camoStairs = new BlockCamoStair().setBlockName("SecretStair");
 
-        camoChest = new BlockCamoChest(false).setBlockName("mod_SRM.SecretChest");
-        camoTrappedChest = new BlockCamoChest(true).setBlockName("mod_SRM.SecretTrappedChest");
+        camoChest = new BlockCamoChest(false).setBlockName("SecretChest");
+        camoTrappedChest = new BlockCamoChest(true).setBlockName("SecretTrappedChest");
 
-        camoLightDetector = new BlockCamoLightDetector().setBlockName("mod_SRM.SecretLightDetector");
+        camoLightDetector = new BlockCamoLightDetector().setBlockName("SecretLightDetector");
 
-        solidAir = new BlockSolidAir().setBlockName("mod_SRM.SolidAir");
+        solidAir = new BlockSolidAir(new MaterialFakeAir()).setBlockName("SolidAir");
 
         // key Events
         proxy.loadKeyStuff();
@@ -179,7 +170,7 @@ public class SecretRooms
         GameRegistry.registerItem(camoDoorIronItem, "SecretWoodenIronItem");
 
         GameRegistry.registerItem(camoPaste, "CamoflaugePaste");
-        OreDictionary.registerOre("CAMO_PASTE", camoPaste);
+        OreDictionary.registerOre(CAMO_PASTE, camoPaste);
 
         GameRegistry.registerBlock(camoGhost, "GhostBlock");
         GameRegistry.registerBlock(camoLever, "SecretCamoLever");
@@ -202,9 +193,9 @@ public class SecretRooms
         GameRegistry.registerBlock(solidAir, "SolidAir");
 
         // Tile Entities
-        GameRegistry.registerTileEntity(TileEntityCamo.class, "mod_SRM.TE_CamoFull");
-        GameRegistry.registerTileEntity(TileEntityCamoChest.class, "mod_SRM.TE_CamoChest");
-        GameRegistry.registerTileEntity(TileEntityCamoDetector.class, "mod_SRM.TE_CamoDetector");
+        GameRegistry.registerTileEntity(TileEntityCamo.class, "TE_CamoFull");
+        GameRegistry.registerTileEntity(TileEntityCamoChest.class, "TE_CamoChest");
+        GameRegistry.registerTileEntity(TileEntityCamoDetector.class, "TE_CamoDetector");
 
         //      LanguageRegistry.instance().addNameForObject(torchLever, "en_US", "Torch Lever");
         //      LanguageRegistry.instance().addNameForObject(oneWay, "en_US", "One-Way Glass");
@@ -222,10 +213,10 @@ public class SecretRooms
         //      LanguageRegistry.instance().addNameForObject(camoCurrent, "en_US", "Secret Redstone");
         //      LanguageRegistry.instance().addNameForObject(camoButton, "en_US", "Secret Button");
         //
-        //      LanguageRegistry.instance().addStringLocalization("mod_SRM.SecretButton.stone", "Secret Stone Button");
-        //      LanguageRegistry.instance().addStringLocalization("mod_SRM.SecretButton.wood", "Secret Wood Button");
-        //      LanguageRegistry.instance().addStringLocalization("mod_SRM.SecretButton.stone", "en_us", "Secret Stone Button");
-        //      LanguageRegistry.instance().addStringLocalization("mod_SRM.SecretButton.wood", "en_us", "Secret Wood Button");
+        //      LanguageRegistry.instance().addStringLocalization("SecretButton.stone", "Secret Stone Button");
+        //      LanguageRegistry.instance().addStringLocalization("SecretButton.wood", "Secret Wood Button");
+        //      LanguageRegistry.instance().addStringLocalization("SecretButton.stone", "en_us", "Secret Stone Button");
+        //      LanguageRegistry.instance().addStringLocalization("SecretButton.wood", "en_us", "Secret Wood Button");
         //
         //      LanguageRegistry.instance().addNameForObject(camoPlateAll, "en_US", "Secret PressurePlate");
         //      LanguageRegistry.instance().addNameForObject(camoPlatePlayer, "en_US", "Secret PlayerPlate");

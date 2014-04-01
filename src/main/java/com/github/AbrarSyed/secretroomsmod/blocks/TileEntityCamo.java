@@ -8,7 +8,6 @@ import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
 import com.github.AbrarSyed.secretroomsmod.network.PacketSRM0UpdateCamo;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityCamo extends TileEntity
@@ -86,7 +85,7 @@ public class TileEntityCamo extends TileEntity
 		}
 
 		this.holder = holder;
-		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	/**

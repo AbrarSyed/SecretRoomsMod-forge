@@ -4,16 +4,21 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
+
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketSRM1ToggleShow extends PacketSRMBase
 {
+    private static final IChatComponent SECRET = new ChatComponentText(EnumChatFormatting.YELLOW + "Camo blocks made secret");
+    private static final IChatComponent OBVIOUS = new ChatComponentText(EnumChatFormatting.YELLOW + "Camo blocks made obvious");
 
 	public PacketSRM1ToggleShow()
 	{
@@ -41,13 +46,9 @@ public class PacketSRM1ToggleShow extends PacketSRMBase
 		SecretRooms.displayCamo = !SecretRooms.displayCamo;
 
 		if (SecretRooms.displayCamo)
-		{
-			player.addChatMessage(EnumChatFormatting.YELLOW + "Camo blocks made secret");
-		}
+			player.addChatMessage(SECRET);
 		else
-		{
-			player.addChatMessage(EnumChatFormatting.YELLOW + "Camo blocks made obvious");
-		}
+			player.addChatMessage(OBVIOUS);
 
 		int rad = 20; // update radius
 		world.markBlockRangeForRenderUpdate((int) player.posX - rad, (int) player.posY - rad, (int) player.posZ - rad, (int) player.posX + rad, (int) player.posY + rad, (int) player.posZ + rad);
