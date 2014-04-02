@@ -14,7 +14,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class PacketShowTogle extends PacketBase
+public class PacketShowToggle extends PacketBase
 {
     private static final IChatComponent SECRET = new ChatComponentText(EnumChatFormatting.YELLOW + "Camo blocks made secret");
     private static final IChatComponent OBVIOUS = new ChatComponentText(EnumChatFormatting.YELLOW + "Camo blocks made obvious");

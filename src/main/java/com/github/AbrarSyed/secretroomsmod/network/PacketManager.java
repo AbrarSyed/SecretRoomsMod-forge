@@ -42,7 +42,7 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
             return;
         
         INSTANCE.addDiscriminator(0, PacketCamo.class);
-        INSTANCE.addDiscriminator(1, PacketShowTogle.class);
+        INSTANCE.addDiscriminator(1, PacketShowToggle.class);
         INSTANCE.addDiscriminator(2, PacketKey.class);
 
         channels.putAll(NetworkRegistry.INSTANCE.newChannel("SecretRooms", INSTANCE));

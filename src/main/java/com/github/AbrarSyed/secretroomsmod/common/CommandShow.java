@@ -7,7 +7,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 
 import com.github.AbrarSyed.secretroomsmod.network.PacketManager;
-import com.github.AbrarSyed.secretroomsmod.network.PacketShowTogle;
+import com.github.AbrarSyed.secretroomsmod.network.PacketShowToggle;
 
 /**
  * @author AbrarSyed
@@ -39,7 +39,7 @@ public class CommandShow extends CommandBase
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2)
 	{
-	    PacketManager.sendToPlayer(new PacketShowTogle(), CommandBase.getCommandSenderAsPlayer(var1));
+	    PacketManager.sendToPlayer(new PacketShowToggle(), CommandBase.getCommandSenderAsPlayer(var1));
 	}
 
     @Override
