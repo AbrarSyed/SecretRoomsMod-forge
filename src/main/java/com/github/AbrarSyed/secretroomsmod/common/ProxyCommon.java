@@ -66,20 +66,20 @@ public class ProxyCommon
 		return fakes.get(dim);
 	}
 
-	public void onKeyPress(UUID uid)
+	public void onKeyPress(UUID uuid)
 	{
-		if (awaySet.contains(uid))
+		if (awaySet.contains(uuid))
 		{
-			awaySet.remove(uid);
+			awaySet.remove(uuid);
 		}
 		else
 		{
-			awaySet.add(uid);
+			awaySet.add(uuid);
 		}
 	}
 
-	public boolean getFaceTowards(String username)
+	public boolean getFaceTowards(UUID uuid)
 	{
-		return !awaySet.contains(username);
+		return !awaySet.contains(uuid);
 	}
 }

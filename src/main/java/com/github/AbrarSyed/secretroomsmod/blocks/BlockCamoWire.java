@@ -1,14 +1,16 @@
 package com.github.AbrarSyed.secretroomsmod.blocks;
 
-import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
+
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,7 +33,7 @@ public class BlockCamoWire extends BlockCamoFull
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_REDSTONE);
 	}
@@ -48,9 +50,9 @@ public class BlockCamoWire extends BlockCamoFull
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 	{
-		super.onNeighborBlockChange(world, x, y, z, blockID);
+		super.onNeighborBlockChange(world, x, y, z, block);
 
 		if (world.isRemote)
 			return;
@@ -59,14 +61,14 @@ public class BlockCamoWire extends BlockCamoFull
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+	public void breakBlock(World world, int x, int y, int z, Block block, int par6)
 	{
-		super.breakBlock(world, x, y, z, par5, par6);
+		super.breakBlock(world, x, y, z, block, par6);
 
 		if (world.isRemote)
 			return;
 
-		world.notifyBlocksOfNeighborChange(x, y, z, blockID);
+		world.notifyBlocksOfNeighborChange(x, y, z, this);
 	}
 
 	private void calcPower(World world, int x, int y, int z)
@@ -92,7 +94,7 @@ public class BlockCamoWire extends BlockCamoFull
 		if (oldPower != power)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, power, 2);
-			world.notifyBlocksOfNeighborChange(x, y, z, blockID);
+			world.notifyBlocksOfNeighborChange(x, y, z, this);
 		}
 	}
 
@@ -114,8 +116,8 @@ public class BlockCamoWire extends BlockCamoFull
 				continue;
 			}
 
-			block = Block.blocksList[world.getBlockId(pX, pY, pZ)];
-			if (block.blockID == Block.redstoneWire.blockID || block.blockID == blockID)
+			block = world.getBlock(pX, pY, pZ);
+			if (block == Blocks.redstone_wire || block == this)
 			{
 				power = world.getBlockMetadata(pX, pY, pZ);
 			}
@@ -143,7 +145,7 @@ public class BlockCamoWire extends BlockCamoFull
 
 	public static void setRedstoneProvidePower(boolean bool)
 	{
-		ObfuscationReflectionHelper.setPrivateValue(BlockRedstoneWire.class, Block.redstoneWire, bool, 0);
+		ObfuscationReflectionHelper.setPrivateValue(BlockRedstoneWire.class, Blocks.redstone_wire, bool, 0);
 	}
 
 	@Override

@@ -40,7 +40,8 @@ logger.lifecycle ""+version
 
 processResources
 {
-    inputs.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
 
             // replace stuff in text files, not binary ones.
             from(sourceSets.main.resources.srcDirs) {
@@ -81,7 +82,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 // deployement stuff
 
-configurations { deployJars }
+configurations { deployerJars }
 
 dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
 

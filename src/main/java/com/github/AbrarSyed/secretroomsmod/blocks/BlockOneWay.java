@@ -1,28 +1,26 @@
 package com.github.AbrarSyed.secretroomsmod.blocks;
 
-import java.util.ArrayList;
 import java.util.Random;
-
-import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
-import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
+import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -35,17 +33,11 @@ public class BlockOneWay extends BlockContainer
 	{
 		super(Material.wood);
 		setHardness(1.0F);
-		setStepSound(Block.soundWoodFootstep);
+		setStepSound(soundTypeWood);
 		setLightOpacity(0);
 		setCreativeTab(SecretRooms.tab);
 	}
-
-	@Override
-	public void addCreativeItems(ArrayList itemList)
-	{
-		itemList.add(new ItemStack(this));
-	}
-
+	
 	@Override
 	public int quantityDropped(Random random)
 	{
@@ -59,7 +51,7 @@ public class BlockOneWay extends BlockContainer
 	}
 
 	@Override
-	public int getLightOpacity(World world, int x, int y, int z)
+	public int getLightOpacity(IBlockAccess world, int x, int y, int z)
 	{
 		return world.getBlockMetadata(x, y, z) == 1 ? 0 : 255;
 	}
@@ -78,7 +70,7 @@ public class BlockOneWay extends BlockContainer
 
 	@SideOnly(value = Side.CLIENT)
 	@Override
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
 		if (!SecretRooms.displayCamo)
 			return getBlockTextureFromSide(side);
@@ -86,19 +78,19 @@ public class BlockOneWay extends BlockContainer
 		int metadata = world.getBlockMetadata(x, y, z);
 
 		if (side != metadata)
-			return Block.glass.getBlockTextureFromSide(side);
+			return Blocks.glass.getIcon(side, 0);
 
 		try
 		{
-			TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
+			TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
 			int id = entity.getCopyID();
 
 			if (id == 0)
 				return blockIcon;
 
-			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
 
-			return Block.getBlockById(id).getBlockTexture(fake, x, y, z, side);
+			return Block.getBlockById(id).getIcon(fake, x, y, z, side);
 		}
 		catch (Throwable t)
 		{
@@ -110,21 +102,21 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		int var6 = par1IBlockAccess.getBlockId(par2, par3, par4);
-		return var6 == blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+		Block var6 = par1IBlockAccess.getBlock(par2, par3, par4);
+		return var6 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
 	}
 
 	@Override
-	public Icon getIcon(int i, int meta)
+	public IIcon getIcon(int i, int meta)
 	{
 		if (i == 3)
 			return blockIcon;
-		return Block.glass.getBlockTextureFromSide(i);
+		return Blocks.glass.getIcon(i, 0);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BASE);
 	}
@@ -143,7 +135,7 @@ public class BlockOneWay extends BlockContainer
 		// CAMO STUFF
 		BlockHolder holder = getIdCamoStyle(world, i, j, k);
 
-		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(i, j, k);
+		TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(i, j, k);
 
 		if (holder == null)
 		{
@@ -208,12 +200,12 @@ public class BlockOneWay extends BlockContainer
 		if (!SecretRooms.displayCamo)
 			return super.colorMultiplier(world, x, y, z);
 
-		TileEntityCamo entity = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
+		TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
 
 		if (entity == null)
 			return super.colorMultiplier(world, x, y, z);
 
-		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.worldObj);
+		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
 		int id = entity.getCopyID();
 
 		if (id == 0)
@@ -230,7 +222,7 @@ public class BlockOneWay extends BlockContainer
 
 		ForgeDirection dir = ForgeDirection.getOrientation(direction);
 
-		if (!SecretRooms.proxy.getFaceTowards(entityplayer.username))
+		if (!SecretRooms.proxy.getFaceTowards(entityplayer.getUniqueID()))
 		{
 			dir = dir.getOpposite();
 		}
@@ -306,13 +298,12 @@ public class BlockOneWay extends BlockContainer
 			return null;
 		else
 		{
-			int id = world.getBlockId(x, y, z);
-			Block block = Block.getBlockById(id);
-			TileEntity entity = world.getBlockTileEntity(x, y, z);
+			Block block = world.getBlock(x, y, z);
+			TileEntity entity = world.getTileEntity(x, y, z);
 
 			if (entity != null && entity instanceof TileEntityCamo)
 			{
-				TileEntityCamo te = (TileEntityCamo) world.getBlockTileEntity(x, y, z);
+				TileEntityCamo te = (TileEntityCamo) world.getTileEntity(x, y, z);
 				return te.getBlockHolder();
 			}
 			else if (block.isOpaqueCube())
@@ -333,13 +324,13 @@ public class BlockOneWay extends BlockContainer
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1)
+	public TileEntity createNewTileEntity(World var1, int meta)
 	{
 		return new TileEntityCamo();
 	}
 
 	@Override
-	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+	public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face)
 	{
 		return 0;
 	}

@@ -1,22 +1,22 @@
 package com.github.AbrarSyed.secretroomsmod.blocks;
 
-import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class BlockCamoLightDetector extends BlockCamoFull
 {
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_DETECTOR);
 	}
@@ -65,14 +65,14 @@ public class BlockCamoLightDetector extends BlockCamoFull
 			if (meta != lightValue)
 			{
 				world.setBlockMetadataWithNotify(x, y, z, lightValue, 3);
-				world.notifyBlockChange(x - 1, y - 1, z+1, blockID);
-				world.notifyBlockChange(x + 1, y - 1, z+1, blockID);
-				world.notifyBlockChange(x - 1, y + 1, z+1, blockID);
-				world.notifyBlockChange(x + 1, y + 1, z+1, blockID);
-				world.notifyBlockChange(x - 1, y - 1, z+1, blockID);
-				world.notifyBlockChange(x + 1, y - 1, z-1, blockID);
-				world.notifyBlockChange(x - 1, y + 1, z-1, blockID);
-				world.notifyBlockChange(x + 1, y + 1, z-1, blockID);
+				world.notifyBlockChange(x - 1, y - 1, z+1, this);
+				world.notifyBlockChange(x + 1, y - 1, z+1, this);
+				world.notifyBlockChange(x - 1, y + 1, z+1, this);
+				world.notifyBlockChange(x + 1, y + 1, z+1, this);
+				world.notifyBlockChange(x - 1, y - 1, z+1, this);
+				world.notifyBlockChange(x + 1, y - 1, z-1, this);
+				world.notifyBlockChange(x - 1, y + 1, z-1, this);
+				world.notifyBlockChange(x + 1, y + 1, z-1, this);
 			}
 		}
 	}
@@ -81,7 +81,7 @@ public class BlockCamoLightDetector extends BlockCamoFull
 	 * Returns a new instance of a block's tile entity class. Called on placing the block.
 	 */
 	@Override
-	public TileEntity createNewTileEntity(World par1World)
+	public TileEntity createNewTileEntity(World par1World, int meta)
 	{
 		return new TileEntityCamoDetector();
 	}
