@@ -1,6 +1,7 @@
 package com.github.AbrarSyed.secretroomsmod.network;
 
-import static cpw.mods.fml.relauncher.Side.*;
+import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static cpw.mods.fml.relauncher.Side.SERVER;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.Packet;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -109,6 +111,11 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
     {
         channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
         channels.get(SERVER).writeAndFlush(packet);
+    }
+    
+    public static Packet toMcPacket(PacketBase packet)
+    {
+        return channels.get(FMLCommonHandler.instance().getEffectiveSide()).generatePacketFrom(packet);
     }
     
     // OTHER METHODS

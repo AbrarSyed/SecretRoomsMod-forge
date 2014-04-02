@@ -3,14 +3,14 @@ package com.github.AbrarSyed.secretroomsmod.blocks;
 import java.util.Arrays;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
 import com.github.AbrarSyed.secretroomsmod.common.FakeWorld;
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.network.PacketCamo;
+import com.github.AbrarSyed.secretroomsmod.network.PacketManager;
 
 public class TileEntityCamo extends TileEntity
 {
@@ -64,15 +64,7 @@ public class TileEntityCamo extends TileEntity
     @Override
     public Packet getDescriptionPacket()
     {
-        NBTTagCompound nbt = new NBTTagCompound();
-        writeToNBT(nbt);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, blockMetadata, nbt);
-    }
-    
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
-        readFromNBT(pkt.func_148857_g());
+        return PacketManager.toMcPacket(new PacketCamo(this));
     }
 
     public void setBlockHolder(BlockHolder holder)
