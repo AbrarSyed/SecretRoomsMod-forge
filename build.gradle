@@ -17,9 +17,9 @@ buildscript {
 apply plugin: "forge"
 
 // stuff specific to my mod
-group = 'com.github.abrarsyed.secretroomsmod'
+group = 'com.github.abrarsyed'
 version = "4.6.3"
-archivesBaseName = 'SecretRoomsMod'
+archivesBaseName = 'secretroomsmod'
 
 minecraft {
     version = "1.7.2-10.12.0.1048" // grab latest forge
@@ -43,15 +43,15 @@ processResources
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-            // replace stuff in text files, not binary ones.
-            from(sourceSets.main.resources.srcDirs) {
-                include '**/*.info'
+    // replace stuff in text files, not binary ones.
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
 
-                // replace version and MCVersion
-                // forge version is also accessible via project.minecraftforgeVersion
-                // it contains the full minecraft version, including buildNumber
-                expand 'version':project.version, 'mcversion':project.minecraft.version
-            }
+        // replace version and MCVersion
+        // forge version is also accessible via project.minecraftforgeVersion
+        // it contains the full minecraft version, including buildNumber
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
 
     // copy everything else, thats not text
     from(sourceSets.main.resources.srcDirs) { exclude '**/*.info' }
@@ -59,24 +59,21 @@ processResources
 
 repositories { mavenCentral() }
 
-// change the name of my obfuscated jar
-jar { appendix = 'universal' }
-
 // because the normal output has been made to be obfuscated
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    appendix = 'dev'
+    classifier = 'dev'
 }
 
 // add a source jar
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
-    appendix = 'sources'
+    classifier = 'sources'
 }
 
 // add a javadoc jar
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    appendix = 'javadoc'
+    classifier = 'javadoc'
     from 'build/docs/javadoc'
 }
 
@@ -84,10 +81,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 configurations { deployerJars }
 
-dependencies {
-    compile 'org.projectlombok:lombok:1.12.6'
-    deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
-}
+dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
 
 artifacts {
     archives sourceJar
@@ -98,7 +92,7 @@ artifacts {
 uploadArchives {
     repositories {
         if (project.hasProperty("filesmaven")) {
-            logger.info('Publishing to files server')
+            logger.info('Publishing to forge files server')
 
             mavenDeployer {
                 configuration = configurations.deployerJars
