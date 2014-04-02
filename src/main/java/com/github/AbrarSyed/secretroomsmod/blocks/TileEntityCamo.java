@@ -9,8 +9,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
+import com.github.AbrarSyed.secretroomsmod.common.FakeWorld;
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
 
 public class TileEntityCamo extends TileEntity
 {

@@ -121,4 +121,9 @@ public class BlockHolder
 
 		return new BlockHolder(ID, meta, nbtNew);
 	}
+	
+	public Block getBlock()
+	{
+	    return Block.getBlockById(blockID);
+	}
 }

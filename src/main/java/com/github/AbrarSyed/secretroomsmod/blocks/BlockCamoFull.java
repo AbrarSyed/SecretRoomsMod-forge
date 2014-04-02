@@ -21,8 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
+import com.github.AbrarSyed.secretroomsmod.common.FakeWorld;
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;

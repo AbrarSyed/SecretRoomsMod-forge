@@ -7,9 +7,6 @@ import java.util.UUID;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Unload;
-
-import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
-
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -44,18 +41,13 @@ public class ProxyCommon
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldLoad(Load event)
 	{
-		if (event.world instanceof FakeWorld)
-			return;
 		int dim = event.world.provider.dimensionId;
-		fakes.put(dim, FakeWorld.getFakeWorldFor(event.world));
+		fakes.put(dim, new FakeWorld(event.world));
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onWorldUnLoad(Unload event)
 	{
-		if (event.world instanceof FakeWorld)
-			return;
-
 		int dim = event.world.provider.dimensionId;
 		fakes.remove(dim);
 	}

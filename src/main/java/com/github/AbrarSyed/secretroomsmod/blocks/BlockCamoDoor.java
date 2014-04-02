@@ -16,8 +16,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.github.AbrarSyed.secretroomsmod.common.FakeWorld;
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
