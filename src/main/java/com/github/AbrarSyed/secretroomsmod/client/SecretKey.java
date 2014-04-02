@@ -3,7 +3,7 @@ package com.github.AbrarSyed.secretroomsmod.client;
 import java.util.EnumSet;
 
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-import com.github.AbrarSyed.secretroomsmod.network.PacketSRM1ToggleShow;
+import com.github.AbrarSyed.secretroomsmod.network.PacketShowTogle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;

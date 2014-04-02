@@ -13,6 +13,8 @@ import net.minecraft.world.World;
 import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamo;
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
+import com.github.AbrarSyed.secretroomsmod.network.PacketCamo;
+import com.github.AbrarSyed.secretroomsmod.network.PacketManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -136,24 +138,25 @@ public class ItemCamoDoor extends Item
 
         TileEntityCamo te = (TileEntityCamo) world.getTileEntity(x, y, z);
         te.setBlockHolder(holder);
+        
         if (world.isRemote)
         {
-            PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+            PacketManager.sendToServer(new PacketCamo(te));
         }
         else
         {
-            PacketDispatcher.sendPacketToAllInDimension(te.getDescriptionPacket(), world.provider.dimensionId);
+            PacketManager.sendToDimension(new PacketCamo(te), world.provider.dimensionId);
         }
 
         te = (TileEntityCamo) world.getTileEntity(x, y + 1, z);
         te.setBlockHolder(holder);
         if (world.isRemote)
         {
-            PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+            PacketManager.sendToServer(new PacketCamo(te));
         }
         else
         {
-            PacketDispatcher.sendPacketToAllInDimension(te.getDescriptionPacket(), world.provider.dimensionId);
+            PacketManager.sendToDimension(new PacketCamo(te), world.provider.dimensionId);
         }
 
         world.notifyBlocksOfNeighborChange(x, y, z, block);

@@ -1,44 +1,30 @@
 package com.github.AbrarSyed.secretroomsmod.network;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class PacketSRM1ToggleShow extends PacketSRMBase
+public class PacketShowTogle extends PacketBase
 {
     private static final IChatComponent SECRET = new ChatComponentText(EnumChatFormatting.YELLOW + "Camo blocks made secret");
     private static final IChatComponent OBVIOUS = new ChatComponentText(EnumChatFormatting.YELLOW + "Camo blocks made obvious");
+    
+    @Override
+    public void encode(ByteArrayDataOutput output) { }
 
-	public PacketSRM1ToggleShow()
-	{
-	}
-
-	public PacketSRM1ToggleShow(ObjectInputStream stream) throws IOException
-	{
-	}
-
-	@Override
-	public void writeToStream(ObjectOutputStream stream) throws IOException
-	{
-	}
-
-	@Override
-	public int getID()
-	{
-		return 1;
-	}
-
+    @Override
+    public void decode(ByteArrayDataInput input) { }
+    
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void actionClient(World world, EntityPlayer player)
@@ -55,9 +41,5 @@ public class PacketSRM1ToggleShow extends PacketSRMBase
 	}
 
 	@Override
-	public void actionServer(World world, EntityPlayer player)
-	{
-		// nothing.
-	}
-
+	public void actionServer(World world, EntityPlayerMP player) { }
 }

@@ -3,12 +3,11 @@ package com.github.AbrarSyed.secretroomsmod.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.AbrarSyed.secretroomsmod.network.PacketSRM1ToggleShow;
-
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+
+import com.github.AbrarSyed.secretroomsmod.network.PacketManager;
+import com.github.AbrarSyed.secretroomsmod.network.PacketShowTogle;
 
 /**
  * @author AbrarSyed
@@ -40,7 +39,7 @@ public class CommandShow extends CommandBase
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2)
 	{
-		PacketDispatcher.sendPacketToPlayer(new PacketSRM1ToggleShow().getPacket250(), (Player) CommandBase.getCommandSenderAsPlayer(var1));
+	    PacketManager.sendToPlayer(new PacketShowTogle(), CommandBase.getCommandSenderAsPlayer(var1));
 	}
 
     @Override

@@ -20,6 +20,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
 import com.github.AbrarSyed.secretroomsmod.common.fake.FakeWorld;
+import com.github.AbrarSyed.secretroomsmod.network.PacketCamo;
+import com.github.AbrarSyed.secretroomsmod.network.PacketManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -143,13 +145,15 @@ public class BlockOneWay extends BlockContainer
 		}
 
 		entity.setBlockHolder(holder);
+		PacketCamo packet = new PacketCamo(entity);
 		if (world.isRemote)
 		{
-			PacketDispatcher.sendPacketToServer(entity.getDescriptionPacket());
+		    
+			PacketManager.sendToServer(packet);
 		}
 		else
 		{
-			PacketDispatcher.sendPacketToAllInDimension(entity.getDescriptionPacket(), world.provider.dimensionId);
+		    PacketManager.sendToDimension(packet, world.provider.dimensionId);
 		}
 	}
 

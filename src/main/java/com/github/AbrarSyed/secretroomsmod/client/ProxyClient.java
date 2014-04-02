@@ -9,7 +9,8 @@ import org.lwjgl.input.Keyboard;
 
 import com.github.AbrarSyed.secretroomsmod.common.ProxyCommon;
 import com.github.AbrarSyed.secretroomsmod.common.SecretRooms;
-import com.github.AbrarSyed.secretroomsmod.network.PacketSRM2Key;
+import com.github.AbrarSyed.secretroomsmod.network.PacketKey;
+import com.github.AbrarSyed.secretroomsmod.network.PacketManager;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
@@ -54,11 +55,11 @@ public class ProxyClient extends ProxyCommon
 	public void onKeyPress(UUID uuid)
 	{
 		oneWayFaceTowards = !oneWayFaceTowards;
-		PacketDispatcher.sendPacketToServer(new PacketSRM2Key().getPacket250());
+		PacketManager.sendToServer(new PacketKey());
 	}
 
 	@Override
-	public boolean getFaceTowards(String username)
+	public boolean getFaceTowards(UUID uuid)
 	{
 		return oneWayFaceTowards;
 	}
