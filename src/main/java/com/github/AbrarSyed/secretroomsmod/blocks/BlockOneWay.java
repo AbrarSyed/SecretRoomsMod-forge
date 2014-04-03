@@ -148,7 +148,6 @@ public class BlockOneWay extends BlockContainer
 		PacketCamo packet = new PacketCamo(entity);
 		if (world.isRemote)
 		{
-		    
 			PacketManager.sendToServer(packet);
 		}
 		else

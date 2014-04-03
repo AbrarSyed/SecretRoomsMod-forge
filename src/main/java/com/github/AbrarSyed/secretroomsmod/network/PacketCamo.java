@@ -1,6 +1,10 @@
 package com.github.AbrarSyed.secretroomsmod.network;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+
+import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,67 +16,68 @@ import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamo;
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketCamo extends PacketBase
 {
-	public int			x, y, z;
-	public BlockHolder	holder;
-	public boolean		hasHolder;
-	public boolean[]		sides	= new boolean[6];
-	
-	public PacketCamo() { }
+    public int         x, y, z;
+    public BlockHolder holder;
+    public boolean[]   sides = new boolean[6];
 
-	public PacketCamo(TileEntityCamo entity)
-	{
-		holder = entity.getBlockHolder();
-		hasHolder = holder != null;
-		x = entity.xCoord;
-		y = entity.yCoord;
-		z = entity.zCoord;
+    public PacketCamo()
+    {
+    }
 
-		for (int i = 0; i < 6; i++)
-		{
-			sides[i] = entity.isCamo[i];
-		}
-	}
+    public PacketCamo(TileEntityCamo entity)
+    {
+        holder = entity.getBlockHolder();
+        x = entity.xCoord;
+        y = entity.yCoord;
+        z = entity.zCoord;
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void actionClient(World world, EntityPlayer player)
-	{
-		if (world == null)
-			return;
+        sides = entity.isCamo.clone();
+        
+        if (holder == null)
+            throw new IllegalArgumentException("TileEntity data is NULL!");
+    }
 
-		TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void actionClient(World world, EntityPlayer player)
+    {
+        if (world == null)
+            return;
 
-		if (entity == null || holder == null)
-			return;
+        TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
 
-		entity.setBlockHolder(holder);
-		entity.isCamo = sides;
+        if (entity == null || holder == null)
+            return;
 
-		world.markBlockForUpdate(x, y, z);
-	}
+        entity.setBlockHolder(holder);
+        entity.isCamo = sides;
 
-	@Override
-	public void actionServer(World world, EntityPlayerMP player)
-	{
-		if (world == null)
-			return;
+        world.markBlockForUpdate(x, y, z);
+    }
 
-		TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
+    @Override
+    public void actionServer(World world, EntityPlayerMP player)
+    {
+        if (world == null)
+            return;
 
-		if (entity == null || holder == null)
-			return;
+        TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
 
-		entity.setBlockHolder(holder);
-		entity.isCamo = sides;
+        if (entity == null || holder == null)
+            return;
 
-		PacketManager.sendToDimension(this, world.provider.dimensionId);
-	}
+        entity.setBlockHolder(holder);
+        entity.isCamo = sides;
+
+        PacketManager.sendToDimension(this, world.provider.dimensionId);
+    }
 
     @Override
     public void encode(ByteArrayDataOutput output)
@@ -81,20 +86,15 @@ public class PacketCamo extends PacketBase
         output.writeInt(y);
         output.writeInt(z);
 
-        output.writeBoolean(hasHolder);
-
-        if (hasHolder)
+        try
         {
-            try
-            {
-                NBTTagCompound nbt = new NBTTagCompound();
-                holder.writeToNBT(nbt);
-                CompressedStreamTools.write(nbt, output);
-            }
-            catch (IOException e)
-            {
-                // wont happen
-            }
+            NBTTagCompound nbt = new NBTTagCompound();
+            holder.writeToNBT(nbt);
+            CompressedStreamTools.write(nbt, output);
+        }
+        catch (IOException e)
+        {
+            // wont happen
         }
 
         for (int i = 0; i < 6; i++)
@@ -105,28 +105,19 @@ public class PacketCamo extends PacketBase
 
     @Override
     public void decode(ByteArrayDataInput input)
-    {
+    {        
         x = input.readInt();
         y = input.readInt();
         z = input.readInt();
 
-        hasHolder = input.readBoolean();
-
-        if (hasHolder)
+        try
         {
-            try
-            {
-                NBTTagCompound nbt = CompressedStreamTools.read(input);
-                holder = BlockHolder.buildFromNBT(nbt);
-            }
-            catch (IOException e)
-            {
-                // wont happen
-            }
+            NBTTagCompound nbt = CompressedStreamTools.read(input);
+            holder = BlockHolder.buildFromNBT(nbt);
         }
-        else
+        catch (IOException e)
         {
-            holder = null;
+            // wont happen
         }
 
         for (int i = 0; i < 6; i++)

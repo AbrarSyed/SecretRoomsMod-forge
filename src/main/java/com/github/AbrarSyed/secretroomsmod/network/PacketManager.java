@@ -64,6 +64,7 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
     public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, PacketBase packet)
     {
         ByteArrayDataInput input = ByteStreams.newDataInput(source.array());
+        input.skipBytes(1); // skip the packet identifier byte
         packet.decode(input);
 
         if (FMLCommonHandler.instance().getEffectiveSide().isClient())

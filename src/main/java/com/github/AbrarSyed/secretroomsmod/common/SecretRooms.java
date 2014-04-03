@@ -17,6 +17,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import com.github.AbrarSyed.secretroomsmod.blocks.*;
 import com.github.AbrarSyed.secretroomsmod.items.*;
+import com.github.AbrarSyed.secretroomsmod.network.PacketManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -237,8 +238,9 @@ public class SecretRooms
     @EventHandler
     public void load(FMLInitializationEvent e)
     {
+        PacketManager.init();
+        
         // ore dictionary
-
         OreDictionary.registerOre(CAMO_PASTE, camoPaste);
 
         // Renders
