@@ -154,9 +154,6 @@ public class SecretRooms
 
         solidAir = new BlockSolidAir(new MaterialFakeAir()).setBlockName("SolidAir");
 
-        // key Events
-        proxy.loadKeyStuff();
-
         // registers
         GameRegistry.registerBlock(torchLever, "TorchLever");
         GameRegistry.registerBlock(oneWay, "OneWayGlass");
@@ -239,6 +236,9 @@ public class SecretRooms
     public void load(FMLInitializationEvent e)
     {
         PacketManager.init();
+        
+        // key Events
+        proxy.loadKeyStuff();
         
         // ore dictionary
         OreDictionary.registerOre(CAMO_PASTE, camoPaste);

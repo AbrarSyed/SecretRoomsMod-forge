@@ -1,6 +1,7 @@
 package com.github.AbrarSyed.secretroomsmod.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,16 +18,11 @@ public class SecretKeyHandler
     private static final IChatComponent TOWARDS = new ChatComponentText(EnumChatFormatting.YELLOW + "-- !!! OneWayBlock facing set to Towards !!! --");
     private static final IChatComponent AWAY = new ChatComponentText(EnumChatFormatting.YELLOW + "-- !!! OneWayBlock facing set to Away !!! --");
     
-    boolean oldState = false;
-    
     @SubscribeEvent
 	public void keyPress(KeyInputEvent event)
 	{
-        boolean currentState = ProxyClient.key_OneWayFace.getIsKeyPressed();
-        if (currentState && currentState != oldState)
+        if (GameSettings.isKeyDown(ProxyClient.key_OneWayFace)) // my button
         {
-            // FIRE AT WILL
-            
             EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 
             if (player == null || player.worldObj == null || Minecraft.getMinecraft().currentScreen != null)
