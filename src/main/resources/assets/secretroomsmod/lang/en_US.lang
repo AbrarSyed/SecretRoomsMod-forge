@@ -1,12 +1,12 @@
-tile.TorchLever.name=
+tile.TorchLever.name=Torch Lever
 tile.OneWayGlass.name=One-Way Glass
 tile.CamoGate.name=Secret Gate
-tile.SecretTrapdoor.name=Secret TrapDoor
+tile.SecretTrapDoor.name=Secret TrapDoor
 tile.SecretWoodenDoorBlock.name=Secret Wooden Door
 item.SecretWoodenDoorItem.name=Secret Wooden Door
 tile.SecretIronDoorBlock.name=Secret Iron Door
 item.SecretIronDoorItem.name=Secret Iron Door
-tile.CamoflaugePaste.name=Camouflage Paste
+item.CamoflaugePaste.name=Camouflage Paste
 tile.GhostBlock.name=Ghost Block
 tile.SecretLever.name=Secret lever
 tile.SecretRedstone.name=Secret Redstone
