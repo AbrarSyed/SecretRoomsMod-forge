@@ -33,6 +33,7 @@ public class BlockCamoPlateWeighted extends BlockCamoPlate
             blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_PLATE_GOLD);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected int getCurrentWeight(World world, int x, int y, int z)
     {

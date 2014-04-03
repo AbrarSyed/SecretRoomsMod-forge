@@ -1,10 +1,6 @@
 package com.github.AbrarSyed.secretroomsmod.network;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-
-import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,7 +12,6 @@ import com.github.AbrarSyed.secretroomsmod.blocks.TileEntityCamo;
 import com.github.AbrarSyed.secretroomsmod.common.BlockHolder;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

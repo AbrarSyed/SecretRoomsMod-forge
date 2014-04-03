@@ -105,15 +105,12 @@ public class BlockCamoFull extends BlockContainer
             TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
             FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
 
-            if (entity == null)
+            Block block = entity.getBlockHolder().getBlock();
+
+            if (block == null)
                 return 255;
 
-            int id = entity.getCopyID();
-
-            if (id == 0)
-                return 255;
-
-            return Block.getBlockById(id).getLightOpacity(fake, x, y, z);
+            return block.getLightOpacity(fake, x, y, z);
         }
         catch (Exception e)
         {

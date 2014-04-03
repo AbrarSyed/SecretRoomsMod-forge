@@ -20,9 +20,9 @@ public class ItemBlockCamoButton extends ItemBlockWithMetadata
 	{
 	    // TODO: fix localizations. 
 		if (stack.getItemDamage() == 1)
-			return "mod_SRM.SecretButton.wood";
+			return "tile.SecretButton.wood";
 
-		return "mod_SRM.SecretButton.stone";
+		return "tile.SecretButton.stone";
 	}
 
 }

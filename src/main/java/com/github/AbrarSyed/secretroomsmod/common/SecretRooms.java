@@ -194,42 +194,6 @@ public class SecretRooms
         GameRegistry.registerTileEntity(TileEntityCamo.class, "TE_CamoFull");
         GameRegistry.registerTileEntity(TileEntityCamoChest.class, "TE_CamoChest");
         GameRegistry.registerTileEntity(TileEntityCamoDetector.class, "TE_CamoDetector");
-
-        //      LanguageRegistry.instance().addNameForObject(torchLever, "en_US", "Torch Lever");
-        //      LanguageRegistry.instance().addNameForObject(oneWay, "en_US", "One-Way Glass");
-        //      LanguageRegistry.instance().addNameForObject(camoGate, "en_US", "Camo Gate");
-        //      LanguageRegistry.instance().addNameForObject(camoGateExt, "en_US", "Dummy Camo block (does nothing)");
-        //      LanguageRegistry.instance().addNameForObject(camoTrapDoor, "en_US", "Secret TrapDoor");
-        //
-        //      LanguageRegistry.instance().addNameForObject(camoDoorWoodItem, "en_US", "Secret Wooden Door");
-        //      LanguageRegistry.instance().addNameForObject(camoDoorIronItem, "en_US", "Secret Iron Door");
-        //
-        //      LanguageRegistry.instance().addNameForObject(camoPaste, "en_US", "Camoflage Paste");
-        //
-        //      LanguageRegistry.instance().addNameForObject(camoGhost, "en_US", "Ghost Block");
-        //      LanguageRegistry.instance().addNameForObject(camoLever, "en_US", "Secret Lever");
-        //      LanguageRegistry.instance().addNameForObject(camoCurrent, "en_US", "Secret Redstone");
-        //      LanguageRegistry.instance().addNameForObject(camoButton, "en_US", "Secret Button");
-        //
-        //      LanguageRegistry.instance().addStringLocalization("SecretButton.stone", "Secret Stone Button");
-        //      LanguageRegistry.instance().addStringLocalization("SecretButton.wood", "Secret Wood Button");
-        //      LanguageRegistry.instance().addStringLocalization("SecretButton.stone", "en_us", "Secret Stone Button");
-        //      LanguageRegistry.instance().addStringLocalization("SecretButton.wood", "en_us", "Secret Wood Button");
-        //
-        //      LanguageRegistry.instance().addNameForObject(camoPlateAll, "en_US", "Secret PressurePlate");
-        //      LanguageRegistry.instance().addNameForObject(camoPlatePlayer, "en_US", "Secret PlayerPlate");
-        //      LanguageRegistry.instance().addNameForObject(camoPlateLight, "en_US", "Secret Weighted Plate (light)");
-        //      LanguageRegistry.instance().addNameForObject(camoPlateHeavy, "en_US", "Secret Weighted Plate (heavy)");
-        //
-        //      LanguageRegistry.instance().addNameForObject(camoStairs, "en_US", "Secret Stairs");
-        //
-        //      LanguageRegistry.instance().addNameForObject(camoChest, "en_US", "Secret Chest");
-        //      LanguageRegistry.instance().addNameForObject(camoTrappedChest, "en_US", "Secret Trapped Chest");
-        //      LanguageRegistry.instance().addStringLocalization("container.CamoChest", "en_US", "Hidden Chest");
-        //
-        //      LanguageRegistry.instance().addNameForObject(camoLightDetector, "en_US", "Secret Light Detector");
-        //
-        //      LanguageRegistry.instance().addNameForObject(solidAir, "en_US", "Solid Air");
     }
 
     @EventHandler
