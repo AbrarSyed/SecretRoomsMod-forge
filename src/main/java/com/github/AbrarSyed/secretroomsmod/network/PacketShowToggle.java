@@ -2,7 +2,8 @@ package com.github.AbrarSyed.secretroomsmod.network;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -16,8 +17,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketShowToggle extends PacketBase
 {
-    private static final IChatComponent SECRET = new ChatComponentText(EnumChatFormatting.YELLOW + "Camo blocks made secret");
-    private static final IChatComponent OBVIOUS = new ChatComponentText(EnumChatFormatting.YELLOW + "Camo blocks made obvious");
+    private static final ChatStyle yellowStyle = new ChatStyle().setColor(EnumChatFormatting.YELLOW);
+    private static final IChatComponent SECRET = new ChatComponentTranslation("message.secretroomsmod.commandShow.hide").setChatStyle(yellowStyle);
+    private static final IChatComponent OBVIOUS = new ChatComponentTranslation("message.secretroomsmod.commandShow.show").setChatStyle(yellowStyle);
     
     @Override
     public void encode(ByteArrayDataOutput output) { }

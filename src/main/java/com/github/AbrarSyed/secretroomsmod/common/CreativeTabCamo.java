@@ -9,7 +9,7 @@ public class CreativeTabCamo extends CreativeTabs
 {
 	public CreativeTabCamo()
 	{
-		super("Secret Items");
+		super(SecretRooms.MODID);
 	}
 
 	@SideOnly(Side.CLIENT)

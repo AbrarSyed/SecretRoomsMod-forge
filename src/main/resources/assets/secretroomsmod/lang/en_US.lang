@@ -1,12 +1,22 @@
+# creative tab
+itemGroup.secretroomsmod=Secret Blocks
+
+# chat messages
+message.secretroomsmod.oneWay.towards=-- !!! OneWayBlock facing set to Towards !!! --
+message.secretroomsmod.oneWay.away=-- !!! OneWayBlock facing set to Away !!! --
+message.secretroomsmod.commandShow.show=Camo blocks made obvious
+message.secretroomsmod.commandShow.hide=Camo blocks made secret
+
+# keybindings
+key.secretroomsmod.oneWayface=Toggle OneWay face
+
+# blocks
 tile.TorchLever.name=Torch Lever
 tile.OneWayGlass.name=One-Way Glass
 tile.CamoGate.name=Secret Gate
 tile.SecretTrapDoor.name=Secret TrapDoor
 tile.SecretWoodenDoorBlock.name=Secret Wooden Door
-item.SecretWoodenDoorItem.name=Secret Wooden Door
 tile.SecretIronDoorBlock.name=Secret Iron Door
-item.SecretIronDoorItem.name=Secret Iron Door
-item.CamoflaugePaste.name=Camouflage Paste
 tile.GhostBlock.name=Ghost Block
 tile.SecretLever.name=Secret lever
 tile.SecretRedstone.name=Secret Redstone
@@ -21,3 +31,8 @@ tile.SecretChest.name=Secret Chest
 tile.SecretTrappedChest.name=Secret Trapped Chest
 tile.SecretLightDetector.name=Secret Light Detector
 tile.SolidAir.name=Solid Air
+
+#items
+item.SecretIronDoorItem.name=Secret Iron Door
+item.CamoflaugePaste.name=Camouflage Paste
+item.SecretWoodenDoorItem.name=Secret Wooden Door

@@ -26,7 +26,7 @@ public class ProxyClient extends ProxyCommon
 
 	public ProxyClient()
 	{
-		key_OneWayFace = new KeyBinding("srm.oneWayface", Keyboard.KEY_BACKSLASH, "key.categories.gameplay");
+		key_OneWayFace = new KeyBinding("key.secretroomsmod.oneWayface", Keyboard.KEY_BACKSLASH, "key.categories.gameplay");
 		//MinecraftForge.EVENT_BUS.register(this);
 	}
 
