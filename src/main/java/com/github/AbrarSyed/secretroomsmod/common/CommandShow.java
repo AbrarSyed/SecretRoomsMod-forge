@@ -47,11 +47,4 @@ public class CommandShow extends CommandBase
     {
         return "";
     }
-
-    @Override
-    public int compareTo(Object o)
-    {
-        // wth...
-        return 0;
-    }
 }
