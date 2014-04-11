@@ -22,7 +22,7 @@ version = "4.6.3"
 archivesBaseName = 'secretroomsmod'
 
 minecraft {
-    version = "1.7.2-10.12.0.1048" // grab latest forge
+    version = "1.7.2-10.12.0.1057" // grab latest forge
     assetDir = "run/assets"
 
     // replacing
