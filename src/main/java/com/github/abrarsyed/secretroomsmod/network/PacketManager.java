@@ -30,6 +30,7 @@ import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Sharable
 public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
@@ -69,14 +70,25 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
 
         if (FMLCommonHandler.instance().getEffectiveSide().isClient())
         {
-            Minecraft mc = Minecraft.getMinecraft();
-            packet.actionClient(mc.theWorld, mc.thePlayer);
+            actionClient(packet);
         }
         else
         {
-            EntityPlayerMP player = ((NetHandlerPlayServer)ctx.channel().attr(NetworkRegistry.NET_HANDLER).get()).playerEntity;
-            packet.actionServer(player.worldObj, player);
+            actionServer(ctx, packet);
         }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    private void actionClient(PacketBase packet)
+    {
+        Minecraft mc = Minecraft.getMinecraft();
+        packet.actionClient(mc.theWorld, mc.thePlayer);
+    }
+    
+    private void actionServer(ChannelHandlerContext ctx, PacketBase packet)
+    {
+        EntityPlayerMP player = ((NetHandlerPlayServer)ctx.channel().attr(NetworkRegistry.NET_HANDLER).get()).playerEntity;
+        packet.actionServer(player.worldObj, player);
     }
     
     // UTIL SENDING METHODS
