@@ -354,7 +354,6 @@ public class BlockCamoFull extends BlockContainer
             }
             else if (block.isNormalCube(world, x, y, z) ||
                     block.isNormalCube() ||
-                    block.isBlockNormalCube() ||
                     block.renderAsNormalBlock() ||
                     block.isOpaqueCube() ||
                     block.getRenderType() == 0)
