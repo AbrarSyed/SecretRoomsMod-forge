@@ -57,7 +57,21 @@ processResources
     from(sourceSets.main.resources.srcDirs) { exclude '**/*.info' }
 }
 
-repositories { mavenCentral() }
+repositories {
+     maven { // The repo from which to get waila
+         name "Mobius Repo"
+         url "http://mobiusstrip.eu/maven"
+     }
+     maven { // the repo from which to get NEI and stuff
+         name 'CB Repo'
+         url "http://chickenbones.net/maven/"
+     }
+}
+
+dependencies {
+    // I dont have to specify NEI.. because gradle magic. aka: transitive dependency resolution
+    compile "mcp.mobius.waila:Waila:1.5.2a"
+}
 
 // because the normal output has been made to be obfuscated
 task deobfJar(type: Jar) {

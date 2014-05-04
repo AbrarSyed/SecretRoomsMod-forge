@@ -2,6 +2,7 @@ package com.github.abrarsyed.secretroomsmod.common;
 
 import java.util.ArrayList;
 
+import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,8 +16,27 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import com.github.abrarsyed.secretroomsmod.blocks.*;
-import com.github.abrarsyed.secretroomsmod.items.*;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoButton;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoChest;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoDoor;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoDummy;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoGate;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoGhost;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoLever;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoLightDetector;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoPlate;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoPlateWeighted;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoStair;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoTrapDoor;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoWire;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockOneWay;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockSolidAir;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockTorchLever;
+import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamo;
+import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamoChest;
+import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamoDetector;
+import com.github.abrarsyed.secretroomsmod.items.ItemBlockCamoButton;
+import com.github.abrarsyed.secretroomsmod.items.ItemCamoDoor;
 import com.github.abrarsyed.secretroomsmod.network.PacketManager;
 
 import cpw.mods.fml.common.Mod;
@@ -211,6 +231,9 @@ public class SecretRooms
         proxy.loadRenderStuff();
 
         addrecipes();
+        
+        // waila dependency test
+        System.out.println(ModuleRegistrar.instance());
     }
 
     @EventHandler
