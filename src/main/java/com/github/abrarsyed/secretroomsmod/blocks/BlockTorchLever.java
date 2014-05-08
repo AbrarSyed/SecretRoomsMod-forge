@@ -5,8 +5,10 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -14,6 +16,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
+import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.relauncher.Side;
@@ -49,6 +53,17 @@ public class BlockTorchLever extends BlockTorch
             return Blocks.torch.getIcon(par5, 0);
         else
             return super.getIcon(par1iBlockAccess, par2, par3, par4, par5);
+    }
+    
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+    {
+        super.onBlockPlacedBy(world, x, y, z, entity, stack);
+        
+        if (entity instanceof EntityPlayer)
+        {
+            OwnershipManager.setOwnership(entity.getUniqueID(), new BlockLocation(x, y, z, world));
+        }
     }
 
     @Override
@@ -233,6 +248,9 @@ public class BlockTorchLever extends BlockTorch
         }
 
         super.breakBlock(world, x, y, z, block, metadata);
+        
+        // remove ownership
+        OwnershipManager.removeBlock(new BlockLocation(x, y, z, world));
     }
 
     /**

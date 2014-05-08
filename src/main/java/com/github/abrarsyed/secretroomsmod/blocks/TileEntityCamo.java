@@ -1,6 +1,7 @@
 package com.github.abrarsyed.secretroomsmod.blocks;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
@@ -16,6 +17,7 @@ public class TileEntityCamo extends TileEntity
 {
     private BlockHolder holder;
     public boolean[]    isCamo;
+    public UUID         owner;
 
     public TileEntityCamo()
     {
@@ -42,6 +44,14 @@ public class TileEntityCamo extends TileEntity
         {
             isCamo[i] = nbt.getBoolean("isCamo" + i);
         }
+        
+        boolean hasOwner = nbt.hasKey("ownerMost");
+        if (hasOwner)
+        {
+            long most = nbt.getLong("ownerMost");
+            long least = nbt.getLong("ownerLeast");
+            owner = new UUID(most, least);
+        }
     }
 
     @Override
@@ -55,6 +65,12 @@ public class TileEntityCamo extends TileEntity
         for (int i = 0; i < isCamo.length; i++)
         {
             nbt.setBoolean("isCamo" + i, isCamo[i]);
+        }
+        
+        if (owner != null)
+        {
+            nbt.setLong("ownerMost", owner.getMostSignificantBits());
+            nbt.setLong("ownerLeast", owner.getLeastSignificantBits());
         }
     }
 

@@ -47,6 +47,8 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
         INSTANCE.addDiscriminator(0, PacketCamo.class);
         INSTANCE.addDiscriminator(1, PacketShowToggle.class);
         INSTANCE.addDiscriminator(2, PacketKey.class);
+        INSTANCE.addDiscriminator(3, PacketSyncOwnership.class);
+        INSTANCE.addDiscriminator(4, PacketChangeOwnership.class);
 
         channels.putAll(NetworkRegistry.INSTANCE.newChannel("SecretRooms", INSTANCE));
     }

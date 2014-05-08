@@ -1,6 +1,7 @@
 package com.github.abrarsyed.secretroomsmod.network;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,6 +22,7 @@ public class PacketCamo extends PacketBase
     public int         x, y, z;
     public BlockHolder holder;
     public boolean[]   sides = new boolean[6];
+    public UUID        owner;
 
     public PacketCamo()
     {
@@ -34,7 +36,7 @@ public class PacketCamo extends PacketBase
         z = entity.zCoord;
 
         sides = entity.isCamo.clone();
-        
+
         if (holder == null)
             throw new IllegalArgumentException("TileEntity data is NULL!");
     }
@@ -96,11 +98,18 @@ public class PacketCamo extends PacketBase
         {
             output.writeBoolean(sides[i]);
         }
+        
+        output.writeBoolean(owner != null);
+        if (owner != null)
+        {
+            output.writeLong(owner.getMostSignificantBits());
+            output.writeLong(owner.getLeastSignificantBits());
+        }
     }
 
     @Override
     public void decode(ByteArrayDataInput input)
-    {        
+    {
         x = input.readInt();
         y = input.readInt();
         z = input.readInt();
@@ -118,6 +127,11 @@ public class PacketCamo extends PacketBase
         for (int i = 0; i < 6; i++)
         {
             sides[i] = input.readBoolean();
+        }
+        
+        if (input.readBoolean())
+        {
+            owner = new UUID(input.readLong(), input.readLong());
         }
     }
 

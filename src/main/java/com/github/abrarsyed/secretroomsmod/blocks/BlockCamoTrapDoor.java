@@ -5,8 +5,10 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -15,6 +17,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
+import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.relauncher.Side;
@@ -40,6 +44,26 @@ public class BlockCamoTrapDoor extends Block
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BASE);
+    }
+    
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+    {
+        super.onBlockPlacedBy(world, x, y, z, entity, stack);
+        
+        if (entity instanceof EntityPlayer)
+        {
+            OwnershipManager.setOwnership(entity.getUniqueID(), new BlockLocation(x, y, z, world));
+        }
+    }
+    
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
+    {
+        super.breakBlock(world, x, y, z, block, metadata);
+        
+        // remove ownership
+        OwnershipManager.removeBlock(new BlockLocation(x, y, z, world));
     }
 
     /**

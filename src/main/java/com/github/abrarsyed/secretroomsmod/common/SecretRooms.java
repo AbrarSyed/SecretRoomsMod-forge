@@ -2,7 +2,6 @@ package com.github.abrarsyed.secretroomsmod.common;
 
 import java.util.ArrayList;
 
-import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -232,8 +231,11 @@ public class SecretRooms
 
         addrecipes();
         
+        // ownership stuff
+        OwnershipManager.init();
+        
         // waila dependency test
-        System.out.println(ModuleRegistrar.instance());
+        //System.out.println(ModuleRegistrar.instance());
     }
 
     @EventHandler
