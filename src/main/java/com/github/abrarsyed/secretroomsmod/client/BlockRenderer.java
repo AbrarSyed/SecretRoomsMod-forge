@@ -191,10 +191,9 @@ public class BlockRenderer implements ISimpleBlockRenderingHandler
         float blockColorGreen = (rawColors >> 8 & 0xff) / 255F;
         float blockColorBlue = (rawColors & 0xff) / 255F;
         // get Copied ID
-        int copyId = ((TileEntityCamo) world.getTileEntity(x, y, z)).getCopyID();
-        if (copyId == 0)
+        Block fakeBlock = ((TileEntityCamo) world.getTileEntity(x, y, z)).getCopyBlock();
+        if (fakeBlock == null)
             return renderblocks.renderStandardBlock(block, x, y, z);
-        Block fakeBlock = Block.getBlockById(copyId);
 
         boolean flag;
         if (rawColors == 0xffffff && Minecraft.isAmbientOcclusionEnabled())
@@ -219,7 +218,7 @@ public class BlockRenderer implements ISimpleBlockRenderingHandler
         float var23 = bottomWeight;
         float var24 = frontWeight;
         float var25 = sideWeight;
-        if (fakeBlock != Blocks.grass || copyId != Block.getIdFromBlock(Blocks.grass))// (!(fakeBlock instanceof BlockGrass))
+        if (!Block.isEqualTo(fakeBlock, Blocks.grass))
         {
             var17 = bottomWeight * blockColorRed;
             var18 = frontWeight * blockColorRed;
@@ -317,7 +316,7 @@ public class BlockRenderer implements ISimpleBlockRenderingHandler
 
         // get Copied Texture
         TileEntityCamo entity = (TileEntityCamo) blockAccess.getTileEntity(i, j, k);
-        boolean grassed = entity.getCopyID() == Block.getIdFromBlock(Blocks.grass);
+        boolean grassed = Block.isEqualTo(entity.getCopyBlock(), Blocks.grass);
         if (!grassed && rawColors == 0xffffff)
             return renderblocks.renderStandardBlock(block, i, j, k);
 

@@ -71,14 +71,14 @@ public class BlockCamoDoor extends BlockContainer
         {
             TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
 
-            int id = entity.getCopyID();
+            Block block = entity.getCopyBlock();
 
-            if (id == 0)
+            if (block == null)
                 return blockIcon;
 
             FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
 
-            return Block.getBlockById(id).getIcon(fake, x, y, z, side);
+            return block.getIcon(fake, x, y, z, side);
         }
         catch (Throwable t)
         {

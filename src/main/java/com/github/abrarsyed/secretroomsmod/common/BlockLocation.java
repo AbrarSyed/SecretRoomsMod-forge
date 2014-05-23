@@ -4,16 +4,15 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.google.common.base.Throwables;
-
-import net.minecraft.dispenser.ILocation;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class BlockLocation implements ILocation
+import com.google.common.base.Throwables;
+
+public class BlockLocation
 {
-    private final int x, y, z, dimId;
+    public final int x, y, z, dimId;
 
     public BlockLocation(int x, int y, int z, World world)
     {
@@ -31,33 +30,9 @@ public class BlockLocation implements ILocation
         this.dimId = dimid;
     }
 
-    @Override
     public World getWorld()
     {
         return DimensionManager.getWorld(dimId);
-    }
-    
-    public int getDimension()
-    {
-        return dimId;
-    }
-
-    @Override
-    public double getX()
-    {
-        return x;
-    }
-
-    @Override
-    public double getY()
-    {
-        return y;
-    }
-
-    @Override
-    public double getZ()
-    {
-        return z;
     }
 
     @Override
@@ -100,7 +75,7 @@ public class BlockLocation implements ILocation
         nbt.setInteger("z", z);
         nbt.setInteger("dim", dimId);
     }
-    
+
     public static BlockLocation readFromNbt(NBTTagCompound nbt)
     {
         int x = nbt.getInteger("x");
@@ -109,7 +84,7 @@ public class BlockLocation implements ILocation
         int dim = nbt.getInteger("dim");
         return new BlockLocation(x, y, z, dim);
     }
-    
+
     public void writeToData(DataOutput out, boolean writeWorld)
     {
         try
@@ -117,7 +92,7 @@ public class BlockLocation implements ILocation
             out.write(x);
             out.write(y);
             out.write(z);
-            
+
             if (writeWorld)
             {
                 out.write(dimId);
@@ -129,7 +104,7 @@ public class BlockLocation implements ILocation
             e.printStackTrace();
         }
     }
-    
+
     public static BlockLocation readFromData(DataInput in, boolean readWorld, int dim)
     {
         try

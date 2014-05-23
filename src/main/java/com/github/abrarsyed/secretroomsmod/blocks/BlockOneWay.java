@@ -85,14 +85,14 @@ public class BlockOneWay extends BlockContainer
 		try
 		{
 			TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
-			int id = entity.getCopyID();
+			Block block = entity.getCopyBlock();
 
-			if (id == 0)
+			if (block == null)
 				return blockIcon;
 
 			FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
 
-			return Block.getBlockById(id).getIcon(fake, x, y, z, side);
+			return block.getIcon(fake, x, y, z, side);
 		}
 		catch (Throwable t)
 		{
@@ -141,7 +141,7 @@ public class BlockOneWay extends BlockContainer
 
 		if (holder == null)
 		{
-			holder = new BlockHolder(1, 0, null);
+			holder = new BlockHolder(Blocks.stone, 0, null);
 		}
 
 		entity.setBlockHolder(holder);
@@ -209,12 +209,10 @@ public class BlockOneWay extends BlockContainer
 			return super.colorMultiplier(world, x, y, z);
 
 		FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
-		int id = entity.getCopyID();
+		Block fakeBlock = entity.getCopyBlock();
 
-		if (id == 0)
+		if (fakeBlock == null)
 			return super.colorMultiplier(world, x, y, z);
-
-		Block fakeBlock = Block.getBlockById(id);
 
 		return fakeBlock.colorMultiplier(fake, x, y, z);
 	}

@@ -5,6 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
 /**
  * Tiny class that is used to contain the information of a block
@@ -13,12 +15,12 @@ import net.minecraft.world.World;
 public class BlockHolder
 {
 	private final NBTTagCompound	nbt;
-	public int						blockID;
+	public Block		    block;
 	public final int				metadata;
 
 	public BlockHolder(IBlockAccess world, int x, int y, int z)
 	{
-		blockID = Block.getIdFromBlock(world.getBlock(x, y, z));
+		block = world.getBlock(x, y, z);
 		metadata = world.getBlockMetadata(x, y, z);
 
 		TileEntity te = world.getTileEntity(x, y, z);
@@ -31,7 +33,6 @@ public class BlockHolder
 			nbt.setInteger("x", 0);
 			nbt.setInteger("y", 0);
 			nbt.setInteger("z", 0);
-
 		}
 		else
 		{
@@ -39,10 +40,10 @@ public class BlockHolder
 		}
 	}
 
-	public BlockHolder(int ID, int meta, NBTTagCompound nbt)
+	public BlockHolder(Block block, int meta, NBTTagCompound nbt)
 	{
 		this.nbt = nbt;
-		blockID = ID;
+		this.block = block;
 		metadata = meta;
 	}
 
@@ -52,7 +53,7 @@ public class BlockHolder
 	 */
 	public TileEntity getTileEntity(World world, int x, int y, int z)
 	{
-		if (blockID == 0 || nbt == null)
+		if (block == null || nbt == null)
 			return null;
 
 		TileEntity te = TileEntity.createAndLoadEntity(nbt);
@@ -66,7 +67,9 @@ public class BlockHolder
 
 	public void writeToNBT(NBTTagCompound compound)
 	{
-		compound.setInteger("copyID", blockID);
+	    UniqueIdentifier ident = GameRegistry.findUniqueIdentifierFor(block);
+		compound.setString("copyMod", ident.modId);
+		compound.setString("copyBlock", ident.name);
 		compound.setInteger("copyMeta", metadata);
 
 		compound.setBoolean("hasCopyTE", nbt != null);
@@ -78,37 +81,57 @@ public class BlockHolder
 	}
 
 	@Override
-	public boolean equals(Object equals)
-	{
-		return false;
-	}
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((block == null) ? 0 : block.hashCode());
+        result = prime * result + metadata;
+        result = prime * result + ((nbt == null) ? 0 : nbt.hashCode());
+        return result;
+    }
 
-	public boolean equals(BlockHolder holder)
-	{
-		if (holder == null)
-			return false;
-
-		boolean compound = false;
-		if (nbt == null || holder.nbt == null)
-		{
-			compound = nbt == holder.nbt;
-		}
-		else
-		{
-			compound = nbt.equals(holder.nbt);
-		}
-
-		if (blockID == holder.blockID &&
-				metadata == holder.metadata &&
-				compound)
-			return true;
-
-		return false;
-	}
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BlockHolder other = (BlockHolder) obj;
+        if (block == null)
+        {
+            if (other.block != null)
+                return false;
+        }
+        else if (!block.equals(other.block))
+            return false;
+        if (metadata != other.metadata)
+            return false;
+        if (nbt == null)
+        {
+            if (other.nbt != null)
+                return false;
+        }
+        else if (!nbt.equals(other.nbt))
+            return false;
+        return true;
+    }
 
 	public static BlockHolder buildFromNBT(NBTTagCompound nbt)
 	{
-		int ID = nbt.getInteger("copyID");
+	    Block block = null;
+	    if (nbt.hasKey("copyID"))
+	    {
+	        block = Block.getBlockById(nbt.getInteger("copyID"));
+	    }
+	    else
+	    {
+	        block = GameRegistry.findBlock(nbt.getString("copyMod"), nbt.getString("copyBlock"));
+	    }
+	    
 		int meta = nbt.getInteger("copyMeta");
 
 		NBTTagCompound nbtNew = null;
@@ -119,11 +142,11 @@ public class BlockHolder
 			nbtNew = nbt.getCompoundTag("copyTE");
 		}
 
-		return new BlockHolder(ID, meta, nbtNew);
+		return new BlockHolder(block, meta, nbtNew);
 	}
 	
 	public Block getBlock()
 	{
-	    return Block.getBlockById(blockID);
+	    return block;
 	}
 }

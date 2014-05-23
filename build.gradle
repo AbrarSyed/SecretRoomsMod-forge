@@ -71,6 +71,7 @@ repositories {
 dependencies {
     // I dont have to specify NEI.. because gradle magic. aka: transitive dependency resolution
     compile "mcp.mobius.waila:Waila:1.5.2a"
+    compile 'org.projectlombok:lombok:1.12.6'
 }
 
 // because the normal output has been made to be obfuscated

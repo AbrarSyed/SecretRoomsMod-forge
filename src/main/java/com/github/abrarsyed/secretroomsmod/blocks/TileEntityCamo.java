@@ -3,6 +3,7 @@ package com.github.abrarsyed.secretroomsmod.blocks;
 import java.util.Arrays;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -127,9 +128,9 @@ public class TileEntityCamo extends TileEntity
         return holder;
     }
 
-    public int getCopyID()
+    public Block getCopyBlock()
     {
-        return holder == null ? 0 : holder.blockID;
+        return holder == null ? null : holder.block;
     }
 
     public boolean isCamoSide(int side)

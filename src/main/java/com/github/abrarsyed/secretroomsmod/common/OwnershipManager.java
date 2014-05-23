@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
@@ -25,6 +26,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamo;
 import com.github.abrarsyed.secretroomsmod.network.PacketChangeOwnership;
 import com.github.abrarsyed.secretroomsmod.network.PacketManager;
 import com.github.abrarsyed.secretroomsmod.network.PacketSyncOwnership;
@@ -38,7 +40,8 @@ public class OwnershipManager
 {
     private static OwnershipManager                 INSTANCE;
     private TIntObjectMap<Map<BlockLocation, UUID>> ownership;
-    private static Logger                           LOG = LogManager.getLogger();
+    private static final String                     FILE_NAME = "SecretRooms-ownership.dat";
+    private static Logger                           LOG       = LogManager.getLogger();
 
     protected static void init()
     {
@@ -49,11 +52,11 @@ public class OwnershipManager
 
     public static void setOwnership(UUID id, BlockLocation loc)
     {
-        INSTANCE.ownership.get(loc.getDimension()).put(loc, id);
+        INSTANCE.ownership.get(loc.dimId).put(loc, id);
 
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
-            PacketManager.sendToDimension(new PacketChangeOwnership(true, loc), loc.getDimension());
+            PacketManager.sendToDimension(new PacketChangeOwnership(true, loc), loc.dimId);
         }
     }
 
@@ -69,17 +72,27 @@ public class OwnershipManager
 
     public static void removeBlock(BlockLocation loc)
     {
-        INSTANCE.ownership.get(loc.getDimension()).remove(loc);
+        INSTANCE.ownership.get(loc.dimId).remove(loc);
 
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
-            PacketManager.sendToDimension(new PacketChangeOwnership(false, loc), loc.getDimension());
+            PacketManager.sendToDimension(new PacketChangeOwnership(false, loc), loc.dimId);
         }
     }
 
     public static boolean isOwner(UUID player, BlockLocation loc)
     {
-        UUID gotten = INSTANCE.ownership.get(loc.getDimension()).get(loc);
+        UUID gotten = INSTANCE.ownership.get(loc.dimId).get(loc);
+        if (gotten == null)
+        {
+            // not in the map? check if its our kind of Block...
+            TileEntity entity = loc.getWorld().getTileEntity(loc.x, loc.y, loc.z);
+            if (entity instanceof TileEntityCamo)
+            {
+                gotten = ((TileEntityCamo) entity).owner;
+            }
+        }
+        
         return equalsUUID(player, gotten);
     }
 
@@ -211,7 +224,17 @@ public class OwnershipManager
 
     private File getSaveFile(World world)
     {
-        return new File(world.getSaveHandler().getWorldDirectory(), world.provider.getSaveFolder());
+        String worldSaveFolder = world.provider.getSaveFolder();
+        if (worldSaveFolder == null)
+        {
+            worldSaveFolder = "";
+        }
+        else
+        {
+            worldSaveFolder = "/" + worldSaveFolder;
+        }
+
+        return new File(world.getSaveHandler().getWorldDirectory() + worldSaveFolder, FILE_NAME);
     }
 
     private DataOutputStream getDataOut(File file) throws FileNotFoundException, IOException

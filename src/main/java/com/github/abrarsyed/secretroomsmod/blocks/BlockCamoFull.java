@@ -92,7 +92,7 @@ public class BlockCamoFull extends BlockContainer
             if (entity == null)
                 return null;
 
-            return new ItemStack(Block.getBlockById(entity.getCopyID()));
+            return new ItemStack(entity.getCopyBlock());
         }
         catch (Exception e)
         {
@@ -152,14 +152,14 @@ public class BlockCamoFull extends BlockContainer
                 return getBlockTextureFromSide(dir);
             }
             
-            int id = entity.getCopyID();
+            Block fakeBlock = entity.getCopyBlock();
 
-            if (id == 0)
+            if (fakeBlock == null)
                 return blockIcon;
 
             FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
 
-            return Block.getBlockById(id).getIcon(fake, x, y, z, dir);
+            return fakeBlock.getIcon(fake, x, y, z, dir);
         }
         catch (Throwable t)
         {
@@ -194,7 +194,7 @@ public class BlockCamoFull extends BlockContainer
 
         if (holder == null)
         {
-            holder = new BlockHolder(1, 0, null);
+            holder = new BlockHolder(Blocks.stone, 0, null);
         }
 
         entity.setBlockHolder(holder);
@@ -213,14 +213,12 @@ public class BlockCamoFull extends BlockContainer
             return super.colorMultiplier(par1IBlockAccess, x, y, z);
 
         FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
-        int id = entity.getCopyID();
+        Block fakeBlock = entity.getCopyBlock();
 
-        if (id == 0)
+        if (fakeBlock == null)
             return super.colorMultiplier(par1IBlockAccess, x, y, z);
-
-        Block fakeBlock = Block.getBlockById(id);
-
-        return fakeBlock.colorMultiplier(fake, x, y, z);
+        else
+            return fakeBlock.colorMultiplier(fake, x, y, z);
     }
 
     /**
@@ -435,13 +433,13 @@ public class BlockCamoFull extends BlockContainer
         if (entity != null)
         {
             World world = entity.getWorldObj();
-            int id = entity.getCopyID();
+            Block block= entity.getCopyBlock();
 
-            if (id != 0)
-                return Block.getBlockById(id).getFlammability(SecretRooms.proxy.getFakeWorld(world), x, y, z, face);
+            if (block != null)
+                return block.getFlammability(SecretRooms.proxy.getFakeWorld(world), x, y, z, face);
         }
 
-        return Blocks.fire.getFlammability(this);
+        return super.getFlammability(iba, x, y, z, face);
     }
 
     @Override
