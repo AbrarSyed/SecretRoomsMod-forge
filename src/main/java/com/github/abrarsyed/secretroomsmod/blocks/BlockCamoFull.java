@@ -24,7 +24,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.abrarsyed.secretroomsmod.common.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
 import com.github.abrarsyed.secretroomsmod.common.FakeWorld;
+import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -147,7 +149,7 @@ public class BlockCamoFull extends BlockContainer
         {
             TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
             
-            if (!SecretRooms.displayCamo && Minecraft.getMinecraft().thePlayer.getUniqueID().equals(entity.owner))
+            if (!SecretRooms.displayCamo && OwnershipManager.isOwner(Minecraft.getMinecraft().thePlayer.getUniqueID(), new BlockLocation(x, y, z, entity.getWorldObj())))
             {
                 return getBlockTextureFromSide(dir);
             }
@@ -204,7 +206,7 @@ public class BlockCamoFull extends BlockContainer
     @Override
     public final int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
     {
-        if (!SecretRooms.displayCamo)
+        if (!SecretRooms.displayCamo && OwnershipManager.isOwner(Minecraft.getMinecraft().thePlayer.getUniqueID(), new BlockLocation(x, y, z, Minecraft.getMinecraft().theWorld)))
             return super.colorMultiplier(par1IBlockAccess, x, y, z);
 
         TileEntityCamo entity = (TileEntityCamo) par1IBlockAccess.getTileEntity(x, y, z);

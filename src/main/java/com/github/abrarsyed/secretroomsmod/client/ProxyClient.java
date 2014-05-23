@@ -2,7 +2,9 @@ package com.github.abrarsyed.secretroomsmod.client;
 
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.input.Keyboard;
 
@@ -66,4 +68,14 @@ public class ProxyClient extends ProxyCommon
 		return oneWayFaceTowards;
 	}
 
+    @Override
+    public boolean isOwner(IBlockAccess iba, int x, int y, int z)
+    {
+//        // client only right?
+//        UUID uid = Minecraft.getMinecraft().thePlayer;
+//        World world = Minecraft.getMinecraft().theWorld;
+//        
+//        if ()
+        return false;
+    }
 }

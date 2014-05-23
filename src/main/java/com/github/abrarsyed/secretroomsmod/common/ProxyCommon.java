@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Unload;
@@ -73,5 +74,11 @@ public class ProxyCommon
     public boolean getFaceTowards(UUID uuid)
     {
         return !awaySet.contains(uuid);
+    }
+    
+    public boolean isOwner(IBlockAccess world, int x, int y, int z)
+    {
+        // no context here....
+        return true;
     }
 }
