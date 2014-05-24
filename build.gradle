@@ -15,6 +15,7 @@ buildscript {
 }
 
 apply plugin: "forge"
+apply plugin: 'maven-publish'
 
 // stuff specific to my mod
 group = 'com.github.abrarsyed'
@@ -104,16 +105,43 @@ artifacts {
     archives javadocJar
 }
 
+publishing {
+    repositories {
+        maven {
+            url "http://files.minecraftforge.net/maven/manage/upload" // change to point to your repo, e.g. http://my.org/repo
+            credentials {
+                username "username"
+                password "password"
+//                /api_key "blahblahblashblah"
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            version = project.version
+            artifactId = project.archivesBaseName
+            
+            artifact jar
+            artifact sourceJar
+            artifact deobfJar
+            artifact javadocJar
+        }
+    }
+}
+
 uploadArchives {
     repositories {
-        if (project.hasProperty("filesmaven")) {
-            logger.info('Publishing to forge files server')
+//        if (project.hasProperty("filesmaven")) {
+//            logger.info('Publishing to forge files server')
 
             mavenDeployer {
                 configuration = configurations.deployerJars
+                
+                repository(url: "http://files.minecraftforge.net/maven/manage/upload")
 
-                repository(url: project.filesmaven.url) {
-                    authentication(userName: project.filesmaven.username, privateKey: project.filesmaven.key)
+                repository(url: "http://files.minecraftforge.net/maven/manage/upload") {
+                    authentication(userName: "username", privateKey: "blah")
                 }
 
                 pom {
@@ -165,10 +193,10 @@ uploadArchives {
                     }
                 }
             }
-        }
-        else
-        {
-            add project.repositories.mavenLocal()
-        }
+//        }
+//        else
+//        {
+//            add project.repositories.mavenLocal()
+//        }
     }
 }
