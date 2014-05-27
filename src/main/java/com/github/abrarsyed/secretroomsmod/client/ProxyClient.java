@@ -2,10 +2,15 @@ package com.github.abrarsyed.secretroomsmod.client;
 
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
+import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
+import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
 import com.github.abrarsyed.secretroomsmod.common.ProxyCommon;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 import com.github.abrarsyed.secretroomsmod.network.PacketKey;
@@ -66,4 +71,34 @@ public class ProxyClient extends ProxyCommon
 		return oneWayFaceTowards;
 	}
 
+    @Override
+    public boolean isOwner(IBlockAccess iba, int x, int y, int z)
+    {
+        // client only right?
+        UUID uid = Minecraft.getMinecraft().thePlayer.getPersistentID();
+        World world = Minecraft.getMinecraft().theWorld;
+        
+        if (iba instanceof World)
+        {
+            world = (World) iba;
+        }
+        
+        return OwnershipManager.isOwner(uid, new ClientBlockLocation(world, x, y, z));
+    }
+    
+    private static class ClientBlockLocation extends BlockLocation
+    {
+        private final World world;
+
+        public ClientBlockLocation(World world, int x, int y, int z)
+        {
+            super(world, x, y, z);
+            this.world = world;
+        }
+        
+        public World getWorld()
+        {
+            return world;
+        }
+    }
 }

@@ -62,7 +62,7 @@ public class BlockTorchLever extends BlockTorch
         
         if (entity instanceof EntityPlayer)
         {
-            OwnershipManager.setOwnership(entity.getUniqueID(), new BlockLocation(x, y, z, world));
+            OwnershipManager.setOwnership(entity.getUniqueID(), new BlockLocation(world, x, y, z));
         }
     }
 
@@ -250,7 +250,7 @@ public class BlockTorchLever extends BlockTorch
         super.breakBlock(world, x, y, z, block, metadata);
         
         // remove ownership
-        OwnershipManager.removeBlock(new BlockLocation(x, y, z, world));
+        OwnershipManager.removeBlock(new BlockLocation(world, x, y, z));
     }
 
     /**

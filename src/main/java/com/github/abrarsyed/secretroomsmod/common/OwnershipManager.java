@@ -82,7 +82,8 @@ public class OwnershipManager
 
     public static boolean isOwner(UUID player, BlockLocation loc)
     {
-        UUID gotten = INSTANCE.ownership.get(loc.dimId).get(loc);
+        Map<BlockLocation, UUID> map = INSTANCE.ownership.get(loc.dimId);
+        UUID gotten = map == null ? null : map.get(loc);
         if (gotten == null)
         {
             // not in the map? check if its our kind of Block...
@@ -152,11 +153,11 @@ public class OwnershipManager
             {
                 // had better never happen.
                 in.close();
-                throw new IllegalArgumentException("WRONG DIMENSION ID!");
+                throw new IllegalArgumentException("WRONG DIMENSION ID! "+readDim +"instead of "+dimid);
             }
 
             int keys = in.readInt(); // num of keys
-            for (; keys >= 0; keys--)
+            for (int i = 0; i < keys; i++)
             {
                 map.put(BlockLocation.readFromData(in, false, dimid), new UUID(in.readLong(), in.readLong()));
             }
@@ -206,6 +207,10 @@ public class OwnershipManager
         try
         {
             DataOutputStream out = getDataOut(save);
+            
+            // write dimension
+            out.writeInt(dimid);
+            
             out.writeInt(map.keySet().size()); // num of keys
             for (Entry<BlockLocation, UUID> e : map.entrySet())
             {

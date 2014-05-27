@@ -14,7 +14,7 @@ public class BlockLocation
 {
     public final int x, y, z, dimId;
 
-    public BlockLocation(int x, int y, int z, World world)
+    public BlockLocation(World world, int x, int y, int z)
     {
         this.x = x;
         this.y = y;

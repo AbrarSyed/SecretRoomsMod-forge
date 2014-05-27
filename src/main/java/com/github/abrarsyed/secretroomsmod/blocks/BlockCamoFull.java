@@ -8,7 +8,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -147,7 +146,7 @@ public class BlockCamoFull extends BlockContainer
         {
             TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
             
-            if (!SecretRooms.displayCamo && Minecraft.getMinecraft().thePlayer.getUniqueID().equals(entity.owner))
+            if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
             {
                 return getBlockTextureFromSide(dir);
             }
@@ -202,21 +201,21 @@ public class BlockCamoFull extends BlockContainer
     }
 
     @Override
-    public final int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
+    public final int colorMultiplier(IBlockAccess world, int x, int y, int z)
     {
-        if (!SecretRooms.displayCamo)
-            return super.colorMultiplier(par1IBlockAccess, x, y, z);
+        if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
+            return super.colorMultiplier(world, x, y, z);
 
-        TileEntityCamo entity = (TileEntityCamo) par1IBlockAccess.getTileEntity(x, y, z);
+        TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
 
         if (entity == null)
-            return super.colorMultiplier(par1IBlockAccess, x, y, z);
+            return super.colorMultiplier(world, x, y, z);
 
         FakeWorld fake = SecretRooms.proxy.getFakeWorld(entity.getWorldObj());
         Block fakeBlock = entity.getCopyBlock();
 
         if (fakeBlock == null)
-            return super.colorMultiplier(par1IBlockAccess, x, y, z);
+            return super.colorMultiplier(world, x, y, z);
         else
             return fakeBlock.colorMultiplier(fake, x, y, z);
     }
