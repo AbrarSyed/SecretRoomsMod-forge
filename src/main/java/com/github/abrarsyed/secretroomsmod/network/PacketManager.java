@@ -50,7 +50,7 @@ public class PacketManager
         codec.addDiscriminator(3, PacketSyncOwnership.class);
         codec.addDiscriminator(4, PacketChangeOwnership.class);
 
-        channels.putAll(NetworkRegistry.INSTANCE.newChannel("SecretRooms", codec));
+        channels.putAll(NetworkRegistry.INSTANCE.newChannel("SecretRooms", codec, new HandlerServer()));
 
         // add handlers
         if (FMLCommonHandler.instance().getSide().isClient())
@@ -59,13 +59,6 @@ public class PacketManager
             FMLEmbeddedChannel channel = channels.get(Side.CLIENT);
             String codecName = channel.findChannelHandlerNameForType(Codec.class);
             channel.pipeline().addAfter(codecName, "ClientHandler", new HandlerClient());
-        }
-        else
-        {
-            // for the server
-            FMLEmbeddedChannel channel = channels.get(Side.SERVER);
-            String codecName = channel.findChannelHandlerNameForType(Codec.class);
-            channel.pipeline().addAfter(codecName, "ServerHandler", new HandlerServer());
         }
     }
 
