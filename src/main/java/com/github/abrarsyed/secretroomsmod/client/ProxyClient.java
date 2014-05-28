@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
-import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
 import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
 import com.github.abrarsyed.secretroomsmod.common.ProxyCommon;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
@@ -84,21 +83,5 @@ public class ProxyClient extends ProxyCommon
         }
         
         return OwnershipManager.isOwner(uid, new ClientBlockLocation(world, x, y, z));
-    }
-    
-    private static class ClientBlockLocation extends BlockLocation
-    {
-        private final World world;
-
-        public ClientBlockLocation(World world, int x, int y, int z)
-        {
-            super(world, x, y, z);
-            this.world = world;
-        }
-        
-        public World getWorld()
-        {
-            return world;
-        }
     }
 }

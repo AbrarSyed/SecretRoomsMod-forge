@@ -43,6 +43,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
@@ -234,8 +235,8 @@ public class SecretRooms
         // ownership stuff
         OwnershipManager.init();
         
-        // waila dependency test
-        //System.out.println(ModuleRegistrar.instance());
+        // waila compat.
+        FMLInterModComms.sendMessage("Waila", "register", "com.github.abrarsyed.secretroomsmod.client.waila.WailaProvider.register");
     }
 
     @EventHandler
