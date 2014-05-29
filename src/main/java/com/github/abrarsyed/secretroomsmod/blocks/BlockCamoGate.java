@@ -65,6 +65,7 @@ public class BlockCamoGate extends BlockCamoFull
     {
         int metadata = setDefaultDirection(world, x, y, z, (EntityPlayer) entity);
         world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+        super.onBlockPlacedBy(world, x, y, z, entity, stack);
     }
 
     private static int setDefaultDirection(World world, int i, int j, int k, EntityPlayer entityplayer)

@@ -6,6 +6,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 
@@ -16,6 +18,7 @@ import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamo;
 import com.github.abrarsyed.secretroomsmod.client.ClientBlockLocation;
 import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
 import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
+import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
 public class WailaProvider implements IWailaDataProvider
 {
@@ -36,14 +39,25 @@ public class WailaProvider implements IWailaDataProvider
         BlockLocation loc = new ClientBlockLocation(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ);
         boolean owner = OwnershipManager.isOwner(accessor.getPlayer().getUniqueID(), loc);
         
+        Block block = accessor.getBlock();
+        if (block == SecretRooms.solidAir)
+        {
+            if (owner)
+            {
+                System.out.println("Is Owner");
+            }
+            return new ItemStack(Blocks.air);
+        }
+        
         if (owner)
+        {
             return new ItemStack(accessor.getBlock());
+        }
         else
         {
             // get copy.
+            return null;
         }
-        
-        return null;
     }
 
     @Override

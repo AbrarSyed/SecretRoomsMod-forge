@@ -89,13 +89,13 @@ public class BlockLocation
     {
         try
         {
-            out.write(x);
-            out.write(y);
-            out.write(z);
+            out.writeInt(x);
+            out.writeInt(y);
+            out.writeInt(z);
 
             if (writeWorld)
             {
-                out.write(dimId);
+                out.writeInt(dimId);
             }
         }
         catch (IOException e)

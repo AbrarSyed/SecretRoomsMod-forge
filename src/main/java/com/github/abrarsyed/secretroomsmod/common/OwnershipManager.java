@@ -52,7 +52,13 @@ public class OwnershipManager
 
     public static void setOwnership(UUID id, BlockLocation loc)
     {
-        INSTANCE.ownership.get(loc.dimId).put(loc, id);
+        Map<BlockLocation, UUID> map = INSTANCE.ownership.get(loc.dimId);
+        if (map == null)
+        {
+            map = Maps.newHashMap();
+            INSTANCE.ownership.put(loc.dimId, map);
+        }
+        map.put(loc, id);
 
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
@@ -72,7 +78,11 @@ public class OwnershipManager
 
     public static void removeBlock(BlockLocation loc)
     {
-        INSTANCE.ownership.get(loc.dimId).remove(loc);
+        Map<BlockLocation, UUID> map = INSTANCE.ownership.get(loc.dimId);
+        if (map != null)
+        {
+            map.remove(loc);
+        }
 
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
