@@ -20,6 +20,7 @@ import java.util.zip.GZIPOutputStream;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
@@ -249,7 +250,7 @@ public class OwnershipManager
             worldSaveFolder = "/" + worldSaveFolder;
         }
 
-        return new File(world.getSaveHandler().getWorldDirectory() + worldSaveFolder, FILE_NAME);
+        return new File(DimensionManager.getCurrentSaveRootDirectory() + worldSaveFolder, FILE_NAME);
     }
 
     private DataOutputStream getDataOut(File file) throws FileNotFoundException, IOException
