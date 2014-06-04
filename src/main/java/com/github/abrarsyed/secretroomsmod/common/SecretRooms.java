@@ -439,7 +439,7 @@ public class SecretRooms
                 "X0X",
                 'X', CAMO_PASTE,
                 '0', Items.rotten_flesh,
-                '@', Blocks.stone_pressure_plate
+                '@', Blocks.wooden_pressure_plate
         }));
         recipes.add(new ShapedOreRecipe(camoPlateAll, new Object[] {
                 "X0X",
@@ -447,7 +447,7 @@ public class SecretRooms
                 "X0X",
                 'X', CAMO_PASTE,
                 '0', new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
-                '@', Blocks.stone_pressure_plate
+                '@', Blocks.wooden_pressure_plate
         }));
 
         recipes.add(new ShapedOreRecipe(camoPlatePlayer, new Object[] {
