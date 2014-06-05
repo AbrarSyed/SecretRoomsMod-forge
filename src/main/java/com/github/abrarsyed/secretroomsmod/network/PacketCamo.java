@@ -36,6 +36,7 @@ public class PacketCamo extends PacketBase
         z = entity.zCoord;
 
         sides = entity.isCamo.clone();
+        owner = entity.owner;
 
         if (holder == null)
             throw new IllegalArgumentException("TileEntity data is NULL!");
@@ -55,6 +56,7 @@ public class PacketCamo extends PacketBase
 
         entity.setBlockHolder(holder);
         entity.isCamo = sides;
+        entity.owner = owner;
 
         world.markBlockForUpdate(x, y, z);
     }
@@ -72,6 +74,7 @@ public class PacketCamo extends PacketBase
 
         entity.setBlockHolder(holder);
         entity.isCamo = sides;
+        entity.owner = owner;
 
         PacketManager.sendToDimension(this, world.provider.dimensionId);
     }
@@ -131,8 +134,8 @@ public class PacketCamo extends PacketBase
         
         if (input.readBoolean())
         {
+            System.out.print("NO OWNER! ");
             owner = new UUID(input.readLong(), input.readLong());
         }
     }
-
 }

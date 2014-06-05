@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -440,6 +441,32 @@ public class BlockCamoDoor extends BlockContainer
         if (player.capabilities.isCreativeMode && (meta & 8) != 0 && world.getBlock(x, y - 1, z) == this)
         {
             world.setBlockToAir(x, y - 1, z);
+        }
+    }
+    
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        try
+        {
+            if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
+            {
+                if (this.getMaterial() == Material.iron)
+                    return new ItemStack(SecretRooms.camoDoorIronItem);
+                else
+                    return new ItemStack(SecretRooms.camoDoorWoodItem);
+            }
+            
+            TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
+
+            if (entity == null)
+                return null;
+
+            return new ItemStack(entity.getCopyBlock());
+        }
+        catch (Exception e)
+        {
+            return null;
         }
     }
 }

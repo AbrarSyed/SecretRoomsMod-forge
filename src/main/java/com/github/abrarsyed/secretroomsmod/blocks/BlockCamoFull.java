@@ -26,14 +26,13 @@ import com.github.abrarsyed.secretroomsmod.common.BlockHolder;
 import com.github.abrarsyed.secretroomsmod.common.FakeWorld;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author AbrarSyed
  */
-public class BlockCamoFull extends BlockContainer
+public abstract class BlockCamoFull extends BlockContainer
 {
 
     public BlockCamoFull()
@@ -85,8 +84,12 @@ public class BlockCamoFull extends BlockContainer
     {
         try
         {
+            if (SecretRooms.proxy.isOwner(world, x, y, z))
+            {
+                return getActualPickBlock(target, world, x, y, z);
+            }
+            
             TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
-            SecretRooms.proxy.getFakeWorld(world);
 
             if (entity == null)
                 return null;
@@ -97,6 +100,15 @@ public class BlockCamoFull extends BlockContainer
         {
             return null;
         }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    /**
+     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
+     */
+    public ItemStack getActualPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        return super.getPickBlock(target, world, x, y, z);
     }
 
     @Override
@@ -175,6 +187,7 @@ public class BlockCamoFull extends BlockContainer
         {
             TileEntityCamo te = (TileEntityCamo) world.getTileEntity(x, y, z);
             te.owner = entity.getUniqueID();
+            world.markBlockForUpdate(x, y, z);
         }
     }
 
@@ -197,7 +210,7 @@ public class BlockCamoFull extends BlockContainer
         }
 
         entity.setBlockHolder(holder);
-        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayers(entity.getDescriptionPacket());
+        world.markBlockForUpdate(i, j, k);
     }
 
     @Override
@@ -446,4 +459,6 @@ public class BlockCamoFull extends BlockContainer
     {
         return true;
     }
+    
+    public void addWailaBody(World world, int x, int y, int z, List<String> wailaList) { }
 }

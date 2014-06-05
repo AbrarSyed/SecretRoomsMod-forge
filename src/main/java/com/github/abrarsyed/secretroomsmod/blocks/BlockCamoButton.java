@@ -3,6 +3,7 @@ package com.github.abrarsyed.secretroomsmod.blocks;
 import java.util.List;
 import java.util.Random;
 
+import mcp.mobius.waila.cbcore.LangUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -48,7 +49,6 @@ public class BlockCamoButton extends BlockCamoFull
     }
 
     @Override
-    @Deprecated
     public int tickRate(World world)
     {
         return 20;
@@ -77,10 +77,16 @@ public class BlockCamoButton extends BlockCamoFull
     }
 
     @Override
+    public int getDamageValue(World world, int x, int y, int z)
+    {
+        return world.getBlockMetadata(x, y, z) & 7;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2)
     {
-        if (par2 == 1)
+        if ((par2 & 7) == 1)
             return wood;
         else
             return stone;
@@ -204,5 +210,12 @@ public class BlockCamoButton extends BlockCamoFull
         {
             world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world, x, y, z));
         }
+    }
+    
+    public void addWailaBody(World world, int x, int y, int z, List<String> wailaList)
+    {
+        int meta = world.getBlockMetadata(x, y, z);
+        String redstoneOn = ((meta & 8) == 0) ? LangUtil.translateG("hud.msg.off", new Object[0]) : LangUtil.translateG("hud.msg.on", new Object[0]);
+        wailaList.add(String.format("%s : %s", LangUtil.translateG("hud.msg.state", new Object[0]), redstoneOn));
     }
 }

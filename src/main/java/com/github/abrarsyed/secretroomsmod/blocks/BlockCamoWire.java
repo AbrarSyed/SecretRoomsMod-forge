@@ -1,5 +1,8 @@
 package com.github.abrarsyed.secretroomsmod.blocks;
 
+import java.util.List;
+
+import mcp.mobius.waila.cbcore.LangUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.material.Material;
@@ -165,4 +168,9 @@ public class BlockCamoWire extends BlockCamoFull
 	{
 		return shouldPower;
 	}
+    
+    public void addWailaBody(World world, int x, int y, int z, List<String> wailaList)
+    {
+        wailaList.add(String.format("%s : %s", LangUtil.translateG("hud.msg.power", new Object[0]), world.getBlockMetadata(x, y, z)));
+    }
 }

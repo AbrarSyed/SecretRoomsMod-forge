@@ -1,5 +1,7 @@
 package com.github.abrarsyed.secretroomsmod.items;
 
+import java.util.UUID;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -80,13 +82,13 @@ public class ItemCamoDoor extends Item
         else
         {
             int i = MathHelper.floor_double((player.rotationYaw + 180F) * 4F / 360F - 0.5D) & 3;
-            placeDoorBlock(world, x, y, z, i, block);
+            placeDoorBlock(world, x, y, z, i, block, player.getUniqueID());
             stack.stackSize--;
             return true;
         }
     }
 
-    public static void placeDoorBlock(World world, int x, int y, int z, int meta, Block block)
+    public static void placeDoorBlock(World world, int x, int y, int z, int meta, Block block, UUID owner)
     {
         byte byte0 = 0;
         byte byte1 = 0;
@@ -138,7 +140,7 @@ public class ItemCamoDoor extends Item
 
         TileEntityCamo te = (TileEntityCamo) world.getTileEntity(x, y, z);
         te.setBlockHolder(holder);
-        
+        te.owner = owner;
         if (world.isRemote)
         {
             PacketManager.sendToServer(new PacketCamo(te));
@@ -150,6 +152,7 @@ public class ItemCamoDoor extends Item
 
         te = (TileEntityCamo) world.getTileEntity(x, y + 1, z);
         te.setBlockHolder(holder);
+        te.owner = owner;
         if (world.isRemote)
         {
             PacketManager.sendToServer(new PacketCamo(te));
