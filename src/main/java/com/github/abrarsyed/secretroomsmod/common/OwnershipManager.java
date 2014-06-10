@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -63,7 +64,13 @@ public class OwnershipManager
 
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
-            PacketManager.sendToDimension(new PacketChangeOwnership(true, loc), loc.dimId);
+            EntityPlayer player = getPlayerFromId(id);
+            if (player == null)
+            {
+                return;
+            }
+            // TODO;
+            PacketManager.sendToPlayer(new PacketChangeOwnership(true, loc), player);
         }
     }
 
@@ -93,6 +100,11 @@ public class OwnershipManager
 
     public static boolean isOwner(UUID player, BlockLocation loc)
     {
+        return equalsUUID(player, getOwner(loc));
+    }
+    
+    public static UUID getOwner(BlockLocation loc)
+    {
         Map<BlockLocation, UUID> map = INSTANCE.ownership.get(loc.dimId);
         UUID gotten = map == null ? null : map.get(loc);
         if (gotten == null)
@@ -105,7 +117,7 @@ public class OwnershipManager
             }
         }
         
-        return equalsUUID(player, gotten);
+        return gotten;
     }
 
     private Collection<BlockLocation> getAllForPlayer(UUID player, int dimension)
@@ -194,6 +206,19 @@ public class OwnershipManager
             return;
 
         saveWorld(e.world);
+    }
+    
+    public static EntityPlayer getPlayerFromId(UUID id)
+    {
+        for (Object playerObj : FMLCommonHandler.instance().getSidedDelegate().getServer().getConfigurationManager().playerEntityList)
+        {
+            EntityPlayer player = (EntityPlayer) playerObj;
+            if (equalsUUID(id, player.getUniqueID()))
+            {
+                return player;
+            }
+        }
+        return null;
     }
 
     @SubscribeEvent

@@ -1,9 +1,7 @@
 package com.github.abrarsyed.secretroomsmod.blocks;
 
-import java.util.List;
 import java.util.Random;
 
-import mcp.mobius.waila.cbcore.LangUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -288,20 +286,13 @@ public class BlockTorchLever extends BlockTorch
     }
     
     @Override
-    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
         if (SecretRooms.proxy.isOwner(world, x, y, z))
         {
-            return super.getPickBlock(target, world, x, y, z);
+            return new ItemStack(this);
         }
 
         return new ItemStack(Blocks.torch);
-    }
-
-    public void addWailaBody(World world, int x, int y, int z, List<String> wailaList)
-    {
-        int meta = world.getBlockMetadata(x, y, z);
-        String redstoneOn = ((meta & 0x8) == 0) ? LangUtil.translateG("hud.msg.off", new Object[0]) : LangUtil.translateG("hud.msg.on", new Object[0]);
-        wailaList.add(String.format("%s : %s", LangUtil.translateG("hud.msg.state", new Object[0]), redstoneOn));
     }
 }

@@ -134,7 +134,6 @@ public class PacketCamo extends PacketBase
         
         if (input.readBoolean())
         {
-            System.out.print("NO OWNER! ");
             owner = new UUID(input.readLong(), input.readLong());
         }
     }

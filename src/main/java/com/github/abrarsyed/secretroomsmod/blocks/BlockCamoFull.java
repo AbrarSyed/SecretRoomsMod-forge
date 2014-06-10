@@ -459,6 +459,4 @@ public abstract class BlockCamoFull extends BlockContainer
     {
         return true;
     }
-    
-    public void addWailaBody(World world, int x, int y, int z, List<String> wailaList) { }
 }

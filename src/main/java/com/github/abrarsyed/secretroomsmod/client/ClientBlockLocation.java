@@ -14,6 +14,7 @@ public class ClientBlockLocation extends BlockLocation
         this.world = world;
     }
     
+    @Override
     public World getWorld()
     {
         return world;

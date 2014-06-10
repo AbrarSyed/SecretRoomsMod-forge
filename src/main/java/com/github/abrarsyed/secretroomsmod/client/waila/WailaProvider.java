@@ -6,12 +6,15 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.cbcore.LangUtil;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 
-import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoFull;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoButton;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoLever;
+import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoWire;
 import com.github.abrarsyed.secretroomsmod.blocks.BlockSolidAir;
 import com.github.abrarsyed.secretroomsmod.blocks.BlockTorchLever;
 import com.github.abrarsyed.secretroomsmod.client.ClientBlockLocation;
@@ -25,14 +28,14 @@ public class WailaProvider implements IWailaDataProvider
     public static void register(IWailaRegistrar registrar)
     {
         WailaProvider provider = new WailaProvider();
-        
+
         registrar.registerStackProvider(provider, BlockSolidAir.class);
-        
-        registrar.registerBodyProvider(provider, BlockCamoFull.class);
-//        registrar.registerStackProvider(provider, BlockCamoFull.class);
+        registrar.registerStackProvider(provider, BlockTorchLever.class);
+
+        registrar.registerBodyProvider(provider, BlockCamoWire.class);
+        registrar.registerBodyProvider(provider, BlockCamoButton.class);
+        registrar.registerBodyProvider(provider, BlockCamoLever.class);
         registrar.registerBodyProvider(provider, BlockTorchLever.class);
-//        registrar.registerStackProvider(provider, BlockCamoDoor.class);
-//        registrar.registerStackProvider(provider, BlockCamoTrapDoor.class);
     }
     
     @Override
@@ -54,6 +57,17 @@ public class WailaProvider implements IWailaDataProvider
                 return new ItemStack(Blocks.air);
             }
         }
+        else if (block == SecretRooms.torchLever)
+        {
+            if (owner)
+            {
+                return new ItemStack(SecretRooms.torchLever);
+            }
+            else
+            {
+                return new ItemStack(Blocks.torch);
+            }
+        }
         
         return null;
     }
@@ -65,19 +79,24 @@ public class WailaProvider implements IWailaDataProvider
         MovingObjectPosition pos = accessor.getPosition();
         BlockLocation loc = new ClientBlockLocation(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ);
         boolean owner = OwnershipManager.isOwner(accessor.getPlayer().getUniqueID(), loc);
-        
         Block block = accessor.getBlock();
         
-//        if (!owner)
-//            return list;
+        if (!owner)
+            return list;
         
-        if (block instanceof BlockCamoFull)
+        if (block instanceof BlockTorchLever || block instanceof BlockCamoLever || block instanceof BlockCamoButton)
         {
-            ((BlockCamoFull)block).addWailaBody(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, list);
+            boolean off = (accessor.getMetadata() & 8) == 0;
+            if (block instanceof BlockCamoLever)
+            {
+                off = accessor.getMetadata() == 0;
+            }
+            
+            list.add(LangUtil.translateG("hud.msg.state") + " : " + LangUtil.translateG(off ? "hud.msg.off" : "hud.msg.on"));
         }
-        else if (block instanceof BlockTorchLever)
+        else if (block instanceof BlockCamoWire)
         {
-            ((BlockCamoFull)block).addWailaBody(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, list);
+            list.add(String.format(LangUtil.translateG("hud.msg.power") + " : " + accessor.getMetadata()));
         }
         
         return list;

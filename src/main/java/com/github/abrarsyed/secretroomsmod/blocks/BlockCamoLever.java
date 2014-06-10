@@ -1,8 +1,5 @@
 package com.github.abrarsyed.secretroomsmod.blocks;
 
-import java.util.List;
-
-import mcp.mobius.waila.cbcore.LangUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -92,12 +89,5 @@ public class BlockCamoLever extends BlockCamoFull
     public boolean canProvidePower()
     {
         return true;
-    }
-
-    public void addWailaBody(World world, int x, int y, int z, List<String> wailaList)
-    {
-        int meta = world.getBlockMetadata(x, y, z);
-        String redstoneOn = (meta == 0) ? LangUtil.translateG("hud.msg.off", new Object[0]) : LangUtil.translateG("hud.msg.on", new Object[0]);
-        wailaList.add(String.format("%s : %s", LangUtil.translateG("hud.msg.state", new Object[0]), redstoneOn));
     }
 }
