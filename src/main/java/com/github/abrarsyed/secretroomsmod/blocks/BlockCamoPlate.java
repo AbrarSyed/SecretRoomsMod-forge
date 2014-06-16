@@ -110,7 +110,7 @@ public class BlockCamoPlate extends BlockCamoFull
 
     protected AxisAlignedBB getSensetiveAABB(int x, int y, int z)
     {
-        return AxisAlignedBB.getAABBPool().getAABB(x, y + 1, z, x + 1, y + 2, z + 1);
+        return AxisAlignedBB.getBoundingBox(x, y + 1, z, x + 1, y + 2, z + 1);
     }
 
     /**

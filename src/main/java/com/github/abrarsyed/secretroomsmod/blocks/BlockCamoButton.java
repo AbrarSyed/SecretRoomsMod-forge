@@ -186,7 +186,7 @@ public class BlockCamoButton extends BlockCamoFull
         int type = meta & 7;
         boolean on = (meta & 8) != 0;
         this.setBlockBoundsBasedOnState(world, x, y, z);
-        List list = world.getEntitiesWithinAABB(EntityArrow.class, AxisAlignedBB.getAABBPool().getAABB(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ));
+        List list = world.getEntitiesWithinAABB(EntityArrow.class, AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ));
         boolean arrowExists = !list.isEmpty();
 
         if (arrowExists && !on)
