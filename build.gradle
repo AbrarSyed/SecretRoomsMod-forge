@@ -38,8 +38,7 @@ logger.lifecycle ""+version
 version = "${minecraft.version}-$version.${System.getenv().BUILD_NUMBER}"
 logger.lifecycle ""+version
 
-processResources
-{
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
