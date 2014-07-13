@@ -18,7 +18,7 @@ apply plugin: "forge"
 
 // stuff specific to my mod
 group = 'com.github.abrarsyed'
-version = "4.6.3"
+version = "4.7.0"
 archivesBaseName = 'secretroomsmod'
 
 minecraft {
@@ -26,7 +26,7 @@ minecraft {
     assetDir = "run/assets"
 
     // replacing
-    replace "@CHANGE_VERSION@", "[4.6,)"
+    replace "@CHANGE_VERSION@", "[4.7,)"
     replace "@MC_VERSION@", project.minecraft.version
     replace "@VERSION@", project.version
     replaceIn "SecretRoomsMod.java"
