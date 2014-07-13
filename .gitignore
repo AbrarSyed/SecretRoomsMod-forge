@@ -15,3 +15,5 @@ run
 .idea
 out
 *.iml
+*.iws
+*.ipr
