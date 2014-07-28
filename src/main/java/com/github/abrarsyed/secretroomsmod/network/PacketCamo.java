@@ -6,6 +6,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -119,7 +120,7 @@ public class PacketCamo extends PacketBase
 
         try
         {
-            NBTTagCompound nbt = CompressedStreamTools.read(input);
+            NBTTagCompound nbt = CompressedStreamTools.func_152456_a(input, NBTSizeTracker.field_152451_a);
             holder = BlockHolder.buildFromNBT(nbt);
         }
         catch (IOException e)

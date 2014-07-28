@@ -18,11 +18,11 @@ apply plugin: "forge"
 
 // stuff specific to my mod
 group = 'com.github.abrarsyed'
-version = "4.7.0"
+version = "4.7.1"
 archivesBaseName = 'secretroomsmod'
 
 minecraft {
-    version = "1.7.2-10.12.2.1125" // grab latest forge
+    version = "1.7.10-10.13.0.1151" // grab latest forge
     assetDir = "run/assets"
 
     // replacing

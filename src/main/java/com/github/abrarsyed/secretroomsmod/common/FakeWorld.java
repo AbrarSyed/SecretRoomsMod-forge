@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -119,12 +118,6 @@ public class FakeWorld implements IBlockAccess
     public boolean extendedLevelsInChunkCache()
     {
         return backend.extendedLevelsInChunkCache();
-    }
-
-    @Override
-    public Vec3Pool getWorldVec3Pool()
-    {
-        return backend.getWorldVec3Pool();
     }
 
     @Override
