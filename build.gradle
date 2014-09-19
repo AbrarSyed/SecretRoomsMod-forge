@@ -29,7 +29,7 @@ minecraft {
     replace "@CHANGE_VERSION@", "[4.7,)"
     replace "@MC_VERSION@", project.minecraft.version
     replace "@VERSION@", project.version
-    replaceIn "SecretRoomsMod.java"
+    replaceIn "SecretRooms.java"
 }
 
 // add some stuff to the version
@@ -80,8 +80,8 @@ task deobfJar(type: Jar) {
 }
 
 // add a source jar
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
+task sourceJar(type: Jar, dependsOn: "sourceMainJava") {
+    from "build/sources/java"
     classifier = 'sources'
 }
 
