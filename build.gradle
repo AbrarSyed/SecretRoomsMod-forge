@@ -71,6 +71,7 @@ dependencies {
     // I dont have to specify NEI.. because gradle magic. aka: transitive dependency resolution
     compile "mcp.mobius.waila:Waila:1.5.2a"
     compile 'org.projectlombok:lombok:1.12.6'
+    compile 'net.malisis:malisisdoors:1.7.10-1.1.5:dev'
 }
 
 // because the normal output has been made to be obfuscated
@@ -95,7 +96,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 // because it wont work otherwise...  because FML doesnt laod coremods from the classpath
 task copyChicken(type: Copy, dependsOn: "extractUserDev") {
     from { configurations.compile }
-    include "**/*Chicken*.jar", "**/*NotEnoughItems*.jar"
+    include "**/*Chicken*.jar", "**/*NotEnoughItems*.jar", "**/*malisiscore*.jar"
     exclude "**/CodeChickenLib*" // because CCC downloads it anyways.. -_-
     into file(minecraft.runDir + "/mods")
 
