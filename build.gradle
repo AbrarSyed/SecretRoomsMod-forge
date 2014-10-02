@@ -22,8 +22,8 @@ version = "4.7.1"
 archivesBaseName = 'secretroomsmod'
 
 minecraft {
-    version = "1.7.10-10.13.0.1151" // grab latest forge
-    assetDir = "run/assets"
+    version = "1.7.10-10.13.1.1217" // grab latest forge
+    runDir = "run"
 
     // replacing
     replace "@CHANGE_VERSION@", "[4.7,)"
@@ -68,8 +68,9 @@ repositories {
 }
 
 dependencies {
-    // I dont have to specify NEI.. because gradle magic. aka: transitive dependency resolution
-    compile "mcp.mobius.waila:Waila:1.5.2a"
+    compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
+    compile "codechicken:NotEnoughItems:1.7.10-1.0.3.57:dev"
+
     compile 'org.projectlombok:lombok:1.12.6'
 }
 
@@ -119,69 +120,61 @@ artifacts {
 
 uploadArchives {
     repositories {
-        if (project.hasProperty("filesmaven")) {
-            logger.info('Publishing to forge files server')
+        mavenDeployer {
+            configuration = configurations.deployerJars
 
-            mavenDeployer {
-                configuration = configurations.deployerJars
+            repository(url: "http://files.minecraftforge.net/maven/manage/upload") {
+                authentication(userName: "AbrarSyed", password: project.forgeMavenPass) // the elvis operator. look it up.
+            }
 
-                repository(url: project.filesmaven.url) {
-                    authentication(userName: project.filesmaven.username, privateKey: project.filesmaven.key)
-                }
+            pom {
+                groupId = project.group
+                version = project.version
+                artifactId = project.archivesBaseName
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description 'SecretRoomsMod '
+                    url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
 
-                pom {
-                    groupId = project.group
-                    version = project.version
-                    artifactId = project.archivesBaseName
-                    project {
-                        name project.archivesBaseName
-                        packaging 'jar'
-                        description 'SecretRoomsMod '
+                    scm {
                         url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
+                        connection 'scm:git:git://github.com/AbrarSyed/SecretRoomsMod-forge.git'
+                        developerConnection 'scm:git:git@github.com:AbrarSyed/SecretRoomsMod-forge.git'
+                    }
 
-                        scm {
-                            url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
-                            connection 'scm:git:git://github.com/AbrarSyed/SecretRoomsMod-forge.git'
-                            developerConnection 'scm:git:git@github.com:AbrarSyed/SecretRoomsMod-forge.git'
+                    issueManagement {
+                        system 'github'
+                        url 'https://github.com/AbrarSyed/SecretRoomsMod-forge/issues'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Eclipse Public Liscence'
+                            url 'http://www.eclipse.org/legal/epl-v10.html'
+                            distribution 'repo'
                         }
+                    }
 
-                        issueManagement {
-                            system 'github'
-                            url 'https://github.com/AbrarSyed/SecretRoomsMod-forge/issues'
+                    developers {
+                        developer {
+                            id 'AbrarSyed'
+                            name 'AbrarSyed'
+                            roles { role 'developer' }
                         }
-
-                        licenses {
-                            license {
-                                name 'The Eclipse Public Liscence'
-                                url 'http://www.eclipse.org/legal/epl-v10.html'
-                                distribution 'repo'
-                            }
+                        developer {
+                            id 'AlexBegt'
+                            name 'AlexBegt'
+                            roles { role 'contributor' }
                         }
-
-                        developers {
-                            developer {
-                                id 'AbrarSyed'
-                                name 'AbrarSyed'
-                                roles { role 'developer' }
-                            }
-                            developer {
-                                id 'AlexBegt'
-                                name 'AlexBegt'
-                                roles { role 'contributor' }
-                            }
-                            developer {
-                                id 'CaptainShadows'
-                                name 'CaptainShadows'
-                                roles { role 'contributor' }
-                            }
+                        developer {
+                            id 'CaptainShadows'
+                            name 'CaptainShadows'
+                            roles { role 'contributor' }
                         }
                     }
                 }
             }
-        }
-        else
-        {
-            add project.repositories.mavenLocal()
         }
     }
 }
