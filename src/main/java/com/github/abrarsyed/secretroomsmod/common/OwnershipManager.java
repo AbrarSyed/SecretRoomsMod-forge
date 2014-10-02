@@ -160,11 +160,11 @@ public class OwnershipManager
 
         if (!save.exists())
         {
-            LOG.info("Ownership data for dimension {} not found ({})", dimid, save);
+            LOG.debug("Ownership data for dimension {} not found ({})", dimid, save);
             return;
         }
 
-        LOG.info("reading ownership data for dimension {} from {}", dimid, save);
+        LOG.debug("reading ownership data for dimension {} from {}", dimid, save);
 
         // reading.
         try
@@ -236,7 +236,7 @@ public class OwnershipManager
     {
         File save = getSaveFile(world);
         int dimid = world.provider.dimensionId;
-        LOG.info("Saving ownership data for dimension {} to {}", dimid, save);
+        LOG.debug("Saving ownership data for dimension {} to {}", dimid, save);
 
         Map<BlockLocation, UUID> map = ownership.get(dimid);
 
