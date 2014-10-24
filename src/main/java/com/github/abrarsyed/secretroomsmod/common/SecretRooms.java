@@ -36,8 +36,10 @@ import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamoChest;
 import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamoDetector;
 import com.github.abrarsyed.secretroomsmod.items.ItemBlockCamoButton;
 import com.github.abrarsyed.secretroomsmod.items.ItemCamoDoor;
+import com.github.abrarsyed.secretroomsmod.malisisdoors.MalisisDoorsCompat;
 import com.github.abrarsyed.secretroomsmod.network.PacketManager;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -53,7 +55,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
  * @author AbrarSyed
  */
 @Mod(modid = SecretRooms.MODID, version = "@VERSION@", useMetadata = true,
-        acceptableRemoteVersions = "@CHANGE_VERSION@", acceptedMinecraftVersions = "@MC_VERSION@", acceptableSaveVersions = "@CHANGE_VERSION@")
+        acceptableRemoteVersions = "@CHANGE_VERSION@", acceptedMinecraftVersions = "@MC_VERSION@", acceptableSaveVersions = "@CHANGE_VERSION@",
+        dependencies = "after:malisisdoors")
 public class SecretRooms
 {
 
@@ -141,15 +144,22 @@ public class SecretRooms
         // gates
         camoGate = new BlockCamoGate().setBlockName("CamoGate");
         camoGateExt = new BlockCamoDummy().setBlockName("CamoDummy");
+		
+        if (Loader.isModLoaded("malisisdoors"))
+		{
+			MalisisDoorsCompat.preInit();
+		}
+		else
+		{
+            // TrapDoor
+            camoTrapDoor = new BlockCamoTrapDoor().setBlockName("SecretTrapDoor");
 
-        // TrapDoor
-        camoTrapDoor = new BlockCamoTrapDoor().setBlockName("SecretTrapDoor");
-
-        // doors, Iron AND Wood
-        camoDoorWoodItem = new ItemCamoDoor(Material.wood).setUnlocalizedName("SecretWoodenDoorItem");
-        camoDoorWood = new BlockCamoDoor(Material.wood).setBlockName("SecretWoodenDoorBlock");
-        camoDoorIronItem = new ItemCamoDoor(Material.iron).setUnlocalizedName("SecretIronDoorItem");
-        camoDoorIron = new BlockCamoDoor(Material.iron).setBlockName("SecretIronDoorBlock");
+            // doors, Iron AND Wood
+            camoDoorWoodItem = new ItemCamoDoor(Material.wood).setUnlocalizedName("SecretWoodenDoorItem");
+            camoDoorWood = new BlockCamoDoor(Material.wood).setBlockName("SecretWoodenDoorBlock");
+            camoDoorIronItem = new ItemCamoDoor(Material.iron).setUnlocalizedName("SecretIronDoorItem");
+            camoDoorIron = new BlockCamoDoor(Material.iron).setBlockName("SecretIronDoorBlock");
+		}
 
         // Camo Paste
         camoPaste = new Item().setUnlocalizedName("CamoflaugePaste").setCreativeTab(SecretRooms.tab).setTextureName(TEXTURE_ITEM_PASTE);
