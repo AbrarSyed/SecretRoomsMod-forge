@@ -24,23 +24,37 @@
 
 package com.github.abrarsyed.secretroomsmod.malisisdoors;
 
+import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorDescriptor;
-import net.malisis.doors.door.DoorItem;
+import net.malisis.doors.door.item.DoorItem;
 import net.minecraft.block.material.Material;
 
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class MalisisDoorsCompat
 {
 
+	public static boolean isCompatible()
+	{
+		if (!Loader.isModLoaded("malisisdoors"))
+			return false;
+
+		if (!MalisisDoors.version.startsWith("1.7.10-1.3."))
+			return false;
+
+		return true;
+	}
+
 	public static void preInit()
 	{
+
 		//wood
 		DoorDescriptor desc = new DoorDescriptor();
 		desc.setName("SecretWoodenDoorBlock");
@@ -64,10 +78,10 @@ public class MalisisDoorsCompat
 		SecretRooms.camoDoorIronItem = new DoorItem(desc);
 
 		desc.set(SecretRooms.camoDoorIron, SecretRooms.camoDoorIronItem);
-		
+
 		CamoDoorRenderer cdr = new CamoDoorRenderer();
 		cdr.registerFor(CamoDoorTileEntity.class);
-		
+
 		GameRegistry.registerTileEntity(CamoDoorTileEntity.class, "TE_CamoDoor");
 
 		//trap door

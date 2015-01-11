@@ -24,6 +24,7 @@
 
 package com.github.abrarsyed.secretroomsmod.malisisdoors;
 
+import net.malisis.core.renderer.RenderType;
 import net.malisis.doors.door.renderer.TrapDoorRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -39,11 +40,11 @@ public class CamoTrapDoorRenderer extends TrapDoorRenderer
 	{
 		set(block, metadata);
 		renderBlocks = renderer;
-		prepare(TYPE_ISBRH_INVENTORY);
-		
-		shape.resetState();
-		drawShape(shape, rp);
-		
+		prepare(RenderType.ISBRH_INVENTORY);
+
+		model.resetState();
+		model.render(this, rp);
+
 		clean();
 	}
 }

@@ -39,7 +39,6 @@ import com.github.abrarsyed.secretroomsmod.items.ItemCamoDoor;
 import com.github.abrarsyed.secretroomsmod.malisisdoors.MalisisDoorsCompat;
 import com.github.abrarsyed.secretroomsmod.network.PacketManager;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -145,7 +144,7 @@ public class SecretRooms
         camoGate = new BlockCamoGate().setBlockName("CamoGate");
         camoGateExt = new BlockCamoDummy().setBlockName("CamoDummy");
 		
-        if (Loader.isModLoaded("malisisdoors"))
+    	if (MalisisDoorsCompat.isCompatible())
 		{
 			MalisisDoorsCompat.preInit();
 		}
