@@ -25,43 +25,46 @@
 package com.github.abrarsyed.secretroomsmod.malisisdoors;
 
 import net.malisis.core.renderer.element.Face;
-import net.malisis.core.renderer.preset.FacePreset;
-import net.malisis.core.renderer.preset.ShapePreset;
-import net.malisis.doors.door.Door;
+import net.malisis.core.renderer.element.Shape;
+import net.malisis.core.renderer.element.face.EastFace;
+import net.malisis.core.renderer.element.face.NorthFace;
+import net.malisis.core.renderer.element.face.SouthFace;
+import net.malisis.core.renderer.element.face.WestFace;
+import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.renderer.DoorRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class CamoDoorRenderer extends DoorRenderer
 {
 	private Face[] presets;
 
 	@Override
-	protected void initShapes()
+	protected void initialize()
 	{
-		shape = ShapePreset.Cube();
-		shape.setSize(1, 1, Door.DOOR_WIDTH);
-		//shape.scale(1, 1, 0.995F);
-		shape.storeState();
+		super.initialize();
 
 		presets = new Face[6];
-		presets[Door.DIR_NORTH] = FacePreset.North();
-		presets[Door.DIR_SOUTH] = FacePreset.South();
-		presets[Door.DIR_EAST] = FacePreset.East();
-		presets[Door.DIR_WEST] = FacePreset.West();
+		presets[Door.DIR_NORTH] = new NorthFace();
+		presets[Door.DIR_SOUTH] = new SouthFace();
+		presets[Door.DIR_EAST] = new EastFace();
+		presets[Door.DIR_WEST] = new WestFace();
+
+		initParams();
 	}
 
 	@Override
-	protected void setup(boolean topBlock)
+	protected void setup()
 	{
-		super.setup(topBlock);
+		super.setup();
+
+		Shape s = model.getShape("bottom");
 
 		Face f = presets[direction];
-		shape.getFace(ForgeDirection.NORTH).setParameters(f.getParameters());
-		shape.getFace(ForgeDirection.NORTH).getParameters().useBlockBrightness.set(true);
+		s.getFace(f.name()).setParameters(f.getParameters());
+		s.getFace(f.name()).getParameters().useBlockBrightness.set(true);
 
 		switch (direction)
 		{
@@ -78,8 +81,8 @@ public class CamoDoorRenderer extends DoorRenderer
 				f = presets[Door.DIR_EAST];
 				break;
 		}
-		shape.getFace(ForgeDirection.SOUTH).setParameters(f.getParameters());
-		shape.getFace(ForgeDirection.SOUTH).getParameters().useBlockBrightness.set(true);
+		s.getFace(f.name()).setParameters(f.getParameters());
+		s.getFace(f.name()).getParameters().useBlockBrightness.set(true);
 
 		rp.calculateAOColor.set(true);
 		rp.useBlockBrightness.set(false);

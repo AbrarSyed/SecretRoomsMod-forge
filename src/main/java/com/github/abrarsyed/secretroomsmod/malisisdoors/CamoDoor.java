@@ -24,8 +24,8 @@
 
 package com.github.abrarsyed.secretroomsmod.malisisdoors;
 
-import net.malisis.doors.door.Door;
 import net.malisis.doors.door.DoorDescriptor;
+import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -47,7 +47,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class CamoDoor extends Door
 {

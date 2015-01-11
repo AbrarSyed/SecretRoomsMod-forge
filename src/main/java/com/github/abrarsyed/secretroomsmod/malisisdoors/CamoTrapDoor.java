@@ -24,7 +24,7 @@
 
 package com.github.abrarsyed.secretroomsmod.malisisdoors;
 
-import net.malisis.doors.block.TrapDoor;
+import net.malisis.doors.door.block.TrapDoor;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -37,7 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class CamoTrapDoor extends TrapDoor
 {
