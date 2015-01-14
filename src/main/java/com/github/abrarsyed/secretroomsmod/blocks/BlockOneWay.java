@@ -2,6 +2,7 @@ package com.github.abrarsyed.secretroomsmod.blocks;
 
 import java.util.Random;
 
+import com.github.abrarsyed.secretroomsmod.common.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockPistonBase;
@@ -17,9 +18,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.abrarsyed.secretroomsmod.common.BlockHolder;
-import com.github.abrarsyed.secretroomsmod.common.FakeWorld;
-import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 import com.github.abrarsyed.secretroomsmod.network.PacketCamo;
 import com.github.abrarsyed.secretroomsmod.network.PacketManager;
 
@@ -74,7 +72,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
-		if (!SecretRooms.displayCamo)
+		if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
 			return getBlockTextureFromSide(side);
 
 		int metadata = world.getBlockMetadata(x, y, z);
@@ -123,37 +121,37 @@ public class BlockOneWay extends BlockContainer
 		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BASE);
 	}
 
-	@Override
+    @Override
+    public void onBlockAdded(World world, int i, int j, int k) {
+        super.onBlockAdded(world, i, j, k);
+
+
+    }
+
+    @Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack stack)
 	{
 		int metadata = 1;
 		if (entityliving instanceof EntityPlayer)
 		{
 			metadata = determineOrientation(world, i, j, k, (EntityPlayer) entityliving);
+            OwnershipManager.setOwnership(entityliving.getUniqueID(), new BlockLocation(world, i, j, k));
+
 		}
 
 		world.setBlockMetadataWithNotify(i, j, k, metadata, 2);
+        if (world.isRemote)
+            return;
+        BlockHolder holder = getIdCamoStyle(world, i, j, k);
 
-		// CAMO STUFF
-		BlockHolder holder = getIdCamoStyle(world, i, j, k);
+        TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(i, j, k);
+        if (holder == null)
+        {
+            holder = new BlockHolder(Blocks.stone, 0, null);
+        }
+        entity.setBlockHolder(holder);
+        world.markBlockForUpdate(i, j, k);
 
-		TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(i, j, k);
-
-		if (holder == null)
-		{
-			holder = new BlockHolder(Blocks.stone, 0, null);
-		}
-
-		entity.setBlockHolder(holder);
-		PacketCamo packet = new PacketCamo(entity);
-		if (world.isRemote)
-		{
-			PacketManager.sendToServer(packet);
-		}
-		else
-		{
-		    PacketManager.sendToDimension(packet, world.provider.dimensionId);
-		}
 	}
 
 	/**
@@ -200,7 +198,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
 	{
-		if (!SecretRooms.displayCamo)
+		if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
 			return super.colorMultiplier(world, x, y, z);
 
 		TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);

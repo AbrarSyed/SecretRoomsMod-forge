@@ -29,7 +29,7 @@ public class BlockCamoGhost extends BlockCamoFull
 		return false;
 	}
 
-	/**
+    /**
 	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
 	 * cleared to be reused)
 	 */
@@ -44,12 +44,12 @@ public class BlockCamoGhost extends BlockCamoFull
 			return AxisAlignedBB.getBoundingBox(par2 + minX, par3 + minY, par4 + minZ, par2 + maxX, par3 + maxY, par4 + maxZ);
 	}
 
-	@Override
+    @Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block changed)
 	{
 		if (changed != null && changed.canProvidePower())
 		{
-			world.scheduleBlockUpdate(x, y, z, changed, 0);
+			world.scheduleBlockUpdate(x, y, z, this, 0);
 		}
 	}
 
