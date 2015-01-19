@@ -31,8 +31,10 @@ import net.minecraft.block.material.Material;
 
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * @author Ordinastie
@@ -79,15 +81,21 @@ public class MalisisDoorsCompat
 
 		desc.set(SecretRooms.camoDoorIron, SecretRooms.camoDoorIronItem);
 
-		CamoDoorRenderer cdr = new CamoDoorRenderer();
-		cdr.registerFor(CamoDoorTileEntity.class);
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
+			CamoDoorRenderer cdr = new CamoDoorRenderer();
+			cdr.registerFor(CamoDoorTileEntity.class);
+		}
 
 		GameRegistry.registerTileEntity(CamoDoorTileEntity.class, "TE_CamoDoor");
 
 		//trap door
 		SecretRooms.camoTrapDoor = new CamoTrapDoor().setBlockName("SecretTrapDoor").setCreativeTab(SecretRooms.tab);
-		CamoTrapDoorRenderer ctdr = new CamoTrapDoorRenderer();
-		ctdr.registerFor(CamoTrapDoor.class);
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
+			CamoTrapDoorRenderer ctdr = new CamoTrapDoorRenderer();
+			ctdr.registerFor(CamoTrapDoor.class);
+		}
 	}
 
 }
