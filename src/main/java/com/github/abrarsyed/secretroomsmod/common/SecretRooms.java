@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -265,6 +266,12 @@ public class SecretRooms
     {
         if (!Loader.isModLoaded("malisisdoors"))
             return false;
+        
+        // for development environment
+        if (!FMLForgePlugin.RUNTIME_DEOBF) // no runtime deobf? must be dev env
+        {
+            return true; // comment out when testing without compat
+        }
         
         // get malsis doors version
         String version = Loader.instance().getIndexedModList().get("malsisdoors").getVersion();
