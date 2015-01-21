@@ -10,8 +10,9 @@ import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.api.ITileEntityCamo;
 import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamo;
-import com.github.abrarsyed.secretroomsmod.common.BlockHolder;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
@@ -29,15 +30,15 @@ public class PacketCamo extends PacketBase
     {
     }
 
-    public PacketCamo(TileEntityCamo entity)
+    public PacketCamo(ITileEntityCamo entity)
     {
         holder = entity.getBlockHolder();
-        x = entity.xCoord;
-        y = entity.yCoord;
-        z = entity.zCoord;
+        x = entity.getXCoord();
+        y = entity.getYCoord();
+        z = entity.getZCoord();
 
-        sides = entity.isCamo.clone();
-        owner = entity.owner;
+        sides = entity.getIsCamo().clone();
+        owner = entity.getOwner();
 
         if (holder == null)
             throw new IllegalArgumentException("TileEntity data is NULL!");
@@ -50,14 +51,14 @@ public class PacketCamo extends PacketBase
         if (world == null)
             return;
 
-        TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
+        ITileEntityCamo entity = (ITileEntityCamo) world.getTileEntity(x, y, z);
 
         if (entity == null || holder == null)
             return;
 
         entity.setBlockHolder(holder);
-        entity.isCamo = sides;
-        entity.owner = owner;
+        entity.setIsCamo(sides);
+        entity.setOwner(owner);
 
         world.markBlockForUpdate(x, y, z);
     }
@@ -74,8 +75,8 @@ public class PacketCamo extends PacketBase
             return;
 
         entity.setBlockHolder(holder);
-        entity.isCamo = sides;
-        entity.owner = owner;
+        entity.setIsCamo(sides);
+        entity.setOwner(owner);
 
         PacketManager.sendToDimension(this, world.provider.dimensionId);
     }

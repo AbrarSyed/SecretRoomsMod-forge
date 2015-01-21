@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.abrarsyed.secretroomsmod.common.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
 import com.github.abrarsyed.secretroomsmod.common.FakeWorld;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 import com.github.abrarsyed.secretroomsmod.network.PacketCamo;

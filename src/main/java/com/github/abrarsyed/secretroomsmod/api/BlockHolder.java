@@ -1,4 +1,4 @@
-package com.github.abrarsyed.secretroomsmod.common;
+package com.github.abrarsyed.secretroomsmod.api;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;

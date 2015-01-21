@@ -67,8 +67,13 @@ public class CamoDoor extends Door
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
 		Block block = world.getBlock(x, y - 1, z);
+		
+		if (block == null || block.isAir(world, x, y-1, z))
+		    return blockIcon;
+		
 		if (block == Blocks.grass)
 			block = Blocks.dirt;
+		
 		return block.getIcon(world, x, y - 1, z, side);
 	}
 

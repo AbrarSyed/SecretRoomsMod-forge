@@ -8,17 +8,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 
-import com.github.abrarsyed.secretroomsmod.common.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.api.ITileEntityCamo;
 import com.github.abrarsyed.secretroomsmod.common.FakeWorld;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 import com.github.abrarsyed.secretroomsmod.network.PacketCamo;
 import com.github.abrarsyed.secretroomsmod.network.PacketManager;
 
-public class TileEntityCamo extends TileEntity
+public class TileEntityCamo extends TileEntity implements ITileEntityCamo
 {
     private BlockHolder holder;
-    public boolean[]    isCamo;
-    public UUID         owner;
+    private boolean[]   isCamo;
+    private UUID        owner;
 
     public TileEntityCamo()
     {
@@ -45,7 +46,7 @@ public class TileEntityCamo extends TileEntity
         {
             isCamo[i] = nbt.getBoolean("isCamo" + i);
         }
-        
+
         boolean hasOwner = nbt.hasKey("ownerMost");
         if (hasOwner)
         {
@@ -67,7 +68,7 @@ public class TileEntityCamo extends TileEntity
         {
             nbt.setBoolean("isCamo" + i, isCamo[i]);
         }
-        
+
         if (owner != null)
         {
             nbt.setLong("ownerMost", owner.getMostSignificantBits());
@@ -139,5 +140,47 @@ public class TileEntityCamo extends TileEntity
             return isCamo[side];
         else
             return false;
+    }
+
+    @Override
+    public boolean[] getIsCamo()
+    {
+        return isCamo;
+    }
+
+    @Override
+    public void setIsCamo(boolean[] camo)
+    {
+        this.isCamo = camo;
+    }
+
+    @Override
+    public UUID getOwner()
+    {
+        return owner;
+    }
+
+    @Override
+    public void setOwner(UUID id)
+    {
+        this.owner = id;
+    }
+
+    @Override
+    public int getXCoord()
+    {
+        return xCoord;
+    }
+
+    @Override
+    public int getYCoord()
+    {
+        return yCoord;
+    }
+
+    @Override
+    public int getZCoord()
+    {
+        return zCoord;
     }
 }

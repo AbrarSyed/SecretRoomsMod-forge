@@ -39,6 +39,7 @@ import com.github.abrarsyed.secretroomsmod.items.ItemCamoDoor;
 import com.github.abrarsyed.secretroomsmod.malisisdoors.MalisisDoorsCompat;
 import com.github.abrarsyed.secretroomsmod.network.PacketManager;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -143,8 +144,8 @@ public class SecretRooms
         // gates
         camoGate = new BlockCamoGate().setBlockName("CamoGate");
         camoGateExt = new BlockCamoDummy().setBlockName("CamoDummy");
-		
-    	if (MalisisDoorsCompat.isCompatible())
+        
+    	if (canUseMalsisDoors())
 		{
 			MalisisDoorsCompat.preInit();
 		}
@@ -258,6 +259,21 @@ public class SecretRooms
     public void registerCommand(FMLServerStoppingEvent e)
     {
         proxy.onServerStop(e);
+    }
+    
+    private boolean canUseMalsisDoors()
+    {
+        if (!Loader.isModLoaded("malisisdoors"))
+            return false;
+        
+        // get malsis doors version
+        String version = Loader.instance().getIndexedModList().get("malsisdoors").getVersion();
+        
+        // check compatability
+        if (version.startsWith("1.7.10-1.3.") || version.startsWith("1.7.10-1.4."))
+            return true;
+
+        return false;
     }
 
     public static void addrecipes()

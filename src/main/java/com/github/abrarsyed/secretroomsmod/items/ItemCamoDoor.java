@@ -12,8 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.api.ITileEntityCamo;
 import com.github.abrarsyed.secretroomsmod.blocks.TileEntityCamo;
-import com.github.abrarsyed.secretroomsmod.common.BlockHolder;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 import com.github.abrarsyed.secretroomsmod.network.PacketCamo;
 import com.github.abrarsyed.secretroomsmod.network.PacketManager;
@@ -138,9 +139,9 @@ public class ItemCamoDoor extends Item
 
         BlockHolder holder = new BlockHolder(world, x, y - 1, z);
 
-        TileEntityCamo te = (TileEntityCamo) world.getTileEntity(x, y, z);
+        ITileEntityCamo te = (ITileEntityCamo) world.getTileEntity(x, y, z);
         te.setBlockHolder(holder);
-        te.owner = owner;
+        te.setOwner(owner);
         if (world.isRemote)
         {
             PacketManager.sendToServer(new PacketCamo(te));
@@ -152,7 +153,7 @@ public class ItemCamoDoor extends Item
 
         te = (TileEntityCamo) world.getTileEntity(x, y + 1, z);
         te.setBlockHolder(holder);
-        te.owner = owner;
+        te.setOwner(owner);
         if (world.isRemote)
         {
             PacketManager.sendToServer(new PacketCamo(te));

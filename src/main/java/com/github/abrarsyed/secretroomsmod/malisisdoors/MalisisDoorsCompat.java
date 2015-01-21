@@ -24,7 +24,6 @@
 
 package com.github.abrarsyed.secretroomsmod.malisisdoors;
 
-import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.item.DoorItem;
 import net.minecraft.block.material.Material;
@@ -32,7 +31,6 @@ import net.minecraft.block.material.Material;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -43,20 +41,8 @@ import cpw.mods.fml.relauncher.Side;
 public class MalisisDoorsCompat
 {
 
-	public static boolean isCompatible()
-	{
-		if (!Loader.isModLoaded("malisisdoors"))
-			return false;
-
-		if (!MalisisDoors.version.startsWith("1.7.10-1.3."))
-			return false;
-
-		return true;
-	}
-
 	public static void preInit()
 	{
-
 		//wood
 		DoorDescriptor desc = new DoorDescriptor();
 		desc.setName("SecretWoodenDoorBlock");

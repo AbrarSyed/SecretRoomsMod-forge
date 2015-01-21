@@ -2,6 +2,8 @@ package com.github.abrarsyed.secretroomsmod.common;
 
 import java.util.HashMap;
 
+import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkPosition;

@@ -113,7 +113,7 @@ public class OwnershipManager
             TileEntity entity = loc.getWorld().getTileEntity(loc.x, loc.y, loc.z);
             if (entity instanceof TileEntityCamo)
             {
-                gotten = ((TileEntityCamo) entity).owner;
+                gotten = ((TileEntityCamo) entity).getOwner();
             }
         }
         

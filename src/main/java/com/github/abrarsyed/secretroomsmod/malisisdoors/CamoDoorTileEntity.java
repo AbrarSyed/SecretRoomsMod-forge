@@ -24,13 +24,75 @@
 
 package com.github.abrarsyed.secretroomsmod.malisisdoors;
 
+import java.util.UUID;
+
+import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.api.ITileEntityCamo;
+import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
+import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
+
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 
 /**
  * @author Ordinastie
  *
  */
-public class CamoDoorTileEntity extends DoorTileEntity
+public class CamoDoorTileEntity extends DoorTileEntity implements ITileEntityCamo
 {
+
+    @Override
+    public boolean[] getIsCamo()
+    {
+        return new boolean[] {true, true, true, true, true, true};
+    }
+
+    @Override
+    public void setIsCamo(boolean[] camo) { }
+
+    @Override
+    public UUID getOwner()
+    {
+        return OwnershipManager.getOwner(new BlockLocation(worldObj, xCoord, yCoord + 1, zCoord));
+    }
+
+    @Override
+    public void setOwner(UUID id)
+    {
+        OwnershipManager.setOwnership(id, new BlockLocation(worldObj, xCoord, yCoord, zCoord));
+        OwnershipManager.setOwnership(id, new BlockLocation(worldObj, xCoord, yCoord + 1, zCoord));
+    }
+
+    @Override
+    public int getXCoord()
+    {
+        // TODO Auto-generated method stub
+        return xCoord;
+    }
+
+    @Override
+    public int getYCoord()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getZCoord()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public BlockHolder getBlockHolder()
+    {
+        return new BlockHolder(worldObj, xCoord, yCoord - 1, zCoord);
+    }
+
+    @Override
+    public void setBlockHolder(BlockHolder holder)
+    {
+        // nothing
+    }
 
 }
