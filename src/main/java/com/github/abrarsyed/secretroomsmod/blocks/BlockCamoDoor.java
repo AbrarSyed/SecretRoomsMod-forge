@@ -154,6 +154,11 @@ public class BlockCamoDoor extends BlockContainer
 
     /**
      * Returns 0, 1, 2 or 3 depending on where the hinge is.
+     * @param par1IBlockAccess 
+     * @param par2 
+     * @param par3 
+     * @param par4 
+     * @return the door orrientation from metadata
      */
     public int getDoorOrientation(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
@@ -268,6 +273,11 @@ public class BlockCamoDoor extends BlockContainer
 
     /**
      * A function to open a door.
+     * @param par1World 
+     * @param par2 
+     * @param par3 
+     * @param par4 
+     * @param par5 
      */
     public void onPoweredBlockChange(World par1World, int par2, int par3, int par4, boolean par5)
     {
@@ -410,24 +420,28 @@ public class BlockCamoDoor extends BlockContainer
     }
 
     /**
-     * Returns the full metadata value created by combining the metadata of both blocks the door takes up.
+     * @param par1IBlockAccess 
+     * @param x 
+     * @param y 
+     * @param z 
+     * @return full metadata value created by combining the metadata of both blocks the door takes up.
      */
-    public int getFullMetadata(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public int getFullMetadata(IBlockAccess par1IBlockAccess, int x, int y, int z)
     {
-        int i = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+        int i = par1IBlockAccess.getBlockMetadata(x, y, z);
         boolean flag = (i & 8) != 0;
         int j;
         int k;
 
         if (flag)
         {
-            j = par1IBlockAccess.getBlockMetadata(par2, par3 - 1, par4);
+            j = par1IBlockAccess.getBlockMetadata(x, y - 1, z);
             k = i;
         }
         else
         {
             j = i;
-            k = par1IBlockAccess.getBlockMetadata(par2, par3 + 1, par4);
+            k = par1IBlockAccess.getBlockMetadata(x, y + 1, z);
         }
 
         boolean flag1 = (k & 1) != 0;

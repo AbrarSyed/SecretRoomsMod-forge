@@ -4,11 +4,15 @@ import java.util.UUID;
 
 public interface ITileEntityCamo
 {
-    /** gets an array of 6 booleans each represneting if a given side of a block is camoflaged */
+    /** 
+     * @return an array of 6 booleans each representing if a given side of a block is camouflaged 
+     */
     boolean[] getIsCamo();
     void setIsCamo(boolean[] camo);
     
-    /** Get the owner of the block */
+    /**
+     * @return the owner of the block
+     */
     UUID getOwner();
     void setOwner(UUID id);
     
@@ -16,7 +20,9 @@ public interface ITileEntityCamo
     int getYCoord();
     int getZCoord();
     
-    /** the information about the copied block */
+    /**
+     * @return the information about the copied block
+     */
     BlockHolder getBlockHolder();
     void setBlockHolder(BlockHolder holder);
 }

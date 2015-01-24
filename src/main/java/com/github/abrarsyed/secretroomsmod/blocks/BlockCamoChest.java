@@ -186,6 +186,11 @@ public class BlockCamoChest extends BlockCamoFull
     /**
      * Looks for a sitting ocelot within certain bounds. Such an ocelot is considered to be blocking access to the
      * chest.
+     * @param par0World 
+     * @param par1 
+     * @param par2 
+     * @param par3 
+     * @return if an ocelot is blocking a chest
      */
     @SuppressWarnings("rawtypes")
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
@@ -208,6 +213,11 @@ public class BlockCamoChest extends BlockCamoFull
     /**
      * Gets the inventory of the chest at the specified coords, accounting for blocks or ocelots on top of the chest,
      * and double chests.
+     * @param par1World 
+     * @param par2 
+     * @param par3 
+     * @param par4 
+     * @return NULL if the inventory cannot be openned
      */
     public IInventory getInventory(World par1World, int par2, int par3, int par4)
     {

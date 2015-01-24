@@ -49,6 +49,10 @@ public class BlockHolder
 
 	/**
 	 * Constructs a TileEntity from this block and loads it from the NBT data.
+	 * @param world 
+	 * @param x 
+	 * @param y 
+	 * @param z 
 	 * @return Tile Entity for this block
 	 */
 	public TileEntity getTileEntity(World world, int x, int y, int z)

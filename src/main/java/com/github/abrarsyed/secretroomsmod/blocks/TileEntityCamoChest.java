@@ -229,7 +229,7 @@ public class TileEntityCamoChest extends TileEntityCamo implements IInventory
 
     /**
      * Called when a client event is received with the event number and argument, see World.sendClientEvent
-     * @return
+     * @return if the event was handled
      */
     @Override
     public boolean receiveClientEvent(int par1, int par2)
