@@ -117,9 +117,6 @@ public class BlockCamoChest extends BlockCamoFull
         }
     }
 
-    /**
-     * each class overrdies this to return a new <className>
-     */
     @Override
     public TileEntity createNewTileEntity(World par1World, int i)
     {
