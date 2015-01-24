@@ -68,11 +68,15 @@ repositories {
 }
 
 dependencies {
-    compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
-    compile "codechicken:NotEnoughItems:1.7.10-1.0.3.57:dev"
+	// chicken
+	compile "codechicken:CodeChickenLib:1.1.1.110:dev"
+    compile "codechicken:CodeChickenCore:1.7.10-1.0.4.35:dev"
+    compile "codechicken:NotEnoughItems:1.7.10-1.0.4.83:dev"
 
-    compile 'org.projectlombok:lombok:1.12.6'
-    compile 'net.malisis:malisisdoors:1.7.10-1.3.3:dev'
+    // waila
+    compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
+
+    compile 'net.malisis:malisisdoors:1.7.10-1.4.3:dev'
 }
 
 // because the normal output has been made to be obfuscated
