@@ -66,6 +66,7 @@ public class BlockHolder
 		te.xCoord = x;
 		te.yCoord = y;
 		te.zCoord = z;
+		
 		return te;
 	}
 

@@ -80,13 +80,13 @@ public abstract class BlockCamoFull extends BlockContainer
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
     {
         try
         {
             if (SecretRooms.proxy.isOwner(world, x, y, z))
             {
-                return getActualPickBlock(target, world, x, y, z);
+                return getActualPickBlock(target, world, x, y, z, player);
             }
             
             TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
@@ -106,9 +106,9 @@ public abstract class BlockCamoFull extends BlockContainer
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public ItemStack getActualPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getActualPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
     {
-        return super.getPickBlock(target, world, x, y, z);
+        return super.getPickBlock(target, world, x, y, z, player);
     }
 
     @Override
@@ -187,7 +187,11 @@ public abstract class BlockCamoFull extends BlockContainer
         {
             TileEntityCamo te = (TileEntityCamo) world.getTileEntity(x, y, z);
             te.setOwner(entity.getUniqueID());
-            world.markBlockForUpdate(x, y, z);
+            
+            if (!world.isRemote)
+            {
+                world.markBlockForUpdate(x, y, z);
+            }
         }
     }
 

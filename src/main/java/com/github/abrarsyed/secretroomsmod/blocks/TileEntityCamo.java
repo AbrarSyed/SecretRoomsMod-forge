@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -61,8 +62,15 @@ public class TileEntityCamo extends TileEntity implements ITileEntityCamo
     {
         super.writeToNBT(nbt);
 
-        holder.writeToNBT(nbt);
-        // if this throws an NPE.. something has gone TERRIBLY wrong...
+        // this should really NEVER happen
+        if (holder == null)
+        {
+            (new BlockHolder(Blocks.stone, 0, null)).writeToNBT(nbt);
+        }
+        else
+        {
+            holder.writeToNBT(nbt);
+        }
 
         for (int i = 0; i < isCamo.length; i++)
         {
