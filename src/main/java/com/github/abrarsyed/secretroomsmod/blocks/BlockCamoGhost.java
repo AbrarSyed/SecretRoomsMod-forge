@@ -49,7 +49,7 @@ public class BlockCamoGhost extends BlockCamoFull
 	{
 		if (changed != null && changed.canProvidePower())
 		{
-			world.scheduleBlockUpdate(x, y, z, changed, 0);
+			world.scheduleBlockUpdate(x, y, z, this, 0);
 		}
 	}
 
