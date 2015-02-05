@@ -20,8 +20,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
 import com.github.abrarsyed.secretroomsmod.common.FakeWorld;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
-import com.github.abrarsyed.secretroomsmod.network.PacketCamo;
-import com.github.abrarsyed.secretroomsmod.network.PacketManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -74,7 +72,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
-		if (!SecretRooms.displayCamo)
+		if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
 			return getBlockTextureFromSide(side);
 
 		int metadata = world.getBlockMetadata(x, y, z);
@@ -145,15 +143,9 @@ public class BlockOneWay extends BlockContainer
 		}
 
 		entity.setBlockHolder(holder);
-		PacketCamo packet = new PacketCamo(entity);
-		if (world.isRemote)
-		{
-			PacketManager.sendToServer(packet);
-		}
-		else
-		{
-		    PacketManager.sendToDimension(packet, world.provider.dimensionId);
-		}
+        entity.setOwner(entityliving.getUniqueID());
+        
+        world.markBlockForUpdate(i, j, k);
 	}
 
 	/**
@@ -200,7 +192,7 @@ public class BlockOneWay extends BlockContainer
 	@Override
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
 	{
-		if (!SecretRooms.displayCamo)
+		if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
 			return super.colorMultiplier(world, x, y, z);
 
 		TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
