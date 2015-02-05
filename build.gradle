@@ -22,7 +22,7 @@ version = "4.7.1"
 archivesBaseName = 'secretroomsmod'
 
 minecraft {
-    version = "1.7.10-10.13.1.1217" // grab latest forge
+    version = "1.7.10-10.13.2.1291" // grab latest forge
     runDir = "run"
 
     // replacing
@@ -68,14 +68,10 @@ repositories {
 }
 
 dependencies {
-	// chicken
-	compile "codechicken:CodeChickenLib:1.1.1.110:dev"
-    compile "codechicken:CodeChickenCore:1.7.10-1.0.4.35:dev"
-    compile "codechicken:NotEnoughItems:1.7.10-1.0.4.83:dev"
-
     // waila
-    compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
+    compile "mcp.mobius.waila:Waila:1.5.8_1.7.10"
 
+	// malisis doors
     compile 'net.malisis:malisisdoors:1.7.10-1.4.3:dev'
 }
 

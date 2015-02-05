@@ -8,9 +8,13 @@ import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.cbcore.LangUtil;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 
 import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoButton;
 import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoLever;
@@ -107,4 +111,11 @@ public class WailaProvider implements IWailaDataProvider
 
     @Override
     public List<String> getWailaTail(ItemStack paramItemStack, List<String> paramList, IWailaDataAccessor paramIWailaDataAccessor, IWailaConfigHandler paramIWailaConfigHandler) { return paramList; }
+
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z)
+    {
+        // unused
+        return null;
+    }
 }
