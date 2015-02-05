@@ -13,12 +13,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
 import com.github.abrarsyed.secretroomsmod.common.FakeWorld;
+import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.relauncher.Side;
@@ -120,6 +123,53 @@ public class BlockOneWay extends BlockContainer
 	{
 		blockIcon = par1IconRegister.registerIcon(SecretRooms.TEXTURE_BLOCK_BASE);
 	}
+	
+    @Override
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    {
+        try
+        {
+            if (OwnershipManager.isOwner(player.getPersistentID(), new BlockLocation(world, x, y, z)))
+            {
+                return super.getPickBlock(target, world, x, y, z, player);
+            }
+            
+            TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
+
+            if (entity == null)
+                return null;
+
+            return new ItemStack(entity.getCopyBlock());
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+    
+    @Override
+    @SuppressWarnings("deprecation")
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        try
+        {
+            if (SecretRooms.proxy.isOwner(world, x, y, z))
+            {
+                return super.getPickBlock(target, world, x, y, z);
+            }
+            
+            TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
+
+            if (entity == null)
+                return null;
+
+            return new ItemStack(entity.getCopyBlock());
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
 
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack stack)

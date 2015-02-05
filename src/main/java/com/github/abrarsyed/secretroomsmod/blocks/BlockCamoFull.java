@@ -23,7 +23,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.abrarsyed.secretroomsmod.api.BlockHolder;
+import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
 import com.github.abrarsyed.secretroomsmod.common.FakeWorld;
+import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.relauncher.Side;
@@ -76,15 +78,11 @@ public abstract class BlockCamoFull extends BlockContainer
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
     {
         try
         {
-            if (SecretRooms.proxy.isOwner(world, x, y, z))
+            if (OwnershipManager.isOwner(player.getPersistentID(), new BlockLocation(world, x, y, z)))
             {
                 return getActualPickBlock(target, world, x, y, z, player);
             }
@@ -102,13 +100,38 @@ public abstract class BlockCamoFull extends BlockContainer
         }
     }
     
-    @SideOnly(Side.CLIENT)
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
+    @Override
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        try
+        {
+            if (SecretRooms.proxy.isOwner(world, x, y, z))
+            {
+                return getActualPickBlock(target, world, x, y, z);
+            }
+            
+            TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
+
+            if (entity == null)
+                return null;
+
+            return new ItemStack(entity.getCopyBlock());
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+    
     public ItemStack getActualPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
     {
         return super.getPickBlock(target, world, x, y, z, player);
+    }
+    
+    @SuppressWarnings("deprecation")
+    public ItemStack getActualPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        return super.getPickBlock(target, world, x, y, z);
     }
 
     @Override
