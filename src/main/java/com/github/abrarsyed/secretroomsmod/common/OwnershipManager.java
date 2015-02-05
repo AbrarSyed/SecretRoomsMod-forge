@@ -242,6 +242,7 @@ public class OwnershipManager
 
         try
         {
+            save.getParentFile().mkdirs();
             DataOutputStream out = getDataOut(save);
             
             // write dimension
