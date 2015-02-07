@@ -98,6 +98,14 @@ public class BlockCamoWire extends BlockCamoFull
 		{
 			world.setBlockMetadataWithNotify(x, y, z, power, 2);
 			world.notifyBlocksOfNeighborChange(x, y, z, this);
+			
+            // notify the things arround
+            world.notifyBlocksOfNeighborChange(x + 1, y, z, this);
+            world.notifyBlocksOfNeighborChange(x - 1, y, z, this);
+            world.notifyBlocksOfNeighborChange(x, y + 1, z, this);
+            world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
+            world.notifyBlocksOfNeighborChange(x, y, z + 1, this);
+            world.notifyBlocksOfNeighborChange(x, y, z - 1, this);
 		}
 	}
 

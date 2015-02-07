@@ -1,12 +1,14 @@
 package com.github.abrarsyed.secretroomsmod.blocks;
 
 import java.util.Random;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,11 +28,33 @@ public class BlockCamoGate extends BlockCamoFull
         setHardness(1.5F);
         setStepSound(Block.soundTypeWood);
     }
+    
+    
+
+    @Override
+    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
+    {
+        super.onBlockClicked(world, x, y, z, player);
+        
+        int metadata = world.getBlockMetadata(x, y, z);
+        TileEntityCamo entity = (TileEntityCamo) world.getTileEntity(x, y, z);
+        
+        // client
+        if (world.isRemote)
+            player.addChatComponentMessage(new ChatComponentText("CLIENT------------"));
+        else
+            player.addChatComponentMessage(new ChatComponentText("SERVER------------"));
+        player.addChatComponentMessage(new ChatComponentText("BlockCamoGate"));
+        player.addChatComponentMessage(new ChatComponentText("direction = "+metadata));
+        player.addChatComponentMessage(new ChatComponentText("holder: "+ entity.getBlockHolder()));
+    }
+
+
 
     @Override
     public void breakBlock(World world, int i, int j, int k, Block block, int metadata)
     {
-        destroyGate(world, i, j, k);
+        destroyGate(world, i, j, k, ForgeDirection.getOrientation(metadata & 7));
     }
 
     @Override
@@ -44,19 +68,11 @@ public class BlockCamoGate extends BlockCamoFull
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
     {
         boolean powerred = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
-        int meta = world.getBlockMetadata(x, y, z);
-        int direction = meta & 7;
         boolean oldState = (world.getBlockMetadata(x, y, z) & 8) > 1;
 
-        if (powerred && !oldState)
+        if (powerred != oldState)
         {
             world.scheduleBlockUpdate(x, y, z, this, 1);
-            world.setBlockMetadataWithNotify(x, y, z, direction + 8, 4);
-        }
-        else if (!powerred && oldState)
-        {
-            world.scheduleBlockUpdate(x, y, z, this, 1);
-            world.setBlockMetadataWithNotify(x, y, z, direction, 4);
         }
     }
 
@@ -82,59 +98,65 @@ public class BlockCamoGate extends BlockCamoFull
                 return 0;
         }
 
-        if (l == 0)
-            return 2;
-
-        if (l == 1)
-            return 5;
-
-        if (l == 2)
-            return 3;
-
-        if (l == 3)
-            return 4;
-        else
-            return 0;
+        switch(l)
+        {
+            case 0:
+                return 2;
+            case 1:
+                return 5;
+            case 2:
+                return 3;
+            case 3:
+                return 4;
+            default:
+                return 0;
+        }
+        
     }
 
     @Override
-    public void updateTick(World world, int i, int j, int k, Random random)
+    public void updateTick(World world, int x, int y, int z, Random random)
     {
         if (world.isRemote)
             return;
 
-        boolean flag = world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k);
-
-        if (flag)
+        boolean isPowerred = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
+        int meta = world.getBlockMetadata(x, y, z);
+        ForgeDirection dir = ForgeDirection.getOrientation(meta & 7);
+        
+        if (isPowerred)
         {
-            buildGate(world, i, j, k);
+            buildGate(world, x, y, z, dir);
         }
         else
         {
-            destroyGate(world, i, j, k);
+            destroyGate(world, x, y, z, dir);
         }
+        
+        // direction + the powerred bit.
+        world.setBlockMetadataWithNotify(x, y, z, dir.ordinal() + (isPowerred ? 8 : 0), 2);
     }
 
-    public void buildGate(World world, int x, int y, int z)
+    public void buildGate(World world, int x, int y, int z, ForgeDirection dir)
     {
-        int data = world.getBlockMetadata(x, y, z) & 7;
         boolean stop = false;
-        ForgeDirection dir = ForgeDirection.getOrientation(data);
-        int xOffset, yOffset, zOffset, addX, addY, addZ;
+        int xOffset, yOffset, zOffset;
+        
+        UUID owner = ((TileEntityCamo)world.getTileEntity(x, y, z)).getOwner();
 
         for (int i = 1; i <= MAX_SIZE && stop == false; i++)
         {
-            addX = dir.offsetX * i;
-            addY = dir.offsetY * i;
-            addZ = dir.offsetZ * i;
-            xOffset = x + addX;
-            yOffset = y + addY;
-            zOffset = z + addZ;
+            xOffset = x + (dir.offsetX * i);
+            yOffset = y + (dir.offsetY * i);
+            zOffset = z + (dir.offsetZ * i);
 
             if (!world.isSideSolid(xOffset, yOffset, zOffset, dir.getOpposite()))
             {
                 world.setBlockToAir(xOffset, yOffset, zOffset);
                 world.setBlock(xOffset, yOffset, zOffset, SecretRooms.camoGateExt);
+                
+                // set owner
+                ((TileEntityCamo)world.getTileEntity(xOffset, yOffset, zOffset)).setOwner(owner);
             }
             else
             {
@@ -143,17 +165,15 @@ public class BlockCamoGate extends BlockCamoFull
         }
     }
 
-    public void destroyGate(World world, int x, int y, int z)
+    public void destroyGate(World world, int x, int y, int z, ForgeDirection dir)
     {
-        int data = world.getBlockMetadata(x, y, z) & 7;
-        ForgeDirection dir = ForgeDirection.getOrientation(data);
         int xOffset, yOffset, zOffset;
 
         for (int i = 1; i <= MAX_SIZE; i++)
         {
-            xOffset = x + dir.offsetX * i;
-            yOffset = y + dir.offsetY * i;
-            zOffset = z + dir.offsetZ * i;
+            xOffset = x + (dir.offsetX * i);
+            yOffset = y + (dir.offsetY * i);
+            zOffset = z + (dir.offsetZ * i);
 
             if (world.getBlock(xOffset, yOffset, zOffset) == SecretRooms.camoGateExt)
             {

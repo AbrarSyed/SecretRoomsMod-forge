@@ -52,6 +52,12 @@ public class OwnershipManager
         MinecraftForge.EVENT_BUS.register(INSTANCE);
     }
 
+    /**
+     * Sets the owner of the block in the external ownership map and syncs it to the client if needed.
+     * This method DOES NOT take into account the possibility that the block may extend TileEntityCamo and handle its ownership itself.
+     * @param id ID of the owner
+     * @param loc Location
+     */
     public static void setOwnership(UUID id, BlockLocation loc)
     {
         Map<BlockLocation, UUID> map = INSTANCE.ownership.get(loc.dimId);
@@ -84,6 +90,11 @@ public class OwnershipManager
         INSTANCE.ownership.remove(world);
     }
 
+    /**
+     * Removes the ownership mapping of the specified lcoation.
+     * This method DOES NOT take into account the possibility that the block may extend TileEntityCamo and handle its ownership itself.
+     * @param loc Location
+     */
     public static void removeBlock(BlockLocation loc)
     {
         Map<BlockLocation, UUID> map = INSTANCE.ownership.get(loc.dimId);
