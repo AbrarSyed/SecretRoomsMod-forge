@@ -68,7 +68,7 @@ public class CamoDoor extends Door
 	{
 		Block block = world.getBlock(x, y - 1, z);
 		
-		if (block == null || block.isAir(world, x, y-1, z))
+		if (block == null || block.isAir(world, x, y-1, z) || block == this)
 		    return blockIcon;
 		
 		if (block == Blocks.grass)

@@ -25,6 +25,7 @@
 package com.github.abrarsyed.secretroomsmod.malisisdoors;
 
 import net.malisis.doors.door.block.TrapDoor;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -69,8 +70,14 @@ public class CamoTrapDoor extends TrapDoor
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
 		ForgeDirection dir = getDirection(world, x, y, z);
-		return world.getBlock(x + dir.offsetX, y, z + dir.offsetZ).getIcon(world, x + dir.offsetX, y, z + dir.offsetZ, side);
-	}
+
+        Block block = world.getBlock(x + dir.offsetX, y, z + dir.offsetZ);
+
+        if (block == null || block.isAir(world, x, y - 1, z) || block == this)
+            return blockIcon;
+
+        return block.getIcon(world, x + dir.offsetX, y, z + dir.offsetZ, side);
+    }
 
 	@Override
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
