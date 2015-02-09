@@ -51,6 +51,7 @@ public class MalisisDoorsCompat
 
 		SecretRooms.camoDoorWood = new CamoDoor(desc);
 		SecretRooms.camoDoorWoodItem = new DoorItem(desc);
+		SecretRooms.camoDoorWoodItem.setUnlocalizedName("SecretWoodenDoorItem");
 
 		desc.set(SecretRooms.camoDoorWood, SecretRooms.camoDoorWoodItem);
 
@@ -64,6 +65,7 @@ public class MalisisDoorsCompat
 
 		SecretRooms.camoDoorIron = new CamoDoor(desc);
 		SecretRooms.camoDoorIronItem = new DoorItem(desc);
+	    SecretRooms.camoDoorIronItem.setUnlocalizedName("SecretIronDoorItem");
 
 		desc.set(SecretRooms.camoDoorIron, SecretRooms.camoDoorIronItem);
 

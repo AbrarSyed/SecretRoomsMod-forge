@@ -65,22 +65,19 @@ public class CamoDoorTileEntity extends DoorTileEntity implements ITileEntityCam
     @Override
     public int getXCoord()
     {
-        // TODO Auto-generated method stub
         return xCoord;
     }
 
     @Override
     public int getYCoord()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return yCoord;
     }
 
     @Override
     public int getZCoord()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return zCoord;
     }
 
     @Override

@@ -66,15 +66,18 @@ public class CamoDoor extends Door
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
-		Block block = world.getBlock(x, y - 1, z);
+	    // if meta & mask == 1, then its the top and 1 should be added to the offset.
+	    int offset = 1 + ((world.getBlockMetadata(x, y, z) & FLAG_TOPBLOCK) == 0 ? 0 : 1);
+	    
+		Block block = world.getBlock(x, y - offset, z);
 		
-		if (block == null || block.isAir(world, x, y-1, z) || block == this)
+		if (block == null || block.isAir(world, x, y - offset, z) || block == this)
 		    return blockIcon;
 		
 		if (block == Blocks.grass)
 			block = Blocks.dirt;
 		
-		return block.getIcon(world, x, y - 1, z, side);
+		return block.getIcon(world, x, y - offset, z, side);
 	}
 
 	@Override
