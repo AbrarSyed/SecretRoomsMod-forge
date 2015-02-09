@@ -112,7 +112,7 @@ uploadArchives {
             configuration = configurations.deployerJars
 
             repository(url: "http://files.minecraftforge.net/maven/manage/upload") {
-                authentication(userName: "AbrarSyed", password: project.hasProperty(forgeMavenPass) ? null : project.getProeprty('forgeMavenPass')) // the elvis operator. look it up.
+                authentication(userName: "AbrarSyed", password: project.hasProperty(forgeMavenPass) ? null : project.getProperty('forgeMavenPass')) // the elvis operator. look it up.
             }
 
             pom {
