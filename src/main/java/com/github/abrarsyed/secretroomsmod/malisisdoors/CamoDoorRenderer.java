@@ -60,39 +60,33 @@ public class CamoDoorRenderer extends DoorRenderer
 	{
 		super.setup();
 
-		Shape s = model.getShape("bottom");
-
-		Face f = presets[direction];
-		s.getFace(f.name()).setParameters(f.getParameters());
-		s.getFace(f.name()).getParameters().useBlockBrightness.set(true);
-
-		switch (direction)
+		for (Shape s : model)
 		{
-			case Door.DIR_NORTH:
-				f = presets[Door.DIR_SOUTH];
-				break;
-			case Door.DIR_SOUTH:
-				f = presets[Door.DIR_NORTH];
-				break;
-			case Door.DIR_EAST:
-				f = presets[Door.DIR_WEST];
-				break;
-			case Door.DIR_WEST:
-				f = presets[Door.DIR_EAST];
-				break;
+			Face f = presets[direction];
+			s.getFace("north").setParameters(f.getParameters());
+			s.getFace("north").getParameters().useBlockBrightness.set(true);
+
+			switch (direction)
+			{
+				case Door.DIR_NORTH:
+					f = presets[Door.DIR_SOUTH];
+					break;
+				case Door.DIR_SOUTH:
+					f = presets[Door.DIR_NORTH];
+					break;
+				case Door.DIR_EAST:
+					f = presets[Door.DIR_WEST];
+					break;
+				case Door.DIR_WEST:
+					f = presets[Door.DIR_EAST];
+					break;
+			}
+			s.getFace("south").setParameters(f.getParameters());
+			s.getFace("south").getParameters().useBlockBrightness.set(true);
 		}
-		s.getFace(f.name()).setParameters(f.getParameters());
-		s.getFace(f.name()).getParameters().useBlockBrightness.set(true);
 
 		rp.calculateAOColor.set(true);
 		rp.useBlockBrightness.set(false);
 		rp.calculateBrightness.set(false);
 	}
-
-	@Override
-	protected void renderTileEntity()
-	{
-		super.renderTileEntity();
-	}
-
 }
