@@ -23,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.apache.logging.log4j.LogManager;
@@ -302,13 +303,22 @@ public class OwnershipManager
 
     private static final boolean equalsUUID(UUID one, UUID two)
     {
-        if (one == null && one == two)
-            return true;
-        else if (one != null)
-            return one.equals(two);
-        else if (two != null)
-            return two.equals(one);
+        boolean equal = false;
+        if (one == null || two == null)
+            equal = false;
         else
+            equal = one.equals(two);
+        
+        if (equal) // they are equal.. great...
+            return true;
+        
+        // now check the username cache
+        String user1 = UsernameCache.getLastKnownUsername(one);
+        String user2 = UsernameCache.getLastKnownUsername(two);
+        
+        if (user1 == null || user1 == null)
             return false;
+        else
+            return user1.equalsIgnoreCase(user2);
     }
 }
