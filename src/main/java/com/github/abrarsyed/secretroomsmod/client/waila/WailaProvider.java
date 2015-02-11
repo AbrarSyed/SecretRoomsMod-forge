@@ -16,11 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoButton;
-import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoLever;
-import com.github.abrarsyed.secretroomsmod.blocks.BlockCamoWire;
-import com.github.abrarsyed.secretroomsmod.blocks.BlockSolidAir;
-import com.github.abrarsyed.secretroomsmod.blocks.BlockTorchLever;
+import com.github.abrarsyed.secretroomsmod.blocks.*;
 import com.github.abrarsyed.secretroomsmod.client.ClientBlockLocation;
 import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
 import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
@@ -35,6 +31,7 @@ public class WailaProvider implements IWailaDataProvider
 
         registrar.registerStackProvider(provider, BlockSolidAir.class);
         registrar.registerStackProvider(provider, BlockTorchLever.class);
+        registrar.registerStackProvider(provider, BlockCamoTrapDoor.class);
 
         registrar.registerBodyProvider(provider, BlockCamoWire.class);
         registrar.registerBodyProvider(provider, BlockCamoButton.class);
@@ -52,25 +49,15 @@ public class WailaProvider implements IWailaDataProvider
         Block block = accessor.getBlock();
         if (block == SecretRooms.solidAir)
         {
-            if (owner)
-            {
-                return new ItemStack(SecretRooms.solidAir);
-            }
-            else
-            {
-                return new ItemStack(Blocks.air);
-            }
+            return new ItemStack(owner ? SecretRooms.solidAir : Blocks.air);
         }
         else if (block == SecretRooms.torchLever)
         {
-            if (owner)
-            {
-                return new ItemStack(SecretRooms.torchLever);
-            }
-            else
-            {
-                return new ItemStack(Blocks.torch);
-            }
+            return new ItemStack(owner ? SecretRooms.torchLever : Blocks.torch);
+        }
+        else if (block == SecretRooms.camoTrapDoor)
+        {
+            return block.getPickBlock(pos, accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getPlayer());
         }
         
         return null;
@@ -113,9 +100,5 @@ public class WailaProvider implements IWailaDataProvider
     public List<String> getWailaTail(ItemStack paramItemStack, List<String> paramList, IWailaDataAccessor paramIWailaDataAccessor, IWailaConfigHandler paramIWailaConfigHandler) { return paramList; }
 
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z)
-    {
-        // unused
-        return null;
-    }
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) { return tag; }
 }

@@ -27,10 +27,17 @@ package com.github.abrarsyed.secretroomsmod.malisisdoors;
 import net.malisis.doors.door.block.TrapDoor;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.github.abrarsyed.secretroomsmod.common.BlockLocation;
+import com.github.abrarsyed.secretroomsmod.common.OwnershipManager;
 import com.github.abrarsyed.secretroomsmod.common.SecretRooms;
 
 import cpw.mods.fml.relauncher.Side;
@@ -69,6 +76,11 @@ public class CamoTrapDoor extends TrapDoor
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
+        if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
+        {
+            return blockIcon;
+        }
+	    
 		ForgeDirection dir = getDirection(world, x, y, z);
 
         Block block = world.getBlock(x + dir.offsetX, y, z + dir.offsetZ);
@@ -85,4 +97,68 @@ public class CamoTrapDoor extends TrapDoor
 		ForgeDirection dir = getDirection(world, x, y, z);
 		return world.getBlock(x + dir.offsetX, y, z + dir.offsetZ).colorMultiplier(world, x + dir.offsetX, y, z + dir.offsetZ);
 	}
+	
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+    {
+        super.onBlockPlacedBy(world, x, y, z, entity, stack);
+        
+        if (entity instanceof EntityPlayer)
+        {
+            OwnershipManager.setOwnership(entity.getUniqueID(), new BlockLocation(world, x, y, z));
+        }
+    }
+    
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
+    {
+        super.breakBlock(world, x, y, z, block, metadata);
+        
+        // remove ownership
+        OwnershipManager.removeBlock(new BlockLocation(world, x, y, z));
+    }
+	
+    @Override
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    {
+        if (SecretRooms.proxy.isOwner(world, x, y, z))
+        {
+            return new ItemStack(this);
+        }
+        
+        // modify coordinates to get hinge Block.
+        ForgeDirection dir = getDirection(world, x, y, z);
+        x += dir.offsetX;
+        y += dir.offsetY;
+        z += dir.offsetZ;
+        
+        Block block = world.getBlock(x, y, z);
+        
+        if (block == null)
+            return null;
+        
+        return block.getPickBlock(target, world, x, y, z, player);
+    }
+    
+    @Override
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        if (SecretRooms.proxy.isOwner(world, x, y, z))
+        {
+            return new ItemStack(this);
+        }
+        
+        // modify coordinates to get hinge Block.
+        ForgeDirection dir = getDirection(world, x, y, z);
+        x += dir.offsetX;
+        y += dir.offsetY;
+        z += dir.offsetZ;
+        
+        Block block = world.getBlock(x, y, z);
+        
+        if (block == null)
+            return null;
+        
+        return block.getPickBlock(target, world, x, y, z);
+    }
 }

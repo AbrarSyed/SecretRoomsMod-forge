@@ -103,29 +103,30 @@ public class BlockCamoTrapDoor extends Block
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int dir)
     {
+        if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
+        {
+            return blockIcon;
+        }
+        
         // modify coordinates to get hinge Block.
         int i = world.getBlockMetadata(x, y, z);
         int j = x;
         int k = z;
 
-        if ((i & 3) == 0)
+        switch(i & 3)
         {
-            k++;
-        }
-
-        if ((i & 3) == 1)
-        {
-            k--;
-        }
-
-        if ((i & 3) == 2)
-        {
-            j++;
-        }
-
-        if ((i & 3) == 3)
-        {
-            j--;
+            case 0:
+                k++;
+                break;
+            case 1:
+                k--;
+                break;
+            case 2:
+                j++;
+                break;
+            case 3:
+                j--;
+                break;
         }
 
         // actually get the texture.
@@ -134,13 +135,14 @@ public class BlockCamoTrapDoor extends Block
         if (block == null)
             return blockIcon;
 
-        IIcon texture = block.getIcon(world, j, y, k, dir);
-        return texture;
+        return block.getIcon(world, j, y, k, dir);
     }
 
     @Override
     public int colorMultiplier(IBlockAccess world, int x, int y, int z)
     {
+        if (!SecretRooms.displayCamo && SecretRooms.proxy.isOwner(world, x, y, z))
+            return super.colorMultiplier(world, x, y, z);
 
         if (Blocks.grass.getBlockTextureFromSide(1).equals(getIcon(world, x, y, z, 1)))
         {
@@ -162,7 +164,7 @@ public class BlockCamoTrapDoor extends Block
             return (red / 9 & 0xff) << 16 | (green / 9 & 0xff) << 8 | blue / 9 & 0xff;
         }
 
-        return 0xffffff; // white
+        return super.colorMultiplier(world, x, y, z); // white
     }
 
     /**
@@ -419,6 +421,84 @@ public class BlockCamoTrapDoor extends Block
         {
             return block.getMaterial().isOpaque() && block.renderAsNormalBlock() || block == Blocks.glowstone || block instanceof BlockSlab || block instanceof BlockStairs;
         }
+    }
+    
+    @Override
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    {
+        if (OwnershipManager.isOwner(player.getPersistentID(), new BlockLocation(world, x, y, z)))
+        {
+            return new ItemStack(this);
+        }
+
+        // modify coordinates to get hinge Block.
+        int i = world.getBlockMetadata(x, y, z);
+        int j = x;
+        int k = z;
+
+        switch(i & 3)
+        {
+            case 0:
+                k++;
+                break;
+            case 1:
+                k--;
+                break;
+            case 2:
+                j++;
+                break;
+            case 3:
+                j--;
+                break;
+        }
+
+        // actually get the texture.
+        Block block = world.getBlock(j, y, k);
+        
+        if (block == null)
+            return null;
+
+        // actually get the texture.
+        return block.getPickBlock(target, world, x, y, z, player);
+    }
+    
+    @Override
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        if (SecretRooms.proxy.isOwner(world, x, y, z))
+        {
+            return new ItemStack(this);
+        }
+        
+        // modify coordinates to get hinge Block.
+        int i = world.getBlockMetadata(x, y, z);
+        int j = x;
+        int k = z;
+
+        switch(i & 3)
+        {
+            case 0:
+                k++;
+                break;
+            case 1:
+                k--;
+                break;
+            case 2:
+                j++;
+                break;
+            case 3:
+                j--;
+                break;
+        }
+
+        // actually get the texture.
+        Block block = world.getBlock(j, y, k);
+        
+        if (block == null)
+            return null;
+
+        // actually get the texture.
+        return block.getPickBlock(target, world, x, y, z);
     }
 
 }
