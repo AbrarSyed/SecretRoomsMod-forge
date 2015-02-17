@@ -303,13 +303,9 @@ public class OwnershipManager
 
     private static final boolean equalsUUID(UUID one, UUID two)
     {
-        boolean equal = false;
         if (one == null || two == null)
-            equal = false;
-        else
-            equal = one.equals(two);
-        
-        if (equal) // they are equal.. great...
+            return false;
+        else if (one.equals(two))
             return true;
         
         // now check the username cache
