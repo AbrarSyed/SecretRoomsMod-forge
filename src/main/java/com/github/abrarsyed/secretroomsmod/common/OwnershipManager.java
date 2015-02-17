@@ -251,6 +251,9 @@ public class OwnershipManager
         LOG.debug("Saving ownership data for dimension {} to {}", dimid, save);
 
         Map<BlockLocation, UUID> map = ownership.get(dimid);
+        
+        if (map == null)
+            return;
 
         try
         {
