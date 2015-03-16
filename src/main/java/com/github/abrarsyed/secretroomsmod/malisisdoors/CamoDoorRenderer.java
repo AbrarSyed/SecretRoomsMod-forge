@@ -60,6 +60,7 @@ public class CamoDoorRenderer extends DoorRenderer
 	{
 		super.setup();
 
+		boolean flip = false;
 		for (Shape s : model)
 		{
 			Face f = presets[direction];
@@ -70,12 +71,14 @@ public class CamoDoorRenderer extends DoorRenderer
 			{
 				case Door.DIR_NORTH:
 					f = presets[Door.DIR_SOUTH];
+					flip = true;
 					break;
 				case Door.DIR_SOUTH:
 					f = presets[Door.DIR_NORTH];
 					break;
 				case Door.DIR_EAST:
 					f = presets[Door.DIR_WEST];
+					flip = true;
 					break;
 				case Door.DIR_WEST:
 					f = presets[Door.DIR_EAST];
@@ -88,5 +91,6 @@ public class CamoDoorRenderer extends DoorRenderer
 		rp.calculateAOColor.set(true);
 		rp.useBlockBrightness.set(false);
 		rp.calculateBrightness.set(false);
+		rp.flipU.set(flip);
 	}
 }
