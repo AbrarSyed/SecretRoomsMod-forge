@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -91,6 +92,9 @@ public class SecretRooms
 
     public static final String TEXTURE_BLOCK_SOLID_AIR    = MODID + ":SolidAir";
     public static final String TEXTURE_BLOCK_CLEAR        = MODID + ":clear";
+    
+    // ore dict strings
+    public static final String CAMO_PASTE                 = "camoPaste";
 
     // render IDs
     public static boolean      displayCamo                = true;
@@ -123,14 +127,25 @@ public class SecretRooms
 
     public static Block        solidAir;
 
-    public static final String CAMO_PASTE                 = "camoPaste";
-
     // creative tab
     public static CreativeTabs tab;
+
+    // config stuff
+    private boolean            malisisCompat, wailaCompat;
 
     @EventHandler
     public void preLoad(FMLPreInitializationEvent e)
     {
+        // config
+        Configuration config = new Configuration(e.getSuggestedConfigurationFile());
+        config.load();
+        malisisCompat = config.get("compat", "MalisisDoors", true).getBoolean();
+        wailaCompat = config.get("compat", "WAILA", true).getBoolean();
+        if (config.hasChanged())
+        {
+            config.save();
+        }
+
         MinecraftForge.EVENT_BUS.register(proxy);
 
         // make creative tab.
@@ -144,13 +159,13 @@ public class SecretRooms
         // gates
         camoGate = new BlockCamoGate().setBlockName("CamoGate");
         camoGateExt = new BlockCamoDummy().setBlockName("CamoDummy");
-        
-    	if (canUseMalsisDoors())
-		{
-			MalisisDoorsCompat.preInit();
-		}
-		else
-		{
+
+        if (canUseMalsisDoors())
+        {
+            MalisisDoorsCompat.preInit();
+        }
+        else
+        {
             // TrapDoor
             camoTrapDoor = new BlockCamoTrapDoor().setBlockName("SecretTrapDoor");
 
@@ -159,7 +174,7 @@ public class SecretRooms
             camoDoorWood = new BlockCamoDoor(Material.wood).setBlockName("SecretWoodenDoorBlock");
             camoDoorIronItem = new ItemCamoDoor(Material.iron).setUnlocalizedName("SecretIronDoorItem");
             camoDoorIron = new BlockCamoDoor(Material.iron).setBlockName("SecretIronDoorBlock");
-		}
+        }
 
         // Camo Paste
         camoPaste = new Item().setUnlocalizedName("CamoflaugePaste").setCreativeTab(SecretRooms.tab).setTextureName(TEXTURE_ITEM_PASTE);
@@ -230,10 +245,10 @@ public class SecretRooms
     public void load(FMLInitializationEvent e)
     {
         PacketManager.init();
-        
+
         // key Events
         proxy.loadKeyStuff();
-        
+
         // ore dictionary
         OreDictionary.registerOre(CAMO_PASTE, camoPaste);
 
@@ -241,12 +256,15 @@ public class SecretRooms
         proxy.loadRenderStuff();
 
         addrecipes();
-        
+
         // ownership stuff
         OwnershipManager.init();
-        
+
         // waila compat.
-        FMLInterModComms.sendMessage("Waila", "register", "com.github.abrarsyed.secretroomsmod.client.waila.WailaProvider.register");
+        if (wailaCompat)
+        {
+            FMLInterModComms.sendMessage("Waila", "register", "com.github.abrarsyed.secretroomsmod.client.waila.WailaProvider.register");
+        }
     }
 
     @EventHandler
@@ -260,18 +278,22 @@ public class SecretRooms
     {
         proxy.onServerStop(e);
     }
-    
+
     private boolean canUseMalsisDoors()
     {
-        if (!Loader.isModLoaded("malisisdoors"))
+        if (!Loader.isModLoaded("malisisdoors") || !malisisCompat)
+        {
             return false;
-        
+        }
+
         // get malsis doors version
         String version = Loader.instance().getIndexedModList().get("malisisdoors").getVersion();
-        
+
         // check compatability
         if (version.startsWith("1.7.10-1.3.") || version.startsWith("1.7.10-1.4."))
+        {
             return true;
+        }
 
         return false;
     }
