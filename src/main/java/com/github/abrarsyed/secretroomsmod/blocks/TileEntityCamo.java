@@ -113,10 +113,13 @@ public class TileEntityCamo extends TileEntity implements ITileEntityCamo
     @Override
     public void invalidate()
     {
-        FakeWorld fake = SecretRooms.proxy.getFakeWorld(worldObj);
-        if (fake != null)
+        if (worldObj != null)
         {
-            fake.removeOverrideBlock(xCoord, yCoord, zCoord);
+            FakeWorld fake = SecretRooms.proxy.getFakeWorld(worldObj);
+            if (fake != null)
+            {
+                fake.removeOverrideBlock(xCoord, yCoord, zCoord);
+            }
         }
         super.invalidate();
     }
