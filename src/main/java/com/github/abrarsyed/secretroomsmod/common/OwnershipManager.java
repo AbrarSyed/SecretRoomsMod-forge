@@ -121,6 +121,11 @@ public class OwnershipManager
         UUID gotten = map == null ? null : map.get(loc);
         if (gotten == null)
         {
+            World world = loc.getWorld();
+            
+            if (world == null) // Waila calls this early, and thus the world isnt there yet.
+                return null;
+            
             // not in the map? check if its our kind of Block...
             TileEntity entity = loc.getWorld().getTileEntity(loc.x, loc.y, loc.z);
             if (entity instanceof TileEntityCamo)
