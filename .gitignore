@@ -1,19 +1,18 @@
-# gradle stuff
-build
-.gradle
+*.class
 
-# eclipse stuff
-.classpath
-.project
-.settings
-bin
+# BlueJ files
+*.ctxt
 
-# run place
-run
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
-# intellij stuff
-.idea
-out
-*.iml
-*.iws
-*.ipr
+# Package Files #
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+/*
+!/src
+!build.gradle
