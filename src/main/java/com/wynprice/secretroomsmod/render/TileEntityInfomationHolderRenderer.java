@@ -10,9 +10,9 @@ import org.lwjgl.opengl.GL11;
 import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretRooms2;
 import com.wynprice.secretroomsmod.SecretUtils;
-import com.wynprice.secretroomsmod.base.BaseExposingHelmet;
 import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModels;
 
@@ -56,7 +56,7 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
         	GlStateManager.enableBlend();
         	boolean isHelmet = false;
         	for(ItemStack stack : Minecraft.getMinecraft().player.getArmorInventoryList())
-        		if(stack.getItem() instanceof BaseExposingHelmet)
+        		if(stack.getItem() instanceof TrueSightHelmet)
         			isHelmet = true;
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         	EntityPlayer entityplayer = Minecraft.getMinecraft().player;
@@ -64,9 +64,12 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
             double d1 = (entityplayer.lastTickPosY + (entityplayer.posY - entityplayer.lastTickPosY) * (double)partialTicks);
             double d2 = (entityplayer.lastTickPosZ + (entityplayer.posZ - entityplayer.lastTickPosZ) * (double)partialTicks);
             Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
-	        RenderHelper.disableStandardItemLighting();
-	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
-	        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            GlStateManager.enableBlend();
+            GlStateManager.disableCull();
+            GlStateManager.shadeModel(Minecraft.isAmbientOcclusionEnabled() ? 7425 : 7424);
 	        World world = getWorld();
 	        Tessellator tessellator = Tessellator.getInstance();
 	        tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
