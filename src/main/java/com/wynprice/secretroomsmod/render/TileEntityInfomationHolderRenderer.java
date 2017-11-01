@@ -68,8 +68,6 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
             RenderHelper.disableStandardItemLighting();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             GlStateManager.enableBlend();
-            GlStateManager.disableCull();
-            GlStateManager.shadeModel(Minecraft.isAmbientOcclusionEnabled() ? 7425 : 7424);
 	        World world = getWorld();
 	        Tessellator tessellator = Tessellator.getInstance();
 	        tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
@@ -81,6 +79,11 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
 	        if(block instanceof ISecretBlock && te.getMirrorState() != null && SecretUtils.getModel((ISecretBlock)block, te.getMirrorState()) != null)
 	        {
 	        	IBlockState renderState = te.getMirrorState().getBlock().getActualState(te.getMirrorState(), te.getWorld(), te.getPos());
+	        	if(renderState.isOpaqueCube())
+	        	{
+		              GlStateManager.disableCull();
+		              GlStateManager.shadeModel(Minecraft.isAmbientOcclusionEnabled() ? 7425 : 7424);
+	        	}
         		currentRender = ((ISecretBlock)block).overrideThisState(world, currentPos, currentRender);
 	        	if(!isHelmet)
 	        	{
@@ -120,14 +123,15 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
 	        		if(s.equals(te.getMirrorState().getBlock().getRegistryName().toString())) 
 	        			isColorBlock = true;
 	        if(!isHelmet)
-	        for(int i = 0; i < tessellator.getBuffer().getVertexCount(); i++)
- 	        {
- 	        	if(!isColorBlock && (tintList.size() <= Math.floorDiv(i, 4) || tintList.get(Math.floorDiv(i, 4)) < 0))
- 	        		continue;
- 	        	Color color = new Color(Minecraft.getMinecraft().getBlockColors()
- 	        			.colorMultiplier(te.getMirrorState(), te.getWorld(), te.getPos(), isColorBlock ? 0 : tintList.get(Math.floorDiv(i, 4))));
- 	        	tessellator.getBuffer().putColorMultiplier(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, i);
- 	        }
+	        	for(int i = 0; i < tessellator.getBuffer().getVertexCount(); i++)
+	    	    {
+	            	int sec = Math.floorDiv(i - 1, 4);
+	            	if(!isColorBlock && (sec < 0 || tintList.size() <= sec || tintList.get(sec) < 0))
+	            		continue;
+	            	Color color = new Color(Minecraft.getMinecraft().getBlockColors()
+	            			.colorMultiplier(te.getMirrorState(), te.getWorld(), te.getPos(), isColorBlock ? 1 : tintList.get(sec)));
+	            	tessellator.getBuffer().putColorMultiplier(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, i);
+	    	    }
 	        
 	        tessellator.draw();
 	        Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
