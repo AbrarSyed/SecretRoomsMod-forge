@@ -13,6 +13,7 @@ import com.wynprice.secretroomsmod.network.SecretNetwork;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -46,6 +47,9 @@ public class CommonProxy
     		MinecraftForge.EVENT_BUS.register(o);
 
     	NetworkRegistry.INSTANCE.registerGuiHandler(SecretRooms2.instance, new GuiHandler());
+    	
+        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "com.wynprice.secretroomsmod.intergration.TheOneProbeSupport");
+
 
     }
 	

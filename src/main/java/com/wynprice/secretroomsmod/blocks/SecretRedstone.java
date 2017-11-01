@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
@@ -52,6 +53,11 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 	{
 		return world.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState() != null ? 
 				((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState().getBlock().getSoundType() : super.getSoundType(state, world, pos, entity);
+	}
+	
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
 	}
 	
 	public boolean isFullCube(IBlockState state)

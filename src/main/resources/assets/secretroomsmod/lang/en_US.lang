@@ -40,5 +40,5 @@ item.secret_iron_door.name=Secret Iron Door
 item.camouflage_paste.name=Camouflage Paste
 item.secret_wooden_door.name=Secret Wooden Door
 item.switch_probe.name=Switch Probe
-item.iron_exposing_helmet.name=Exposing Helmet (Iron)
-item.diamond_exposing_helmet.name=Exposing Helmet (Diamond)
+item.iron_exposing_helmet.name=Helmet of True Sight (Iron)
+item.diamond_exposing_helmet.name=Helmet of True Sight (Diamond)

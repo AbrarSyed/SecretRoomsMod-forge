@@ -10,6 +10,7 @@ import com.wynprice.secretroomsmod.render.TileEntityInfomationHolderRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 
 public abstract class BaseTextureFakeModel extends FakeBlockModel 
@@ -31,20 +32,26 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		return list;
 	}
 	
+	protected RenderInfo getRenderInfo(IBlockState teMirrorState)
+	{
+		return new RenderInfo(teMirrorState, getModel(teMirrorState));
+	}
+		
 	@Override
 	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
 	{
-		if(!(getBaseBlockClass().isAssignableFrom(TileEntityInfomationHolderRenderer.currentRender.getBlock().getClass())))
+		if(getBaseBlockClass() != null && !(getBaseBlockClass().isAssignableFrom(TileEntityInfomationHolderRenderer.currentRender.getBlock().getClass())))
 			return super.getQuads(state, side, rand);
 		ArrayList<BakedQuad> finalList = new ArrayList<BakedQuad>();
-		for(BakedQuad quad : getModel(getNormalStateWith(TileEntityInfomationHolderRenderer.currentRender)).getQuads(state, side, rand))
+		RenderInfo renderInfo = getRenderInfo(((TileEntityInfomationHolder)TileEntityInfomationHolderRenderer.currentWorld.getTileEntity(TileEntityInfomationHolderRenderer.currentPos)).getMirrorState());
+		IBlockState normalState = getNormalStateWith(TileEntityInfomationHolderRenderer.currentRender);
+		for(BakedQuad quad : getModel(normalState).getQuads(normalState, side, rand))
 		{
-			IBlockState iblockstate = ((TileEntityInfomationHolder)TileEntityInfomationHolderRenderer.currentWorld.getTileEntity(TileEntityInfomationHolderRenderer.currentPos)).getMirrorState();
-			List<BakedQuad> secList = new ArrayList<>(getModel(iblockstate).getQuads(iblockstate, side, rand));
+			List<BakedQuad> secList = new ArrayList<>(renderInfo.renderModel.getQuads(renderInfo.blockstate, side, rand));
 			if(secList == null || secList.isEmpty())
 				for(EnumFacing facing : fallbackOrder())
-					if(!getModel(iblockstate).getQuads(iblockstate, facing, rand).isEmpty())
-						secList = getModel(iblockstate).getQuads(iblockstate, facing, rand);
+					if(!renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand).isEmpty())
+						secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
 			for(BakedQuad mirrorQuad : secList)
 			{
 				int[] vList = new int[quad.getVertexData().length];
@@ -59,5 +66,17 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 			}
 		}
 		return finalList;
+	}
+	
+	public static class RenderInfo
+	{
+		public final IBlockState blockstate;
+		public final IBakedModel renderModel;
+		
+		public RenderInfo(IBlockState blockstate, IBakedModel renderModel) 
+		{
+			this.blockstate = blockstate;
+			this.renderModel = renderModel;
+		}
 	}
 }

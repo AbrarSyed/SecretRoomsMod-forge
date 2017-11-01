@@ -22,9 +22,13 @@ public class SecretUtils
 	
 	public static IBakedModel getModel(ISecretBlock base, IBlockState state) 
 	{
+		return getModel(base.getMap(), base, state);
+	}
+	
+	public static IBakedModel getModel(HashMap<Block, HashMap<Integer, IBakedModel>> map, ISecretBlock base, IBlockState state) 
+	{
 		if(state == null || state.getBlock() == Blocks.AIR)
 			return null;
-		HashMap<Block, HashMap<Integer, IBakedModel>> map = base.getMap();
 		if(!map.containsKey(state.getBlock()) || !map.get(state.getBlock()).containsKey(state.getBlock().getMetaFromState(state)))
 		{
 			if(!map.containsKey(state.getBlock()))

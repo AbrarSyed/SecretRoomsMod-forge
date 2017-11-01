@@ -3,6 +3,7 @@ package com.wynprice.secretroomsmod.render;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
 
@@ -12,6 +13,8 @@ import com.wynprice.secretroomsmod.SecretUtils;
 import com.wynprice.secretroomsmod.base.BaseExposingHelmet;
 import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
+import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModels;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -21,6 +24,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -28,6 +32,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -39,6 +44,8 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
 	public static IBlockState currentRender;
 	public static World currentWorld;
 	public static BlockPos currentPos;
+	
+	public static final HashMap<Block, HashMap<Integer, IBakedModel>> TRUEMAP = new HashMap<>();
 	
 	@Override
 	public void render(TileEntityInfomationHolder te, double x, double y, double z, float partialTicks,
@@ -70,10 +77,10 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
 	        currentWorld = te.getWorld();
 	        if(block instanceof ISecretBlock && te.getMirrorState() != null && SecretUtils.getModel((ISecretBlock)block, te.getMirrorState()) != null)
 	        {
+	        	IBlockState renderState = te.getMirrorState().getBlock().getActualState(te.getMirrorState(), te.getWorld(), te.getPos());
+        		currentRender = ((ISecretBlock)block).overrideThisState(world, currentPos, currentRender);
 	        	if(!isHelmet)
 	        	{
-	        		currentRender = ((ISecretBlock)block).overrideThisState(world, currentPos, currentRender);
-		        	IBlockState renderState = te.getMirrorState().getBlock().getActualState(te.getMirrorState(), te.getWorld(), te.getPos());
 		        	try
 		        	{
 		        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, SecretUtils.getModel((ISecretBlock)block, renderState),
@@ -100,7 +107,7 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
 	        	}
 	        	else
 	        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer()
-	        		.renderModel(world, SecretUtils.getModel(new ResourceLocation(SecretRooms2.MODID, "block/" + block.getRegistryName().getResourcePath())),
+	        		.renderModel(world, SecretUtils.getModel(TRUEMAP, new TrueRender((ISecretBlock)block), renderState),
 	        				te.getWorld().getBlockState(te.getPos()), te.getPos(), Tessellator.getInstance().getBuffer(), false);
 	        }
 	        Collections.reverse(tintList);
@@ -125,5 +132,45 @@ public class TileEntityInfomationHolderRenderer extends TileEntitySpecialRendere
 	        RenderHelper.enableStandardItemLighting();
         }
     	GlStateManager.popMatrix();
+	}
+	
+	public static class TrueRender implements ISecretBlock
+	{
+		private final ISecretBlock sBlock;
+		
+		public TrueRender(ISecretBlock sBlock) 
+		{
+			this.sBlock = sBlock;
+		}
+		
+		@Override
+		public TileEntity createNewTileEntity(World worldIn, int meta) {
+			return sBlock.createNewTileEntity(worldIn, meta);
+		}
+		
+		@Override
+		public void forceBlockState(World world, BlockPos tePos, BlockPos hitPos, IBlockState state) {
+			sBlock.forceBlockState(world, tePos, hitPos, state);
+		}
+		
+		@Override
+		public HashMap<Block, HashMap<Integer, IBakedModel>> getMap() {
+			return sBlock.getMap();
+		}
+		
+		@Override
+		public FakeBlockModel phaseModel(FakeBlockModel model) {
+			return new TrueSightModels(model);
+		}
+		
+		@Override
+		public IBlockState getState(World world, BlockPos pos) {
+			return sBlock.getState(world, pos);
+		}
+		
+		@Override
+		public IBlockState overrideThisState(World world, BlockPos pos, IBlockState defaultState) {
+			return sBlock.overrideThisState(world, pos, defaultState);
+		}
 	}
 }
