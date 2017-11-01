@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shaped",
+  "group": "secret_items",
+  "pattern": [
+    "XXX",
+    "X#X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "dye"
+    },
+    "#": {
+      "type": "forge:ore_dict",
+      "ore": "dirt"
+    }
+  },
+  "result": {
+    "item": "secretroomsmod:camouflage_paste",
+    "count": 9
+  }
+}

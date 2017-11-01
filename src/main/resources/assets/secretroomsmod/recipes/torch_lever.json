@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "group": "secret_items",
+  "pattern": [
+    "T",
+    "L"
+  ],
+  "key": {
+    "T": {
+      "type": "forge:ore_dict",
+      "ore": "torch"
+    },
+    "L": {
+      "item": "minecraft:lever"
+    }
+  },
+  "result": {
+    "item": "secretroomsmod:torch_lever"
+  }
+}

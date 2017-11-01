@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shapeless",
+  "group": "secret_items",
+  "ingredients": [
+    {
+     "item": "minecraft:diamond_helmet"
+    },
+    {
+      "item": "secretroomsmod:switch_probe"
+    }
+  ],
+  "result": {
+    "item": "secretroomsmod:diamond_exposing_helmet"
+  }
+}

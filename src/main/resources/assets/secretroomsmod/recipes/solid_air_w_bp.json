@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shapeless",
+  "group": "secret_items",
+  "ingredients": [
+    {
+     "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
+  ],
+  "result": {
+    "item": "secretroomsmod:solid_air"
+  }
+}

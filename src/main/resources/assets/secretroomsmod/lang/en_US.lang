@@ -1,5 +1,5 @@
 # creative tab
-itemGroup.secretroomsmod=Secret Blocks
+itemGroup.secretroomsmod=Secret Room
 
 # chat messages
 message.secretroomsmod.oneWay.towards=-- !!! OneWayBlock facing set to Towards !!! --
@@ -11,28 +11,34 @@ message.secretroomsmod.commandShow.hide=Camo blocks made secret
 key.secretroomsmod.oneWayface=Toggle OneWay face
 
 # blocks
-tile.TorchLever.name=Torch Lever
-tile.OneWayGlass.name=One-Way Glass
+tile.torch_lever.name=Torch Lever
+tile.one_way_glass.name=One-Way Glass
 tile.CamoGate.name=Secret Gate
-tile.SecretTrapDoor.name=Secret TrapDoor
-tile.SecretWoodenDoorBlock.name=Secret Wooden Door
-tile.SecretIronDoorBlock.name=Secret Iron Door
-tile.GhostBlock.name=Ghost Block
-tile.SecretLever.name=Secret lever
-tile.SecretRedstone.name=Secret Redstone
-tile.SecretButton.stone.name=Secret Stone Button
-tile.SecretButton.wood.name=Secret Wood Button
-tile.SecretPressurePlate.name=Secret Pressure Plate
-tile.SecretPlayerPlate.name=Secret Player Plate
-tile.SecretLightPlate.name=Secret Weighted Plate (light)
-tile.SecretHeavyPlate.name=Secret Weighted Plate (heavy)
-tile.SecretStair.name=Secret Stairs
-tile.SecretChest.name=Secret Chest
+tile.secret_wooden_trapdoor.name=Secret Wooden TrapDoor
+tile.secret_iron_trapdoor.name=Secret Wooden TrapDoor
+tile.secret_wooden_door.name=Secret Wooden Door
+tile.secret_iron_door.name=Secret Iron Door
+tile.ghost_block.name=Ghost Block
+tile.secret_lever.name=Secret lever
+tile.secret_redstone.name=Secret Redstone
+tile.secret_stone_button.name=Secret Stone Button
+tile.secret_wooden_button.name=Secret Wood Button
+tile.secret_pressure_plate.name=Secret Pressure Plate
+tile.secret_player_pressure_plate.name=Secret Player Plate
+tile.secret_light_pressure_plate.name=Secret Weighted Plate (light)
+tile.secret_heavy_pressure_plate.name=Secret Weighted Plate (heavy)
+tile.secret_stairs.name=Secret Stairs
+tile.secret_chest.name=Secret Chest
 tile.SecretTrappedChest.name=Secret Trapped Chest
 tile.SecretLightDetector.name=Secret Light Detector
-tile.SolidAir.name=Solid Air
+tile.solid_air.name=Solid Air
+
+gui.secret_chest.name=Secret Chest
 
 #items
-item.SecretIronDoorItem.name=Secret Iron Door
-item.CamoflaugePaste.name=Camouflage Paste
-item.SecretWoodenDoorItem.name=Secret Wooden Door
+item.secret_iron_door.name=Secret Iron Door
+item.camouflage_paste.name=Camouflage Paste
+item.secret_wooden_door.name=Secret Wooden Door
+item.switch_probe.name=Switch Probe
+item.iron_exposing_helmet.name=Exposing Helmet (Iron)
+item.diamond_exposing_helmet.name=Exposing Helmet (Diamond)

@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "group": "secret_items",
+  "pattern": [
+    "X0X",
+    "0 0",
+    "X0X"
+  ],
+  "key": {
+    "X": {
+      "item": "secretroomsmod:camouflage_paste"
+    },
+    "0": {
+      "type": "forge:ore_dict",
+      "ore": "blockWool"
+    }
+  },
+  "result": {
+    "item": "secretroomsmod:ghost_block",
+    "count": 4
+  }
+}

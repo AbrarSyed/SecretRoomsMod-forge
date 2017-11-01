@@ -1,0 +1,11 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "blocks/glass",
+        "up": "blocks/glass",
+        "north": "blocks/glass",
+        "east": "secretroomsmod:items/ghost_block",
+        "south": "blocks/glass",
+        "west": "blocks/glass"
+    }
+}

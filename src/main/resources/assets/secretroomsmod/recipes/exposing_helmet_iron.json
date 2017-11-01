@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shapeless",
+  "group": "secret_items",
+  "ingredients": [
+    {
+     "item": "minecraft:iron_helmet"
+    },
+    {
+      "item": "secretroomsmod:switch_probe"
+    }
+  ],
+  "result": {
+    "item": "secretroomsmod:iron_exposing_helmet"
+  }
+}

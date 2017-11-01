@@ -1,0 +1,20 @@
+{
+    "parent": "block/block",
+	"textures": {
+        "size": "blocks/stone",
+		"particle": "secretroomsmod:blocks/clear"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#size", "cullface": "down" },
+                "up":    { "texture": "#size", "cullface": "up" },
+                "north": { "texture": "#size", "cullface": "north" },
+                "south": { "texture": "#size", "cullface": "south" },
+                "west":  { "texture": "#size", "cullface": "west" },
+                "east":  { "texture": "#size", "cullface": "east" }
+            }
+        }
+    ]
+}

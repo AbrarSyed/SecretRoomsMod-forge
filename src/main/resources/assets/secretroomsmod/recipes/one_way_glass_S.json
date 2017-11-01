@@ -1,0 +1,16 @@
+{
+  "type": "forge:ore_shapeless",
+  "group": "secret_items",
+  "ingredients": [
+    {
+     "item": "secretroomsmod:camouflage_paste"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "blockGlassColorless"
+    }
+  ],
+  "result": {
+    "item": "secretroomsmod:one_way_glass"
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "secretroomsmod:items/one_way_glass"
+    }
+}

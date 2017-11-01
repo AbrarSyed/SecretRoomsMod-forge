@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shapeless",
+  "group": "secret_items",
+  "ingredients": [
+    {
+     "item": "minecraft:redstone_torch"
+    },
+    {
+      "item": "secretroomsmod:camouflage_paste"
+    }
+  ],
+  "result": {
+    "item": "secretroomsmod:switch_probe"
+  }
+}
