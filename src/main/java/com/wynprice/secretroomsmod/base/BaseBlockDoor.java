@@ -2,6 +2,8 @@ package com.wynprice.secretroomsmod.base;
 
 import java.util.HashMap;
 
+import com.wynprice.secretroomsmod.SecretBlocks;
+import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
@@ -20,6 +22,7 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -43,6 +46,11 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 		this.setHardness(0.5f);
 		this.translucent = true;
     }
+	
+	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(this == SecretBlocks.SECRET_IRON_DOOR ? SecretItems.SECRET_IRON_DOOR : SecretItems.SECRET_WOODEN_DOOR);
+	}
 	
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -73,6 +81,71 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+	
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
+        {
+            BlockPos blockpos = pos.down();
+            IBlockState iblockstate = worldIn.getBlockState(blockpos);
+
+            if (iblockstate.getBlock() != this)
+            {
+                worldIn.setBlockToAir(pos);
+            }
+            else if (blockIn != this)
+            {
+                iblockstate.neighborChanged(worldIn, blockpos, blockIn, fromPos);
+            }
+        }
+        else
+        {
+            boolean flag1 = false;
+            BlockPos blockpos1 = pos.up();
+            IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
+
+            if (iblockstate1.getBlock() != this)
+            {
+                worldIn.setBlockToAir(pos);
+                flag1 = true;
+            }
+
+            if (!worldIn.getBlockState(pos.down()).isSideSolid(worldIn,  pos.down(), EnumFacing.UP))
+            {
+                worldIn.setBlockToAir(pos);
+                flag1 = true;
+
+                if (iblockstate1.getBlock() == this)
+                {
+                    worldIn.setBlockToAir(blockpos1);
+                }
+            }
+
+            if (flag1)
+            {
+                if (!worldIn.isRemote)
+                {
+                    this.dropBlockAsItem(worldIn, pos, state, 0);
+                }
+            }
+            else
+            {
+                boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos1);
+
+                if (blockIn != this && (flag || blockIn.getDefaultState().canProvidePower()) && flag != ((Boolean)iblockstate1.getValue(POWERED)).booleanValue())
+                {
+                    worldIn.setBlockState(blockpos1, iblockstate1.withProperty(POWERED, Boolean.valueOf(flag)), 2);
+
+                    if (flag != ((Boolean)state.getValue(OPEN)).booleanValue())
+                    {
+                        worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
+                        worldIn.markBlockRangeForRenderUpdate(pos, pos);
+//                        worldIn.playEvent((EntityPlayer)null, flag ? this.getOpenSound() : this.getCloseSound(), pos, 0);
+                    }
+                }
+            }
+        }
     }
 	
     @SideOnly(Side.CLIENT)
@@ -109,11 +182,11 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	@Override
 	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) 
 	{
+
 		if(ParticleHandler.BLOCKBRAKERENDERMAP.get(pos) != null)
 		{
 			IBlockState state = ParticleHandler.BLOCKBRAKERENDERMAP.get(pos).getActualState(world, pos);
 	        int i = 4;
-
 	        for (int j = 0; j < 4; ++j)
 	        {
 	            for (int k = 0; k < 4; ++k)

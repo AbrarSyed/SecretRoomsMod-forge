@@ -1,7 +1,7 @@
 package com.wynprice.secretroomsmod.intergration;
 
-import com.wynprice.secretroomsmod.base.BaseExposingHelmet;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
 import mcjty.theoneprobe.Tools;
 import mcjty.theoneprobe.api.IBlockDisplayOverride;
@@ -28,8 +28,8 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 	{
 		if(!(blockState.getBlock() instanceof ISecretBlock))
 			return false;
-		DefaultProbeInfoProvider.showStandardBlockInfo(new ProbeConfig(), mode, probeInfo, player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof BaseExposingHelmet ? 
-				blockState : ((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()), player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof BaseExposingHelmet ? 
+		DefaultProbeInfoProvider.showStandardBlockInfo(new ProbeConfig(), mode, probeInfo, player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
+				blockState : ((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()), player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
 				blockState.getBlock() : ((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()).getBlock(), world, data.getPos(), player, new IProbeHitData() {
 					
 					@Override
@@ -44,7 +44,7 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 					
 					@Override
 					public ItemStack getPickBlock() {
-						return player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof BaseExposingHelmet ? data.getPickBlock() : 
+						return player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? data.getPickBlock() : 
 							((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()).getBlock()
 								.getPickBlock(((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()), 
 										world.rayTraceBlocks(player.getPositionVector(), player.getPositionVector()

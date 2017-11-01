@@ -72,6 +72,10 @@ public class SecretButton extends BlockButton implements ISecretBlock
 		return ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
 	}
 	
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState().isSideSolid(world, pos, side);
+	}
 	
 	 private void checkPressed(IBlockState state, World worldIn, BlockPos pos)
 	 {

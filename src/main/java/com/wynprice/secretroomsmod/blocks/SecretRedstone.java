@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.blocks;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
@@ -49,6 +50,16 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 	}
 	
 	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
+	{
+		if(worldIn.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState() != null) 
+			((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState().addCollisionBoxToList(worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+		else
+			super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+	}
+	
+	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
 	{
 		return world.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState() != null ? 
@@ -58,6 +69,11 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
+	}
+	
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState().isSideSolid(world, pos, side);
 	}
 	
 	public boolean isFullCube(IBlockState state)

@@ -71,6 +71,11 @@ public class SecretLever extends BlockLever implements ISecretBlock
 	}
 	
 	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState().isSideSolid(world, pos, side);
+	}
+	
+	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (worldIn.isRemote)

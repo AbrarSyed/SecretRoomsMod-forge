@@ -2,8 +2,8 @@ package com.wynprice.secretroomsmod;
 
 import java.util.ArrayList;
 
-import com.wynprice.secretroomsmod.base.BaseExposingHelmet;
 import com.wynprice.secretroomsmod.base.BaseItemDoor;
+import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.items.SwitchProbe;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -19,8 +19,8 @@ public class SecretItems
 	public static final Item SECRET_WOODEN_DOOR = new BaseItemDoor(SecretBlocks.SECRET_WOODEN_DOOR, "secret_wooden_door");
 	public static final Item SECRET_IRON_DOOR = new BaseItemDoor(SecretBlocks.SECRET_IRON_DOOR, "secret_iron_door");
 	public static final Item SWITCH_PROBE = new SwitchProbe();
-	public static final Item IRON_EXPOSING_HELMET = new BaseExposingHelmet("iron_exposing_helmet", ItemArmor.ArmorMaterial.IRON, 2, EntityEquipmentSlot.HEAD);
-	public static final Item DIAMOND_EXPOSING_HELMET = new BaseExposingHelmet("diamond_exposing_helmet", ItemArmor.ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.HEAD);
+	public static final Item IRON_EXPOSING_HELMET = new TrueSightHelmet("iron_exposing_helmet", ItemArmor.ArmorMaterial.IRON, 2, EntityEquipmentSlot.HEAD);
+	public static final Item DIAMOND_EXPOSING_HELMET = new TrueSightHelmet("diamond_exposing_helmet", ItemArmor.ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.HEAD);
 
 	
 	public static void preInit()

@@ -26,6 +26,9 @@ public class TrueSightModels extends BaseTextureFakeModel
 	@Override
 	protected IBlockState getNormalStateWith(IBlockState s) 
 	{
+		if(((ISecretBlock)TileEntityInfomationHolderRenderer.currentWorld.getBlockState(TileEntityInfomationHolderRenderer.currentPos).getBlock()).phaseModel(this) instanceof BaseTextureFakeModel &&
+				!(((ISecretBlock)TileEntityInfomationHolderRenderer.currentWorld.getBlockState(TileEntityInfomationHolderRenderer.currentPos).getBlock()).phaseModel(this) instanceof TrueSightModels))
+			return ((BaseTextureFakeModel)((ISecretBlock)TileEntityInfomationHolderRenderer.currentWorld.getBlockState(TileEntityInfomationHolderRenderer.currentPos).getBlock()).phaseModel(this)).getNormalStateWith(s);
 		IBlockState baseState = ((TileEntityInfomationHolder) TileEntityInfomationHolderRenderer.currentWorld.getTileEntity(TileEntityInfomationHolderRenderer.currentPos)).getMirrorState();
 		return baseState.getBlock().getActualState(baseState, TileEntityInfomationHolderRenderer.currentWorld, TileEntityInfomationHolderRenderer.currentPos);
 	}

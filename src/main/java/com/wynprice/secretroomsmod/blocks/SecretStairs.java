@@ -63,6 +63,11 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
 	}
 	
 	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState().isSideSolid(world, pos, side);
+	}
+	
+	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
 	{
 		return world.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState() != null ? 
