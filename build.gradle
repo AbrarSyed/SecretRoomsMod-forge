@@ -140,7 +140,7 @@ uploadArchives {
                     developers {
 			developer {
                             id 'WynPrice'
-                            name 'AbrarSyed'
+                            name 'WynPrice'
                             roles { role 'developer' }
                         }
                     }
