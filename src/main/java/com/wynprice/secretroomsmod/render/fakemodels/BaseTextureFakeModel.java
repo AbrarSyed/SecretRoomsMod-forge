@@ -19,7 +19,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		super(model);
 	}
 	
-	protected abstract IBlockState getNormalStateWith(IBlockState s);
+	public abstract IBlockState getNormalStateWith(IBlockState s);
 	
 	protected abstract Class<? extends ISecretBlock> getBaseBlockClass();
 	
@@ -32,7 +32,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		return list;
 	}
 	
-	protected RenderInfo getRenderInfo(IBlockState teMirrorState)
+	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState)
 	{
 		return new RenderInfo(teMirrorState, getModel(teMirrorState));
 	}
@@ -43,28 +43,29 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		if(getBaseBlockClass() != null && !(getBaseBlockClass().isAssignableFrom(BaseTERender.currentRender.getBlock().getClass())))
 			return super.getQuads(state, side, rand);
 		ArrayList<BakedQuad> finalList = new ArrayList<BakedQuad>();
-		RenderInfo renderInfo = getRenderInfo(((ISecretTileEntity)BaseTERender.currentWorld.getTileEntity(BaseTERender.currentPos)).getMirrorState());
+		RenderInfo renderInfo = getRenderInfo(side, ((ISecretTileEntity)BaseTERender.currentWorld.getTileEntity(BaseTERender.currentPos)).getMirrorState());
 		IBlockState normalState = getNormalStateWith(BaseTERender.currentRender);
-		for(BakedQuad quad : getModel(normalState).getQuads(normalState, side, rand))
-		{
-			List<BakedQuad> secList = new ArrayList<>(renderInfo.renderModel.getQuads(renderInfo.blockstate, side, rand));
-			if(secList == null || secList.isEmpty())
-				for(EnumFacing facing : fallbackOrder())
-					if(!renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand).isEmpty())
-						secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
-			for(BakedQuad mirrorQuad : secList)
+		if(renderInfo != null)
+			for(BakedQuad quad : getModel(normalState).getQuads(normalState, side, rand))
 			{
-				int[] vList = new int[quad.getVertexData().length];
-				System.arraycopy(quad.getVertexData(), 0, vList, 0, vList.length);
-				int[] sList = mirrorQuad.getVertexData();
-				int[] cList = {4, 5, 11, 12, 18, 19, 25, 26};
-				if(sList != null)
-					for(int i : cList)
-						vList[i] = sList[i];
-				finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), quad.getFace(), 
-							Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+				List<BakedQuad> secList = new ArrayList<>(renderInfo.renderModel.getQuads(renderInfo.blockstate, side, rand));
+				if(secList == null || secList.isEmpty())
+					for(EnumFacing facing : fallbackOrder())
+						if(!renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand).isEmpty())
+							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
+				for(BakedQuad mirrorQuad : secList)
+				{
+					int[] vList = new int[quad.getVertexData().length];
+					System.arraycopy(quad.getVertexData(), 0, vList, 0, vList.length);
+					int[] sList = mirrorQuad.getVertexData();
+					int[] cList = {4, 5, 11, 12, 18, 19, 25, 26};
+					if(sList != null)
+						for(int i : cList)
+							vList[i] = sList[i];
+					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), quad.getFace(), 
+								Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+				}
 			}
-		}
 		return finalList;
 	}
 	

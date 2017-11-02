@@ -1,6 +1,5 @@
 package com.wynprice.secretroomsmod.render.fakemodels;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
@@ -9,7 +8,12 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.model.TRSRTransformation;
 
 public class FakeBlockModel implements IBakedModel
 {
@@ -61,5 +65,18 @@ public class FakeBlockModel implements IBakedModel
 		return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
 	}
 	
+	public static IBakedModel getModel(ResourceLocation resourceLocation) 
+	{
+		IBakedModel bakedModel;
+		IModel model;
+		try {
+	        model = ModelLoaderRegistry.getModel(resourceLocation);
+		} catch (Exception e) {
+          throw new RuntimeException(e);
+		}
+		bakedModel = model.bake(TRSRTransformation.identity(), DefaultVertexFormats.BLOCK,
+				location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
+	    return bakedModel;
+	}
 	
 }

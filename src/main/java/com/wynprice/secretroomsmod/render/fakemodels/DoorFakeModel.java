@@ -15,7 +15,7 @@ public class DoorFakeModel extends BaseTextureFakeModel
 	}
 
 	@Override
-	protected IBlockState getNormalStateWith(IBlockState s) {
+	public IBlockState getNormalStateWith(IBlockState s) {
 		return Blocks.DARK_OAK_DOOR.getDefaultState().withProperty(BlockDoor.FACING, s.getValue(BlockDoor.FACING)).withProperty(BlockDoor.HALF, s.getValue(BlockDoor.HALF))
 				.withProperty(BlockDoor.HINGE, s.getValue(BlockDoor.HINGE)).withProperty(BlockDoor.OPEN, s.getValue(BlockDoor.OPEN)).withProperty(BlockDoor.POWERED, s.getValue(BlockDoor.POWERED));
 	}

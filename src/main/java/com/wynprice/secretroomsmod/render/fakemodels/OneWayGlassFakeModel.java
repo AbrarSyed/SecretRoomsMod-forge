@@ -1,30 +1,28 @@
 package com.wynprice.secretroomsmod.render.fakemodels;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.base.BaseTERender;
+import com.wynprice.secretroomsmod.base.BaseTextureSwitchFakeModel;
+import com.wynprice.secretroomsmod.render.fakemodels.BaseTextureFakeModel.RenderInfo;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 
-public class OneWayGlassFakeModel extends FakeBlockModel
+public class OneWayGlassFakeModel extends BaseTextureSwitchFakeModel
 {
-	
 	public OneWayGlassFakeModel(FakeBlockModel model) {
 		super(model);
 	}
 	
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) 
+	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState) 
 	{
-		if(side != null && BaseTERender.currentWorld.getBlockState(BaseTERender.currentPos.offset(side)).getBlock() == SecretBlocks.ONE_WAY_GLASS)
-			return new ArrayList<BakedQuad>();
+		if(face != null && BaseTERender.currentWorld.getBlockState(BaseTERender.currentPos.offset(face)).getBlock() == SecretBlocks.ONE_WAY_GLASS)
+			return null;
 		return BaseTERender.currentRender != null && BaseTERender.currentRender.getBlock() == SecretBlocks.ONE_WAY_GLASS && 
-				side != BaseTERender.currentRender.getValue(BlockDirectional.FACING)? getModel(Blocks.GLASS.getDefaultState()).getQuads(state, side, rand) : super.getQuads(state, side, rand);
+				face != BaseTERender.currentRender.getValue(BlockDirectional.FACING) ? super.getRenderInfo(face, Blocks.GLASS.getDefaultState()) : super.getRenderInfo(face, teMirrorState);
 	}
+
 }

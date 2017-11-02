@@ -1,18 +1,14 @@
 package com.wynprice.secretroomsmod.blocks;
 
-import java.util.HashMap;
-
 import javax.annotation.Nullable;
 
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
-import com.wynprice.secretroomsmod.render.CustomRenderMaps;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrapDoorFakeModel;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockLadder;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -22,7 +18,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
@@ -35,7 +30,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -56,12 +50,6 @@ public class SecretTrapDoor extends BaseFakeBlock
 		super(name, materialIn);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(OPEN, Boolean.valueOf(false)).withProperty(HALF, BlockTrapDoor.DoorHalf.BOTTOM));
 	}
-    
-    @SideOnly(Side.CLIENT)
-    @Override
-    public HashMap<Block, HashMap<Integer, IBakedModel>> getMap() {
-    	return CustomRenderMaps.TRAPDOOR_RENDER_MAP;
-    }
     
     @SideOnly(Side.CLIENT)
     @Override

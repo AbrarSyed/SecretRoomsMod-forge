@@ -3,11 +3,15 @@ package com.wynprice.secretroomsmod.blocks;
 import java.util.HashMap;
 import java.util.List;
 
+import com.wynprice.secretroomsmod.SecretRooms2;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
+import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
+import com.wynprice.secretroomsmod.render.fakemodels.TrueSightFaceDiffrentModel;
+import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDispenser;
 
 import net.minecraft.block.Block;
@@ -29,6 +33,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -51,6 +56,12 @@ public class SecretDispenser extends BlockDispenser implements ISecretBlock
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySecretDispenser();
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public TrueSightModel phaseTrueModel(TrueSightModel model) {
+		return new TrueSightFaceDiffrentModel(model, FakeBlockModel.getModel(new ResourceLocation(SecretRooms2.MODID, "block/ghost_block")));
 	}
 	
 	@Override

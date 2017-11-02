@@ -6,6 +6,7 @@
         "north": "blocks/glass",
         "east": "secretroomsmod:items/ghost_block",
         "south": "blocks/glass",
-        "west": "blocks/glass"
+        "west": "blocks/glass",
+        "normalglass": "secretroomsmod:items/one_way_glass"
     }
 }

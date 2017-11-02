@@ -1,22 +1,18 @@
 package com.wynprice.secretroomsmod.blocks;
 
-import java.util.HashMap;
-
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
-import com.wynprice.secretroomsmod.render.CustomRenderMaps;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.OneWayGlassFakeModel;
-import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
+import com.wynprice.secretroomsmod.render.fakemodels.TrueSightFaceDiffrentModel;
+import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -37,10 +33,21 @@ public class OneWayGlass extends BaseFakeBlock implements ISecretBlock
 		this.translucent = true;
     }
 		
+	@Override
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
+			EnumFacing side) {
+		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
+	
+	@Override
+	public boolean allowForcedBlockColors() {
+		return false;
+	}
+	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public HashMap<Block, HashMap<Integer, IBakedModel>> getMap() {
-		return CustomRenderMaps.ONE_WAY_GLASS_RENDER_MAP;
+	public TrueSightModel phaseTrueModel(TrueSightModel model) {
+		return new TrueSightFaceDiffrentModel(model, FakeBlockModel.getModel(Blocks.GLASS.getDefaultState()));
 	}
 	
 	@SideOnly(Side.CLIENT)

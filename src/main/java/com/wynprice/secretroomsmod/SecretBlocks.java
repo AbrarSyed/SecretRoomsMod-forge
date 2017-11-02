@@ -79,18 +79,19 @@ public class SecretBlocks
 
 	}
 	
-	private static ArrayList<Block> blocksWithItems = new ArrayList<Block>();
-	private static HashMap<Block, Integer> blockStackSize = new HashMap<>();
-	private static ArrayList<Block> blocksWithCustomStateMap = new ArrayList<Block>();
-	private static ArrayList<IProperty<?>[]> propertiesToIgnoreCustomStateMap = new ArrayList<IProperty<?>[]>();
+	private final static ArrayList<Block> ALL_BLOCKS = new ArrayList<Block>();
+	private final static ArrayList<Block> BLOCKS_WITH_ITEMS = new ArrayList<Block>();
+	private final static HashMap<Block, Integer> BLOCK_STACK_SIZES = new HashMap<>();
+	private final static ArrayList<Block> BLOCKS_WITH_CUSTOM_STATE_MAP = new ArrayList<Block>();
+	private final static ArrayList<IProperty<?>[]> PROPERTIES_TO_IGNORE_CUSTOM_STATE_MAP = new ArrayList<IProperty<?>[]>();
 	
 	public static void regRenders() {
-		for(int i = 0; i < blocksWithCustomStateMap.size(); i++)
-			createStateMappers(blocksWithCustomStateMap.get(i), propertiesToIgnoreCustomStateMap.get(i));
-		for(Block b : blocksWithItems)
+		for(int i = 0; i < BLOCKS_WITH_CUSTOM_STATE_MAP.size(); i++)
+			createStateMappers(BLOCKS_WITH_CUSTOM_STATE_MAP.get(i), PROPERTIES_TO_IGNORE_CUSTOM_STATE_MAP.get(i));
+		for(Block b : BLOCKS_WITH_ITEMS)
 			regRender(b);
 	}
-	
+
 	private static void regBlock(Block block) 
 	{
 		regBlock(block, 64);
@@ -98,8 +99,8 @@ public class SecretBlocks
 
 	private static void regBlock(Block block, int stackSize) 
 	{
-		blocksWithItems.add(block);
-		blockStackSize.put(block, stackSize);	
+		BLOCKS_WITH_ITEMS.add(block);
+		BLOCK_STACK_SIZES.put(block, stackSize);	
 		block.setCreativeTab(SecretRooms2.TAB);
 		register(block);
 	}
@@ -149,8 +150,8 @@ public class SecretBlocks
 	
 	private static void regBlock(Block block, int stackSize, IProperty<?>... toIgnore)
 	{
-		blocksWithCustomStateMap.add(block);
-		propertiesToIgnoreCustomStateMap.add(toIgnore);
+		BLOCKS_WITH_CUSTOM_STATE_MAP.add(block);
+		PROPERTIES_TO_IGNORE_CUSTOM_STATE_MAP.add(toIgnore);
 		regBlock(block, stackSize);
 	}
 	
@@ -167,8 +168,8 @@ public class SecretBlocks
 	
 	private static void regSingleBlock(Block block,  IProperty<?>... toIgnore)
 	{
-		blocksWithCustomStateMap.add(block);
-		propertiesToIgnoreCustomStateMap.add(toIgnore);
+		BLOCKS_WITH_CUSTOM_STATE_MAP.add(block);
+		PROPERTIES_TO_IGNORE_CUSTOM_STATE_MAP.add(toIgnore);
 		register(block);
 	}
 
@@ -178,12 +179,13 @@ public class SecretBlocks
 	
 	private static void register(Block block)
 	{
+		ALL_BLOCKS.add(block);
 		ForgeRegistries.BLOCKS.register(block);
-		if(blocksWithItems.contains(block))
+		if(BLOCKS_WITH_ITEMS.contains(block))
 		{
 			ItemBlock item = new ItemBlock(block);
 			item.setRegistryName(block.getRegistryName());
-			item.setMaxStackSize(blockStackSize.get(block));
+			item.setMaxStackSize(BLOCK_STACK_SIZES.get(block));
 			ForgeRegistries.ITEMS.register(item);
 		}
 	}

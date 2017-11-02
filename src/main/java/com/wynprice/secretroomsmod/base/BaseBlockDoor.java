@@ -54,12 +54,6 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public HashMap<Block, HashMap<Integer, IBakedModel>> getMap() {
-		return CustomRenderMaps.DOOR_RENDER_MAP;
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
 	public FakeBlockModel phaseModel(FakeBlockModel model) {
 		return new DoorFakeModel(model);
 	}
