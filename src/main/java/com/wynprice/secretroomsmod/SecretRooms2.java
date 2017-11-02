@@ -25,7 +25,7 @@ public class SecretRooms2
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 2";
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "@VERSION@";
     
     @SidedProxy(modId = MODID, clientSide = "com.wynprice.secretroomsmod.proxy.ClientProxy", serverSide = "com.wynprice.secretroomsmod.proxy.ServerProxy")
     public static CommonProxy proxy;
