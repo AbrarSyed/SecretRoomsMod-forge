@@ -3,8 +3,8 @@ package com.wynprice.secretroomsmod.base.interfaces;
 import java.util.HashMap;
 
 import com.wynprice.secretroomsmod.SecretUtils;
-import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
+import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -20,13 +20,13 @@ public interface ISecretBlock extends ITileEntityProvider
 {
 	default public IBlockState getState(World world, BlockPos pos)
 	{
-		return world.getTileEntity(pos) instanceof TileEntityInfomationHolder ? ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState() : null;
+		return world.getTileEntity(pos) instanceof ISecretTileEntity ? ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() : null;
 	}
 	
 	default public void forceBlockState(World world, BlockPos tePos, BlockPos hitPos, IBlockState state)
 	{
-		if(world.getTileEntity(tePos) instanceof TileEntityInfomationHolder)
-			((TileEntityInfomationHolder)world.getTileEntity(tePos)).setMirrorStateForcable(state, hitPos);
+		if(world.getTileEntity(tePos) instanceof ISecretTileEntity)
+			((ISecretTileEntity)world.getTileEntity(tePos)).setMirrorStateForcable(state, hitPos);
 	}
 	
 	@Override

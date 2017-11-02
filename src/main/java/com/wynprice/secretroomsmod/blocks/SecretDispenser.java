@@ -8,26 +8,27 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
-import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateClient;
+import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDispenser;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLever;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockSourceImpl;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -38,14 +39,64 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
 
-public class SecretLever extends BlockLever implements ISecretBlock
+public class SecretDispenser extends BlockDispenser implements ISecretBlock
 {
-	public SecretLever() {
-		setRegistryName("secret_lever");
-		setUnlocalizedName("secret_lever");
+	public SecretDispenser() {
+		this.setUnlocalizedName("secret_dispenser");
+		this.setRegistryName("secret_dispenser");
 		this.setHardness(0.5f);
 		this.translucent = true;
     }
+	
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntitySecretDispenser();
+	}
+	
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+		boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.up());
+		boolean flag1 = ((Boolean)state.getValue(TRIGGERED)).booleanValue();
+		NBTTagCompound compound = null;
+	    if(flag != flag1)
+	    	compound = worldIn.getTileEntity(pos).writeToNBT(new NBTTagCompound());
+	    if (flag && !flag1)
+	    {
+	        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+	        worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(true)), 4);
+	    }
+	    else if (!flag && flag1)
+	        worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(false)), 4);
+	    if(flag != flag1)
+	    	worldIn.getTileEntity(pos).readFromNBT(compound);
+	    	
+    }
+	
+	@Override
+	protected void dispense(World worldIn, BlockPos pos) 
+	{
+		BlockSourceImpl blocksourceimpl = new BlockSourceImpl(worldIn, pos);
+        TileEntityDispenser tileentitydispenser = (TileEntityDispenser)blocksourceimpl.getBlockTileEntity();
+        if (tileentitydispenser != null)
+        {
+            int i = tileentitydispenser.getDispenseSlot();
+            if (i < 0)
+            {
+                worldIn.playEvent(1001, pos, 0);
+            }
+            else
+            {
+                ItemStack itemstack = tileentitydispenser.getStackInSlot(i);
+                IBehaviorDispenseItem ibehaviordispenseitem = this.getBehavior(itemstack);
+
+                if (ibehaviordispenseitem != IBehaviorDispenseItem.DEFAULT_BEHAVIOR)
+                {
+                    tileentitydispenser.setInventorySlotContents(i, ibehaviordispenseitem.dispense(blocksourceimpl, itemstack));
+                }
+            }
+        }
+	}
 	
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) 
@@ -56,13 +107,8 @@ public class SecretLever extends BlockLever implements ISecretBlock
 	}
 	
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
-	{
-		if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState() != null) 
-			((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().addCollisionBoxToList(worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
-		else
-			super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+		return true;
 	}
 	
 	@Override
@@ -76,27 +122,19 @@ public class SecretLever extends BlockLever implements ISecretBlock
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (worldIn.isRemote)
-        {
-            return true;
-        }
-        else
-        {
-            state = state.cycleProperty(POWERED);
-            NBTTagCompound compound = worldIn.getTileEntity(pos).writeToNBT(new NBTTagCompound());
-            worldIn.setBlockState(pos, state, 3);
-            worldIn.getTileEntity(pos).readFromNBT(compound);
-            SecretNetwork.sendToPlayersInWorld(worldIn, new MessagePacketUpdateClient(compound));
-            float f = ((Boolean)state.getValue(POWERED)).booleanValue() ? 0.6F : 0.5F;
-            worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, f);
-            worldIn.notifyNeighborsOfStateChange(pos, this, false);
-            EnumFacing enumfacing = ((BlockLever.EnumOrientation)state.getValue(FACING)).getFacing();
-            worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing.getOpposite()), this, false);
-            return true;
-        }
-    }
+	public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
+		super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
+	}
+	
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
+	{
+		if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState() != null) 
+			((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().addCollisionBoxToList(worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+		else
+			super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+	}
 	
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
@@ -110,7 +148,7 @@ public class SecretLever extends BlockLever implements ISecretBlock
         return false;
     }
 	
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
 	@Override
 	public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) 
 	{
@@ -183,13 +221,8 @@ public class SecretLever extends BlockLever implements ISecretBlock
     {
         return 1.0F;
     }
-	
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		return true;
-	}
-	
-	@Override
+    
+    @Override
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) 
 	{	
 		if(worldIn.isRemote && worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos())

@@ -5,17 +5,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.wynprice.secretroomsmod.base.BaseBlockDoor;
-import com.wynprice.secretroomsmod.blocks.FakeChest;
 import com.wynprice.secretroomsmod.blocks.GhostBlock;
 import com.wynprice.secretroomsmod.blocks.OneWayGlass;
 import com.wynprice.secretroomsmod.blocks.SecretButton;
-import com.wynprice.secretroomsmod.blocks.SecretFakeWeightedPressurePlate;
+import com.wynprice.secretroomsmod.blocks.SecretChest;
+import com.wynprice.secretroomsmod.blocks.SecretDispenser;
 import com.wynprice.secretroomsmod.blocks.SecretLever;
 import com.wynprice.secretroomsmod.blocks.SecretPlayerPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SecretPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SecretRedstone;
 import com.wynprice.secretroomsmod.blocks.SecretStairs;
 import com.wynprice.secretroomsmod.blocks.SecretTrapDoor;
+import com.wynprice.secretroomsmod.blocks.SecretWeightedPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SolidAir;
 import com.wynprice.secretroomsmod.blocks.TorchLever;
 
@@ -44,16 +45,16 @@ public class SecretBlocks
 	public static final Block SECRET_STONE_BUTTON = new SecretButton(false);
 	public static final Block TORCH_LEVER = new TorchLever();
 	public static final Block SECRET_PRESSURE_PLATE = new SecretPressurePlate();
-	public static final Block SECRET_LIGHT_PRESSURE_PLATE = new SecretFakeWeightedPressurePlate("secret_light_pressure_plate", 15);
-	public static final Block SECRET_HEAVY_PRESSURE_PLATE = new SecretFakeWeightedPressurePlate("secret_heavy_pressure_plate", 150);
+	public static final Block SECRET_LIGHT_PRESSURE_PLATE = new SecretWeightedPressurePlate("secret_light_pressure_plate", 15);
+	public static final Block SECRET_HEAVY_PRESSURE_PLATE = new SecretWeightedPressurePlate("secret_heavy_pressure_plate", 150);
 	public static final Block SECRET_PLAYER_PRESSURE_PLATE = new SecretPlayerPressurePlate();
 	public static final Block SOLID_AIR = new SolidAir();
-	public static final Block HIDDEN_CHEST = new FakeChest("secret_chest");
+	public static final Block HIDDEN_CHEST = new SecretChest("secret_chest");
 	public static final BaseBlockDoor SECRET_WOODEN_DOOR = new BaseBlockDoor("secret_wooden_door", Material.WOOD);
 	public static final BaseBlockDoor SECRET_IRON_DOOR = new BaseBlockDoor("secret_iron_door", Material.IRON);
 	public static final Block SECRET_WOODEN_TRAPDOOR = new SecretTrapDoor("secret_wooden_trapdoor", Material.WOOD);
 	public static final Block SECRET_IRON_TRAPDOOR = new SecretTrapDoor("secret_iron_trapdoor", Material.IRON);
-
+	public static final Block SECRET_DISPENSER = new SecretDispenser();
 	
 	public static void preInit()
 	{
@@ -74,6 +75,7 @@ public class SecretBlocks
 		regBlockIgnoreAllNoItem(SECRET_WOODEN_DOOR);
 		regBlockIgnoreAll(SECRET_WOODEN_TRAPDOOR);
 		regBlockIgnoreAll(SECRET_IRON_TRAPDOOR);
+		regBlockIgnoreAll(SECRET_DISPENSER);
 
 	}
 	

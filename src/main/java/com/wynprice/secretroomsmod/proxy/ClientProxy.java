@@ -2,8 +2,10 @@ package com.wynprice.secretroomsmod.proxy;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
-import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
-import com.wynprice.secretroomsmod.render.TileEntityInfomationHolderRenderer;
+import com.wynprice.secretroomsmod.render.TERenders.TileEntityInfomationHolderRenderer;
+import com.wynprice.secretroomsmod.render.TERenders.TileEntityInfomationHolderRendererDispenser;
+import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
+import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDispenser;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +24,7 @@ public class ClientProxy extends CommonProxy
 		SecretBlocks.regRenders();
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInfomationHolder.class, new TileEntityInfomationHolderRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretDispenser.class, new TileEntityInfomationHolderRendererDispenser());
 	}
 	
 	@Override

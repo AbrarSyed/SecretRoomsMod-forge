@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.base;
+package com.wynprice.secretroomsmod.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

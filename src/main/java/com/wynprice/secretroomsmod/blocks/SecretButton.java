@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.wynprice.secretroomsmod.base.BaseFakeBlock;
-import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
@@ -34,7 +33,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
@@ -69,19 +67,19 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
+		return ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
 	}
 	
 	@Override
 	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState().isSideSolid(world, pos, side);
+		return ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState().isSideSolid(world, pos, side);
 	}
 	
 	 private void checkPressed(IBlockState state, World worldIn, BlockPos pos)
 	 {
 		 List <? extends Entity > list = new ArrayList<>();
-		 if(worldIn.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState() != null)
-			 list = worldIn.<Entity>getEntitiesWithinAABB(EntityArrow.class, ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState().getBoundingBox(worldIn, pos).offset(pos));
+		 if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState() != null)
+			 list = worldIn.<Entity>getEntitiesWithinAABB(EntityArrow.class, ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBoundingBox(worldIn, pos).offset(pos));
 		 boolean flag = !list.isEmpty();
 	     boolean flag1 = ((Boolean)state.getValue(POWERED)).booleanValue();
 
@@ -112,8 +110,8 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) 
 	{
-		if(source.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)source.getTileEntity(pos)).getMirrorState() != null)
-			return ((TileEntityInfomationHolder)source.getTileEntity(pos)).getMirrorState().getBoundingBox(source, pos);
+		if(source.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState() != null)
+			return ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState().getBoundingBox(source, pos);
 	    return FULL_BLOCK_AABB;
 	}
 	
@@ -121,8 +119,8 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
 			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
 	{
-		if(worldIn.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState() != null) 
-			((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState().addCollisionBoxToList(worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+		if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState() != null) 
+			((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().addCollisionBoxToList(worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 		else
 			super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 	}
@@ -130,8 +128,8 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
 	{
-		return world.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState() != null ? 
-				((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState().getBlock().getSoundType() : super.getSoundType(state, world, pos, entity);
+		return world.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() != null ? 
+				((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState().getBlock().getSoundType() : super.getSoundType(state, world, pos, entity);
 	}
 	
 	public boolean isFullCube(IBlockState state)
@@ -143,14 +141,14 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	@Override
 	public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) 
 	{
-		if (target.getBlockPos() != null && worldObj.getTileEntity(target.getBlockPos()) instanceof TileEntityInfomationHolder && 
-				((TileEntityInfomationHolder)worldObj.getTileEntity(target.getBlockPos())).getMirrorState() != null)
+		if (target.getBlockPos() != null && worldObj.getTileEntity(target.getBlockPos()) instanceof ISecretTileEntity && 
+				((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState() != null)
         {
             int i = target.getBlockPos().getX();
             int j = target.getBlockPos().getY();
             int k = target.getBlockPos().getZ();
             float f = 0.1F;
-            AxisAlignedBB axisalignedbb = ((TileEntityInfomationHolder)worldObj.getTileEntity(target.getBlockPos())).getMirrorState().getBoundingBox(worldObj, target.getBlockPos());
+            AxisAlignedBB axisalignedbb = ((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState().getBoundingBox(worldObj, target.getBlockPos());
             double d0 = (double)i + new Random().nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minX;
             double d1 = (double)j + new Random().nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minY;
             double d2 = (double)k + new Random().nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minZ;
@@ -162,7 +160,7 @@ public class SecretButton extends BlockButton implements ISecretBlock
             if (target.sideHit == EnumFacing.EAST) d0 = (double)i + axisalignedbb.maxX + 0.10000000149011612D;
             manager.addEffect(((net.minecraft.client.particle.ParticleDigging)new net.minecraft.client.particle.ParticleDigging.Factory()
             		.createParticle(0, worldObj, d0, d1, d2, 0, 0, 0, 
-            				Block.getStateId(((TileEntityInfomationHolder)worldObj.getTileEntity(target.getBlockPos())).getMirrorState())))
+            				Block.getStateId(((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState())))
             		.setBlockPos(target.getBlockPos()).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
             return true;
         }
@@ -244,7 +242,7 @@ public class SecretButton extends BlockButton implements ISecretBlock
 				blockstate = worldIn.getBlockState(overPosition);
 			}
 			SecretNetwork.sendToServer(new MessagePacketFakeBlockPlaced(pos, overPosition, blockstate));
-			((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).setMirrorState(blockstate, overPosition);
+			((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(blockstate, overPosition);
 		}
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}

@@ -1,7 +1,7 @@
 package com.wynprice.secretroomsmod.network.packets;
 
 import com.wynprice.secretroomsmod.base.BaseMessagePacket;
-import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,8 +35,8 @@ public class MessagePacketUpdateClient extends BaseMessagePacket<MessagePacketUp
 	@Override
 	public void onReceived(MessagePacketUpdateClient message, EntityPlayer player) {
 		TileEntity te = player.world.getTileEntity(new BlockPos(message.compound.getInteger("x"), message.compound.getInteger("y"), message.compound.getInteger("z")));
-		if(te instanceof TileEntityInfomationHolder)
-			((TileEntityInfomationHolder)te).readFromNBT(message.compound);
+		if(te instanceof ISecretTileEntity)
+			((ISecretTileEntity)te).readFromNBT(message.compound);
 	}
 
 }

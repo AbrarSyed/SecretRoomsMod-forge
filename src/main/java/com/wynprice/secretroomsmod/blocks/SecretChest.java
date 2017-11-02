@@ -2,8 +2,8 @@ package com.wynprice.secretroomsmod.blocks;
 
 import com.wynprice.secretroomsmod.SecretRooms2;
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
-import com.wynprice.secretroomsmod.base.TileEntitySecretChest;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
+import com.wynprice.secretroomsmod.tileentity.TileEntitySecretChest;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,10 +16,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class FakeChest extends BaseFakeBlock
+public class SecretChest extends BaseFakeBlock
 {
 
-	public FakeChest(String name) {
+	public SecretChest(String name) {
 		super(name, Material.WOOD);
 	}
 	

@@ -12,10 +12,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class SecretFakeWeightedPressurePlate extends BaseFakePressurePlate
+public class SecretWeightedPressurePlate extends BaseFakePressurePlate
 {
 	private final int maxWeight;
-	public SecretFakeWeightedPressurePlate(String name, int maxWeight) 
+	public SecretWeightedPressurePlate(String name, int maxWeight) 
 	{
 		super(name, Material.IRON);
 		this.maxWeight = maxWeight;

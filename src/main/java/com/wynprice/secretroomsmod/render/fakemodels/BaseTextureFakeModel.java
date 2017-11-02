@@ -3,9 +3,9 @@ package com.wynprice.secretroomsmod.render.fakemodels;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
+import com.wynprice.secretroomsmod.base.BaseTERender;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
-import com.wynprice.secretroomsmod.render.TileEntityInfomationHolderRenderer;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -40,11 +40,11 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 	@Override
 	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
 	{
-		if(getBaseBlockClass() != null && !(getBaseBlockClass().isAssignableFrom(TileEntityInfomationHolderRenderer.currentRender.getBlock().getClass())))
+		if(getBaseBlockClass() != null && !(getBaseBlockClass().isAssignableFrom(BaseTERender.currentRender.getBlock().getClass())))
 			return super.getQuads(state, side, rand);
 		ArrayList<BakedQuad> finalList = new ArrayList<BakedQuad>();
-		RenderInfo renderInfo = getRenderInfo(((TileEntityInfomationHolder)TileEntityInfomationHolderRenderer.currentWorld.getTileEntity(TileEntityInfomationHolderRenderer.currentPos)).getMirrorState());
-		IBlockState normalState = getNormalStateWith(TileEntityInfomationHolderRenderer.currentRender);
+		RenderInfo renderInfo = getRenderInfo(((ISecretTileEntity)BaseTERender.currentWorld.getTileEntity(BaseTERender.currentPos)).getMirrorState());
+		IBlockState normalState = getNormalStateWith(BaseTERender.currentRender);
 		for(BakedQuad quad : getModel(normalState).getQuads(normalState, side, rand))
 		{
 			List<BakedQuad> secList = new ArrayList<>(renderInfo.renderModel.getQuads(renderInfo.blockstate, side, rand));

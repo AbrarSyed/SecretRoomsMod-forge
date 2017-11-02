@@ -1,9 +1,9 @@
 package com.wynprice.secretroomsmod.handler;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
-import com.wynprice.secretroomsmod.base.TileEntitySecretChest;
 import com.wynprice.secretroomsmod.render.ContainerSecretChest;
 import com.wynprice.secretroomsmod.render.GuiSecretChest;
+import com.wynprice.secretroomsmod.tileentity.TileEntitySecretChest;
 
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.entity.player.EntityPlayer;

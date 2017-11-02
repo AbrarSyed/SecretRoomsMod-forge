@@ -3,11 +3,12 @@ package com.wynprice.secretroomsmod.blocks;
 import java.util.HashMap;
 
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
-import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.render.CustomRenderMaps;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.OneWayGlassFakeModel;
+import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -51,7 +52,7 @@ public class OneWayGlass extends BaseFakeBlock implements ISecretBlock
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) 
 	{
-		return face != state.getValue(BlockDirectional.FACING) ? BlockFaceShape.SOLID : ((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
+		return face != state.getValue(BlockDirectional.FACING) ? BlockFaceShape.SOLID : ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
 	}
 	
 	@Override

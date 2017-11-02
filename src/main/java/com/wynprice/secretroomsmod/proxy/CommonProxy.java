@@ -3,12 +3,13 @@ package com.wynprice.secretroomsmod.proxy;
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms2;
-import com.wynprice.secretroomsmod.base.TileEntityInfomationHolder;
-import com.wynprice.secretroomsmod.base.TileEntitySecretChest;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.handler.ServerRecievePacketHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
+import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
+import com.wynprice.secretroomsmod.tileentity.TileEntitySecretChest;
+import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDispenser;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,7 +27,7 @@ public class CommonProxy
 		SecretItems.preInit();
 		
 		SecretBlocks.preInit();
-		
+				
 		SecretNetwork.preInit();
     }
 	
@@ -34,7 +35,8 @@ public class CommonProxy
     {
 		Class[] tileEntityClasses = {
     			TileEntityInfomationHolder.class,
-    			TileEntitySecretChest.class
+    			TileEntitySecretChest.class,
+    			TileEntitySecretDispenser.class
     	};
     	for(Class clas : tileEntityClasses)
     		GameRegistry.registerTileEntity(clas, SecretRooms2.MODID + clas.getSimpleName());

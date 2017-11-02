@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
@@ -22,7 +23,6 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -74,8 +74,8 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
 	{
-		return world.getTileEntity(pos) instanceof TileEntityInfomationHolder && ((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState() != null ? 
-				((TileEntityInfomationHolder)world.getTileEntity(pos)).getMirrorState().getBlock().getSoundType() : super.getSoundType(state, world, pos, entity);
+		return world.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() != null ? 
+				((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState().getBlock().getSoundType() : super.getSoundType(state, world, pos, entity);
 	}
 	
 	public boolean isFullCube(IBlockState state)
@@ -152,14 +152,14 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	@Override
 	public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) 
 	{
-		if (target.getBlockPos() != null && worldObj.getTileEntity(target.getBlockPos()) instanceof TileEntityInfomationHolder && 
-				((TileEntityInfomationHolder)worldObj.getTileEntity(target.getBlockPos())).getMirrorState() != null)
+		if (target.getBlockPos() != null && worldObj.getTileEntity(target.getBlockPos()) instanceof ISecretTileEntity && 
+				((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState() != null)
         {
             int i = target.getBlockPos().getX();
             int j = target.getBlockPos().getY();
             int k = target.getBlockPos().getZ();
             float f = 0.1F;
-            AxisAlignedBB axisalignedbb = ((TileEntityInfomationHolder)worldObj.getTileEntity(target.getBlockPos())).getMirrorState().getBoundingBox(worldObj, target.getBlockPos());
+            AxisAlignedBB axisalignedbb = ((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState().getBoundingBox(worldObj, target.getBlockPos());
             double d0 = (double)i + new Random().nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minX;
             double d1 = (double)j + new Random().nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minY;
             double d2 = (double)k + new Random().nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minZ;
@@ -171,7 +171,7 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
             if (target.sideHit == EnumFacing.EAST) d0 = (double)i + axisalignedbb.maxX + 0.10000000149011612D;
             manager.addEffect(((net.minecraft.client.particle.ParticleDigging)new net.minecraft.client.particle.ParticleDigging.Factory()
             		.createParticle(0, worldObj, d0, d1, d2, 0, 0, 0, 
-            				Block.getStateId(((TileEntityInfomationHolder)worldObj.getTileEntity(target.getBlockPos())).getMirrorState())))
+            				Block.getStateId(((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState())))
             		.setBlockPos(target.getBlockPos()).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
             return true;
         }
@@ -253,7 +253,7 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 				blockstate = worldIn.getBlockState(overPosition);
 			}
 			SecretNetwork.sendToServer(new MessagePacketFakeBlockPlaced(pos, overPosition, blockstate));
-			((TileEntityInfomationHolder)worldIn.getTileEntity(pos)).setMirrorState(blockstate, overPosition);
+			((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(blockstate, overPosition);
 		}
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
