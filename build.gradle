@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "2.0.0"
+version = "5.0.0"
 group = "com.wynprice.secretroomsmod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "secretroomsmod"
 
@@ -24,6 +24,11 @@ minecraft {
     version = "1.12.2-14.23.0.2512"
     runDir = "run"
     mappings = "snapshot_20171003"
+    
+    replace "@CHANGE_VERSION@", "[5.0.0,)"
+    replace "@MC_VERSION@", project.minecraft.version
+    replace "@VERSION@", project.version
+    replaceIn "SecretRooms2.java"
 }
 
 repositories {
@@ -60,5 +65,87 @@ processResources {
     // copy everything else except the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+// because the normal output has been made to be obfuscated
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+// add a source jar
+task sourceJar(type: Jar, dependsOn: "sourceMainJava") {
+    from "build/sources/java"
+    classifier = 'sources'
+}
+
+// add a javadoc jar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+// deployement stuff
+
+configurations { deployerJars }
+
+dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
+
+artifacts {
+    archives sourceJar
+    archives deobfJar
+    archives javadocJar
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+
+            repository(url: "http://files.minecraftforge.net/maven/manage/upload") {
+                authentication(userName: "AbrarSyed", password: project.hasProperty(forgeMavenPass) ? null : project.getProperty('forgeMavenPass')) // the elvis operator. look it up.
+            }
+
+            pom {
+                groupId = project.group
+                version = project.version
+                artifactId = project.archivesBaseName
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description 'SecretRoomsMod '
+                    url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
+
+                    scm {
+                        url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
+                        connection 'scm:git:git://github.com/AbrarSyed/SecretRoomsMod-forge.git'
+                        developerConnection 'scm:git:git@github.com:AbrarSyed/SecretRoomsMod-forge.git'
+                    }
+
+                    issueManagement {
+                        system 'github'
+                        url 'https://github.com/AbrarSyed/SecretRoomsMod-forge/issues'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Eclipse Public Liscence'
+                            url 'http://www.eclipse.org/legal/epl-v10.html'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+			developer {
+                            id 'WynPrice'
+                            name 'AbrarSyed'
+                            roles { role 'developer' }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
