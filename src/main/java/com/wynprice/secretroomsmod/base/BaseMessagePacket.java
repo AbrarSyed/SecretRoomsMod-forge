@@ -1,6 +1,6 @@
 package com.wynprice.secretroomsmod.base;
 
-import com.wynprice.secretroomsmod.SecretRooms2;
+import com.wynprice.secretroomsmod.SecretRooms5;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +13,7 @@ public abstract class BaseMessagePacket<REQ extends IMessage> implements IMessag
 {
 	@Override
 	public REQ onMessage(REQ message, MessageContext ctx) {
-		onReceived(message, ctx.side == Side.SERVER ? ctx.getServerHandler().player : SecretRooms2.proxy.getPlayer());
+		onReceived(message, ctx.side == Side.SERVER ? ctx.getServerHandler().player : SecretRooms5.proxy.getPlayer());
 		return null;
 	}
 	

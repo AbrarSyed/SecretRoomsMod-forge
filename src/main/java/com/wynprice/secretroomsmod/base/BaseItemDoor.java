@@ -1,6 +1,6 @@
 package com.wynprice.secretroomsmod.base;
 
-import com.wynprice.secretroomsmod.SecretRooms2;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 
 import net.minecraft.block.Block;
@@ -25,7 +25,7 @@ public class BaseItemDoor extends Item
 	{
 		this.door = door;
 		setUnlocalizedName(name);
-		setRegistryName(SecretRooms2.MODID, name);
+		setRegistryName(SecretRooms5.MODID, name);
 	}
 
 	

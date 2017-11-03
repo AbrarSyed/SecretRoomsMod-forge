@@ -13,7 +13,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class SwitchProbe extends Item
 {
@@ -29,6 +31,8 @@ public class SwitchProbe extends Item
 		IBlockState state = worldIn.getBlockState(pos);
 		if(state.getBlock() == Blocks.AIR)
 			return EnumActionResult.PASS;
+		ItemStackHandler handler = new ItemStackHandler(1);
+		handler.setStackInSlot(0, state.getBlock().getPickBlock(state, worldIn.rayTraceBlocks(player.getPositionVector(), new Vec3d(pos)), worldIn, pos, player));
 		if(state.getBlock() instanceof ISecretBlock)
 		{
 			if(player.getHeldItem(hand).hasTagCompound() && player.getHeldItem(hand).getTagCompound().hasKey("hit_block", 8))
@@ -44,6 +48,7 @@ public class SwitchProbe extends Item
 		}
 		if(!player.getHeldItem(hand).hasTagCompound())
 			player.getHeldItem(hand).setTagCompound(new NBTTagCompound());
+		player.getHeldItem(hand).getTagCompound().setTag("hit_itemstack", handler.serializeNBT());
 		player.getHeldItem(hand).getTagCompound().setString("hit_block", worldIn.getBlockState(pos).getBlock().getRegistryName().toString());
 		player.getHeldItem(hand).getTagCompound().setInteger("hit_meta", worldIn.getBlockState(pos).getBlock().getMetaFromState(worldIn.getBlockState(pos)));
 		return EnumActionResult.SUCCESS;

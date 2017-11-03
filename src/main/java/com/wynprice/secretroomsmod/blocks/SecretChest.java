@@ -1,6 +1,6 @@
 package com.wynprice.secretroomsmod.blocks;
 
-import com.wynprice.secretroomsmod.SecretRooms2;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.tileentity.TileEntitySecretChest;
@@ -38,7 +38,7 @@ public class SecretChest extends BaseFakeBlock
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
-		playerIn.openGui(SecretRooms2.instance, GuiHandler.SECRET_CHEST, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		playerIn.openGui(SecretRooms5.instance, GuiHandler.SECRET_CHEST, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 

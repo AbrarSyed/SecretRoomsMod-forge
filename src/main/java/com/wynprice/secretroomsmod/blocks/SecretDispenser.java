@@ -3,7 +3,7 @@ package com.wynprice.secretroomsmod.blocks;
 import java.util.HashMap;
 import java.util.List;
 
-import com.wynprice.secretroomsmod.SecretRooms2;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
@@ -61,7 +61,7 @@ public class SecretDispenser extends BlockDispenser implements ISecretBlock
 	@SideOnly(Side.CLIENT)
 	@Override
 	public TrueSightModel phaseTrueModel(TrueSightModel model) {
-		return new TrueSightFaceDiffrentModel(model, FakeBlockModel.getModel(new ResourceLocation(SecretRooms2.MODID, "block/ghost_block")));
+		return new TrueSightFaceDiffrentModel(model, FakeBlockModel.getModel(new ResourceLocation(SecretRooms5.MODID, "block/ghost_block")));
 	}
 	
 	@Override

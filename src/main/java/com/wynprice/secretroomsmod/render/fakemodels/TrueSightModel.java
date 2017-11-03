@@ -1,6 +1,6 @@
 package com.wynprice.secretroomsmod.render.fakemodels;
 
-import com.wynprice.secretroomsmod.SecretRooms2;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.BaseTERender;
 import com.wynprice.secretroomsmod.base.BaseTextureSwitchFakeModel;
 
@@ -18,7 +18,7 @@ public class TrueSightModel extends BaseTextureSwitchFakeModel
 	@Override
 	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState) 
 	{
-		return new RenderInfo(BaseTERender.currentWorld.getBlockState(BaseTERender.currentPos), getModel(new ResourceLocation(SecretRooms2.MODID, "block/" + 
+		return new RenderInfo(BaseTERender.currentWorld.getBlockState(BaseTERender.currentPos), getModel(new ResourceLocation(SecretRooms5.MODID, "block/" + 
 				BaseTERender.currentWorld.getBlockState(BaseTERender.currentPos).getBlock().getRegistryName().getResourcePath())));
 	}
 }

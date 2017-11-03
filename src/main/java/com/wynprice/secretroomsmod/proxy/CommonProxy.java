@@ -2,7 +2,7 @@ package com.wynprice.secretroomsmod.proxy;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
-import com.wynprice.secretroomsmod.SecretRooms2;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.handler.ServerRecievePacketHandler;
@@ -39,7 +39,7 @@ public class CommonProxy
     			TileEntitySecretDispenser.class
     	};
     	for(Class clas : tileEntityClasses)
-    		GameRegistry.registerTileEntity(clas, SecretRooms2.MODID + clas.getSimpleName());
+    		GameRegistry.registerTileEntity(clas, SecretRooms5.MODID + clas.getSimpleName());
     	
     	Object[] handlers = {
     			new ParticleHandler(),
@@ -48,7 +48,7 @@ public class CommonProxy
     	for(Object o : handlers)
     		MinecraftForge.EVENT_BUS.register(o);
 
-    	NetworkRegistry.INSTANCE.registerGuiHandler(SecretRooms2.instance, new GuiHandler());
+    	NetworkRegistry.INSTANCE.registerGuiHandler(SecretRooms5.instance, new GuiHandler());
     	
         FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "com.wynprice.secretroomsmod.intergration.TheOneProbeSupport");
 

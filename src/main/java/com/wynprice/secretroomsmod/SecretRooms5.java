@@ -16,12 +16,12 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(
-		modid = SecretRooms2.MODID,
-		name = SecretRooms2.MODNAME,
-		version = SecretRooms2.VERSION,
+		modid = SecretRooms5.MODID,
+		name = SecretRooms5.MODNAME,
+		version = SecretRooms5.VERSION,
 		acceptedMinecraftVersions = "[1.12.2,1.13]",
 		dependencies = "required-after:forge@[14.23.0.2502,)")
-public class SecretRooms2
+public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 2";
@@ -31,7 +31,7 @@ public class SecretRooms2
     public static CommonProxy proxy;
     
     @Instance(MODID)
-    public static SecretRooms2 instance;
+    public static SecretRooms5 instance;
     public static final CreativeTabs TAB = new CreativeTabs(MODID) {
 		
 		@Override

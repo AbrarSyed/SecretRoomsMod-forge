@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class SecretItems 
 {
-	public static final Item CAMOUFLAGE_PASTE = new Item().setRegistryName(SecretRooms2.MODID, "camouflage_paste").setUnlocalizedName("camouflage_paste");
+	public static final Item CAMOUFLAGE_PASTE = new Item().setRegistryName(SecretRooms5.MODID, "camouflage_paste").setUnlocalizedName("camouflage_paste");
 	public static final Item SECRET_WOODEN_DOOR = new BaseItemDoor(SecretBlocks.SECRET_WOODEN_DOOR, "secret_wooden_door");
 	public static final Item SECRET_IRON_DOOR = new BaseItemDoor(SecretBlocks.SECRET_IRON_DOOR, "secret_iron_door");
 	public static final Item SWITCH_PROBE = new SwitchProbe();
@@ -73,7 +73,7 @@ public class SecretItems
 	
 	private static void regRender(Item item)
 	{
-		item.setCreativeTab(SecretRooms2.TAB);
+		item.setCreativeTab(SecretRooms5.TAB);
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 	}
 	

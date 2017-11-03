@@ -101,7 +101,7 @@ public class SecretBlocks
 	{
 		BLOCKS_WITH_ITEMS.add(block);
 		BLOCK_STACK_SIZES.put(block, stackSize);	
-		block.setCreativeTab(SecretRooms2.TAB);
+		block.setCreativeTab(SecretRooms5.TAB);
 		register(block);
 	}
 	

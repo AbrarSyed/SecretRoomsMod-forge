@@ -1,4 +1,5 @@
 {
+    "_comment": "The extra textures here are used so minecraft loads the textures into the default texturemap",
     "parent": "block/cube",
     "textures": {
         "down": "blocks/glass",

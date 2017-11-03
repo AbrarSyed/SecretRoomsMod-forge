@@ -1,6 +1,6 @@
 package com.wynprice.secretroomsmod.network;
 
-import com.wynprice.secretroomsmod.SecretRooms2;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateClient;
 
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class SecretNetwork 
 {
-	private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(SecretRooms2.MODID);
+	private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(SecretRooms5.MODID);
 
 	
 	public static void preInit()
