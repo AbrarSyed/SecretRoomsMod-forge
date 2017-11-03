@@ -1,0 +1,30 @@
+package com.wynprice.secretroomsmod.handler;
+
+import org.lwjgl.input.Keyboard;
+
+import com.wynprice.secretroomsmod.network.SecretNetwork;
+import com.wynprice.secretroomsmod.network.packets.MessagePacketToggleGlassDirection;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+
+public class SecretKeyBindings
+{
+	
+	private static final KeyBinding CHANGE_GLASS_DIRECTION = new KeyBinding("key.secretroomsmod.oneWayface", Keyboard.KEY_BACKSLASH, "key.categories.gameplay");
+	
+	@SubscribeEvent
+	public void onKeyPressed(KeyInputEvent event)
+	{
+		if(CHANGE_GLASS_DIRECTION.isPressed())
+		{
+			Minecraft.getMinecraft().player.getEntityData().setBoolean("glassDirection", !Minecraft.getMinecraft().player.getEntityData().getBoolean("glassDirection"));
+			SecretNetwork.sendToServer(new MessagePacketToggleGlassDirection());//message.secretroomsmod.oneWay.towards
+			Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("message.secretroomsmod.oneWay."
+					+ (Minecraft.getMinecraft().player.getEntityData().getBoolean("glassDirection") ? "towards" : "away")), true);
+		}
+	}
+}

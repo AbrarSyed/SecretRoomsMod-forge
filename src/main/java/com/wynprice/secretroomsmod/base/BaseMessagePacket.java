@@ -18,10 +18,10 @@ public abstract class BaseMessagePacket<REQ extends IMessage> implements IMessag
 	}
 	
 	@Override
-	public abstract void toBytes(ByteBuf buf);
+	public void toBytes(ByteBuf buf) {};
 	
 	@Override
-	public abstract void fromBytes(ByteBuf buf);
+	public void fromBytes(ByteBuf buf) {};
 	
 	
 	public abstract void onReceived(REQ message, EntityPlayer player);

@@ -79,8 +79,10 @@ public class OneWayGlass extends BaseFakeBlock implements ISecretBlock
 	
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		worldIn.setBlockState(pos, state.withProperty(BlockDirectional.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer)), 3);
+			ItemStack stack) 
+	{
+		EnumFacing facing = placer.getEntityData().getBoolean("glassDirection") ? EnumFacing.getDirectionFromEntityLiving(pos, placer) : EnumFacing.getDirectionFromEntityLiving(pos, placer).getOpposite();
+		worldIn.setBlockState(pos, state.withProperty(BlockDirectional.FACING, facing), 3);
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
 

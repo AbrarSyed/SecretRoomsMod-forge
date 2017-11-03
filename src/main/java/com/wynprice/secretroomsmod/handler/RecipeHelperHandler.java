@@ -7,7 +7,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeHelperHandler 
 {
-	public static void init()
+	public static void preInit()
 	{
 		OreDictionary.registerOre("doorWooden", Items.OAK_DOOR);
 		OreDictionary.registerOre("doorWooden", Items.BIRCH_DOOR);

@@ -5,6 +5,7 @@ import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
+import com.wynprice.secretroomsmod.handler.RecipeHelperHandler;
 import com.wynprice.secretroomsmod.handler.ServerRecievePacketHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
@@ -29,6 +30,8 @@ public class CommonProxy
 		SecretBlocks.preInit();
 				
 		SecretNetwork.preInit();
+		
+		RecipeHelperHandler.preInit();
     }
 	
 	public void init(FMLInitializationEvent event) 

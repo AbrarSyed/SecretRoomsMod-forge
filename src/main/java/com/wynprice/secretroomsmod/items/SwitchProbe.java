@@ -51,6 +51,8 @@ public class SwitchProbe extends Item
 		player.getHeldItem(hand).getTagCompound().setTag("hit_itemstack", handler.serializeNBT());
 		player.getHeldItem(hand).getTagCompound().setString("hit_block", worldIn.getBlockState(pos).getBlock().getRegistryName().toString());
 		player.getHeldItem(hand).getTagCompound().setInteger("hit_meta", worldIn.getBlockState(pos).getBlock().getMetaFromState(worldIn.getBlockState(pos)));
+		if(worldIn.isRemote)
+			net.minecraft.client.Minecraft.getMinecraft().displayGuiScreen(new com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe(player.getHeldItem(hand)));
 		return EnumActionResult.SUCCESS;
 	}
 
