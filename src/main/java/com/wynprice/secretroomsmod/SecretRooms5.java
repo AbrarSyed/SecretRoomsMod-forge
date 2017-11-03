@@ -1,11 +1,11 @@
 package com.wynprice.secretroomsmod;
 
-import com.wynprice.secretroomsmod.proxy.ClientProxy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.wynprice.secretroomsmod.proxy.CommonProxy;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -24,8 +24,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
-    public static final String MODNAME = "Secret Rooms 2";
-    public static final String VERSION = "@VERSION@";
+    public static final String MODNAME = "Secret Rooms 5";
+    public static final String VERSION = "5.0.0";
+    public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
+	
     
     @SidedProxy(modId = MODID, clientSide = "com.wynprice.secretroomsmod.proxy.ClientProxy", serverSide = "com.wynprice.secretroomsmod.proxy.ServerProxy")
     public static CommonProxy proxy;
@@ -39,6 +41,8 @@ public class SecretRooms5
 			return new ItemStack(SecretItems.CAMOUFLAGE_PASTE);
 		}
 	};
+	
+	public static final Logger LOGGER = LogManager.getLogger(MODID);
 	
     @EventHandler
 	public void preInit(FMLPreInitializationEvent event)

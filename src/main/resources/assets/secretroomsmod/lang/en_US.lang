@@ -7,6 +7,10 @@ message.secretroomsmod.oneWay.away=-- !!! OneWayBlock facing set to Away !!! --
 message.secretroomsmod.commandShow.show=Camo blocks made obvious
 message.secretroomsmod.commandShow.hide=Camo blocks made secret
 
+#update Checker
+update.version=[%s] The Mod is out of date. Your version %s, target version: %s. Click here to go to page
+update.hover=Click To go to %s
+
 # keybindings
 key.secretroomsmod.oneWayface=Toggle OneWay face
 
