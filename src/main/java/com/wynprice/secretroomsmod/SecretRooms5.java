@@ -23,6 +23,16 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 		dependencies = "required-after:forge@[14.23.0.2502,)")
 public class SecretRooms5
 {
+	//TODO
+	/**
+	 * Full Config support:
+	 * 		-forced block colours	
+	 * 		-boolean for update json
+	 * Finish Programmable Switch Probe
+	 * Add Secret Light Detector
+	 * Add Secret Trapped Chest
+	 * Add Secret Gate (not fence gate, gate like previous versions, like a portcullis but in any given direction
+	 */
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
     public static final String VERSION = "5.0.0";

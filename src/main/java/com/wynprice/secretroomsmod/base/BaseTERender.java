@@ -77,8 +77,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	        if(block instanceof ISecretBlock && te.getMirrorState() != null)
 	        {
 	        	IBlockState renderState = te.getMirrorState().getBlock().getActualState(te.getMirrorState(), tileEntity.getWorld(), tileEntity.getPos());
-	        	if(renderState.isOpaqueCube())
-		              GlStateManager.shadeModel(Minecraft.isAmbientOcclusionEnabled() ? 7425 : 7424);
+	            GlStateManager.shadeModel(Minecraft.isAmbientOcclusionEnabled() ? 7425 : 7424);
 
         		currentRender = ((ISecretBlock)block).overrideThisState(world, currentPos, currentRender);
 	        	if(!isHelmet)
@@ -119,17 +118,18 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	        		if(s.equals(te.getMirrorState().getBlock().getRegistryName().toString()) && ((ISecretBlock)block).allowForcedBlockColors()) 
 	        			isColorBlock = true;
 	        if(!isHelmet)
-	        	for(int i = 0; i < tessellator.getBuffer().getVertexCount(); i++)
+	        	for(int i = 0; i < tessellator.getBuffer().getVertexCount() + 1; i++)
 	    	    {
 	            	int sec = Math.floorDiv(i - 1, 4);
 	            	if(!isColorBlock && (sec < 0 || tintList.size() <= sec || tintList.get(sec) < 0))
 	            		continue;
 	            	Color color = new Color(Minecraft.getMinecraft().getBlockColors()
-	            			.colorMultiplier(te.getMirrorState(), tileEntity.getWorld(), tileEntity.getPos(), isColorBlock ? 1 : 1));
+	            			.colorMultiplier(te.getMirrorState(), tileEntity.getWorld(), tileEntity.getPos(), isColorBlock ? 1 : tintList.get(sec)));
 	            	tessellator.getBuffer().putColorMultiplier(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, i);
 	    	    }
 	        
 	        tessellator.draw();
+	        GlStateManager.shadeModel(7424);
 	        Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
         	GlStateManager.disableBlend();
 	        RenderHelper.enableStandardItemLighting();

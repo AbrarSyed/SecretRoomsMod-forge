@@ -1,10 +1,13 @@
 package com.wynprice.secretroomsmod.gui;
 
+import java.awt.Point;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.lwjgl.input.Keyboard;
 
@@ -17,18 +20,21 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.command.CommandBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class GuiProgrammableSwitchProbe extends GuiContainer
@@ -36,8 +42,10 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 	
 	private GuiButton buttonExit;
 	private GuiTextField textInput;
-	private ItemStack stack;
-	private IBlockState outputState;
+	private ItemStack stack;	
+	private HashMap<Point, IBlockState> nonItemBlockMap = new HashMap<>();
+	
+	private SelectedOutput output;
 	
 	public GuiProgrammableSwitchProbe(ItemStack itemStack) 
 	{
@@ -62,6 +70,7 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 		this.textInput.drawTextBox();
 		this.textInput.setFocused(true);
 		ArrayList<Block> usedBlocks = new ArrayList<>();
+		ArrayList<IBlockState> nonItemBlocks = new ArrayList<>();
 		ArrayList<ItemStack> renderStacks = new ArrayList<>();
 		Block overblock = Block.getBlockFromName(textInput.getText());
 		if(overblock != null)
@@ -69,8 +78,13 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 			NonNullList<ItemStack> items = NonNullList.create();
 			overblock.getSubBlocks(CreativeTabs.SEARCH, items);
 			for(ItemStack stack : items)
-				if(!stack.isEmpty())
-						renderStacks.add(stack);
+				if(stack.isEmpty())
+				{
+					nonItemBlocks.add(overblock.getStateFromMeta(stack.getMetadata()));
+					renderStacks.add(ItemStack.EMPTY);
+				}
+				else
+					renderStacks.add(stack);
 		}
 		else
 		{
@@ -82,8 +96,7 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 						NonNullList<ItemStack> items = NonNullList.create();
 						stack.getItem().getSubItems(CreativeTabs.SEARCH, items);
 						for(ItemStack stack1 : items)
-							if(!stack1.isEmpty())
-									renderStacks.add(stack1);
+							renderStacks.add(stack1);
 					}
 					else
 						renderStacks.add(stack);
@@ -91,11 +104,38 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 		}
 		boolean flag = false;
 		int amount = 0;
+		if(renderStacks.size() == 1 && !renderStacks.get(0).isEmpty())
+			output = new SelectedOutput(renderStacks.get(0));
+		else if(nonItemBlocks.size() == 1)
+			output = new SelectedOutput(nonItemBlocks.get(0));
 		inventorySlots.inventorySlots.clear();
+		nonItemBlockMap.clear();
+		ListIterator<IBlockState> iterator = nonItemBlocks.listIterator();
 		while(!flag)
-			flag = renderStacks(renderStacks, amount++);
+			flag = renderStacks(renderStacks, iterator, amount++);
+		if(output != null)
+		{
+			if(output.isStack())
+				this.inventorySlots.inventorySlots.add(new SlotItemStuck(output.getStack(), (this.width / 2) - 7, (this.height / 2) + 50));
+			else
+			{
+				Point point = new Point((this.width / 2) - 7, (this.height / 2) + 50);
+				this.inventorySlots.inventorySlots.add(new SlotItemStuck(ItemStack.EMPTY, point.x, point.y));
+        		nonItemBlockMap.put(point, output.getState());
+				this.drawTexturedModalRect(point.x, point.y, output.getSprite(), 16, 16);
+			}
+		}
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
+		if(this.getSlotUnderMouse() != null && this.getSlotUnderMouse().getStack().isEmpty() && nonItemBlockMap.get(new Point(this.getSlotUnderMouse().xPos, this.getSlotUnderMouse().yPos)) != null)
+		{
+			IBlockState state = nonItemBlockMap.get(new Point(this.getSlotUnderMouse().xPos, this.getSlotUnderMouse().yPos));
+			ArrayList<String> list = new ArrayList<>();
+			list.add(state.getBlock().getLocalizedName());
+			list.add(TextFormatting.DARK_GRAY + ((ResourceLocation)Block.REGISTRY.getNameForObject(state.getBlock())).toString());
+			this.drawHoveringText(list, mouseX, mouseY);
+			String s = state.getBlock().getLocalizedName();
+		}
 	}	
 	
 	@Override
@@ -104,17 +144,28 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		for(int i = 0; i < this.inventorySlots.inventorySlots.size(); ++i)
             if(this.isPointInRegion(this.inventorySlots.inventorySlots.get(i).xPos, this.inventorySlots.inventorySlots.get(i).yPos, 16, 16, mouseX, mouseY))
-            	this.outputState = Block.getBlockFromItem(this.inventorySlots.inventorySlots.get(i).getStack().getItem())
-            	.getStateForPlacement(Minecraft.getMinecraft().world, BlockPos.ORIGIN, EnumFacing.UP, 0f, 0f, 0f, this.inventorySlots.inventorySlots.get(i).getStack().getMetadata(), 
-            			Minecraft.getMinecraft().player, EnumHand.MAIN_HAND);
+            	if(nonItemBlockMap.get(new Point(this.inventorySlots.inventorySlots.get(i).xPos, this.inventorySlots.inventorySlots.get(i).yPos)) != null)
+            		this.output = new SelectedOutput(nonItemBlockMap.get(new Point(this.inventorySlots.inventorySlots.get(i).xPos, this.inventorySlots.inventorySlots.get(i).yPos)));
+            	else	            	
+	            	this.output = new SelectedOutput(this.inventorySlots.inventorySlots.get(i).getStack());
 	}
 	
-	private boolean renderStacks(ArrayList<ItemStack> renderStacks, int amount)
+	private boolean renderStacks(ArrayList<ItemStack> renderStacks, ListIterator<IBlockState> nonItemBlocks, int amount)
 	{
 		boolean flag = renderStacks.size() > 16;
         int renderamount = flag ? 16 : renderStacks.size();
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         for(int i = 0; i < renderamount; i ++)
-        	inventorySlots.inventorySlots.add(new SlotItemStuck(renderStacks.get(i), (this.width / 2) - (flag || renderamount % 2== 0 ? -3 : 7) - (((renderamount / 2) - (i % 16)) * 20), this.height / 2 - 50 - (amount*25)));
+        {
+        	Point point = new Point((this.width / 2) - (flag || renderamount % 2== 0 ? -3 : 7) - (((renderamount / 2) - (i % 16)) * 20), this.height / 2 - 50 - (amount*25));
+        	if(renderStacks.get(i).isEmpty() && nonItemBlocks.hasNext())
+        	{
+        		IBlockState state = nonItemBlocks.next();
+        		nonItemBlockMap.put(point, state);
+        		this.drawTexturedModalRect(point.x, point.y, Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state), 16, 16);
+        	}
+        	inventorySlots.inventorySlots.add(new SlotItemStuck(renderStacks.get(i), point.x, point.y));
+        }
         ArrayList<ItemStack> newStackList = new ArrayList<>();
         if(flag)
         	for(int i = 16; i < renderStacks.size(); i++)
@@ -140,6 +191,13 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 	private void closeGui()
 	{
 		this.mc.displayGuiScreen((GuiScreen)null);
+		IBlockState outputState = Blocks.AIR.getDefaultState();
+		if(output != null)
+			if(output.isStack())
+				outputState = Block.getBlockFromItem(output.getStack().getItem()).getStateForPlacement(Minecraft.getMinecraft().world, BlockPos.ORIGIN, EnumFacing.UP, 0f, 0f, 0f, 
+						output.getStack().getMetadata(), Minecraft.getMinecraft().player, EnumHand.MAIN_HAND);
+			else
+				outputState = output.getState();
 		System.out.println(outputState);
 	}
 	
@@ -197,5 +255,37 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	}
+	
+	private class SelectedOutput
+	{
+		private IBlockState state;
+		
+		private ItemStack stack;
+		
+		public SelectedOutput(ItemStack stack) {
+			this.stack = stack;
+		}
+		
+		public SelectedOutput(IBlockState state) 
+		{
+			this.state = state;
+		}
+		
+		public boolean isStack() {
+			return stack != null;
+		}
+		
+		public TextureAtlasSprite getSprite() {
+			return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
+		}
+		
+		public ItemStack getStack() {
+			return stack;
+		}
+		
+		public IBlockState getState() {
+			return state;
+		}
 	}
 }

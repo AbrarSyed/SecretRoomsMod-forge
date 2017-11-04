@@ -36,6 +36,7 @@ tile.secret_chest.name=Secret Chest
 tile.SecretTrappedChest.name=Secret Trapped Chest
 tile.SecretLightDetector.name=Secret Light Detector
 tile.solid_air.name=Solid Air
+tile.secret_dispenser.name=Secret Dispenser
 
 gui.secret_chest.name=Secret Chest
 
