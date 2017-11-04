@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.wynprice.secretroomsmod.base.BaseItemDoor;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
+import com.wynprice.secretroomsmod.items.ProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.items.SwitchProbe;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -19,6 +20,7 @@ public class SecretItems
 	public static final Item SECRET_WOODEN_DOOR = new BaseItemDoor(SecretBlocks.SECRET_WOODEN_DOOR, "secret_wooden_door");
 	public static final Item SECRET_IRON_DOOR = new BaseItemDoor(SecretBlocks.SECRET_IRON_DOOR, "secret_iron_door");
 	public static final Item SWITCH_PROBE = new SwitchProbe();
+	public static final Item PROGRAMMABLE_SWITCH_PROBE = new ProgrammableSwitchProbe();
 	public static final Item IRON_EXPOSING_HELMET = new TrueSightHelmet("iron_exposing_helmet", ItemArmor.ArmorMaterial.IRON, 2, EntityEquipmentSlot.HEAD);
 	public static final Item DIAMOND_EXPOSING_HELMET = new TrueSightHelmet("diamond_exposing_helmet", ItemArmor.ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.HEAD);
 
@@ -29,9 +31,10 @@ public class SecretItems
 		regItem(SECRET_WOODEN_DOOR);
 		regItem(SECRET_IRON_DOOR);
 		regItem(SWITCH_PROBE, 1);
+		regItem(PROGRAMMABLE_SWITCH_PROBE, 1);
 		regItem(IRON_EXPOSING_HELMET, 1);
 		regItem(DIAMOND_EXPOSING_HELMET, 1);
-
+		
 	}
 	
 		

@@ -56,6 +56,8 @@ public class BaseFakeBlock extends Block implements ISecretBlock
 		return true;
 	}
 	
+	//canBeConnectedTo
+	
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);

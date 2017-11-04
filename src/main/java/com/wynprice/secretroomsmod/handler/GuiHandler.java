@@ -20,16 +20,16 @@ public class GuiHandler implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == SECRET_CHEST)//RETURN CONTAINER
-			return new ContainerSecretChest(((TileEntitySecretChest) world.getTileEntity(new BlockPos(x, y, z))).getHandler(), player);
+		if (ID == SECRET_CHEST)
+			return new ContainerSecretChest(new BlockPos(x, y, z), ((TileEntitySecretChest) world.getTileEntity(new BlockPos(x, y, z))).getHandler(), player);
 		return null;
 	}
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == SECRET_CHEST)//RETURN GUI
-			return new GuiSecretChest(((TileEntitySecretChest) world.getTileEntity(new BlockPos(x, y, z))).getHandler(), player);
+		if (ID == SECRET_CHEST)
+			return new GuiSecretChest(new BlockPos(x, y, z), ((TileEntitySecretChest) world.getTileEntity(new BlockPos(x, y, z))).getHandler(), player);
 		return null;
 	}
 

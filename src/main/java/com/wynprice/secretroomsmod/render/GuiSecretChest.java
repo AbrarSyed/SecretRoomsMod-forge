@@ -1,5 +1,8 @@
 package com.wynprice.secretroomsmod.render;
 
+import com.wynprice.secretroomsmod.blocks.SecretChest;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,17 +14,17 @@ import net.minecraftforge.items.ItemStackHandler;
 public class GuiSecretChest extends GuiContainer
 {
     private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
+    
+    private final BlockPos pos;
 
-    public GuiSecretChest(ItemStackHandler handler, EntityPlayer player)
+    public GuiSecretChest(BlockPos pos, ItemStackHandler handler, EntityPlayer player)
     {
-        super(new ContainerSecretChest(handler, player));
+        super(new ContainerSecretChest(pos, handler, player));
+        this.pos = pos;
         this.allowUserInput = false;
         this.ySize = 138;
     }
 
-    /**
-     * Draws the screen and all the components in it.
-     */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
@@ -29,17 +32,11 @@ public class GuiSecretChest extends GuiContainer
         this.renderHoveredToolTip(mouseX, mouseY);
     }
 
-    /**
-     * Draw the foreground layer for the GuiContainer (everything in front of the items)
-     */
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         this.fontRenderer.drawString(new TextComponentTranslation("gui.secret_chest.name").getUnformattedText(), 8, 6, 4210752);
     }
 
-    /**
-     * Draws the background layer of this container (behind the items).
-     */
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

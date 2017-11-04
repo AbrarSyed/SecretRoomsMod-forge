@@ -114,7 +114,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	        Collections.reverse(tintList);
 	        boolean isColorBlock = false;
 	        if(te.getMirrorState() != null)
-	        	for(String s : SecretConfig.ALLOWED_BLOCKCOLORS) 
+	        	for(String s : SecretConfig.forcedBlockColors) 
 	        		if(s.equals(te.getMirrorState().getBlock().getRegistryName().toString()) && ((ISecretBlock)block).allowForcedBlockColors()) 
 	        			isColorBlock = true;
 	        if(!isHelmet)

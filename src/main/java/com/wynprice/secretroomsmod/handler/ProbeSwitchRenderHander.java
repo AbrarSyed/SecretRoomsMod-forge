@@ -15,7 +15,8 @@ public class ProbeSwitchRenderHander
 	 public void onModelBake(ModelBakeEvent e) 
 	 {
 		 for(ModelResourceLocation model : e.getModelRegistry().getKeys())
-	            if(model.getResourceDomain().equals(SecretRooms5.MODID) && model.getResourcePath().equals(SecretItems.SWITCH_PROBE.getRegistryName().getResourcePath()))
+	            if(model.getResourceDomain().equals(SecretRooms5.MODID) && (model.getResourcePath().equals(SecretItems.SWITCH_PROBE.getRegistryName().getResourcePath())
+	            		|| model.getResourcePath().equals(SecretItems.PROGRAMMABLE_SWITCH_PROBE.getRegistryName().getResourcePath())))
 	            	e.getModelRegistry().putObject(model, new SwitchProbeRenderChange(e.getModelRegistry().getObject(model)));
 	 }
 }

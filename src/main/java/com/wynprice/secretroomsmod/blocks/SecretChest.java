@@ -1,5 +1,7 @@
 package com.wynprice.secretroomsmod.blocks;
 
+import java.util.HashMap;
+
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
@@ -34,11 +36,24 @@ public class SecretChest extends BaseFakeBlock
 			InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((TileEntitySecretChest)worldIn.getTileEntity(pos)).getHandler().getStackInSlot(i));
 	}
 	
+	public static final HashMap<Boolean, HashMap<BlockPos, Integer>> PLAYERS_USING_MAP = new HashMap<>();
+	
+	static
+	{
+		PLAYERS_USING_MAP.put(true, new HashMap<>());
+		PLAYERS_USING_MAP.put(false, new HashMap<>());
+	}
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
-		playerIn.openGui(SecretRooms5.instance, GuiHandler.SECRET_CHEST, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		HashMap<BlockPos, Integer> playerMap = PLAYERS_USING_MAP.get(worldIn.isRemote);
+		if(!playerMap.containsKey(pos))
+			playerMap.put(pos, 0);
+		playerMap.put(pos, playerMap.get(pos) + 1);
+		if(!worldIn.isRemote)
+			playerIn.openGui(SecretRooms5.instance, GuiHandler.SECRET_CHEST, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		worldIn.notifyNeighborsOfStateChange(pos, this, true);
 		return true;
 	}
 

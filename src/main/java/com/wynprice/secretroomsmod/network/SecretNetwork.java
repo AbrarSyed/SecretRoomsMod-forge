@@ -4,6 +4,7 @@ import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketToggleGlassDirection;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateClient;
+import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateProbe;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,6 +24,7 @@ public class SecretNetwork
 		registerMessage(MessagePacketFakeBlockPlaced.class, Side.SERVER);
 		registerMessage(MessagePacketUpdateClient.class, Side.CLIENT);
 		registerMessage(MessagePacketToggleGlassDirection.class, Side.SERVER);
+		registerMessage(MessagePacketUpdateProbe.class, Side.SERVER);
 	}
 	
 	private static int idCount = -1;

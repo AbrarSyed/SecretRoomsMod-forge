@@ -25,13 +25,9 @@ public class SecretRooms5
 {
 	//TODO
 	/**
-	 * Full Config support:
-	 * 		-forced block colours	
-	 * 		-boolean for update json
-	 * Finish Programmable Switch Probe
 	 * Add Secret Light Detector
-	 * Add Secret Trapped Chest
 	 * Add Secret Gate (not fence gate, gate like previous versions, like a portcullis but in any given direction
+	 * Convert as much of the previous lang as possible
 	 */
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";

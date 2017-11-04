@@ -12,6 +12,8 @@ import java.util.ListIterator;
 import org.lwjgl.input.Keyboard;
 
 import com.wynprice.secretroomsmod.gui.slots.SlotItemStuck;
+import com.wynprice.secretroomsmod.network.SecretNetwork;
+import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateProbe;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -35,6 +37,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class GuiProgrammableSwitchProbe extends GuiContainer
@@ -198,7 +201,14 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 						output.getStack().getMetadata(), Minecraft.getMinecraft().player, EnumHand.MAIN_HAND);
 			else
 				outputState = output.getState();
-		System.out.println(outputState);
+		if(!this.stack.hasTagCompound())
+			this.stack.setTagCompound(new NBTTagCompound());
+		ItemStackHandler handler = new ItemStackHandler(1);
+		handler.setStackInSlot(0, output.isStack() ? output.getStack() : ItemStack.EMPTY);
+		stack.getTagCompound().setTag("hit_itemstack", handler.serializeNBT());
+		stack.getTagCompound().setString("hit_block", outputState.getBlock().getRegistryName().toString());
+		stack.getTagCompound().setInteger("hit_meta", outputState.getBlock().getMetaFromState(outputState));
+		SecretNetwork.sendToServer(new MessagePacketUpdateProbe(stack.getTagCompound()));
 	}
 	
 	int timeOver = 0;

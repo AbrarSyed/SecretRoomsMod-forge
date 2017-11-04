@@ -1,13 +1,13 @@
 package com.wynprice.secretroomsmod.render;
 
-import java.util.HashMap;
+import com.wynprice.secretroomsmod.blocks.SecretChest;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerShulkerBox;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -15,9 +15,12 @@ public class ContainerSecretChest extends Container
 {
 	
 	private final IItemHandler handler;	
-	public ContainerSecretChest(IItemHandler handler, EntityPlayer player) 
+	private final BlockPos pos;
+	
+	public ContainerSecretChest(BlockPos pos, IItemHandler handler, EntityPlayer player) 
 	{
 		this.handler = handler;
+		this.pos = pos;
 		for (int j = 0; j < 3; ++j)
             for (int k = 0; k < 9; ++k)
                 this.addSlotToContainer(new SlotItemHandler(handler, k + j * 9, 8 + k * 18, 18 + j * 18));
@@ -53,6 +56,12 @@ public class ContainerSecretChest extends Container
 	        slot.onTake(playerIn, current);
 	    }
 	    return previous;
+	}
+	
+	@Override
+	public void onContainerClosed(EntityPlayer playerIn) 
+	{
+		SecretChest.PLAYERS_USING_MAP.get(playerIn.world.isRemote).put(pos, SecretChest.PLAYERS_USING_MAP.get(playerIn.world.isRemote).get(pos) - 1);
 	}
 
 	@Override

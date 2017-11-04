@@ -16,6 +16,7 @@ import com.wynprice.secretroomsmod.blocks.SecretPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SecretRedstone;
 import com.wynprice.secretroomsmod.blocks.SecretStairs;
 import com.wynprice.secretroomsmod.blocks.SecretTrapDoor;
+import com.wynprice.secretroomsmod.blocks.SecretTrappedChest;
 import com.wynprice.secretroomsmod.blocks.SecretWeightedPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SolidAir;
 import com.wynprice.secretroomsmod.blocks.TorchLever;
@@ -49,12 +50,13 @@ public class SecretBlocks
 	public static final Block SECRET_HEAVY_PRESSURE_PLATE = new SecretWeightedPressurePlate("secret_heavy_pressure_plate", 150);
 	public static final Block SECRET_PLAYER_PRESSURE_PLATE = new SecretPlayerPressurePlate();
 	public static final Block SOLID_AIR = new SolidAir();
-	public static final Block HIDDEN_CHEST = new SecretChest("secret_chest");
+	public static final Block SECRET_CHEST = new SecretChest("secret_chest");
 	public static final BaseBlockDoor SECRET_WOODEN_DOOR = new BaseBlockDoor("secret_wooden_door", Material.WOOD);
 	public static final BaseBlockDoor SECRET_IRON_DOOR = new BaseBlockDoor("secret_iron_door", Material.IRON);
 	public static final Block SECRET_WOODEN_TRAPDOOR = new SecretTrapDoor("secret_wooden_trapdoor", Material.WOOD);
 	public static final Block SECRET_IRON_TRAPDOOR = new SecretTrapDoor("secret_iron_trapdoor", Material.IRON);
 	public static final Block SECRET_DISPENSER = new SecretDispenser();
+	public static final Block SECRET_TRAPPED_CHEST = new SecretTrappedChest();
 	
 	public static void preInit()
 	{
@@ -71,11 +73,12 @@ public class SecretBlocks
 		regBlockIgnoreAll(SECRET_HEAVY_PRESSURE_PLATE);
 		regBlockIgnoreAll(SECRET_PLAYER_PRESSURE_PLATE);
 		regBlock(SOLID_AIR);
-		regBlock(HIDDEN_CHEST);
+		regBlock(SECRET_CHEST);
 		regBlockIgnoreAllNoItem(SECRET_WOODEN_DOOR);
 		regBlockIgnoreAll(SECRET_WOODEN_TRAPDOOR);
 		regBlockIgnoreAll(SECRET_IRON_TRAPDOOR);
 		regBlockIgnoreAll(SECRET_DISPENSER);
+		regBlock(SECRET_TRAPPED_CHEST);
 
 	}
 	

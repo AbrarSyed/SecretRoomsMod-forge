@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
+import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretRooms5;
 
 import net.minecraft.util.text.ITextComponent;
@@ -31,6 +32,8 @@ public class HandlerUpdateChecker
 		if(!hasPosted)
 		{
 			hasPosted = true;
+			if(!SecretConfig.updateChecker)
+				return;
 			Status status = Status.PENDING;
 	        ComparableVersion target = null;
 			InputStream con = null;

@@ -7,6 +7,10 @@ message.secretroomsmod.oneWay.away=-- !!! OneWayBlock facing set to Away !!! --
 message.secretroomsmod.commandShow.show=Camo blocks made obvious
 message.secretroomsmod.commandShow.hide=Camo blocks made secret
 
+#config
+config.do_update.comment=Should the Update Checker be run on startup
+config.blockcolors.comment=List all the blocks here that rely on BlockColors to work, and arn't full blocks.
+
 #update Checker
 update.version=[%s] The Mod is out of date. Your version %s, target version: %s. Click here to go to page
 update.hover=Click To go to %s
@@ -37,7 +41,9 @@ tile.SecretTrappedChest.name=Secret Trapped Chest
 tile.SecretLightDetector.name=Secret Light Detector
 tile.solid_air.name=Solid Air
 tile.secret_dispenser.name=Secret Dispenser
+tile.secret_trapped_chest.name=Secret Trapped Chest
 
+#gui
 gui.secret_chest.name=Secret Chest
 
 #items
@@ -45,5 +51,6 @@ item.secret_iron_door.name=Secret Iron Door
 item.camouflage_paste.name=Camouflage Paste
 item.secret_wooden_door.name=Secret Wooden Door
 item.switch_probe.name=Switch Probe
+item.programmable_switch_probe.name=Programmable Switch Probe
 item.iron_exposing_helmet.name=Helmet of True Sight (Iron)
 item.diamond_exposing_helmet.name=Helmet of True Sight (Diamond)

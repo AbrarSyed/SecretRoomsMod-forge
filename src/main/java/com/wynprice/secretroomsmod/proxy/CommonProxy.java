@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.proxy;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
+import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class CommonProxy 
 {
 	public void preInit(FMLPreInitializationEvent event) 
-    {  
+    {  		
 		SecretItems.preInit();
 		
 		SecretBlocks.preInit();
