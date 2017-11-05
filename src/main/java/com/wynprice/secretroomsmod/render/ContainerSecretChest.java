@@ -62,6 +62,7 @@ public class ContainerSecretChest extends Container
 	public void onContainerClosed(EntityPlayer playerIn) 
 	{
 		SecretChest.PLAYERS_USING_MAP.get(playerIn.world.isRemote).put(pos, SecretChest.PLAYERS_USING_MAP.get(playerIn.world.isRemote).get(pos) - 1);
+		playerIn.world.notifyNeighborsOfStateChange(pos, playerIn.world.getBlockState(pos).getBlock(), false);
 	}
 
 	@Override

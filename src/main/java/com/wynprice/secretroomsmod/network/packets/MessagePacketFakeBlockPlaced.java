@@ -89,7 +89,8 @@ public class MessagePacketFakeBlockPlaced extends BaseMessagePacket<MessagePacke
 	}
 
 	@Override
-	public void onReceived(MessagePacketFakeBlockPlaced message, EntityPlayer player) {
+	public void onReceived(MessagePacketFakeBlockPlaced message, EntityPlayer player) 
+	{
 		ServerRecievePacketHandler.UPDATE_MAP.put(message.pos, new ObjectInfo(message.mouseOver, message.lookPos));
 	}
 	

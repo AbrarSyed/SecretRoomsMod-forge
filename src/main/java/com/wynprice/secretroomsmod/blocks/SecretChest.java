@@ -43,6 +43,7 @@ public class SecretChest extends BaseFakeBlock
 		PLAYERS_USING_MAP.put(true, new HashMap<>());
 		PLAYERS_USING_MAP.put(false, new HashMap<>());
 	}
+	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
@@ -53,7 +54,7 @@ public class SecretChest extends BaseFakeBlock
 		playerMap.put(pos, playerMap.get(pos) + 1);
 		if(!worldIn.isRemote)
 			playerIn.openGui(SecretRooms5.instance, GuiHandler.SECRET_CHEST, worldIn, pos.getX(), pos.getY(), pos.getZ());
-		worldIn.notifyNeighborsOfStateChange(pos, this, true);
+		worldIn.notifyNeighborsOfStateChange(pos, this, false);
 		return true;
 	}
 

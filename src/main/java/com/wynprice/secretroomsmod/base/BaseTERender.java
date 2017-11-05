@@ -107,9 +107,14 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 		        			tintList.add(quad.hasTintIndex() ? quad.getTintIndex() : -1);
 	        	}
 	        	else
-	        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer()
-	        		.renderModel(world, ((ISecretBlock)block).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderState))),
-	        				tileEntity.getWorld().getBlockState(tileEntity.getPos()), tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
+	        		try
+		        	{
+		        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer()
+		        		.renderModel(world, ((ISecretBlock)block).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderState))),
+		        				tileEntity.getWorld().getBlockState(tileEntity.getPos()), tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
+		        	}
+		        	catch (Throwable e) {
+					}
 	        }
 	        Collections.reverse(tintList);
 	        boolean isColorBlock = false;

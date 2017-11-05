@@ -21,7 +21,8 @@ key.secretroomsmod.oneWayface=Toggle OneWay face
 # blocks
 tile.torch_lever.name=Torch Lever
 tile.one_way_glass.name=One-Way Glass
-tile.CamoGate.name=Secret Gate
+tile.secret_gate.name=Secret Gate
+tile.secret_gate.name=Secret Gate Block
 tile.secret_wooden_trapdoor.name=Secret Wooden TrapDoor
 tile.secret_iron_trapdoor.name=Secret Wooden TrapDoor
 tile.secret_wooden_door.name=Secret Wooden Door
@@ -37,11 +38,10 @@ tile.secret_light_pressure_plate.name=Secret Weighted Plate (light)
 tile.secret_heavy_pressure_plate.name=Secret Weighted Plate (heavy)
 tile.secret_stairs.name=Secret Stairs
 tile.secret_chest.name=Secret Chest
-tile.SecretTrappedChest.name=Secret Trapped Chest
+tile.secret_trapped_chest.name=Secret Trapped Chest
 tile.SecretLightDetector.name=Secret Light Detector
 tile.solid_air.name=Solid Air
 tile.secret_dispenser.name=Secret Dispenser
-tile.secret_trapped_chest.name=Secret Trapped Chest
 
 #gui
 gui.secret_chest.name=Secret Chest

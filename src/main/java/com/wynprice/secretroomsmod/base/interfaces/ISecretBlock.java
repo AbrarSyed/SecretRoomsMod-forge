@@ -34,6 +34,9 @@ public interface ISecretBlock extends ITileEntityProvider
 		return true;
 	}
 	
+	default void onMessageRecieved(World world, BlockPos pos){
+	}
+	
 	@SideOnly(Side.CLIENT)
 	default FakeBlockModel phaseModel(FakeBlockModel model){
 		return model;

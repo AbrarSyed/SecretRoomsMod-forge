@@ -26,7 +26,7 @@ public class SecretRooms5
 	//TODO
 	/**
 	 * Add Secret Light Detector
-	 * Add Secret Gate (not fence gate, gate like previous versions, like a portcullis but in any given direction
+	 * Fix key binding not showing up in menu
 	 * Convert as much of the previous lang as possible
 	 */
     public static final String MODID = "secretroomsmod";

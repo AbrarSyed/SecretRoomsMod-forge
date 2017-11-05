@@ -10,6 +10,8 @@ import com.wynprice.secretroomsmod.blocks.OneWayGlass;
 import com.wynprice.secretroomsmod.blocks.SecretButton;
 import com.wynprice.secretroomsmod.blocks.SecretChest;
 import com.wynprice.secretroomsmod.blocks.SecretDispenser;
+import com.wynprice.secretroomsmod.blocks.SecretGate;
+import com.wynprice.secretroomsmod.blocks.SecretGateEmptyBlock;
 import com.wynprice.secretroomsmod.blocks.SecretLever;
 import com.wynprice.secretroomsmod.blocks.SecretPlayerPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SecretPressurePlate;
@@ -57,6 +59,9 @@ public class SecretBlocks
 	public static final Block SECRET_IRON_TRAPDOOR = new SecretTrapDoor("secret_iron_trapdoor", Material.IRON);
 	public static final Block SECRET_DISPENSER = new SecretDispenser();
 	public static final Block SECRET_TRAPPED_CHEST = new SecretTrappedChest();
+	public static final Block SECRET_GATE_BLOCK = new SecretGateEmptyBlock();
+	public static final Block SECRET_GATE = new SecretGate();
+
 	
 	public static void preInit()
 	{
@@ -79,6 +84,8 @@ public class SecretBlocks
 		regBlockIgnoreAll(SECRET_IRON_TRAPDOOR);
 		regBlockIgnoreAll(SECRET_DISPENSER);
 		regBlock(SECRET_TRAPPED_CHEST);
+		regBlock(SECRET_GATE_BLOCK);
+		regBlockIgnoreAll(SECRET_GATE);
 
 	}
 	
