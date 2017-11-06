@@ -11,6 +11,7 @@ import java.util.ListIterator;
 
 import org.lwjgl.input.Keyboard;
 
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.gui.slots.SlotItemStuck;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateProbe;
@@ -58,6 +59,8 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 
 	@Override
 	public void initGui() {
+		this.xSize = this.width;
+		this.ySize = this.height;
         Keyboard.enableRepeatEvents(true);
 		this.buttonExit = addButton(new GuiButton(0, this.width / 2 - 100, (int) this.height - 30, 200, 20, I18n.format("gui.done")));
 		this.textInput =  new GuiTextField(1, this.fontRenderer, this.width / 2 - 152, this.height / 2, 300, 20);
@@ -116,18 +119,23 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 		ListIterator<IBlockState> iterator = nonItemBlocks.listIterator();
 		while(!flag)
 			flag = renderStacks(renderStacks, iterator, amount++);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		Point point = new Point((this.width / 2) - 7, (this.height / 2) + 50);
 		if(output != null)
 		{
 			if(output.isStack())
-				this.inventorySlots.inventorySlots.add(new SlotItemStuck(output.getStack(), (this.width / 2) - 7, (this.height / 2) + 50));
+				this.inventorySlots.inventorySlots.add(new SlotItemStuck(output.getStack(), point.x, point.y));
 			else
 			{
-				Point point = new Point((this.width / 2) - 7, (this.height / 2) + 50);
 				this.inventorySlots.inventorySlots.add(new SlotItemStuck(ItemStack.EMPTY, point.x, point.y));
         		nonItemBlockMap.put(point, output.getState());
+        		this.zLevel = 1;
 				this.drawTexturedModalRect(point.x, point.y, output.getSprite(), 16, 16);
 			}
 		}
+		this.zLevel = 0;
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("minecraft", "textures/gui/container/generic_54.png"));
+    	this.drawTexturedModalRect(point.x - 1, point.y - 1, 7, 17, 18, 18);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
 		if(this.getSlotUnderMouse() != null && this.getSlotUnderMouse().getStack().isEmpty() && nonItemBlockMap.get(new Point(this.getSlotUnderMouse().xPos, this.getSlotUnderMouse().yPos)) != null)
@@ -163,11 +171,17 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
         	Point point = new Point((this.width / 2) - (flag || renderamount % 2== 0 ? -3 : 7) - (((renderamount / 2) - (i % 16)) * 20), this.height / 2 - 50 - (amount*25));
         	if(renderStacks.get(i).isEmpty() && nonItemBlocks.hasNext())
         	{
+        		
         		IBlockState state = nonItemBlocks.next();
+        		this.zLevel = 1;
         		nonItemBlockMap.put(point, state);
         		this.drawTexturedModalRect(point.x, point.y, Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state), 16, 16);
         	}
-        	inventorySlots.inventorySlots.add(new SlotItemStuck(renderStacks.get(i), point.x, point.y));
+        	else
+	        	inventorySlots.inventorySlots.add(new SlotItemStuck(renderStacks.get(i), point.x, point.y));
+        	this.zLevel = 0;
+    		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("minecraft", "textures/gui/container/generic_54.png"));
+        	this.drawTexturedModalRect(point.x - 1, point.y - 1, 7, 17, 18, 18);
         }
         ArrayList<ItemStack> newStackList = new ArrayList<>();
         if(flag)
@@ -179,9 +193,15 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 	}
 	
 	@Override
-	public void drawDefaultBackground() {
+	public void drawDefaultBackground() 
+	{
 		super.drawDefaultBackground();
-		
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SecretRooms5.MODID, "textures/gui/blank_slate.png"));
+		this.drawTexturedModalRect((this.width / 2) - 170,( this.height / 2) - 100, 0, 0, 253, 197);
+		this.drawTexturedModalRect((this.width / 2) + 83,( this.height / 2) - 100, 173, 0, 83, 197);
+		this.drawTexturedModalRect((this.width / 2) - 170,( this.height / 2) + 97, 0, 253, 253, 3);
+		this.drawTexturedModalRect((this.width / 2) + 83,( this.height / 2) + 97, 173, 253, 83, 3);
+
 	}
 	
 	@Override
@@ -204,7 +224,8 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 		if(!this.stack.hasTagCompound())
 			this.stack.setTagCompound(new NBTTagCompound());
 		ItemStackHandler handler = new ItemStackHandler(1);
-		handler.setStackInSlot(0, output.isStack() ? output.getStack() : ItemStack.EMPTY);
+		if(output != null)
+			handler.setStackInSlot(0, output.isStack() ? output.getStack() : ItemStack.EMPTY);
 		stack.getTagCompound().setTag("hit_itemstack", handler.serializeNBT());
 		stack.getTagCompound().setString("hit_block", outputState.getBlock().getRegistryName().toString());
 		stack.getTagCompound().setInteger("hit_meta", outputState.getBlock().getMetaFromState(outputState));

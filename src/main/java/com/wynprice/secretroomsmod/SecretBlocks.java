@@ -52,7 +52,7 @@ public class SecretBlocks
 	public static final Block SECRET_LIGHT_PRESSURE_PLATE = new SecretWeightedPressurePlate("secret_light_pressure_plate", 15);
 	public static final Block SECRET_HEAVY_PRESSURE_PLATE = new SecretWeightedPressurePlate("secret_heavy_pressure_plate", 150);
 	public static final Block SECRET_PLAYER_PRESSURE_PLATE = new SecretPlayerPressurePlate();
-	public static final Block SOLID_AIR = new SolidAir();//recipes up to here
+	public static final Block SOLID_AIR = new SolidAir();
 	public static final Block SECRET_CHEST = new SecretChest("secret_chest");
 	public static final BaseBlockDoor SECRET_WOODEN_DOOR = new BaseBlockDoor("secret_wooden_door", Material.WOOD);
 	public static final BaseBlockDoor SECRET_IRON_DOOR = new BaseBlockDoor("secret_iron_door", Material.IRON);

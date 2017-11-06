@@ -48,7 +48,7 @@ public class SecretLightDetector extends BlockDaylightDetector implements ISecre
 		this.inverted = inverted;
 		setRegistryName("secret" + (inverted ? "_inverted" : "") + "_light_detector");
 		setUnlocalizedName("secret" + (inverted ? "_inverted" : "") + "_light_detector");
-		this.setHardness(0.5f);
+		this.setHardness(0.5f);	
 		this.translucent = true;
     }
 	
