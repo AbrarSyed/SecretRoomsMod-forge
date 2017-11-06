@@ -39,7 +39,8 @@ tile.secret_heavy_pressure_plate.name=Secret Weighted Plate (heavy)
 tile.secret_stairs.name=Secret Stairs
 tile.secret_chest.name=Secret Chest
 tile.secret_trapped_chest.name=Secret Trapped Chest
-tile.SecretLightDetector.name=Secret Light Detector
+tile.secret_light_detector.name=Secret Light Detector
+tile.secret_inverted_light_detector.name=Secret Light Detector
 tile.solid_air.name=Solid Air
 tile.secret_dispenser.name=Secret Dispenser
 
