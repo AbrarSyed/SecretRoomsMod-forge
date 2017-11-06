@@ -8,13 +8,14 @@ import com.wynprice.secretroomsmod.network.packets.MessagePacketToggleGlassDirec
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public class SecretKeyBindings
 {
 	
-	private static final KeyBinding CHANGE_GLASS_DIRECTION = new KeyBinding("key.secretroomsmod.oneWayface", Keyboard.KEY_BACKSLASH, "key.categories.gameplay");
+	private static final KeyBinding CHANGE_GLASS_DIRECTION = registerKey(new KeyBinding("key.secretroomsmod.oneWayface", Keyboard.KEY_BACKSLASH, "key.categories.gameplay"));
 	
 	@SubscribeEvent
 	public void onKeyPressed(KeyInputEvent event)
@@ -22,9 +23,15 @@ public class SecretKeyBindings
 		if(CHANGE_GLASS_DIRECTION.isPressed())
 		{
 			Minecraft.getMinecraft().player.getEntityData().setBoolean("glassDirection", !Minecraft.getMinecraft().player.getEntityData().getBoolean("glassDirection"));
-			SecretNetwork.sendToServer(new MessagePacketToggleGlassDirection());//message.secretroomsmod.oneWay.towards
+			SecretNetwork.sendToServer(new MessagePacketToggleGlassDirection());
 			Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("message.secretroomsmod.oneWay."
 					+ (Minecraft.getMinecraft().player.getEntityData().getBoolean("glassDirection") ? "towards" : "away")), true);
 		}
+	}
+	
+	private static KeyBinding registerKey(KeyBinding key)
+	{
+		ClientRegistry.registerKeyBinding(key);
+		return key;
 	}
 }

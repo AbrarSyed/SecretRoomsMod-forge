@@ -25,8 +25,8 @@ public class SecretRooms5
 {
 	//TODO
 	/**
-	 * Fix key binding not showing up in menu
 	 * Convert as much of the previous lang as possible
+	 * Finish gui
 	 */
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";

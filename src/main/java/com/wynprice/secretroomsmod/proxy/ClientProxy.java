@@ -35,7 +35,7 @@ public class ClientProxy extends CommonProxy
 		SecretItems.regRenders();
 		
 		SecretBlocks.regRenders();
-		
+				
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInfomationHolder.class, new TileEntityInfomationHolderRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretDispenser.class, new TileEntityInfomationHolderRendererDispenser());
 		
@@ -51,7 +51,7 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
-    	
+		    	
     	ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> 
