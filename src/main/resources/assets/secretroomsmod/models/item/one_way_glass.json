@@ -10,6 +10,9 @@
         "west": "blocks/glass",
         "normalglass": "secretroomsmod:items/one_way_glass",
         "doorwood": "secretroomsmod:items/secret_wooden_door_render",
-        "dooriron": "secretroomsmod:items/secret_iron_door_render"
+        "dooriron": "secretroomsmod:items/secret_iron_door_render",
+        "secretGateBlock": "secretroomsmod:items/secret_gate_block",
+        "secretLightDetector": "secretroomsmod:items/secret_light_detector",
+        "secretLightDetectorInverted": "secretroomsmod:items/secret_inverted_light_detector"
     }
 }

@@ -51,6 +51,11 @@ public class SecretButton extends BlockButton implements ISecretBlock
 		this.translucent = true;
     }
 	
+	@Override
+	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
+	}
+	
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         if (!worldIn.isRemote)

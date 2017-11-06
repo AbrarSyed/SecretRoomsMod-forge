@@ -25,7 +25,6 @@ public class SecretRooms5
 {
 	//TODO
 	/**
-	 * Add Secret Light Detector
 	 * Fix key binding not showing up in menu
 	 * Convert as much of the previous lang as possible
 	 */

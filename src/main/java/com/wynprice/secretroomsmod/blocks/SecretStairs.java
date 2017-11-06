@@ -48,6 +48,11 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
 	}
 	
 	@Override
+	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
+	}
+	
+	@Override
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
 			EnumFacing side) {
 		return true;

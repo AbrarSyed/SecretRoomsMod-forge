@@ -65,6 +65,11 @@ public class SecretDispenser extends BlockDispenser implements ISecretBlock
 	}
 	
 	@Override
+	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
+	}
+	
+	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
 		boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.up());

@@ -13,6 +13,7 @@ import com.wynprice.secretroomsmod.blocks.SecretDispenser;
 import com.wynprice.secretroomsmod.blocks.SecretGate;
 import com.wynprice.secretroomsmod.blocks.SecretGateEmptyBlock;
 import com.wynprice.secretroomsmod.blocks.SecretLever;
+import com.wynprice.secretroomsmod.blocks.SecretLightDetector;
 import com.wynprice.secretroomsmod.blocks.SecretPlayerPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SecretPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SecretRedstone;
@@ -51,7 +52,7 @@ public class SecretBlocks
 	public static final Block SECRET_LIGHT_PRESSURE_PLATE = new SecretWeightedPressurePlate("secret_light_pressure_plate", 15);
 	public static final Block SECRET_HEAVY_PRESSURE_PLATE = new SecretWeightedPressurePlate("secret_heavy_pressure_plate", 150);
 	public static final Block SECRET_PLAYER_PRESSURE_PLATE = new SecretPlayerPressurePlate();
-	public static final Block SOLID_AIR = new SolidAir();
+	public static final Block SOLID_AIR = new SolidAir();//recipes up to here
 	public static final Block SECRET_CHEST = new SecretChest("secret_chest");
 	public static final BaseBlockDoor SECRET_WOODEN_DOOR = new BaseBlockDoor("secret_wooden_door", Material.WOOD);
 	public static final BaseBlockDoor SECRET_IRON_DOOR = new BaseBlockDoor("secret_iron_door", Material.IRON);
@@ -61,6 +62,8 @@ public class SecretBlocks
 	public static final Block SECRET_TRAPPED_CHEST = new SecretTrappedChest();
 	public static final Block SECRET_GATE_BLOCK = new SecretGateEmptyBlock();
 	public static final Block SECRET_GATE = new SecretGate();
+	public static final SecretLightDetector SECRET_LIGHT_DETECTOR = new SecretLightDetector(false);
+	public static final SecretLightDetector SECRET_LIGHT_DETECTOR_INVERTED = new SecretLightDetector(true);
 
 	
 	public static void preInit()
@@ -79,14 +82,16 @@ public class SecretBlocks
 		regBlockIgnoreAll(SECRET_PLAYER_PRESSURE_PLATE);
 		regBlock(SOLID_AIR);
 		regBlock(SECRET_CHEST);
-		regBlockIgnoreAllNoItem(SECRET_WOODEN_DOOR);
+		regSingleBlockIgnoreAll(SECRET_WOODEN_DOOR);
+		regSingleBlockIgnoreAll(SECRET_IRON_DOOR);
 		regBlockIgnoreAll(SECRET_WOODEN_TRAPDOOR);
 		regBlockIgnoreAll(SECRET_IRON_TRAPDOOR);
 		regBlockIgnoreAll(SECRET_DISPENSER);
 		regBlock(SECRET_TRAPPED_CHEST);
-		regBlock(SECRET_GATE_BLOCK);
+		regSingleBlock(SECRET_GATE_BLOCK);
 		regBlockIgnoreAll(SECRET_GATE);
-
+		regBlockIgnoreAll(SECRET_LIGHT_DETECTOR);
+		regSingleBlockIgnoreAll(SECRET_LIGHT_DETECTOR_INVERTED);
 	}
 	
 	private final static ArrayList<Block> ALL_BLOCKS = new ArrayList<Block>();
@@ -139,7 +144,7 @@ public class SecretBlocks
 		}
 	}
 	
-	private static void regBlockIgnoreAllNoItem(Block block)
+	private static void regSingleBlockIgnoreAll(Block block)
 	{
 		try {
 			for(Field field : Block.class.getDeclaredFields())

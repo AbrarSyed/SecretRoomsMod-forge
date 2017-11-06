@@ -36,6 +36,11 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 	}
 	
 	@Override
+	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
+	}
+	
+	@Override
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
 	{
 		calculateState(worldIn, pos);
