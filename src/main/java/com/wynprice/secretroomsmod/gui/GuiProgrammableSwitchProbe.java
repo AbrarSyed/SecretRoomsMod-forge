@@ -37,6 +37,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -117,8 +118,9 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 		inventorySlots.inventorySlots.clear();
 		nonItemBlockMap.clear();
 		ListIterator<IBlockState> iterator = nonItemBlocks.listIterator();
+		int total = renderStacks.size();
 		while(!flag)
-			flag = renderStacks(renderStacks, iterator, amount++);
+			flag = renderStacks(renderStacks, iterator, total, amount++);
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		Point point = new Point((this.width / 2) - 7, (this.height / 2) + 50);
 		if(output != null)
@@ -161,14 +163,14 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 	            	this.output = new SelectedOutput(this.inventorySlots.inventorySlots.get(i).getStack());
 	}
 	
-	private boolean renderStacks(ArrayList<ItemStack> renderStacks, ListIterator<IBlockState> nonItemBlocks, int amount)
+	private boolean renderStacks(ArrayList<ItemStack> renderStacks, ListIterator<IBlockState> nonItemBlocks, int total, int amount)
 	{
 		boolean flag = renderStacks.size() > 16;
         int renderamount = flag ? 16 : renderStacks.size();
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         for(int i = 0; i < renderamount; i ++)
         {
-        	Point point = new Point((this.width / 2) - (flag || renderamount % 2== 0 ? -3 : 7) - (((renderamount / 2) - (i % 16)) * 20), this.height / 2 - 50 - (amount*25));
+        	Point point = new Point((this.width / 2) - (flag || renderamount % 2== 0 ? -3 : 7) - (((renderamount / 2) - (i % 16)) * 20), this.height / 2 - 20 - (10 * (4 - MathHelper.clamp(Math.floorDiv(total, 16), 0, 4))) - (amount*25));
         	if(renderStacks.get(i).isEmpty() && nonItemBlocks.hasNext())
         	{
         		
@@ -189,6 +191,8 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
         		newStackList.add(renderStacks.get(i));
         renderStacks.clear();
         renderStacks.addAll(newStackList);
+        if(amount == 3)
+        	return true;
         return !flag;
 	}
 	
