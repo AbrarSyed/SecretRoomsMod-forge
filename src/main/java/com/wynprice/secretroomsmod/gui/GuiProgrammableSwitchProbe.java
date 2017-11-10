@@ -38,6 +38,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -149,6 +150,9 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 			this.drawHoveringText(list, mouseX, mouseY);
 			String s = state.getBlock().getLocalizedName();
 		}
+		
+		if(mouseX - ((this.width / 2) - 170) >= 318 && mouseX - ((this.width / 2) - 170) <= 332 && mouseY - ((this.height / 2) - 100) >= 3 && mouseY - ((this.height / 2) - 100) <= 19)
+			this.drawHoveringText(Arrays.asList(new TextComponentTranslation("gui.programmable.info").getFormattedText().split("<br>")), mouseX, mouseY);
 	}	
 	
 	@Override
@@ -201,8 +205,8 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 	{
 		super.drawDefaultBackground();
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SecretRooms5.MODID, "textures/gui/blank_slate.png"));
-		this.drawTexturedModalRect((this.width / 2) - 170,( this.height / 2) - 100, 0, 0, 253, 197);
-		this.drawTexturedModalRect((this.width / 2) + 83,( this.height / 2) - 100, 173, 0, 83, 197);
+		this.drawTexturedModalRect((this.width / 2) - 170,(this.height / 2) - 100, 0, 0, 239, 197);
+		this.drawTexturedModalRect((this.width / 2) + 69,( this.height / 2) - 100, 159, 0, 97, 197);
 		this.drawTexturedModalRect((this.width / 2) - 170,( this.height / 2) + 97, 0, 253, 253, 3);
 		this.drawTexturedModalRect((this.width / 2) + 83,( this.height / 2) + 97, 173, 253, 83, 3);
 

@@ -46,6 +46,7 @@ tile.secret_dispenser.name=Secret Dispenser
 
 #gui
 gui.secret_chest.name=Secret Chest
+gui.programmable.info=Type in the block name<br>or OreDict name of<br>the block you<br>want to change the<br>SecretRoomsMod blocks to.<br> <br>If there is more than<br>one block, click<br>on the desired block.<br> <br>The output slot will display<br>what block is picked
 
 #items
 item.secret_iron_door.name=Secret Iron Door
