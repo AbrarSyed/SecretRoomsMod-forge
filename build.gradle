@@ -8,6 +8,7 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
@@ -28,7 +29,7 @@ minecraft {
     replace "@CHANGE_VERSION@", "[5.0.0,)"
     replace "@MC_VERSION@", project.minecraft.version
     replace "@VERSION@", project.version
-    replaceIn "SecretRooms2.java"
+    replaceIn "SecretRooms5.java"
 }
 
 repositories {
@@ -74,6 +75,12 @@ task deobfJar(type: Jar) {
     classifier = 'dev'
 }
 
+// add a source jar
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allJava
+}
+
 // add a javadoc jar
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
@@ -87,7 +94,7 @@ configurations { deployerJars }
 dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
 
 artifacts {
-    archives sourceJar
+    archives sourcesJar
     archives deobfJar
     archives javadocJar
 }
