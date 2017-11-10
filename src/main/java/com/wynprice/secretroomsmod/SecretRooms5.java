@@ -23,14 +23,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 		dependencies = "required-after:forge@[14.23.0.2502,)")
 public class SecretRooms5
 {
-	//TODO
-	/**
-	 * Convert as much of the previous lang as possible
-	 * Finish gui
-	 */
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
-    public static final String VERSION = "5.0.0";
+    public static final String VERSION = "5.1.0";
     public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
 	
     
