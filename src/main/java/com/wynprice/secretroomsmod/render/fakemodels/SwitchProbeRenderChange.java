@@ -1,6 +1,5 @@
 package com.wynprice.secretroomsmod.render.fakemodels;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -8,7 +7,6 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.input.Mouse;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -16,21 +14,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.items.ItemStackHandler;
@@ -102,39 +95,10 @@ public class SwitchProbeRenderChange implements IBakedModel
             		return super.handleItemState(originalModel, stack, world, entity);
             	ItemStackHandler handler = new ItemStackHandler(1);
             	handler.deserializeNBT(stack.getTagCompound().getCompoundTag("hit_itemstack"));
-            	Block block = Block.getBlockFromName(stack.getTagCompound().getString("hit_block"));
-            	if(handler.getStackInSlot(0).isEmpty())
-            	{
-            		if(Minecraft.getMinecraft().currentScreen instanceof GuiContainer)
-            		{
-            			Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            			GuiContainer container = ((GuiContainer)Minecraft.getMinecraft().currentScreen);
-            			for(Slot slot : container.inventorySlots.inventorySlots)
-            				if(testForTextureRender(stack, slot.getStack(), block, slot.xPos, slot.yPos))
-            					return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.FIRE.getDefaultState());
-            			if(testForTextureRender(stack, Minecraft.getMinecraft().player.inventory.getItemStack(), block, 
-            					(Mouse.getX() * new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth() / Minecraft.getMinecraft().displayWidth) - container.getGuiLeft() - 8, 
-            					(new ScaledResolution(Minecraft.getMinecraft()).getScaledHeight() - Mouse.getY() * new ScaledResolution(Minecraft.getMinecraft()).getScaledHeight() /
-            							Minecraft.getMinecraft().displayHeight - 1) - container.getGuiTop() - 8))
-        					return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.FIRE.getDefaultState());
-            		}
-            		return super.handleItemState(originalModel, stack, world, entity);
-            	}
-            	else
-            		return Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(handler.getStackInSlot(0), world, entity);
+            	return !handler.getStackInSlot(0).isEmpty() ? Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(handler.getStackInSlot(0), world, entity)
+            			: super.handleItemState(originalModel, stack, world, entity);
             }
         };
-    }
-    
-    private boolean testForTextureRender(ItemStack overStack, ItemStack stack, Block block, int xPos, int yPos)
-    {
-    	if(overStack == stack && block != Blocks.AIR && block != null)
-		{
-			Minecraft.getMinecraft().currentScreen.drawTexturedModalRect(xPos, yPos, 
-					Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getStateFromMeta(stack.getTagCompound().getInteger("hit_meta"))), 16, 16);
-			return true;
-		}
-    	return false;
     }
     
     private static TRSRTransformation getTransform(float tx, float ty, float tz, float ax, float ay, float az, float s) {
