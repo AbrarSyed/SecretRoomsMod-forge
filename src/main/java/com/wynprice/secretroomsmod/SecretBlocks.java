@@ -94,7 +94,6 @@ public class SecretBlocks
 		regSingleBlockIgnoreAll(SECRET_LIGHT_DETECTOR_INVERTED);
 	}
 	
-	private final static ArrayList<Block> ALL_BLOCKS = new ArrayList<Block>();
 	private final static ArrayList<Block> BLOCKS_WITH_ITEMS = new ArrayList<Block>();
 	private final static HashMap<Block, Integer> BLOCK_STACK_SIZES = new HashMap<>();
 	private final static ArrayList<Block> BLOCKS_WITH_CUSTOM_STATE_MAP = new ArrayList<Block>();
@@ -127,21 +126,7 @@ public class SecretBlocks
 	
 	private static void regBlockIgnoreAll(Block block, int stackSize)
 	{
-		try {
-			for(Field field : Block.class.getDeclaredFields())
-			{
-				if(BlockStateContainer.class.isAssignableFrom(field.getType()) && field.getName().equals("blockState"))
-				{
-					field.setAccessible(true);
-					BlockStateContainer container = (BlockStateContainer) field.get(block);
-					field.setAccessible(false);
-					regBlock(block, stackSize, container.getProperties().toArray(new IProperty[container.getProperties().size()]));
-					break;
-				}
-			}
-		} catch (ClassCastException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
+		regBlock(block, stackSize, block.getDefaultState().getProperties().asMultimap().asMap().keySet().toArray(new IProperty[block.getDefaultState().getProperties().asMultimap().asMap().keySet().size()]));
 	}
 	
 	private static void regSingleBlockIgnoreAll(Block block)
@@ -194,7 +179,6 @@ public class SecretBlocks
 	
 	private static void register(Block block)
 	{
-		ALL_BLOCKS.add(block);
 		ForgeRegistries.BLOCKS.register(block);
 		if(BLOCKS_WITH_ITEMS.contains(block))
 		{
