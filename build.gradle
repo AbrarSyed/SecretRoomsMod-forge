@@ -74,12 +74,6 @@ task deobfJar(type: Jar) {
     classifier = 'dev'
 }
 
-// add a source jar
-task sourceJar(type: Jar, dependsOn: "sourceMainJava") {
-    from "build/sources/java"
-    classifier = 'sources'
-}
-
 // add a javadoc jar
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
