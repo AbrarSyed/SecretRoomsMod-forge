@@ -22,6 +22,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SecretGate extends BaseFakeBlock
 {
@@ -34,6 +36,7 @@ public class SecretGate extends BaseFakeBlock
 		super("secret_gate", Material.IRON);
 	}
 	
+	@SideOnly(Side.CLIENT)
 	@Override
 	public TrueSightModel phaseTrueModel(TrueSightModel model) {
 		return new TrueSightFaceDiffrentModel(model, FakeBlockModel.getModel(new ResourceLocation(SecretRooms5.MODID, "block/ghost_block")));

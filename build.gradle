@@ -12,7 +12,7 @@ apply plugin: 'maven'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "5.1.0"
+version = "5.1.1"
 group = "com.wynprice.secretroomsmod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "secretroomsmod"
 
@@ -69,84 +69,3 @@ processResources {
     }
 }
 
-// because the normal output has been made to be obfuscated
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
-}
-
-// add a source jar
-task sourcesJar(type: Jar) {
-	classifier = 'sources'
-	from sourceSets.main.allJava
-}
-
-// add a javadoc jar
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from 'build/docs/javadoc'
-}
-
-// deployement stuff
-
-configurations { deployerJars }
-
-dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
-
-artifacts {
-    archives sourcesJar
-    archives deobfJar
-    archives javadocJar
-}
-
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            configuration = configurations.deployerJars
-
-            repository(url: "http://files.minecraftforge.net/maven/manage/upload") {
-                authentication(userName: "wynprice", password: project.hasProperty(forgeMavenPass) ? null : project.getProperty('forgeMavenPass')) // the elvis operator. look it up.
-            }
-
-            pom {
-                groupId = project.group
-                version = project.version
-                artifactId = project.archivesBaseName
-                project {
-                    name project.archivesBaseName
-                    packaging 'jar'
-                    description 'SecretRoomsMod '
-                    url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
-
-                    scm {
-                        url 'https://github.com/AbrarSyed/SecretRoomsMod-forge'
-                        connection 'scm:git:git://github.com/AbrarSyed/SecretRoomsMod-forge.git'
-                        developerConnection 'scm:git:git@github.com:AbrarSyed/SecretRoomsMod-forge.git'
-                    }
-
-                    issueManagement {
-                        system 'github'
-                        url 'https://github.com/AbrarSyed/SecretRoomsMod-forge/issues'
-                    }
-
-                    licenses {
-                        license {
-                            name 'The Eclipse Public Liscence'
-                            url 'http://www.eclipse.org/legal/epl-v10.html'
-                            distribution 'repo'
-                        }
-                    }
-
-                    developers {
-			developer {
-                            id 'WynPrice'
-                            name 'WynPrice'
-                            roles { role 'developer' }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}

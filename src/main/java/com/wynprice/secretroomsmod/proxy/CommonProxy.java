@@ -61,6 +61,11 @@ public class CommonProxy
 
     }
 	
+	public void displayGui(int guiID, Object...objects)
+	{
+		
+	}
+	
 	public void postInit(FMLPostInitializationEvent event) 
     {
 		

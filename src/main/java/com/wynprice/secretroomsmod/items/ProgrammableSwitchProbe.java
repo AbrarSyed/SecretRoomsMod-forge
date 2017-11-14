@@ -1,5 +1,6 @@
 package com.wynprice.secretroomsmod.items;
 
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 
 import net.minecraft.block.Block;
@@ -8,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -30,7 +30,7 @@ public class ProgrammableSwitchProbe extends Item
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) 
 	{
 		if(worldIn.isRemote)
-			net.minecraft.client.Minecraft.getMinecraft().displayGuiScreen(new com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe(playerIn.getHeldItem(handIn)));
+			SecretRooms5.proxy.displayGui(0, playerIn.getHeldItem(handIn));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 	}
 	

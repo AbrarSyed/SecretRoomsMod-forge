@@ -3,6 +3,7 @@ package com.wynprice.secretroomsmod.proxy;
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretItems;
+import com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.handler.HandlerUpdateChecker;
 import com.wynprice.secretroomsmod.handler.ProbeSwitchRenderHander;
 import com.wynprice.secretroomsmod.handler.SecretKeyBindings;
@@ -46,6 +47,23 @@ public class ClientProxy extends CommonProxy
     	};
     	for(Object o : handlers)
     		MinecraftForge.EVENT_BUS.register(o);
+	}
+	
+	@Override
+	public void displayGui(int guiID, Object... objects) 
+	{
+		GuiScreen gui = null;
+		switch (guiID) 
+		{
+		case 0:
+			gui = new GuiProgrammableSwitchProbe((ItemStack) objects[0]);
+			break;
+
+		default:
+			break;
+		}
+		
+		Minecraft.getMinecraft().displayGuiScreen(gui);
 	}
 	
 	@Override
