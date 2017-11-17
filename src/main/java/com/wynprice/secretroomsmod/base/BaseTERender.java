@@ -100,10 +100,10 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 						}
 					}
 		        	
-		        	for(BakedQuad quad : ((ISecretBlock)block).phaseModel(new FakeBlockModel(te.getMirrorState())).getQuads(te.getMirrorState(), null, 0L))
+		        	for(BakedQuad quad : ((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)).getQuads(renderState, null, 0L))
 	        			tintList.add(quad.hasTintIndex() ? quad.getTintIndex() : -1);
 		        	for(EnumFacing face : EnumFacing.values())
-		        		for(BakedQuad quad : ((ISecretBlock)block).phaseModel(new FakeBlockModel(te.getMirrorState())).getQuads(te.getMirrorState(), face, 0L))
+		        		for(BakedQuad quad : ((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)).getQuads(renderState, face, 0L))
 		        			tintList.add(quad.hasTintIndex() ? quad.getTintIndex() : -1);
 	        	}
 	        	else
