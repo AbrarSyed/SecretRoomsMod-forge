@@ -48,7 +48,7 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 	
 	private void calculateState(World worldIn, BlockPos pos)
 	{
-		List<Entity> entityList = worldIn.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(new Vec3d(pos), new Vec3d(pos).addVector(1, 1.1f, 1)));
+		List<Entity> entityList = worldIn.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1f, pos.getY() + 1.1f, pos.getZ() + 1f));
 		int level = MathHelper.clamp(getLevel(worldIn, pos, entityList), 0, 15);
 		if((level == 0 || worldIn.getBlockState(pos).getValue(POWER) == 0) && level != worldIn.getBlockState(pos).getValue(POWER))
 	        worldIn.playSound((EntityPlayer)null, pos, level == 0 ? soundOff() : soundOn(), SoundCategory.BLOCKS, 0.3F, level == 0 ?  0.75F : 0.90000004F);
