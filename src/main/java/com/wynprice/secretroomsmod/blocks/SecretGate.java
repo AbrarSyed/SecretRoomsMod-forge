@@ -8,6 +8,7 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightFaceDiffrentModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
+import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -21,6 +22,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,7 +54,10 @@ public class SecretGate extends BaseFakeBlock
 			if(flag1)
 				buildGate(worldIn, pos);
 			else if(!flag1)
-				destroyGate(worldIn, pos);
+			{
+				destroyGate(worldIn, pos, worldIn.getBlockState(pos));
+				worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, worldIn.getBlockState(pos).getValue(FACING)).withProperty(POWERED, false));
+			}
 
 	}
 	
@@ -66,17 +72,24 @@ public class SecretGate extends BaseFakeBlock
 			BlockPos position = new BlockPos(pos.getX() + (i * direction.getFrontOffsetX()), pos.getY() + (i * direction.getFrontOffsetY()), pos.getZ() + (i * direction.getFrontOffsetZ()));
 			if(!worldIn.getBlockState(position).getBlock().isReplaceable(worldIn, position))
 				break;
+			ISecretTileEntity.FORCED_RENDER_MAP.put(pos, getState(worldIn, pos));
 			worldIn.setBlockState(position, SecretBlocks.SECRET_GATE_BLOCK.getDefaultState());
 			((ISecretBlock)worldIn.getBlockState(pos).getBlock()).forceBlockState(worldIn, position, BlockPos.ORIGIN, getState(worldIn, pos));
 		}
 
 	}
 	
-	protected void destroyGate(World worldIn, BlockPos pos)
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) 
 	{
-		EnumFacing direction = worldIn.getBlockState(pos).getValue(FACING);
+		destroyGate(worldIn, pos, state);
+		super.breakBlock(worldIn, pos, state);
+	}
+	
+	protected void destroyGate(World worldIn, BlockPos pos, IBlockState blockstate)
+	{
+		EnumFacing direction = blockstate.getValue(FACING);
 		IBlockState state = getState(worldIn, pos);
-		worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, direction).withProperty(POWERED, false));
 		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state, BlockPos.ORIGIN);
 		for(int i = 1; i < MAX_LEVELS + 1; i++)
 			if(worldIn.getBlockState(new BlockPos(pos.getX() + (i * direction.getFrontOffsetX()), pos.getY() + (i * direction.getFrontOffsetY()), pos.getZ() + (i * direction.getFrontOffsetZ())))

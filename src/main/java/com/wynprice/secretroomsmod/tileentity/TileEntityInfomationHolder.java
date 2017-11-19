@@ -52,6 +52,8 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	public IBlockState getMirrorState() {
 		if(mirrorState == null && ParticleHandler.BLOCKBRAKERENDERMAP.containsKey(pos))
 			mirrorState = ParticleHandler.BLOCKBRAKERENDERMAP.get(pos);
+		if(mirrorState == null && FORCED_RENDER_MAP.containsKey(pos))
+			mirrorState = FORCED_RENDER_MAP.get(pos);
 		return mirrorState;
 	}
 	

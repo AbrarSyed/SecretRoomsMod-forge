@@ -1,5 +1,7 @@
 package com.wynprice.secretroomsmod.base.interfaces;
 
+import java.util.HashMap;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
@@ -9,6 +11,9 @@ import net.minecraft.util.math.BlockPos;
 
 public interface ISecretTileEntity extends ITickable
 {
+	
+	public static final HashMap<BlockPos, IBlockState> FORCED_RENDER_MAP = new HashMap<>();
+	
 	public void setMirrorState(IBlockState mirrorState, @Nullable BlockPos pos);
 	
 	public void setMirrorStateForcable(IBlockState mirrorState, @Nullable BlockPos pos);

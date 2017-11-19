@@ -19,6 +19,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockSourceImpl;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
@@ -39,7 +40,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
@@ -67,6 +70,16 @@ public class SecretDispenser extends BlockDispenser implements ISecretBlock
 	@Override
 	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
 		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
+	}
+	
+	@Override
+	public Material getMaterial(IBlockState state) 
+	{
+		for(WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
+			for(TileEntity te : world.loadedTileEntityList)
+				if(world.getBlockState(te.getPos()) == state)
+					return ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState().getMaterial();
+		return super.getMaterial(state);
 	}
 	
 	@Override

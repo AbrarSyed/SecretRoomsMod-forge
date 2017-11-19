@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -33,7 +34,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
@@ -75,6 +78,16 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 		return defaultState.getValue(HALF) != EnumDoorHalf.UPPER || world.getBlockState(pos.down()).getBlock() != this ? defaultState : 
 			defaultState.withProperty(OPEN, world.getBlockState(pos.down()).getValue(OPEN)).withProperty(FACING, world.getBlockState(pos.down()).getValue(FACING))
 			.withProperty(HINGE, world.getBlockState(pos.down()).getValue(HINGE)).withProperty(POWERED, world.getBlockState(pos.down()).getValue(POWERED));
+	}
+	
+	@Override
+	public Material getMaterial(IBlockState state) 
+	{
+		for(WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
+			for(TileEntity te : world.loadedTileEntityList)
+				if(world.getBlockState(te.getPos()) == state)
+					return ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState().getMaterial();
+		return super.getMaterial(state);
 	}
 	
 	@Override
