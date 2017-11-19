@@ -1,5 +1,6 @@
 package com.wynprice.secretroomsmod.base;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
@@ -84,9 +85,12 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	public Material getMaterial(IBlockState state) 
 	{
 		for(WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
-			for(TileEntity te : world.loadedTileEntityList)
+		{
+			ArrayList<TileEntity> list = new ArrayList<>(world.loadedTileEntityList);
+			for(TileEntity te : list)
 				if(world.getBlockState(te.getPos()) == state)
 					return ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState().getMaterial();
+		}
 		return super.getMaterial(state);
 	}
 	

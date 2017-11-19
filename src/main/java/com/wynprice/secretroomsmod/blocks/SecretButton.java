@@ -59,9 +59,12 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	public Material getMaterial(IBlockState state) 
 	{
 		for(WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
-			for(TileEntity te : world.loadedTileEntityList)
+		{
+			ArrayList<TileEntity> list = new ArrayList<>(world.loadedTileEntityList);
+			for(TileEntity te : list)
 				if(world.getBlockState(te.getPos()) == state)
 					return ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState().getMaterial();
+		}
 		return super.getMaterial(state);
 	}
 	

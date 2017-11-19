@@ -1,5 +1,6 @@
 package com.wynprice.secretroomsmod.blocks;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -89,9 +90,12 @@ public class SecretLightDetector extends BlockDaylightDetector implements ISecre
 	public Material getMaterial(IBlockState state) 
 	{
 		for(WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
-			for(TileEntity te : world.loadedTileEntityList)
+		{
+			ArrayList<TileEntity> list = new ArrayList<>(world.loadedTileEntityList);
+			for(TileEntity te : list)
 				if(world.getBlockState(te.getPos()) == state)
 					return ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState().getMaterial();
+		}
 		return super.getMaterial(state);
 	}
 
