@@ -48,13 +48,18 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
     }
 	
 	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return ISecretBlock.super.getBoundingBox(state, source, pos);
+	}
+	
+	@Override
 	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return 0;
 	}
 	
 	@Override
 	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
+		return ISecretBlock.super.canBeConnectedTo(world, pos, facing);
 	}
 	
 	@Override
@@ -71,31 +76,23 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
 	@Override
 	public Material getMaterial(IBlockState state) 
 	{
-		for(WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
-		{
-			ArrayList<TileEntity> list = new ArrayList<>(world.loadedTileEntityList);
-			for(TileEntity te : list)
-				if(world.getBlockState(te.getPos()) == state)
-					return ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState().getMaterial();
-		}
-		return super.getMaterial(state);
+		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
 	}
 	
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
+		return ISecretBlock.super.getBlockFaceShape(worldIn, state, pos, face);
 	}
 	
 	@Override
 	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState().isSideSolid(world, pos, side);
+		return ISecretBlock.super.isSideSolid(base_state, world, pos, side);
 	}
 	
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
 	{
-		return world.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() != null ? 
-				((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState().getBlock().getSoundType() : super.getSoundType(state, world, pos, entity);
+		return ISecretBlock.super.getSoundType(state, world, pos, entity);
 	}
 	
 	public boolean isFullCube(IBlockState state)
@@ -107,58 +104,14 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
 	@Override
 	public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) 
 	{
-		if (target.getBlockPos() != null && worldObj.getTileEntity(target.getBlockPos()) instanceof ISecretTileEntity && 
-				((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState() != null)
-        {
-            int i = target.getBlockPos().getX();
-            int j = target.getBlockPos().getY();
-            int k = target.getBlockPos().getZ();
-            float f = 0.1F;
-            AxisAlignedBB axisalignedbb = ((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState().getBoundingBox(worldObj, target.getBlockPos());
-            double d0 = (double)i + new Random().nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minX;
-            double d1 = (double)j + new Random().nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minY;
-            double d2 = (double)k + new Random().nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minZ;
-            if (target.sideHit == EnumFacing.DOWN) d1 = (double)j + axisalignedbb.minY - 0.10000000149011612D;
-            if (target.sideHit == EnumFacing.UP) d1 = (double)j + axisalignedbb.maxY + 0.10000000149011612D;
-            if (target.sideHit == EnumFacing.NORTH) d2 = (double)k + axisalignedbb.minZ - 0.10000000149011612D;
-            if (target.sideHit == EnumFacing.SOUTH) d2 = (double)k + axisalignedbb.maxZ + 0.10000000149011612D;
-            if (target.sideHit == EnumFacing.WEST) d0 = (double)i + axisalignedbb.minX - 0.10000000149011612D;
-            if (target.sideHit == EnumFacing.EAST) d0 = (double)i + axisalignedbb.maxX + 0.10000000149011612D;
-            manager.addEffect(((net.minecraft.client.particle.ParticleDigging)new net.minecraft.client.particle.ParticleDigging.Factory()
-            		.createParticle(0, worldObj, d0, d1, d2, 0, 0, 0, 
-            				Block.getStateId(((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState())))
-            		.setBlockPos(target.getBlockPos()).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
-            return true;
-        }
-		return false;
+		return ISecretBlock.super.addHitEffects(state, worldObj, target, manager);
 	}
 		
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) 
 	{
-		if(ParticleHandler.BLOCKBRAKERENDERMAP.get(pos) != null)
-		{
-			IBlockState state = ParticleHandler.BLOCKBRAKERENDERMAP.get(pos).getActualState(world, pos);
-	        int i = 4;
-
-	        for (int j = 0; j < 4; ++j)
-	        {
-	            for (int k = 0; k < 4; ++k)
-	            {
-	                for (int l = 0; l < 4; ++l)
-	                {
-	                    double d0 = ((double)j + 0.5D) / 4.0D;
-	                    double d1 = ((double)k + 0.5D) / 4.0D;
-	                    double d2 = ((double)l + 0.5D) / 4.0D;
-	                    manager.addEffect(((net.minecraft.client.particle.ParticleDigging)new net.minecraft.client.particle.ParticleDigging.Factory()
-	                    		.createParticle(0, world, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2,
-	                    				d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, Block.getStateId(state))).setBlockPos(pos));
-	                }
-	            }
-	        }
-		}
-		return super.addDestroyEffects(world, pos, manager);
+		return ISecretBlock.super.addDestroyEffects(world, pos, manager);
 	}
 	
     public EnumBlockRenderType getRenderType(IBlockState state)
@@ -180,36 +133,13 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
     @Override
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) 
 	{	
-		if(worldIn.isRemote && worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos())
-				.getBlock().isReplaceable(worldIn, net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos()) && 
-				!(worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos()).getBlock() instanceof IFluidBlock)
-				&& !(worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos()).getBlock() instanceof BlockLiquid))
-			REPLACEABLE_BLOCK_MAP.put(pos, worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos()));
-		return super.canPlaceBlockOnSide(worldIn, pos, side);
+		return ISecretBlock.super.canPlaceBlockOnSide(worldIn, pos, side);
 	}
-	
-	private static final HashMap<BlockPos, IBlockState> REPLACEABLE_BLOCK_MAP = new HashMap<>();
-	
+		
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		if(worldIn.isRemote)
-		{
-			IBlockState blockstate = Blocks.AIR.getDefaultState();
-			BlockPos overPosition = new BlockPos(pos);
-			if(REPLACEABLE_BLOCK_MAP.containsKey(pos))
-			{
-				blockstate = REPLACEABLE_BLOCK_MAP.get(pos);
-				REPLACEABLE_BLOCK_MAP.remove(pos);
-			}
-			if(blockstate.getBlock() == Blocks.AIR)
-			{
-				overPosition = net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos();
-				blockstate = worldIn.getBlockState(overPosition);
-			}
-			SecretNetwork.sendToServer(new MessagePacketFakeBlockPlaced(pos, overPosition, blockstate));
-			((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(blockstate, overPosition);
-		}
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+			ItemStack stack) 
+	{
+		ISecretBlock.super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
 }

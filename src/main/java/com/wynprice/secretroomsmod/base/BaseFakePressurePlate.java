@@ -1,10 +1,7 @@
 package com.wynprice.secretroomsmod.base;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -13,7 +10,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -22,8 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public abstract class BaseFakePressurePlate extends BaseFakeBlock
 {
@@ -43,19 +37,6 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 	@Override
 	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
 		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
-	}
-	
-	@Override
-	public Material getMaterial(IBlockState state) 
-	{
-		for(WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
-		{
-			ArrayList<TileEntity> list = new ArrayList<>(world.loadedTileEntityList);
-			for(TileEntity te : list)
-				if(world.getBlockState(te.getPos()) == state)
-					return ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState().getMaterial();
-		}
-		return super.getMaterial(state);
 	}
 	
 	@Override
