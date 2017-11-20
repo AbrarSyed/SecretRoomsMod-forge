@@ -10,6 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +31,8 @@ public class TileEntitySecretDispenser extends TileEntityDispenser implements IS
 			mirrorState = testBlock.getStateFromMeta(getTileData().getInteger("MirrorMeta"));
 		if(mirrorState != null && mirrorState.getBlock() instanceof ISecretBlock)
 			mirrorState = null;
+		if(!ISecretBlock.ALL_SECRET_TILE_ENTITIES.contains(this))
+			ISecretBlock.ALL_SECRET_TILE_ENTITIES.add(this);
 	}
 	
 	@Override
@@ -68,5 +72,30 @@ public class TileEntitySecretDispenser extends TileEntityDispenser implements IS
 		if(mirrorState.getBlock() instanceof ISecretBlock && ((ISecretBlock)mirrorState.getBlock()).getState(world, pos) != null)
 			mirrorState = ((ISecretBlock)mirrorState.getBlock()).getState(world, pos);
 		this.mirrorState = mirrorState.getBlock().getStateFromMeta(mirrorState.getBlock().getMetaFromState(mirrorState));
+	}
+	
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		NBTTagCompound nbt = new NBTTagCompound();
+		this.writeToNBT(nbt);
+		int metadata = getBlockMetadata();
+		return new SPacketUpdateTileEntity(this.pos, metadata, nbt);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		NBTTagCompound nbt = new NBTTagCompound();
+		this.writeToNBT(nbt);
+		return nbt;
+	}
+
+	@Override
+	public void handleUpdateTag(NBTTagCompound tag) {
+		this.readFromNBT(tag);
 	}
 }

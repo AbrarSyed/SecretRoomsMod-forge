@@ -32,6 +32,8 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 			mirrorState = testBlock.getStateFromMeta(getTileData().getInteger("MirrorMeta"));
 		if(mirrorState != null && mirrorState.getBlock() instanceof ISecretBlock)
 			mirrorState = null;
+		if(!ISecretBlock.ALL_SECRET_TILE_ENTITIES.contains(this))
+			ISecretBlock.ALL_SECRET_TILE_ENTITIES.add(this);
 	}
 	
 	@Override

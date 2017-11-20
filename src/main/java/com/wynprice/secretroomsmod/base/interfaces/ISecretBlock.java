@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
@@ -31,9 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
@@ -80,15 +77,6 @@ public interface ISecretBlock extends ITileEntityProvider
 		return defaultState;
 	}
 	
-	default Material getMaterialFromState(World world, IBlockState state, Material material)
-	{
-		ArrayList<TileEntity> list = new ArrayList<>(world.loadedTileEntityList);
-		for(TileEntity te : list)
-			if(world.getBlockState(te.getPos()) == state && ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState() != null)
-				return ((ISecretTileEntity)world.getTileEntity(te.getPos())).getMirrorState().getMaterial();
-		return material;
-	}
-	
 	
 	
 	
@@ -106,13 +94,14 @@ public interface ISecretBlock extends ITileEntityProvider
 		return ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
 	}
 	
+	public static final ArrayList<TileEntity> ALL_SECRET_TILE_ENTITIES = new ArrayList<>();
+	
 	default Material getMaterial(IBlockState state, Material material) 
 	{
-		if(FMLCommonHandler.instance().getMinecraftServerInstance() != null)
-			for(WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
-				return getMaterialFromState(world, state, material);
-		else
-			return getMaterialFromState(SecretRooms5.proxy.getPlayer().world, state, material);
+		ArrayList<TileEntity> list = new ArrayList<>(ALL_SECRET_TILE_ENTITIES);
+		for(TileEntity tileentity : list)
+			if(tileentity.getWorld() != null && tileentity.getWorld().getBlockState(tileentity.getPos()) == state && tileentity instanceof ISecretTileEntity)
+				return ((ISecretTileEntity)tileentity).getMirrorState().getMaterial();
 		return material;
 	}
 	
