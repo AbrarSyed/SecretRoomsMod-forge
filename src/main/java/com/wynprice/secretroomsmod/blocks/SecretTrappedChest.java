@@ -24,10 +24,10 @@ public class SecretTrappedChest extends SecretChest
 	
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        if (!blockState.canProvidePower() || !PLAYERS_USING_MAP.get(true).containsKey(pos))
+        if (!blockState.canProvidePower() || !PLAYERS_USING_MAP.get(false).containsKey(pos))
             return 0;
         else
-        	return MathHelper.clamp(PLAYERS_USING_MAP.get(true).get(pos), 0, 15);
+        	return MathHelper.clamp(PLAYERS_USING_MAP.get(false).get(pos), 0, 15);
     }
 
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
