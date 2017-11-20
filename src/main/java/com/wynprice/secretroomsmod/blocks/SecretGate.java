@@ -8,7 +8,6 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightFaceDiffrentModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
-import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -22,8 +21,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -72,8 +69,8 @@ public class SecretGate extends BaseFakeBlock
 			BlockPos position = new BlockPos(pos.getX() + (i * direction.getFrontOffsetX()), pos.getY() + (i * direction.getFrontOffsetY()), pos.getZ() + (i * direction.getFrontOffsetZ()));
 			if(!worldIn.getBlockState(position).getBlock().isReplaceable(worldIn, position))
 				break;
-			ISecretTileEntity.FORCED_RENDER_MAP.put(pos, getState(worldIn, pos));
 			worldIn.setBlockState(position, SecretBlocks.SECRET_GATE_BLOCK.getDefaultState());
+			worldIn.getTileEntity(position).markDirty();
 			((ISecretBlock)worldIn.getBlockState(pos).getBlock()).forceBlockState(worldIn, position, BlockPos.ORIGIN, getState(worldIn, pos));
 		}
 
