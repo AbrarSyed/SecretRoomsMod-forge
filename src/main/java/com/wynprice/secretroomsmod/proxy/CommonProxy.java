@@ -13,6 +13,7 @@ import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.tileentity.TileEntitySecretChest;
 import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDaylightSensor;
 import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDispenser;
+import com.wynprice.secretroomsmod.tileentity.TileEntitySecretPressurePlate;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -42,7 +43,8 @@ public class CommonProxy
     			TileEntityInfomationHolder.class,
     			TileEntitySecretChest.class,
     			TileEntitySecretDispenser.class,
-    			TileEntitySecretDaylightSensor.class
+    			TileEntitySecretDaylightSensor.class,
+    			TileEntitySecretPressurePlate.class
     	};
     	for(Class clas : tileEntityClasses)
     		GameRegistry.registerTileEntity(clas, SecretRooms5.MODID + clas.getSimpleName());

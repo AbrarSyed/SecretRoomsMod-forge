@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -58,10 +59,11 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	}
 	
 	@Override
-	public IBlockState overrideThisState(World world, BlockPos pos, IBlockState defaultState) {
+	public IBlockState overrideThisState(World world, BlockPos pos, IBlockState defaultState)
+	{
 		return defaultState.getValue(HALF) != EnumDoorHalf.UPPER || world.getBlockState(pos.down()).getBlock() != this ? defaultState : 
 			defaultState.withProperty(OPEN, world.getBlockState(pos.down()).getValue(OPEN)).withProperty(FACING, world.getBlockState(pos.down()).getValue(FACING))
-			.withProperty(HINGE, world.getBlockState(pos.down()).getValue(HINGE)).withProperty(POWERED, world.getBlockState(pos.down()).getValue(POWERED));
+			.withProperty(POWERED, world.getBlockState(pos.down()).getValue(POWERED));
 	}
 	
 	@Override
@@ -139,7 +141,6 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
                     {
                         worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
                         worldIn.markBlockRangeForRenderUpdate(pos, pos);
-//                        worldIn.playEvent((EntityPlayer)null, flag ? this.getOpenSound() : this.getCloseSound(), pos, 0);
                     }
                 }
             }

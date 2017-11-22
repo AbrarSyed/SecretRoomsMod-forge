@@ -8,6 +8,7 @@ import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateClient;
 
 import net.minecraft.block.BlockLever;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
@@ -41,6 +42,11 @@ public class SecretLever extends BlockLever implements ISecretBlock
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return ISecretBlock.super.getBoundingBox(state, source, pos);
+	}
+	
+	@Override
+	public Material getMaterial(IBlockState state) {
+		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
 	}
 	
 	@Override

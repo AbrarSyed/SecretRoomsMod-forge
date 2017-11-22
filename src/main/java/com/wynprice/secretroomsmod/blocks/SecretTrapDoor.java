@@ -1,5 +1,7 @@
 package com.wynprice.secretroomsmod.blocks;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
@@ -18,6 +20,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
@@ -89,6 +92,12 @@ public class SecretTrapDoor extends BaseFakeBlock
         }
 
         return axisalignedbb;
+    }
+    
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+    		List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) {
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, state.getCollisionBoundingBox(worldIn, pos));
     }
 
     public boolean isOpaqueCube(IBlockState state)

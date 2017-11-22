@@ -71,7 +71,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	        tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 	        Block block = tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock();
 	        ArrayList<Integer> tintList = new ArrayList<>();
-	        currentRender = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+	        currentRender = tileEntity.getWorld().getBlockState(tileEntity.getPos()).getActualState(tileEntity.getWorld(), tileEntity.getPos());
 	        currentPos = tileEntity.getPos();
 	        currentWorld = tileEntity.getWorld();
 	        if(block instanceof ISecretBlock && te.getMirrorState() != null)

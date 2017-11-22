@@ -24,6 +24,11 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	private boolean locked;
 	
 	@Override
+	public void loadFromNBT(NBTTagCompound compound) {
+		readFromNBT(compound);
+	}
+	
+	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		locked = getTileData().getBoolean("locked");
@@ -56,8 +61,8 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	public IBlockState getMirrorState() {
 		if(mirrorState == null && ParticleHandler.BLOCKBRAKERENDERMAP.containsKey(pos))
 			mirrorState = ParticleHandler.BLOCKBRAKERENDERMAP.get(pos);
-		if(mirrorState == null && FORCED_RENDER_MAP.containsKey(pos))
-			mirrorState = FORCED_RENDER_MAP.get(pos);
+		if(mirrorState == null && RENDER_MAP.containsKey(pos))
+			mirrorState = ISecretTileEntity.getMap(world).get(pos);
 		return mirrorState;
 	}
 	

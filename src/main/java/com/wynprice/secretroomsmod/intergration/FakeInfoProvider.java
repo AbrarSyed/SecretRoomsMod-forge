@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.intergration;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
 import mcjty.theoneprobe.Tools;
@@ -29,8 +30,8 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 		if(!(blockState.getBlock() instanceof ISecretBlock))
 			return false;
 		DefaultProbeInfoProvider.showStandardBlockInfo(new ProbeConfig(), mode, probeInfo, player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
-				blockState : ((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()), player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
-				blockState.getBlock() : ((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()).getBlock(), world, data.getPos(), player, new IProbeHitData() {
+				blockState : ISecretTileEntity.getMirrorState(world, data.getPos()), player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
+				blockState.getBlock() : ISecretTileEntity.getMirrorState(world, data.getPos()).getBlock(), world, data.getPos(), player, new IProbeHitData() {
 					
 					@Override
 					public EnumFacing getSideHit() {
@@ -45,8 +46,8 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 					@Override
 					public ItemStack getPickBlock() {
 						return player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? data.getPickBlock() : 
-							((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()).getBlock()
-								.getPickBlock(((ISecretBlock)blockState.getBlock()).getState(world, data.getPos()), 
+							ISecretTileEntity.getMirrorState(world, data.getPos()).getBlock()
+								.getPickBlock(ISecretTileEntity.getMirrorState(world, data.getPos()), 
 										world.rayTraceBlocks(player.getPositionVector(), player.getPositionVector()
 												.addVector(player.getLookVec().x * 5, player.getLookVec().y * 5, player.getLookVec().z * 5)), world, data.getPos(), player);
 					}

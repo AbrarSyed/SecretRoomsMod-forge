@@ -1,17 +1,21 @@
 package com.wynprice.secretroomsmod.network.packets;
 
 import com.wynprice.secretroomsmod.base.BaseMessagePacket;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.ServerRecievePacketHandler;
 import com.wynprice.secretroomsmod.handler.ServerRecievePacketHandler.ObjectInfo;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessagePacketFakeBlockPlaced extends BaseMessagePacket<MessagePacketFakeBlockPlaced>
 {
@@ -24,31 +28,19 @@ public class MessagePacketFakeBlockPlaced extends BaseMessagePacket<MessagePacke
 	private IBlockState mouseOver;
 	private int multiplyColor;
 	
-	public MessagePacketFakeBlockPlaced(BlockPos pos) 
-	{
-		this.pos = pos;
-		if(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos() != null)
-			this.mouseOver = net.minecraft.client.Minecraft.getMinecraft().world.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos());
-		if(mouseOver != null)
-			this.multiplyColor = net.minecraft.client.Minecraft.getMinecraft().getBlockColors()
-			.colorMultiplier(mouseOver, net.minecraft.client.Minecraft.getMinecraft().world,
-					net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos(), 0);
-		
-		this.lookPos = net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos();
-	
-	}
-	
+	@SideOnly(Side.CLIENT)
 	public MessagePacketFakeBlockPlaced(BlockPos pos, BlockPos lookPos, IBlockState state) 
 	{
-		this(pos);
+		this.pos = pos;
 		this.lookPos = lookPos;
 		if(state == null)
 			return;
 		this.mouseOver = state;
 		if(mouseOver != null)
-			this.multiplyColor = net.minecraft.client.Minecraft.getMinecraft().getBlockColors()
-			.colorMultiplier(mouseOver, net.minecraft.client.Minecraft.getMinecraft().world,
-					net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos(), 0);
+			this.multiplyColor = Minecraft.getMinecraft().getBlockColors()
+			.colorMultiplier(mouseOver, Minecraft.getMinecraft().world,
+					Minecraft.getMinecraft().objectMouseOver.getBlockPos(), 0);
+		ISecretTileEntity.getMap(Minecraft.getMinecraft().world).put(pos, mouseOver);
 	}
 
 	@Override
@@ -91,6 +83,7 @@ public class MessagePacketFakeBlockPlaced extends BaseMessagePacket<MessagePacke
 	@Override
 	public void onReceived(MessagePacketFakeBlockPlaced message, EntityPlayer player) 
 	{
+		ISecretTileEntity.getMap(player.world).put(message.pos, message.mouseOver);
 		ServerRecievePacketHandler.UPDATE_MAP.put(message.pos, new ObjectInfo(message.mouseOver, message.lookPos));
 	}
 	

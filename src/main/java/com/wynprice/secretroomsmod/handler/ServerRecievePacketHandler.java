@@ -41,5 +41,10 @@ public class ServerRecievePacketHandler
 			this.state = state;
 			this.pos = pos;
 		}
+		
+		@Override
+		public String toString() {
+			return String.valueOf(pos) + "@"+  String.valueOf(state);
+		}
 	}
 }

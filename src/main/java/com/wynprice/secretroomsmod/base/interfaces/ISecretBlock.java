@@ -79,7 +79,6 @@ public interface ISecretBlock extends ITileEntityProvider
 	
 	
 	
-	
 	default AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		if(source.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState() != null)
 			return ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState().getBoundingBox(source, pos);
@@ -91,37 +90,38 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	default BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
+		return ISecretTileEntity.getMirrorState(worldIn, pos).getBlockFaceShape(worldIn, pos, face);
 	}
 	
 	public static final ArrayList<TileEntity> ALL_SECRET_TILE_ENTITIES = new ArrayList<>();
 	
 	default Material getMaterial(IBlockState state, Material material) 
 	{
+		IBlockState blockstate = null;
 		ArrayList<TileEntity> list = new ArrayList<>(ALL_SECRET_TILE_ENTITIES);
 		for(TileEntity tileentity : list)
 			if(tileentity.getWorld() != null && tileentity.getWorld().getBlockState(tileentity.getPos()) == state && tileentity instanceof ISecretTileEntity)
-				return ((ISecretTileEntity)tileentity).getMirrorState().getMaterial();
-		return material;
+				blockstate = ISecretTileEntity.getMirrorState(tileentity.getWorld(), tileentity.getPos());
+		return blockstate != null && !(blockstate.getBlock() instanceof ISecretBlock) ? blockstate.getMaterial() : material;
 	}
 	
 	default boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState().isSideSolid(world, pos, side);
+		return ISecretTileEntity.getMirrorState(world, pos).isSideSolid(world, pos, side);
 	}
 	
 	default void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
 			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
 	{
-		if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState() != null) 
-			((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().addCollisionBoxToList(worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+		if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity && ISecretTileEntity.getMirrorState(worldIn, pos) != null)
+			ISecretTileEntity.getMirrorState(worldIn, pos).addCollisionBoxToList(worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 		else
 			Blocks.STONE.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 	}
 	
 	default SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
 	{
-		return world.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() != null ? 
-				((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState().getBlock().getSoundType() : SoundType.STONE;
+		return world.getTileEntity(pos) instanceof ISecretTileEntity && ISecretTileEntity.getMirrorState(world, pos) != null ? 
+				ISecretTileEntity.getMirrorState(world, pos).getBlock().getSoundType() : SoundType.STONE;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -207,6 +207,8 @@ public interface ISecretBlock extends ITileEntityProvider
 			{
 				overPosition = net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos();
 				blockstate = worldIn.getBlockState(overPosition);
+				if(worldIn.getTileEntity(overPosition) instanceof ISecretTileEntity)
+					blockstate = ISecretTileEntity.getMirrorState(worldIn, overPosition);
 			}
 			SecretNetwork.sendToServer(new MessagePacketFakeBlockPlaced(pos, overPosition, blockstate));
 			((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(blockstate, overPosition);

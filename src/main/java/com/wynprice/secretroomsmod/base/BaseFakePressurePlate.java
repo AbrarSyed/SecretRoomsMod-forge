@@ -3,6 +3,8 @@ package com.wynprice.secretroomsmod.base;
 import java.util.List;
 import java.util.Random;
 
+import com.wynprice.secretroomsmod.tileentity.TileEntitySecretPressurePlate;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
@@ -10,6 +12,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -39,13 +42,7 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
 	}
 	
-	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-	{
-		calculateState(worldIn, pos);
-	}
-	
-	private void calculateState(World worldIn, BlockPos pos)
+	public void calculateState(World worldIn, BlockPos pos)
 	{
 		List<Entity> entityList = worldIn.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1f, pos.getY() + 1.1f, pos.getZ() + 1f));
 		int level = MathHelper.clamp(getLevel(worldIn, pos, entityList), 0, 15);
@@ -65,6 +62,11 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
     }
+	
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntitySecretPressurePlate();
+	}
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {

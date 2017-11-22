@@ -1,6 +1,5 @@
 package com.wynprice.secretroomsmod;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,7 +26,6 @@ import com.wynprice.secretroomsmod.blocks.TorchLever;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
@@ -131,21 +129,7 @@ public class SecretBlocks
 	
 	private static void regSingleBlockIgnoreAll(Block block)
 	{
-		try {
-			for(Field field : Block.class.getDeclaredFields())
-			{
-				if(BlockStateContainer.class.isAssignableFrom(field.getType()) && field.getName().equals("blockState"))
-				{
-					field.setAccessible(true);
-					BlockStateContainer container = (BlockStateContainer) field.get(block);
-					field.setAccessible(false);
-					regSingleBlock(block, container.getProperties().toArray(new IProperty[container.getProperties().size()]));
-					break;
-				}
-			}
-		} catch (ClassCastException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
+		regSingleBlock(block, block.getDefaultState().getProperties().asMultimap().asMap().keySet().toArray(new IProperty[block.getDefaultState().getProperties().asMultimap().asMap().keySet().size()]));
 	}
 	
 	private static void regBlock(Block block, int stackSize, IProperty<?>... toIgnore)

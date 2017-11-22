@@ -56,8 +56,7 @@ public class BaseFakeBlock extends Block implements ISecretBlock
 	}
 	
 	@Override
-	public Material getMaterial(IBlockState state) 
-	{
+	public Material getMaterial(IBlockState state) {
 		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
 	}
 	

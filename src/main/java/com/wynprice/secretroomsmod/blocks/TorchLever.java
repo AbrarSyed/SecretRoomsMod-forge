@@ -24,7 +24,7 @@ public class TorchLever extends BlockTorch
 	public TorchLever() {
 		setRegistryName("torch_lever");
 		setUnlocalizedName("torch_lever");
-		setHardness(0.5f);
+		setHardness(0.0f);
 	}
 	
 	@Override
