@@ -77,7 +77,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	        if(block instanceof ISecretBlock && te.getMirrorState() != null)
 	        {
 	        	IBlockState renderState = te.getMirrorState().getBlock().getActualState(te.getMirrorState(), tileEntity.getWorld(), tileEntity.getPos());
-	            GlStateManager.shadeModel(Minecraft.isAmbientOcclusionEnabled() ? 7425 : 7424);
+	            GlStateManager.shadeModel(Minecraft.isAmbientOcclusionEnabled() || SecretConfig.forceAO ? 7425 : 7424);
 
         		currentRender = ((ISecretBlock)block).overrideThisState(world, currentPos, currentRender);
 	        	if(!isHelmet)

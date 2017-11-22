@@ -45,7 +45,7 @@ public interface ISecretTileEntity extends ITickable
 				returnState = getMirrorState(SecretRooms5.proxy.getPlayer().world, pos);
 			else if(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim) == access)
 				returnState = getMirrorState(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim), pos);
-		return returnState;
+		return returnState == null ? Blocks.STONE.getDefaultState() : returnState;
 	}
 	
 	public void loadFromNBT(NBTTagCompound compound);

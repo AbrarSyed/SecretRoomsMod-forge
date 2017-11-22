@@ -3,7 +3,6 @@ package com.wynprice.secretroomsmod;
 import java.io.File;
 
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Loader;
@@ -20,28 +19,27 @@ public class SecretConfig
 	
 	public static String[] forcedBlockColors;
 	public static boolean updateChecker;
-		
+	public static boolean forceAO;
 	
 	public static void syncConfig()
 	{
 		CONFIG.load(); 
-		
-		Property doUpdate = CONFIG.get(CATEGORYGENRAL, "update_checker", true);
-		doUpdate.setComment(new TextComponentTranslation("config.do_update.comment").getUnformattedText());
+		Property doUpdate = CONFIG.get(CATEGORYGENRAL, "update_checker", true, new TextComponentTranslation("config.do_update.comment").getUnformattedText());
 		
 		Property allowedBlockColors = CONFIG.get(CATEGORYGENRAL, "forced_blockcolors", new String[]{
 				"minecraft:tallgrass",
 				"minecraft:reeds",
 				"minecraft:double_plant"
-		});
-		allowedBlockColors.setComment(new TextComponentTranslation("config.blockcolors.comment").getUnformattedText());
+		}, new TextComponentTranslation("config.blockcolors.comment").getUnformattedText());
 		
-			forcedBlockColors = allowedBlockColors.getStringList();
-			updateChecker = doUpdate.getBoolean();
+		Property doesForcedAO = CONFIG.get(CATEGORYGENRAL, "force_ambient_occlusion", false, new TextComponentTranslation("config.ao.comment").getUnformattedText().replace("<newline>", "\n"));
 		
+		forcedBlockColors = allowedBlockColors.getStringList();
+		updateChecker = doUpdate.getBoolean();
+		forceAO = doesForcedAO.getBoolean();
 		allowedBlockColors.set(forcedBlockColors);
 		doUpdate.set(updateChecker);
-		
+		doesForcedAO.set(forceAO);
 		if(CONFIG.hasChanged())
 			CONFIG.save();
 	}
