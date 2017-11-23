@@ -11,6 +11,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -35,6 +36,11 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) 
 	{
 		calculateState(worldIn, pos);
+	}
+	
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
+		return false;
 	}
 	
 	@Override

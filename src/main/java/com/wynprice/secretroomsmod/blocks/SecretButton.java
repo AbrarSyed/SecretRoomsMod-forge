@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
@@ -44,9 +45,13 @@ public class SecretButton extends BlockButton implements ISecretBlock
     }
 	
 	@Override
-	public Material getMaterial(IBlockState state) 
-	{
+	public Material getMaterial(IBlockState state) {
 		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
+	}
+	
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
+		return false;
 	}
 	
 	@Override
