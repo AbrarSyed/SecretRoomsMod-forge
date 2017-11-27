@@ -75,8 +75,9 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	
 	public void setMirrorStateForcable(IBlockState mirrorState, @Nullable BlockPos pos)
 	{
-		if(mirrorState.getBlock() instanceof ISecretBlock && ((ISecretBlock)mirrorState.getBlock()).getState(world, pos) != null)
-			mirrorState = ((ISecretBlock)mirrorState.getBlock()).getState(world, pos);
+		if(mirrorState.getBlock() instanceof ISecretBlock)
+			mirrorState = Blocks.STONE.getDefaultState();
+		ISecretTileEntity.getMap(world).put(this.pos, mirrorState);
 		this.mirrorState = mirrorState.getBlock().getStateFromMeta(mirrorState.getBlock().getMetaFromState(mirrorState));
 	}
 	

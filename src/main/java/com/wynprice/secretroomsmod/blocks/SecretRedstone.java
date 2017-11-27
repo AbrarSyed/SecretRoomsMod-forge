@@ -22,8 +22,8 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -148,8 +148,7 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 	}
 	
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) 
-	{	
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {	
 		return ISecretBlock.super.canPlaceBlockOnSide(worldIn, pos, side);
 	}
 		
@@ -381,8 +380,7 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
         return !this.canProvidePower ? 0 : blockState.getWeakPower(blockAccess, pos, side);
     }
 
-    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-    {
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         if (!this.canProvidePower)
         {
             return 0;
@@ -392,22 +390,8 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
         	int ret = 0;
             int i = ((Integer)blockState.getValue(POWER)).intValue();
             if (i == 0)
-            {
             	ret = 0;
-            }
-            else if (side == EnumFacing.UP)
-            {
-            	ret = i;
-            }
-            else
-            {
-                if(side.getAxis().isHorizontal())
-                	ret = i;
-                else
-                {
-                    return 0;
-                }
-            }
+            ret = i;
             return ret < 1 ? 0 : ret - 1;
         }
     }

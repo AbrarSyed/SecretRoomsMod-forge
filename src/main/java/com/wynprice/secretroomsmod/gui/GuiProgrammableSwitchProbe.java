@@ -177,7 +177,7 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
         	Point point = new Point((this.width / 2) - (flag || renderamount % 2== 0 ? -3 : 7) - (((renderamount / 2) - (i % 16)) * 20), this.height / 2 - 20 - (10 * (4 - MathHelper.clamp(Math.floorDiv(total, 16), 0, 4))) - (amount*25));
         	if(renderStacks.get(i).isEmpty() && nonItemBlocks.hasNext())
         	{
-        		
+	        	inventorySlots.inventorySlots.add(new SlotItemStuck(ItemStack.EMPTY, point.x, point.y));
         		IBlockState state = nonItemBlocks.next();
         		this.zLevel = 1;
         		nonItemBlockMap.put(point, state);
