@@ -1,8 +1,6 @@
 package com.wynprice.secretroomsmod.blocks;
 
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
-import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
-import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.OneWayGlassFakeModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightFaceDiffrentModel;
@@ -10,7 +8,6 @@ import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -54,12 +51,6 @@ public class OneWayGlass extends BaseFakeBlock
 	@Override
 	public FakeBlockModel phaseModel(FakeBlockModel model) {
 		return new OneWayGlassFakeModel(model);
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) 
-	{
-		return face != state.getValue(BlockDirectional.FACING) ? BlockFaceShape.SOLID : ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
 	}
 	
 	@Override

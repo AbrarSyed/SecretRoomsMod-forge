@@ -9,12 +9,11 @@ import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDaylightSensor;
 import net.minecraft.block.BlockDaylightDetector;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -115,11 +114,6 @@ public class SecretLightDetector extends BlockDaylightDetector implements ISecre
 	@Override
 	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
 		return ISecretBlock.super.canBeConnectedTo(world, pos, facing);
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ISecretBlock.super.getBlockFaceShape(worldIn, state, pos, face);
 	}
 	
 	@Override

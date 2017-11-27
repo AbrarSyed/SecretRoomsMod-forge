@@ -9,12 +9,11 @@ import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateClient;
 import net.minecraft.block.BlockLever;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -65,11 +64,6 @@ public class SecretLever extends BlockLever implements ISecretBlock
 			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
 	{
 		ISecretBlock.super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ISecretBlock.super.getBlockFaceShape(worldIn, state, pos, face);
 	}
 	
 	@Override

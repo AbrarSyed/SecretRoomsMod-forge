@@ -19,13 +19,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 		modid = SecretRooms5.MODID,
 		name = SecretRooms5.MODNAME,
 		version = SecretRooms5.VERSION,
-		acceptedMinecraftVersions = "[1.12.2,1.13]",
-		dependencies = "required-after:forge@[14.23.0.2502,)")
+		acceptedMinecraftVersions = "1.11.2")
 public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
-    public static final String VERSION = "5.1.7";
+    public static final String VERSION = "5.1.8";
     public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
 	
     

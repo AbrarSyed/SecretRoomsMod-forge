@@ -12,11 +12,11 @@ import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
@@ -86,12 +86,10 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	default boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
+		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing) || getState(world, pos).getBlock() instanceof BlockFence;
 	}
 	
-	default BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ISecretTileEntity.getMirrorState(worldIn, pos).getBlockFaceShape(worldIn, pos, face);
-	}
+	
 	
 	public static final ArrayList<TileEntity> ALL_SECRET_TILE_ENTITIES = new ArrayList<>();
 	
@@ -104,7 +102,7 @@ public interface ISecretBlock extends ITileEntityProvider
 				blockstate = ISecretTileEntity.getMirrorState(tileentity.getWorld(), tileentity.getPos());
 		return blockstate != null && !(blockstate.getBlock() instanceof ISecretBlock) ? blockstate.getMaterial() : material;
 	}
-	
+		
 	default boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return ISecretTileEntity.getMirrorState(world, pos).isSideSolid(world, pos, side);
 	}

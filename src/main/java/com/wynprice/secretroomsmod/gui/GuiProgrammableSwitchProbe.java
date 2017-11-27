@@ -29,6 +29,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.command.CommandBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -65,7 +66,7 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 		this.ySize = this.height;
         Keyboard.enableRepeatEvents(true);
 		this.buttonExit = addButton(new GuiButton(0, this.width / 2 - 100, (int) this.height - 30, 200, 20, I18n.format("gui.done")));
-		this.textInput =  new GuiTextField(1, this.fontRenderer, this.width / 2 - 152, this.height / 2, 300, 20);
+		this.textInput =  new GuiTextField(1, Minecraft.getMinecraft().fontRendererObj, this.width / 2 - 152, this.height / 2, 300, 20);
 		this.textInput.setMaxStringLength(60);
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
@@ -74,73 +75,12 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) 
 	{
-		this.drawDefaultBackground();
-		this.textInput.drawTextBox();
-		this.textInput.setFocused(true);
-		ArrayList<Block> usedBlocks = new ArrayList<>();
-		ArrayList<IBlockState> nonItemBlocks = new ArrayList<>();
-		ArrayList<ItemStack> renderStacks = new ArrayList<>();
-		Block overblock = Block.getBlockFromName(textInput.getText());
-		if(overblock != null)
-		{
-			NonNullList<ItemStack> items = NonNullList.create();
-			overblock.getSubBlocks(CreativeTabs.SEARCH, items);
-			for(ItemStack stack : items)
-				if(stack.isEmpty())
-				{
-					nonItemBlocks.add(overblock.getStateFromMeta(stack.getMetadata()));
-					renderStacks.add(ItemStack.EMPTY);
-				}
-				else
-					renderStacks.add(stack);
-		}
-		else
-		{
-			for(ItemStack stack : OreDictionary.getOres(textInput.getText(), false))
-				if(stack.getItem() instanceof ItemBlock)
-				{
-					if(stack.getMetadata() == OreDictionary.WILDCARD_VALUE)
-					{
-						NonNullList<ItemStack> items = NonNullList.create();
-						stack.getItem().getSubItems(CreativeTabs.SEARCH, items);
-						for(ItemStack stack1 : items)
-							renderStacks.add(stack1);
-					}
-					else
-						renderStacks.add(stack);
-				}
-		}
-		boolean flag = false;
-		int amount = 0;
-		if(renderStacks.size() == 1 && !renderStacks.get(0).isEmpty())
-			output = new SelectedOutput(renderStacks.get(0));
-		else if(nonItemBlocks.size() == 1)
-			output = new SelectedOutput(nonItemBlocks.get(0));
-		inventorySlots.inventorySlots.clear();
-		nonItemBlockMap.clear();
-		ListIterator<IBlockState> iterator = nonItemBlocks.listIterator();
-		int total = renderStacks.size();
-		while(!flag)
-			flag = renderStacks(renderStacks, iterator, total, amount++);
-		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		Point point = new Point((this.width / 2) - 7, (this.height / 2) + 50);
-		if(output != null)
-		{
-			if(output.isStack())
-				this.inventorySlots.inventorySlots.add(new SlotItemStuck(output.getStack(), point.x, point.y));
-			else
-			{
-				this.inventorySlots.inventorySlots.add(new SlotItemStuck(ItemStack.EMPTY, point.x, point.y));
-        		nonItemBlockMap.put(point, output.getState());
-        		this.zLevel = 1;
-				this.drawTexturedModalRect(point.x, point.y, output.getSprite(), 16, 16);
-			}
-		}
-		this.zLevel = 0;
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("minecraft", "textures/gui/container/generic_54.png"));
-    	this.drawTexturedModalRect(point.x - 1, point.y - 1, 7, 17, 18, 18);
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		this.renderHoveredToolTip(mouseX, mouseY);
+		if (this.mc.player.inventory.getItemStack().isEmpty() && this.getSlotUnderMouse() != null && this.getSlotUnderMouse().getHasStack())
+        {
+            ItemStack itemstack1 = this.getSlotUnderMouse().getStack();
+            this.renderToolTip(itemstack1, mouseX, mouseY);
+        }
 		if(this.getSlotUnderMouse() != null && this.getSlotUnderMouse().getStack().isEmpty() && nonItemBlockMap.get(new Point(this.getSlotUnderMouse().xPos, this.getSlotUnderMouse().yPos)) != null)
 		{
 			IBlockState state = nonItemBlockMap.get(new Point(this.getSlotUnderMouse().xPos, this.getSlotUnderMouse().yPos));
@@ -179,13 +119,13 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
         	{
 	        	inventorySlots.inventorySlots.add(new SlotItemStuck(ItemStack.EMPTY, point.x, point.y));
         		IBlockState state = nonItemBlocks.next();
-        		this.zLevel = 1;
+        		this.zLevel = 2;
         		nonItemBlockMap.put(point, state);
         		this.drawTexturedModalRect(point.x, point.y, Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state), 16, 16);
         	}
         	else
 	        	inventorySlots.inventorySlots.add(new SlotItemStuck(renderStacks.get(i), point.x, point.y));
-        	this.zLevel = 0;
+        	this.zLevel = 1;
     		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("minecraft", "textures/gui/container/generic_54.png"));
         	this.drawTexturedModalRect(point.x - 1, point.y - 1, 7, 17, 18, 18);
         }
@@ -203,12 +143,77 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
 	@Override
 	public void drawDefaultBackground() 
 	{
+		this.zLevel = 0;
 		super.drawDefaultBackground();
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SecretRooms5.MODID, "textures/gui/blank_slate.png"));
 		this.drawTexturedModalRect((this.width / 2) - 170,(this.height / 2) - 100, 0, 0, 239, 197);
 		this.drawTexturedModalRect((this.width / 2) + 69,( this.height / 2) - 100, 159, 0, 97, 197);
 		this.drawTexturedModalRect((this.width / 2) - 170,( this.height / 2) + 97, 0, 253, 253, 3);
 		this.drawTexturedModalRect((this.width / 2) + 83,( this.height / 2) + 97, 173, 253, 83, 3);
+		this.textInput.drawTextBox();
+		this.textInput.setFocused(true);
+		ArrayList<Block> usedBlocks = new ArrayList<>();
+		ArrayList<IBlockState> nonItemBlocks = new ArrayList<>();
+		ArrayList<ItemStack> renderStacks = new ArrayList<>();
+		Block overblock = Block.getBlockFromName(textInput.getText());
+		if(overblock != null)
+		{
+			NonNullList<ItemStack> items = NonNullList.create();
+			overblock.getSubBlocks(Item.getItemFromBlock(overblock), CreativeTabs.SEARCH, items);
+			for(ItemStack stack : items)
+				if(stack.isEmpty())
+				{
+					nonItemBlocks.add(overblock.getStateFromMeta(stack.getMetadata()));
+					renderStacks.add(ItemStack.EMPTY);
+				}
+				else
+					renderStacks.add(stack);
+		}
+		else
+		{
+			for(ItemStack stack : OreDictionary.getOres(textInput.getText(), false))
+				if(stack.getItem() instanceof ItemBlock)
+				{
+					if(stack.getMetadata() == OreDictionary.WILDCARD_VALUE)
+					{
+						NonNullList<ItemStack> items = NonNullList.create();
+						stack.getItem().getSubItems(Item.getItemFromBlock(overblock), CreativeTabs.SEARCH, items);
+						for(ItemStack stack1 : items)
+							renderStacks.add(stack1);
+					}
+					else
+						renderStacks.add(stack);
+				}
+		}
+		boolean flag = false;
+		int amount = 0;
+		if(renderStacks.size() == 1 && !renderStacks.get(0).isEmpty())
+			output = new SelectedOutput(renderStacks.get(0));
+		else if(nonItemBlocks.size() == 1)
+			output = new SelectedOutput(nonItemBlocks.get(0));
+		inventorySlots.inventorySlots.clear();
+		nonItemBlockMap.clear();
+		ListIterator<IBlockState> iterator = nonItemBlocks.listIterator();
+		int total = renderStacks.size();
+		while(!flag)
+			flag = renderStacks(renderStacks, iterator, total, amount++);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		Point point = new Point((this.width / 2) - 7, (this.height / 2) + 50);
+		if(output != null)
+		{
+			if(output.isStack())
+				this.inventorySlots.inventorySlots.add(new SlotItemStuck(output.getStack(), point.x, point.y));
+			else
+			{
+				this.inventorySlots.inventorySlots.add(new SlotItemStuck(ItemStack.EMPTY, point.x, point.y));
+        		nonItemBlockMap.put(point, output.getState());
+        		this.zLevel = 2;
+				this.drawTexturedModalRect(point.x, point.y, output.getSprite(), 16, 16);
+			}
+		}
+		this.zLevel = 1;
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("minecraft", "textures/gui/container/generic_54.png"));
+    	this.drawTexturedModalRect(point.x - 1, point.y - 1, 7, 17, 18, 18);
 
 	}
 	
@@ -293,7 +298,9 @@ public class GuiProgrammableSwitchProbe extends GuiContainer
     }
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) 
+	{
+		this.drawDefaultBackground();
 	}
 	
 	private class SelectedOutput

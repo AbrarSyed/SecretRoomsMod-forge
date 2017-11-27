@@ -8,6 +8,7 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL11;
 
 import com.wynprice.secretroomsmod.SecretConfig;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
@@ -42,8 +43,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	public static final HashMap<Block, HashMap<Integer, IBakedModel>> TRUEMAP = new HashMap<>();
 	
 	@Override
-	public void render(T tileEntity, double x, double y, double z, float partialTicks,
-			int destroyStage, float alpha) 
+	public void renderTileEntityAt(T tileEntity, double x, double y, double z, float partialTicks, int destroyStage) 
 	{
 		if(!(tileEntity instanceof ISecretTileEntity))
 			return;
@@ -78,7 +78,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	        {
 	        	IBlockState renderState = te.getMirrorState().getBlock().getActualState(te.getMirrorState(), tileEntity.getWorld(), tileEntity.getPos());
 	            GlStateManager.shadeModel(Minecraft.isAmbientOcclusionEnabled() || SecretConfig.forceAO ? 7425 : 7424);
-
+	            
         		currentRender = ((ISecretBlock)block).overrideThisState(world, currentPos, currentRender);
 	        	if(!isHelmet)
 	        	{
