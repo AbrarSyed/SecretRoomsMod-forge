@@ -29,7 +29,7 @@ public class SecretWeightedPressurePlate extends BaseFakePressurePlate
         if (i > 0)
         {
             float f = (float)Math.min(this.maxWeight, i) / (float)this.maxWeight;
-            return MathHelper.ceil(f * 15.0F);
+            return MathHelper.ceiling_float_int(f * 15.0F);
         }
         else
         {

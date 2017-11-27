@@ -9,12 +9,11 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
@@ -53,12 +52,7 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
 		return false;
 	}
-	
-	@Override
-	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		return ISecretBlock.super.canBeConnectedTo(world, pos, facing);
-	}
-	
+
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         if (!worldIn.isRemote)
@@ -72,11 +66,6 @@ public class SecretButton extends BlockButton implements ISecretBlock
             }
         }
     }
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ISecretBlock.super.getBlockFaceShape(worldIn, state, pos, face);
-	}
 	
 	@Override
 	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
@@ -94,8 +83,8 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	     if (flag && !flag1)
 	     {
 	         worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)));
-	         worldIn.notifyNeighborsOfStateChange(pos, this, false);
-	         worldIn.notifyNeighborsOfStateChange(pos.offset((EnumFacing)state.getValue(FACING).getOpposite()), this, false);
+	         worldIn.notifyNeighborsOfStateChange(pos, this);
+	         worldIn.notifyNeighborsOfStateChange(pos.offset((EnumFacing)state.getValue(FACING).getOpposite()), this);
 	         worldIn.markBlockRangeForRenderUpdate(pos, pos);
 	         this.playClickSound((EntityPlayer)null, worldIn, pos);
 	     }
@@ -103,8 +92,8 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	     if (!flag && flag1)
 	     {
 	         worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
-	         worldIn.notifyNeighborsOfStateChange(pos, this, false);
-	         worldIn.notifyNeighborsOfStateChange(pos.offset((EnumFacing)state.getValue(FACING).getOpposite()), this, false);
+	         worldIn.notifyNeighborsOfStateChange(pos, this);
+	         worldIn.notifyNeighborsOfStateChange(pos.offset((EnumFacing)state.getValue(FACING).getOpposite()), this);
 	         worldIn.markBlockRangeForRenderUpdate(pos, pos);
 	         this.playReleaseSound(worldIn, pos);
 	     }
@@ -123,9 +112,9 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn) 
 	{
-		ISecretBlock.super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+		ISecretBlock.super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
 	}
 	
 	@Override

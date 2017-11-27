@@ -27,7 +27,7 @@ public class ProgrammableSwitchProbe extends Item
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) 
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand handIn) 
 	{
 		if(worldIn.isRemote)
 			SecretRooms5.proxy.displayGui(0, playerIn.getHeldItem(handIn));
@@ -35,7 +35,7 @@ public class ProgrammableSwitchProbe extends Item
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
 			EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
 		IBlockState state = worldIn.getBlockState(pos);
@@ -52,6 +52,6 @@ public class ProgrammableSwitchProbe extends Item
 				return EnumActionResult.SUCCESS;
 			}
 		}
-		return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+		return super.onItemUse(stack, player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 	}
 }

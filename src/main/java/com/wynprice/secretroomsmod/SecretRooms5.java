@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.wynprice.secretroomsmod.proxy.CommonProxy;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -19,8 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 		modid = SecretRooms5.MODID,
 		name = SecretRooms5.MODNAME,
 		version = SecretRooms5.VERSION,
-		acceptedMinecraftVersions = "[1.12.2,1.13]",
-		dependencies = "required-after:forge@[14.23.0.2502,)")
+		acceptedMinecraftVersions = "1.10.2")
 public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
@@ -37,8 +37,8 @@ public class SecretRooms5
     public static final CreativeTabs TAB = new CreativeTabs(MODID) {
 		
 		@Override
-		public ItemStack getTabIconItem() {
-			return new ItemStack(SecretItems.CAMOUFLAGE_PASTE);
+		public Item getTabIconItem() {
+			return SecretItems.CAMOUFLAGE_PASTE;
 		}
 	};
 	

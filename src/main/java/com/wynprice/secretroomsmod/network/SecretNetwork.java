@@ -40,7 +40,7 @@ public class SecretNetwork
 	
 	public static void sendToPlayer(EntityPlayer player, IMessage message)
 	{
-		if(!player.world.isRemote)
+		if(!player.worldObj.isRemote)
 			INSTANCE.sendTo(message, (EntityPlayerMP) player);
 	}
 	

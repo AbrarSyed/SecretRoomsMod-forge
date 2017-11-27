@@ -35,7 +35,7 @@ public class MessagePacketUpdateClient extends BaseMessagePacket<MessagePacketUp
 	@Override
 	public void onReceived(MessagePacketUpdateClient message, EntityPlayer player) 
 	{
-		TileEntity te = player.world.getTileEntity(new BlockPos(message.compound.getInteger("x"), message.compound.getInteger("y"), message.compound.getInteger("z")));
+		TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.compound.getInteger("x"), message.compound.getInteger("y"), message.compound.getInteger("z")));
 		if(te instanceof ISecretTileEntity)
 			((ISecretTileEntity)te).loadFromNBT(message.compound);
 	}

@@ -1,16 +1,14 @@
 package com.wynprice.secretroomsmod.blocks;
 
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
-import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
-import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.OneWayGlassFakeModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightFaceDiffrentModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -57,12 +55,6 @@ public class OneWayGlass extends BaseFakeBlock
 	}
 	
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) 
-	{
-		return face != state.getValue(BlockDirectional.FACING) ? BlockFaceShape.SOLID : ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
-	}
-	
-	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getFront(meta));
 	}
@@ -81,7 +73,7 @@ public class OneWayGlass extends BaseFakeBlock
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) 
 	{
-		EnumFacing facing = placer.getEntityData().getBoolean("glassDirection") ? EnumFacing.getDirectionFromEntityLiving(pos, placer) : EnumFacing.getDirectionFromEntityLiving(pos, placer).getOpposite();
+		EnumFacing facing = placer.getEntityData().getBoolean("glassDirection") ? BlockPistonBase.getFacingFromEntity(pos, placer) : BlockPistonBase.getFacingFromEntity(pos, placer).getOpposite();
 		worldIn.setBlockState(pos, state.withProperty(BlockDirectional.FACING, facing), 3);
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}

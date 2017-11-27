@@ -7,7 +7,7 @@ public class TileEntitySecretPressurePlate extends TileEntityInfomationHolder
 	@Override
 	public void update() 
 	{
-		((BaseFakePressurePlate)world.getBlockState(pos).getBlock()).calculateState(world, pos);
+		((BaseFakePressurePlate)worldObj.getBlockState(pos).getBlock()).calculateState(worldObj, pos);
 		super.update();
 	}
 }

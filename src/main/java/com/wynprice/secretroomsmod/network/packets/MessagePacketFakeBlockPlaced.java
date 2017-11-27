@@ -38,9 +38,9 @@ public class MessagePacketFakeBlockPlaced extends BaseMessagePacket<MessagePacke
 		this.mouseOver = state;
 		if(mouseOver != null)
 			this.multiplyColor = Minecraft.getMinecraft().getBlockColors()
-			.colorMultiplier(mouseOver, Minecraft.getMinecraft().world,
+			.colorMultiplier(mouseOver, Minecraft.getMinecraft().theWorld,
 					Minecraft.getMinecraft().objectMouseOver.getBlockPos(), 0);
-		ISecretTileEntity.getMap(Minecraft.getMinecraft().world).put(pos, mouseOver);
+		ISecretTileEntity.getMap(Minecraft.getMinecraft().theWorld).put(pos, mouseOver);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class MessagePacketFakeBlockPlaced extends BaseMessagePacket<MessagePacke
 	@Override
 	public void onReceived(MessagePacketFakeBlockPlaced message, EntityPlayer player) 
 	{
-		ISecretTileEntity.getMap(player.world).put(message.pos, message.mouseOver);
+		ISecretTileEntity.getMap(player.worldObj).put(message.pos, message.mouseOver);
 		ServerRecievePacketHandler.UPDATE_MAP.put(message.pos, new ObjectInfo(message.mouseOver, message.lookPos));
 	}
 	

@@ -7,13 +7,13 @@ public class TileEntitySecretDaylightSensor extends TileEntityInfomationHolder
 	public void update()
     {
 		super.update();
-        if (this.world != null && !this.world.isRemote && this.world.getTotalWorldTime() % 20L == 0L)
+        if (this.worldObj != null && !this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 20L == 0L)
         {
             this.blockType = this.getBlockType();
 
             if (this.blockType instanceof BlockDaylightDetector)
             {
-                ((BlockDaylightDetector)this.blockType).updatePower(this.world, this.pos);
+                ((BlockDaylightDetector)this.blockType).updatePower(this.worldObj, this.pos);
             }
         }
     }

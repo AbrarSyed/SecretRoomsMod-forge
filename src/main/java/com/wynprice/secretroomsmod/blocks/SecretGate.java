@@ -11,14 +11,15 @@ import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -43,7 +44,7 @@ public class SecretGate extends BaseFakeBlock
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) 
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) 
 	{
 		boolean flag = state.getValue(POWERED);
 		boolean flag1 = worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) > 0;
@@ -104,8 +105,8 @@ public class SecretGate extends BaseFakeBlock
 	
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(POWERED, false).withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
+			float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+		return this.getDefaultState().withProperty(POWERED, false).withProperty(FACING, BlockPistonBase.getFacingFromEntity(pos, placer));
 	}
 	
 	public IBlockState getStateFromMeta(int meta)

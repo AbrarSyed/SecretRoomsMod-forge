@@ -13,7 +13,7 @@ public abstract class BaseMessagePacket<REQ extends IMessage> implements IMessag
 {
 	@Override
 	public REQ onMessage(REQ message, MessageContext ctx) {
-		onReceived(message, ctx.side == Side.SERVER ? ctx.getServerHandler().player : SecretRooms5.proxy.getPlayer());
+		onReceived(message, ctx.side == Side.SERVER ? ctx.getServerHandler().playerEntity : SecretRooms5.proxy.getPlayer());
 		return null;
 	}
 	

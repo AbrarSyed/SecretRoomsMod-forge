@@ -13,6 +13,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public interface ISecretTileEntity extends ITickable
@@ -40,11 +41,15 @@ public interface ISecretTileEntity extends ITickable
 	public static IBlockState getMirrorState(IBlockAccess access, BlockPos pos)
 	{
 		IBlockState returnState = Blocks.AIR.getDefaultState();
+		final HashMap<Integer, WorldServer> worlds = new HashMap<>();
+		if(FMLCommonHandler.instance().getMinecraftServerInstance() != null)
+			for(WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers)
+				worlds.put(server.provider.getDimension(), server);
 		for(int dim : RENDER_MAP.keySet())
 			if(FMLCommonHandler.instance().getMinecraftServerInstance() == null)
-				returnState = getMirrorState(SecretRooms5.proxy.getPlayer().world, pos);
-			else if(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim) == access)
-				returnState = getMirrorState(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim), pos);
+				returnState = getMirrorState(SecretRooms5.proxy.getPlayer().worldObj, pos);
+			else if(worlds.get(dim) == access)
+				returnState = getMirrorState(worlds.get(dim), pos);
 		return returnState == null ? Blocks.STONE.getDefaultState() : returnState;
 	}
 	

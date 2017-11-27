@@ -1,9 +1,7 @@
 package com.wynprice.secretroomsmod.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -47,95 +45,45 @@ public class TorchLever extends BlockTorch
 		return new BlockStateContainer(this, POWERED, FACING);
 	}
 	
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+	private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
     {
-        return canAttachTo(worldIn, pos, side);
+        BlockPos blockpos = pos.offset(facing.getOpposite());
+        boolean flag = facing.getAxis().isHorizontal();
+        return flag && worldIn.isSideSolid(blockpos, facing, true) || facing.equals(EnumFacing.UP) && this.canPlaceOn(worldIn, blockpos);
     }
 
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+	private boolean canPlaceOn(World worldIn, BlockPos pos)
     {
-        for (EnumFacing enumfacing : EnumFacing.values())
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.isSideSolid(worldIn, pos, EnumFacing.UP))
         {
-            if (canAttachTo(worldIn, pos, enumfacing))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected static boolean canAttachTo(World worldIn, BlockPos p_181090_1_, EnumFacing p_181090_2_)
-    {
-        return canPlaceBlock(worldIn, p_181090_1_, p_181090_2_);
-    }
-    
-    protected static boolean canPlaceBlock(World worldIn, BlockPos pos, EnumFacing direction)
-    {
-        BlockPos blockpos = pos.offset(direction.getOpposite());
-        IBlockState iblockstate = worldIn.getBlockState(blockpos);
-        boolean flag = iblockstate.getBlockFaceShape(worldIn, blockpos, direction) == BlockFaceShape.SOLID;
-        Block block = iblockstate.getBlock();
-
-        if (direction == EnumFacing.UP)
-        {
-            return iblockstate.isTopSolid() || !isExceptionBlockForAttaching(block) && flag;
+            return true;
         }
         else
         {
-            return !isExceptBlockForAttachWithPiston(block) && flag;
+            return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
         }
     }
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
-
-        if (canAttachTo(worldIn, pos, facing) && facing != EnumFacing.DOWN)
+        
+        if (this.canPlaceAt(worldIn, pos, facing))
         {
-            return iblockstate.withProperty(FACING, facing);
+            return this.getDefaultState().withProperty(FACING, facing);
         }
         else
         {
             for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
             {
-                if (enumfacing != facing && canAttachTo(worldIn, pos, enumfacing))
+                if (worldIn.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
                 {
-                    return iblockstate.withProperty(FACING, enumfacing);
+                    return this.getDefaultState().withProperty(FACING, enumfacing);
                 }
             }
 
-            if (worldIn.getBlockState(pos.down()).isTopSolid())
-            {
-                return iblockstate.withProperty(FACING, EnumFacing.UP);
-            }
-            else
-            {
-                return iblockstate;
-            }
-        }
-    }
-
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        if (this.checkCanSurvive(worldIn, pos, state) && !canAttachTo(worldIn, pos, state.getValue(FACING)))
-        {
-            this.dropBlockAsItem(worldIn, pos, state, 0);
-            worldIn.setBlockToAir(pos);
-        }
-    }
-
-    private boolean checkCanSurvive(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (this.canPlaceBlockAt(worldIn, pos))
-        {
-            return true;
-        }
-        else
-        {
-            this.dropBlockAsItem(worldIn, pos, state, 0);
-            worldIn.setBlockToAir(pos);
-            return false;
+            return this.getDefaultState();
         }
     }
 
@@ -151,9 +99,9 @@ public class TorchLever extends BlockTorch
             worldIn.setBlockState(pos, state, 3);
             float f = ((Boolean)state.getValue(POWERED)).booleanValue() ? 0.6F : 0.5F;
             worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, f);
-            worldIn.notifyNeighborsOfStateChange(pos, this, false);
+            worldIn.notifyNeighborsOfStateChange(pos, this);
             EnumFacing enumfacing = state.getValue(FACING);
-            worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing.getOpposite()), this, false);
+            worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing.getOpposite()), this);
             return true;
         }
     }
@@ -162,9 +110,9 @@ public class TorchLever extends BlockTorch
     {
         if (((Boolean)state.getValue(POWERED)).booleanValue())
         {
-            worldIn.notifyNeighborsOfStateChange(pos, this, false);
+            worldIn.notifyNeighborsOfStateChange(pos, this);
             EnumFacing enumfacing = state.getValue(FACING);
-            worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing.getOpposite()), this, false);
+            worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing.getOpposite()), this);
         }
 
         super.breakBlock(worldIn, pos, state);

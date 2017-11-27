@@ -6,6 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -29,12 +32,16 @@ public class GuiSecretChest extends GuiContainer
     {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+        if (this.mc.thePlayer.inventory.getItemStack() != null && this.mc.thePlayer.inventory.getItemStack().getItem() == Item.getItemFromBlock(Blocks.AIR) && this.getSlotUnderMouse() != null && this.getSlotUnderMouse().getHasStack())
+        {
+            ItemStack itemstack1 = this.getSlotUnderMouse().getStack();
+            this.renderToolTip(itemstack1, mouseX, mouseY);
+        }
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        this.fontRenderer.drawString(new TextComponentTranslation("gui.secret_chest.name").getUnformattedText(), 8, 6, 4210752);
+        Minecraft.getMinecraft().fontRendererObj.drawString(new TextComponentTranslation("gui.secret_chest.name").getUnformattedText(), 8, 6, 4210752);
     }
 
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)

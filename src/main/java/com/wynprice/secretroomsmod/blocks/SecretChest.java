@@ -33,6 +33,7 @@ public class SecretChest extends BaseFakeBlock
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		for(int i = 0; i < ((TileEntitySecretChest)worldIn.getTileEntity(pos)).getHandler().getSlots(); i++)
+			if(((TileEntitySecretChest)worldIn.getTileEntity(pos)).getHandler().getStackInSlot(i) != null)
 			InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((TileEntitySecretChest)worldIn.getTileEntity(pos)).getHandler().getStackInSlot(i));
 	}
 	
@@ -46,7 +47,7 @@ public class SecretChest extends BaseFakeBlock
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
+			EnumHand hand, ItemStack heldItem, EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
 		HashMap<BlockPos, Integer> playerMap = PLAYERS_USING_MAP.get(worldIn.isRemote);
 		if(!playerMap.containsKey(pos))
@@ -54,7 +55,7 @@ public class SecretChest extends BaseFakeBlock
 		playerMap.put(pos, playerMap.get(pos) + 1);
 		if(!worldIn.isRemote)
 			playerIn.openGui(SecretRooms5.instance, GuiHandler.SECRET_CHEST, worldIn, pos.getX(), pos.getY(), pos.getZ());
-		worldIn.notifyNeighborsOfStateChange(pos, this, false);
+		worldIn.notifyNeighborsOfStateChange(pos, this);
 		return true;
 	}
 

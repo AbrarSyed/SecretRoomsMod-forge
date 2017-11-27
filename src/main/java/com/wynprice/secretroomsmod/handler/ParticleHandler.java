@@ -20,20 +20,20 @@ public class ParticleHandler
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
-		int i = MathHelper.floor(event.getEntity().posX);
-        int j = MathHelper.floor(event.getEntity().posY - 0.20000000298023224D);
-        int k = MathHelper.floor(event.getEntity().posZ);
+		int i = MathHelper.floor_double(event.getEntity().posX);
+        int j = MathHelper.floor_double(event.getEntity().posY - 0.20000000298023224D);
+        int k = MathHelper.floor_double(event.getEntity().posZ);
         BlockPos blockpos = new BlockPos(i, j, k);
         if (event.getEntity().isSprinting() && !event.getEntity().isInWater() &&
-        		event.getEntity().world.getTileEntity(blockpos) instanceof ISecretTileEntity && 
-        		((ISecretTileEntity)event.getEntity().world.getTileEntity(blockpos)).getMirrorState() != null)
+        		event.getEntity().worldObj.getTileEntity(blockpos) instanceof ISecretTileEntity && 
+        		((ISecretTileEntity)event.getEntity().worldObj.getTileEntity(blockpos)).getMirrorState() != null)
         {
-        	event.getEntity().world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, event.getEntity().posX + 
+        	event.getEntity().worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, event.getEntity().posX + 
         			((double)event.getEntityLiving().getRNG().nextFloat() - 0.5D) * 
         			(double)event.getEntity().width, event.getEntity().getEntityBoundingBox().minY + 0.1D,
         			event.getEntity().posZ + ((double)event.getEntityLiving().getRNG().nextFloat() - 0.5D) *
         			(double)event.getEntity().width, -event.getEntity().motionX * 4.0D, 1.5D, -event.getEntity().motionZ * 4.0D,
-        			Block.getStateId(((ISecretTileEntity)event.getEntity().world.getTileEntity(blockpos)).getMirrorState()));
+        			Block.getStateId(((ISecretTileEntity)event.getEntity().worldObj.getTileEntity(blockpos)).getMirrorState()));
         }
 	}
 }

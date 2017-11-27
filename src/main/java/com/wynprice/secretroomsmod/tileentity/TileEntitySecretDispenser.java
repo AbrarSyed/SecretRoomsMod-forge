@@ -61,7 +61,7 @@ public class TileEntitySecretDispenser extends TileEntityDispenser implements IS
 		if(mirrorState == null && ParticleHandler.BLOCKBRAKERENDERMAP.containsKey(pos))
 			mirrorState = ParticleHandler.BLOCKBRAKERENDERMAP.get(pos);
 		if(mirrorState == null && RENDER_MAP.containsKey(pos))
-			mirrorState = ISecretTileEntity.getMap(world).get(pos);
+			mirrorState = ISecretTileEntity.getMap(worldObj).get(pos);
 		return mirrorState;
 	}
 	
@@ -76,7 +76,7 @@ public class TileEntitySecretDispenser extends TileEntityDispenser implements IS
 	{
 		if(mirrorState.getBlock() instanceof ISecretBlock)
 			mirrorState = Blocks.STONE.getDefaultState();
-		ISecretTileEntity.getMap(world).put(this.pos, mirrorState);
+		ISecretTileEntity.getMap(worldObj).put(this.pos, mirrorState);
 		this.mirrorState = mirrorState.getBlock().getStateFromMeta(mirrorState.getBlock().getMetaFromState(mirrorState));
 	}
 	

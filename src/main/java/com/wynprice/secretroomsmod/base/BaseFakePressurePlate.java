@@ -43,23 +43,18 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 		return false;
 	}
 	
-	@Override
-	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
-	}
-	
 	public void calculateState(World worldIn, BlockPos pos)
 	{
 		List<Entity> entityList = worldIn.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1f, pos.getY() + 1.1f, pos.getZ() + 1f));
-		int level = MathHelper.clamp(getLevel(worldIn, pos, entityList), 0, 15);
+		int level = MathHelper.clamp_int(getLevel(worldIn, pos, entityList), 0, 15);
 		if((level == 0 || worldIn.getBlockState(pos).getValue(POWER) == 0) && level != worldIn.getBlockState(pos).getValue(POWER))
 	        worldIn.playSound((EntityPlayer)null, pos, level == 0 ? soundOff() : soundOn(), SoundCategory.BLOCKS, 0.3F, level == 0 ?  0.75F : 0.90000004F);
 
 		if(worldIn.getBlockState(pos).getValue(POWER) != entityList.size())
 		{
 			worldIn.setBlockState(pos, setRedstoneStrength(worldIn.getBlockState(pos), level), 3);
-			worldIn.notifyNeighborsOfStateChange(pos, this, false);
-	        worldIn.notifyNeighborsOfStateChange(pos.down(), this, false);
+			worldIn.notifyNeighborsOfStateChange(pos, this);
+	        worldIn.notifyNeighborsOfStateChange(pos.down(), this);
 		}
 		if(worldIn.getBlockState(pos).getValue(POWER) > 0)
 			worldIn.scheduleUpdate(new BlockPos(pos), this, this.tickRate(worldIn));

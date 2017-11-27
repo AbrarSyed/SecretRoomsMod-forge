@@ -27,11 +27,10 @@ public class BaseItemDoor extends Item
 		setUnlocalizedName(name);
 		setRegistryName(SecretRooms5.MODID, name);
 	}
-
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
-			EnumFacing facing, float hitX, float hitY, float hitZ) 
+	public EnumActionResult onItemUse(ItemStack heldItem, EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
+			 EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
 		if (facing != EnumFacing.UP)
         {
@@ -57,7 +56,7 @@ public class BaseItemDoor extends Item
                 placeDoor(worldIn, pos, iblockstate, enumfacing, door, flag);
                 SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
                 worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-                itemstack.shrink(1);
+                itemstack.stackSize--;
                 return EnumActionResult.SUCCESS;
             }
             else
@@ -94,7 +93,7 @@ public class BaseItemDoor extends Item
         worldIn.setBlockState(blockpos2, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 3);
         ((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(mirrorState, pos);
         ((ISecretTileEntity)worldIn.getTileEntity(blockpos2)).setMirrorState(mirrorState, blockpos2);
-        worldIn.notifyNeighborsOfStateChange(pos, door, false);
-        worldIn.notifyNeighborsOfStateChange(blockpos2, door, false);
+        worldIn.notifyNeighborsOfStateChange(pos, door);
+        worldIn.notifyNeighborsOfStateChange(blockpos2, door);
     }
 }

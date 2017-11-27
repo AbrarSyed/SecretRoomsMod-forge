@@ -3,6 +3,7 @@ package com.wynprice.secretroomsmod.render;
 import com.wynprice.secretroomsmod.blocks.SecretChest;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,7 @@ public class ContainerSecretChest extends Container
 	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int fromSlot) {
-	    ItemStack previous = ItemStack.EMPTY;
+	    ItemStack previous = null;
 	    Slot slot = (Slot) this.inventorySlots.get(fromSlot);
 
 	    if (slot != null && slot.getHasStack()) {
@@ -41,19 +42,20 @@ public class ContainerSecretChest extends Container
 	        previous = current.copy();
 	        if (fromSlot < handler.getSlots()) {
 	            if (!this.mergeItemStack(current, handler.getSlots(), 63, true))
-	                return ItemStack.EMPTY;
+	                return null;
 	        } else {
 	            if (!this.mergeItemStack(current, 0, handler.getSlots(), false))
-	                return ItemStack.EMPTY;
+	                return null;
 	        }
-	        if (current.getCount() == 0)
-	            slot.putStack(ItemStack.EMPTY);
+	        if (current.stackSize == 0)
+	            slot.putStack(null);
 	        else
 	            slot.onSlotChanged();
 
-	        if (current.getCount() == previous.getCount())
+	        if (current.stackSize == previous.stackSize)
 	            return null;
-	        slot.onTake(playerIn, current);
+	        slot.onPickupFromSlot(playerIn, current);
+	        return previous;
 	    }
 	    return previous;
 	}
@@ -61,8 +63,8 @@ public class ContainerSecretChest extends Container
 	@Override
 	public void onContainerClosed(EntityPlayer playerIn) 
 	{
-		SecretChest.PLAYERS_USING_MAP.get(playerIn.world.isRemote).put(pos, SecretChest.PLAYERS_USING_MAP.get(playerIn.world.isRemote).get(pos) - 1);
-		playerIn.world.notifyNeighborsOfStateChange(pos, playerIn.world.getBlockState(pos).getBlock(), false);
+		SecretChest.PLAYERS_USING_MAP.get(playerIn.worldObj.isRemote).put(pos, SecretChest.PLAYERS_USING_MAP.get(playerIn.worldObj.isRemote).get(pos) - 1);
+		playerIn.worldObj.notifyNeighborsOfStateChange(pos, playerIn.worldObj.getBlockState(pos).getBlock());
 	}
 
 	@Override

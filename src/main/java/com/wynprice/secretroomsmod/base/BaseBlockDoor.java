@@ -13,9 +13,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -53,11 +52,6 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 		return this == SecretBlocks.SECRET_IRON_DOOR ? SecretItems.SECRET_IRON_DOOR : SecretItems.SECRET_WOODEN_DOOR;
 	}
 	
-	@Override
-	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
-	}
-	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public FakeBlockModel phaseModel(FakeBlockModel model) {
@@ -84,12 +78,14 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 		return ISecretBlock.super.getSoundType(state, world, pos, entity);
 	}
 	
+	@Override
 	public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 	
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
 		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
         {
@@ -102,7 +98,7 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
             }
             else if (blockIn != this)
             {
-                iblockstate.neighborChanged(worldIn, blockpos, blockIn, fromPos);
+                iblockstate.neighborChanged(worldIn, blockpos, blockIn);
             }
         }
         else

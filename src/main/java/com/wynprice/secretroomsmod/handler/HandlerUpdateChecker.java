@@ -103,7 +103,7 @@ public class HandlerUpdateChecker
 	        	ITextComponent componant = new TextComponentTranslation("update.version", SecretRooms5.MODNAME, SecretRooms5.VERSION, target)
 	        			.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, (String)json.get("homepage"))));
 	        	componant.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("update.hover", (String)json.get("homepage"))));
-	        	event.player.sendMessage(componant);
+	        	event.player.addChatComponentMessage(componant);
 
 	        }
 	        else

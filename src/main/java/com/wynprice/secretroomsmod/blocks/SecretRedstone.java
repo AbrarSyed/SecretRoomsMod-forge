@@ -12,13 +12,11 @@ import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockObserver;
 import net.minecraft.block.BlockRedstoneDiode;
 import net.minecraft.block.BlockRedstoneRepeater;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
@@ -77,25 +75,15 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 	}
 	
 	@Override
-	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		return ISecretBlock.super.canBeConnectedTo(world, pos, facing);
-	}
-	
-	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) {
-		ISecretBlock.super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
+		ISecretBlock.super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
 	}
 	
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
 	{
 		return ISecretBlock.super.getSoundType(state, world, pos, entity);
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ISecretBlock.super.getBlockFaceShape(worldIn, state, pos, face);
 	}
 	
 	@Override
@@ -170,7 +158,7 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 
         for (BlockPos blockpos : list)
         {
-            worldIn.notifyNeighborsOfStateChange(blockpos, this, false);
+            worldIn.notifyNeighborsOfStateChange(blockpos, this);
         }
 
         return state;
@@ -258,11 +246,11 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
     {
         if (worldIn.getBlockState(pos).getBlock() instanceof BlockRedstoneWire)
         {
-            worldIn.notifyNeighborsOfStateChange(pos, this, false);
+            worldIn.notifyNeighborsOfStateChange(pos, this);
 
             for (EnumFacing enumfacing : EnumFacing.values())
             {
-                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
+                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }
         }
     }
@@ -278,7 +266,7 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 
             for (EnumFacing enumfacing : EnumFacing.Plane.VERTICAL)
             {
-                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
+                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }
 
             for (EnumFacing enumfacing1 : EnumFacing.Plane.HORIZONTAL)
@@ -313,7 +301,7 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
         {
             for (EnumFacing enumfacing : EnumFacing.values())
             {
-                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
+                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }
 
             this.updateSurroundingRedstone(worldIn, pos, state);
@@ -438,10 +426,6 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
         {
             EnumFacing enumfacing = (EnumFacing)blockState.getValue(BlockRedstoneRepeater.FACING);
             return enumfacing == side || enumfacing.getOpposite() == side;
-        }
-        else if (Blocks.OBSERVER == blockState.getBlock())
-        {
-            return side == blockState.getValue(BlockObserver.FACING);
         }
         else
         {
