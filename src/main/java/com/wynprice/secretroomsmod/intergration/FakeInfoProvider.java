@@ -49,7 +49,7 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 							ISecretTileEntity.getMirrorState(world, data.getPos()).getBlock()
 								.getPickBlock(ISecretTileEntity.getMirrorState(world, data.getPos()), 
 										world.rayTraceBlocks(player.getPositionVector(), player.getPositionVector()
-												.addVector(player.getLookVec().x * 5, player.getLookVec().y * 5, player.getLookVec().z * 5)), world, data.getPos(), player);
+												.addVector(player.getLookVec().xCoord * 5, player.getLookVec().yCoord * 5, player.getLookVec().zCoord * 5)), world, data.getPos(), player);
 					}
 					
 					@Override
