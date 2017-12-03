@@ -9,7 +9,6 @@ message.secretroomsmod.commandShow.hide=Camo blocks made secret
 
 #config
 config.do_update.comment=Should the Update Checker be run on startup
-config.blockcolors.comment=List all the blocks here that rely on BlockColors to work, and arn't full blocks.
 config.ao.comment=Should Ambient Occlusion be forced on. If false, AO will be turned on if Minecraft permits it, If true it will be forced on no matter what.
 
 #update Checker

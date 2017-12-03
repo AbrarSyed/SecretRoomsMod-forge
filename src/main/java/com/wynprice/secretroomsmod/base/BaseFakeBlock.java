@@ -11,10 +11,8 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -116,17 +114,4 @@ public class BaseFakeBlock extends Block implements ISecretBlock
     {
         return 1.0F;
     }
-    
-    @Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) 
-	{	
-    	return ISecretBlock.super.canPlaceBlockOnSide(worldIn, pos, side);
-	}
-		
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) 
-	{
-		ISecretBlock.super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	}
 }

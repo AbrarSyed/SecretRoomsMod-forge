@@ -1,18 +1,14 @@
 package com.wynprice.secretroomsmod.base.interfaces;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
-import com.wynprice.secretroomsmod.network.SecretNetwork;
-import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -20,9 +16,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -30,7 +24,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
@@ -100,7 +93,7 @@ public interface ISecretBlock extends ITileEntityProvider
 		IBlockState blockstate = null;
 		ArrayList<TileEntity> list = new ArrayList<>(ALL_SECRET_TILE_ENTITIES);
 		for(TileEntity tileentity : list)
-			if(tileentity.getWorld() != null && tileentity.getWorld().getBlockState(tileentity.getPos()) == state && tileentity instanceof ISecretTileEntity)
+			if(tileentity.getWorld() != null && tileentity.getWorld().isBlockLoaded(tileentity.getPos()) && tileentity.getWorld().getBlockState(tileentity.getPos()) == state && tileentity instanceof ISecretTileEntity)
 				blockstate = ISecretTileEntity.getMirrorState(tileentity.getWorld(), tileentity.getPos());
 		return blockstate != null && !(blockstate.getBlock() instanceof ISecretBlock) ? blockstate.getMaterial() : material;
 	}
@@ -179,40 +172,4 @@ public interface ISecretBlock extends ITileEntityProvider
 		}
 		return false;
 	}
-	
-	static final HashMap<BlockPos, IBlockState> REPLACEABLE_BLOCK_MAP = new HashMap<>();
-	
-	default boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) 
-	{	
-		if(worldIn.isRemote && worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos())
-				.getBlock().isReplaceable(worldIn, net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos()) && 
-				!(worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos()).getBlock() instanceof IFluidBlock)
-				&& !(worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos()).getBlock() instanceof BlockLiquid))
-			REPLACEABLE_BLOCK_MAP.put(pos, worldIn.getBlockState(net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos()));
-		return worldIn.getBlockState(pos).getBlock().canPlaceBlockAt(worldIn, pos);
-	}
-	
-	default void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		if(worldIn.isRemote)
-		{
-			IBlockState blockstate = Blocks.AIR.getDefaultState();
-			BlockPos overPosition = new BlockPos(pos);
-			if(REPLACEABLE_BLOCK_MAP.containsKey(pos))
-			{
-				blockstate = REPLACEABLE_BLOCK_MAP.get(pos);
-				REPLACEABLE_BLOCK_MAP.remove(pos);
-			}
-			if(blockstate.getBlock() == Blocks.AIR)
-			{
-				overPosition = net.minecraft.client.Minecraft.getMinecraft().objectMouseOver.getBlockPos();
-				blockstate = worldIn.getBlockState(overPosition);
-				if(worldIn.getTileEntity(overPosition) instanceof ISecretTileEntity)
-					blockstate = ISecretTileEntity.getMirrorState(worldIn, overPosition);
-			}
-			SecretNetwork.sendToServer(new MessagePacketFakeBlockPlaced(pos, overPosition, blockstate));
-			((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(blockstate, overPosition);
-		}
-	}
-
 }

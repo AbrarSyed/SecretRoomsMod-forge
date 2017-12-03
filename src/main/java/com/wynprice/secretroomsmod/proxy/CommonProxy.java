@@ -7,7 +7,6 @@ import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.handler.RecipeHelperHandler;
-import com.wynprice.secretroomsmod.handler.ServerRecievePacketHandler;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.tileentity.TileEntitySecretChest;
@@ -34,6 +33,8 @@ public class CommonProxy
 				
 		SecretNetwork.preInit();
 		
+		SecretConfig.syncConfig();
+		
 		RecipeHelperHandler.preInit();
     }
 	
@@ -50,8 +51,7 @@ public class CommonProxy
     		GameRegistry.registerTileEntity(clas, SecretRooms5.MODID + clas.getSimpleName());
     	
     	Object[] handlers = {
-    			new ParticleHandler(),
-    			new ServerRecievePacketHandler()
+    			new ParticleHandler()	
     	};
     	for(Object o : handlers)
     		MinecraftForge.EVENT_BUS.register(o);

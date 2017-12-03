@@ -19,7 +19,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -186,16 +185,4 @@ public class SecretDispenser extends BlockDispenser implements ISecretBlock
     {
         return 1.0F;
     }
-    
-    @Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) 
-	{	
-		return ISecretBlock.super.canPlaceBlockOnSide(worldIn, pos, side);
-	}
-		
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		ISecretBlock.super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	}
 }

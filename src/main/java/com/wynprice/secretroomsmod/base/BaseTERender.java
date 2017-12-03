@@ -1,8 +1,6 @@
 package com.wynprice.secretroomsmod.base;
 
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
@@ -20,7 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -29,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -82,29 +78,15 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
         		currentRender = ((ISecretBlock)block).overrideThisState(world, currentPos, currentRender);
 	        	if(!isHelmet)
 	        	{
-		        	try
-		        	{
+	        		try
+	        		{
 		        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, ((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)),
-			        			world.getBlockState(tileEntity.getPos()), tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
-		        	}
-		        	catch (Throwable e) 
-		        	{
-		        		try
-		        		{
-			        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, ((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)),
-			        				renderState, tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
-		        		}
-		        		catch (Throwable t) {
-		        			Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, ((ISecretBlock)block).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())),
-			        				Blocks.STONE.getDefaultState(), tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
-						}
+		        				renderState, tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
+	        		}
+	        		catch (Throwable t) {
+	        			Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, ((ISecretBlock)block).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())),
+		        				Blocks.STONE.getDefaultState(), tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
 					}
-		        	
-		        	for(BakedQuad quad : ((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)).getQuads(renderState, null, 0L))
-	        			tintList.add(quad.hasTintIndex() ? quad.getTintIndex() : -1);
-		        	for(EnumFacing face : EnumFacing.values())
-		        		for(BakedQuad quad : ((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)).getQuads(renderState, face, 0L))
-		        			tintList.add(quad.hasTintIndex() ? quad.getTintIndex() : -1);
 	        	}
 	        	else
 	        		try
@@ -116,23 +98,6 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 		        	catch (Throwable e) {
 					}
 	        }
-	        Collections.reverse(tintList);
-	        boolean isColorBlock = false;
-	        if(te.getMirrorState() != null)
-	        	for(String s : SecretConfig.forcedBlockColors) 
-	        		if(s.equals(te.getMirrorState().getBlock().getRegistryName().toString()) && ((ISecretBlock)block).allowForcedBlockColors()) 
-	        			isColorBlock = true;
-	        if(!isHelmet)
-	        	for(int i = 0; i < tessellator.getBuffer().getVertexCount() + 1; i++)
-	    	    {
-	            	int sec = Math.floorDiv(i - 1, 4);
-	            	if(!isColorBlock && (sec < 0 || tintList.size() <= sec || tintList.get(sec) < 0))
-	            		continue;
-	            	Color color = new Color(Minecraft.getMinecraft().getBlockColors()
-	            			.colorMultiplier(te.getMirrorState(), tileEntity.getWorld(), tileEntity.getPos(), isColorBlock ? 1 : tintList.get(sec)));
-	            	tessellator.getBuffer().putColorMultiplier(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, i);
-	    	    }
-	        
 	        tessellator.draw();
 	        GlStateManager.shadeModel(7424);
 	        Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);

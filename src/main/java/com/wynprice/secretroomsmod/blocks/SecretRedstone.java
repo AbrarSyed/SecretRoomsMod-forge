@@ -18,12 +18,15 @@ import net.minecraft.block.BlockRedstoneRepeater;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,18 +40,28 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
+public class SecretRedstone extends Block implements ISecretBlock
 {
+	
+	public final static PropertyInteger POWER = BlockRedstoneWire.POWER;
+	
 	public SecretRedstone() {
+		super(Material.CIRCUITS);
 		setRegistryName("secret_redstone");
 		setUnlocalizedName("secret_redstone");
 		this.setHardness(0.5f);
 		this.translucent = true;
+		this.setDefaultState(this.blockState.getBaseState().withProperty(POWER, 0));
     }
 	
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return ISecretBlock.super.getBoundingBox(state, source, pos);
+	}
+	
+	@Override
+	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+		return true;
 	}
 	
 	@Override
@@ -147,17 +160,6 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 		return true;
 	}
 	
-	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {	
-		return ISecretBlock.super.canPlaceBlockOnSide(worldIn, pos, side);
-	}
-		
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		ISecretBlock.super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	}
-	
 	//redstone
     private final Set<BlockPos> blocksNeedingUpdate = Sets.<BlockPos>newHashSet();
     private boolean canProvidePower = true;
@@ -174,6 +176,11 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
         }
 
         return state;
+    }
+    
+    @Override
+    public boolean canProvidePower(IBlockState state) {
+    	return canProvidePower;
     }
 
     private IBlockState calculateCurrentChanges(World worldIn, BlockPos pos1, BlockPos pos2, IBlockState state)
@@ -193,26 +200,12 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 
         int l = 0;
 
-        for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+        for (EnumFacing enumfacing : EnumFacing.VALUES)
         {
             BlockPos blockpos = pos1.offset(enumfacing);
-            boolean flag = blockpos.getX() != pos2.getX() || blockpos.getZ() != pos2.getZ();
-            if (flag)
-            {
+            if (blockpos.getX() != pos2.getX() || blockpos.getZ() != pos2.getZ() || blockpos.getY() != pos2.getY())
                 l = this.getMaxCurrentStrength(worldIn, blockpos, l);
-            }
 
-            if (worldIn.getBlockState(blockpos).isNormalCube() && !worldIn.getBlockState(pos1.up()).isNormalCube())
-            {
-                if (flag && pos1.getY() >= pos2.getY())
-                {
-                    l = this.getMaxCurrentStrength(worldIn, blockpos.up(), l);
-                }
-            }
-            else if (!worldIn.getBlockState(blockpos).isNormalCube() && flag && pos1.getY() <= pos2.getY())
-            {
-                l = this.getMaxCurrentStrength(worldIn, blockpos.down(), l);
-            }
         }
         if (l > j)
         {
@@ -256,7 +249,7 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
      */
     private void notifyWireNeighborsOfStateChange(World worldIn, BlockPos pos)
     {
-        if (worldIn.getBlockState(pos).getBlock() instanceof BlockRedstoneWire)
+        if (worldIn.getBlockState(pos).getBlock() instanceof BlockRedstoneWire || worldIn.getBlockState(pos).getBlock() == this)
         {
             worldIn.notifyNeighborsOfStateChange(pos, this, false);
 
@@ -301,6 +294,11 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
             }
         }
     }
+    
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[] {POWER});
+    }
 
     /**
      * Called serverside after this block is replaced with another in Chunk, but before the Tile Entity is updated
@@ -341,7 +339,7 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 
     private int getMaxCurrentStrength(World worldIn, BlockPos pos, int strength)
     {
-        if (!(worldIn.getBlockState(pos).getBlock() instanceof BlockRedstoneWire))
+        if (!(worldIn.getBlockState(pos).getBlock() instanceof BlockRedstoneWire || worldIn.getBlockState(pos).getBlock() == this))
         {
             return strength;
         }
@@ -377,8 +375,12 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
 
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return !this.canProvidePower ? 0 : blockState.getWeakPower(blockAccess, pos, side);
-    }
+    	boolean sidesPowered = false;
+    	for(EnumFacing face : EnumFacing.values())
+    		if(face != side && face != side.getOpposite() && blockAccess.getBlockState(pos.offset(face)).getBlock().canConnectRedstone(blockAccess.getBlockState(pos.offset(face)), blockAccess, pos.offset(face), face.getOpposite()))
+    			sidesPowered = true;
+    	return sidesPowered ? 0 : this.getWeakPower(blockState, blockAccess, pos, side);
+    }				
 
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         if (!this.canProvidePower)
@@ -394,6 +396,16 @@ public class SecretRedstone extends BlockRedstoneWire implements ISecretBlock
             ret = i;
             return ret < 1 ? 0 : ret - 1;
         }
+    }
+    
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(POWER, Integer.valueOf(meta));
+    }
+    
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((Integer)state.getValue(POWER)).intValue();
     }
 
     private boolean isPowerSourceAt(IBlockAccess worldIn, BlockPos pos, EnumFacing side)

@@ -13,11 +13,9 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -144,17 +142,5 @@ public class SecretLever extends BlockLever implements ISecretBlock
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 		return true;
-	}
-	
-	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) 
-	{	
-		return ISecretBlock.super.canPlaceBlockOnSide(worldIn, pos, side);
-	}
-		
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		ISecretBlock.super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
 }

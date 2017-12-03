@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.wynprice.secretroomsmod.base.BaseBlockDoor;
+import com.wynprice.secretroomsmod.base.SecretItemBlock;
 import com.wynprice.secretroomsmod.blocks.GhostBlock;
 import com.wynprice.secretroomsmod.blocks.OneWayGlass;
 import com.wynprice.secretroomsmod.blocks.SecretButton;
@@ -166,7 +167,7 @@ public class SecretBlocks
 		ForgeRegistries.BLOCKS.register(block);
 		if(BLOCKS_WITH_ITEMS.contains(block))
 		{
-			ItemBlock item = new ItemBlock(block);
+			ItemBlock item = new SecretItemBlock(block);
 			item.setRegistryName(block.getRegistryName());
 			item.setMaxStackSize(BLOCK_STACK_SIZES.get(block));
 			ForgeRegistries.ITEMS.register(item);

@@ -1,7 +1,6 @@
 package com.wynprice.secretroomsmod.network;
 
 import com.wynprice.secretroomsmod.SecretRooms5;
-import com.wynprice.secretroomsmod.network.packets.MessagePacketFakeBlockPlaced;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketToggleGlassDirection;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateClient;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateProbe;
@@ -21,7 +20,6 @@ public class SecretNetwork
 	
 	public static void preInit()
 	{
-		registerMessage(MessagePacketFakeBlockPlaced.class, Side.SERVER);
 		registerMessage(MessagePacketUpdateClient.class, Side.CLIENT);
 		registerMessage(MessagePacketToggleGlassDirection.class, Side.SERVER);
 		registerMessage(MessagePacketUpdateProbe.class, Side.SERVER);
