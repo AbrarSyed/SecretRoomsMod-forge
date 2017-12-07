@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 
 public abstract class BaseTextureFakeModel extends FakeBlockModel 
@@ -55,15 +56,20 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
 				for(BakedQuad mirrorQuad : secList)
 				{
-					int[] vList = new int[quad.getVertexData().length];
-					System.arraycopy(quad.getVertexData(), 0, vList, 0, vList.length);
-					int[] sList = mirrorQuad.getVertexData();
-					int[] cList = {4, 5, 11, 12, 18, 19, 25, 26};
-					if(sList != null)
-						for(int i : cList)
-							vList[i] = sList[i];
-					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), quad.getFace(), 
-								Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+//					int[] vList = new int[quad.getVertexData().length];
+//					System.arraycopy(quad.getVertexData(), 0, vList, 0, vList.length);
+//					int[] sList = mirrorQuad.getVertexData();
+//
+//					if(sList != null)
+//				      for (int i = 0; i < 4; i++)
+//				      {
+//				        int pos = i * mirrorQuad.getVertexData().length / 4;
+//				        vList[pos + 4] = sList[pos + 4];
+//				        vList[pos + 5] = sList[pos + 5];
+//				      }
+//					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), quad.getFace(), 
+//								Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(BaseTERender.currentRender), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+					finalList.add(mirrorQuad);
 				}
 			}
 		return finalList;

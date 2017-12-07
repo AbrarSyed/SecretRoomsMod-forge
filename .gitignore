@@ -19,3 +19,4 @@ out
 *.iml
 *.iws
 *.ipr
+src/main/resources/assets/secretroomsmod/recipes/recipeConverter.py
