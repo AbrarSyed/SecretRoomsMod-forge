@@ -70,6 +70,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	        currentRender = tileEntity.getWorld().getBlockState(tileEntity.getPos()).getActualState(tileEntity.getWorld(), tileEntity.getPos());
 	        currentPos = tileEntity.getPos();
 	        currentWorld = tileEntity.getWorld();
+			
 	        if(block instanceof ISecretBlock && te.getMirrorState() != null)
 	        {
 	        	IBlockState renderState = te.getMirrorState().getBlock().getActualState(te.getMirrorState(), tileEntity.getWorld(), tileEntity.getPos());

@@ -15,6 +15,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
@@ -44,6 +48,52 @@ public interface ISecretBlock extends ITileEntityProvider
 	@Override
 	default TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityInfomationHolder();
+	}
+	
+	default IBlockAccess phaseBlockAccess(IBlockAccess world) {
+		return new IBlockAccess() {
+			
+			@Override
+			public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
+				return world.isSideSolid(pos, side, _default);
+			}
+			
+			@Override
+			public boolean isAirBlock(BlockPos pos) {
+				return world.isAirBlock(pos);
+			}
+			
+			@Override
+			public WorldType getWorldType() {
+				return world.getWorldType();
+			}
+			
+			@Override
+			public TileEntity getTileEntity(BlockPos pos) {
+				return world.getTileEntity(pos);
+			}
+			
+			@Override
+			public int getStrongPower(BlockPos pos, EnumFacing direction) {
+				return world.getStrongPower(pos, direction);
+			}
+			
+			@Override
+			public int getCombinedLight(BlockPos pos, int lightValue) {
+				return world.getCombinedLight(pos, lightValue);
+			}
+			
+			@Override
+			public IBlockState getBlockState(BlockPos pos) 
+			{
+				return ISecretTileEntity.getMirrorState(world, pos).getBlock() == Blocks.AIR ? world.getBlockState(pos) : ISecretTileEntity.getMirrorState(world, pos);
+			}
+			
+			@Override
+			public Biome getBiome(BlockPos pos) {
+				return world.getBiome(pos);
+			}
+		};
 	}
 	
 	default boolean allowForcedBlockColors() {

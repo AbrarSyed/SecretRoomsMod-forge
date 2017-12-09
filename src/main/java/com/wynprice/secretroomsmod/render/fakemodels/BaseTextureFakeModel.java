@@ -3,6 +3,7 @@ package com.wynprice.secretroomsmod.render.fakemodels;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.BaseTERender;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
@@ -56,20 +57,20 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
 				for(BakedQuad mirrorQuad : secList)
 				{
-//					int[] vList = new int[quad.getVertexData().length];
-//					System.arraycopy(quad.getVertexData(), 0, vList, 0, vList.length);
-//					int[] sList = mirrorQuad.getVertexData();
-//
-//					if(sList != null)
-//				      for (int i = 0; i < 4; i++)
-//				      {
-//				        int pos = i * mirrorQuad.getVertexData().length / 4;
-//				        vList[pos + 4] = sList[pos + 4];
-//				        vList[pos + 5] = sList[pos + 5];
-//				      }
-//					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), quad.getFace(), 
-//								Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(BaseTERender.currentRender), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
-					finalList.add(mirrorQuad);
+					int[] vList = new int[quad.getVertexData().length];
+					System.arraycopy(quad.getVertexData(), 0, vList, 0, vList.length);
+					int[] sList = mirrorQuad.getVertexData();
+
+					if(sList != null)
+				      for (int i = 0; i < 4; i++)
+				      {
+				        int pos = i * mirrorQuad.getVertexData().length / 4;
+				        vList[pos + 4] = sList[pos + 4];
+				        vList[pos + 5] = sList[pos + 5];
+				      }
+					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), mirrorQuad.getFace(), 
+								Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(BaseTERender.currentRender), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+//					finalList.add(mirrorQuad);
 				}
 			}
 		return finalList;

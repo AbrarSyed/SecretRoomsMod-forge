@@ -85,5 +85,10 @@ public class OneWayGlass extends BaseFakeBlock
 		worldIn.setBlockState(pos, state.withProperty(BlockDirectional.FACING, facing), 3);
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
+	
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return super.getActualState(state, worldIn, pos);
+	}
 
 }

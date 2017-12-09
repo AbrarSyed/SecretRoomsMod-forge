@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.wynprice.secretroomsmod.base.BaseItemDoor;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
+import com.wynprice.secretroomsmod.render.SecretOptifine;
 import com.wynprice.secretroomsmod.items.ProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.items.SwitchProbe;
 
@@ -13,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
 
 public class SecretItems 
 {

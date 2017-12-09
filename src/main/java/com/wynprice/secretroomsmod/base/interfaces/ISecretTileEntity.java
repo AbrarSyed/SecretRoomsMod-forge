@@ -40,11 +40,14 @@ public interface ISecretTileEntity extends ITickable
 	public static IBlockState getMirrorState(IBlockAccess access, BlockPos pos)
 	{
 		IBlockState returnState = Blocks.AIR.getDefaultState();
-		for(int dim : RENDER_MAP.keySet())
-			if(FMLCommonHandler.instance().getMinecraftServerInstance() == null)
-				returnState = getMirrorState(SecretRooms5.proxy.getPlayer().world, pos);
-			else if(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim) == access)
-				returnState = getMirrorState(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim), pos);
+		if(access instanceof World)
+			returnState = getMirrorState((World)access, pos);
+		else
+			for(int dim : RENDER_MAP.keySet())
+				if(FMLCommonHandler.instance().getMinecraftServerInstance() == null)
+					returnState = getMirrorState(SecretRooms5.proxy.getPlayer().world, pos);
+				else if(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim) == access)
+					returnState = getMirrorState(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim), pos);
 		return returnState == null ? Blocks.STONE.getDefaultState() : returnState;
 	}
 	
