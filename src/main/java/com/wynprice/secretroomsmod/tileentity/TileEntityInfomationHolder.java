@@ -15,6 +15,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 public class TileEntityInfomationHolder extends TileEntity implements ITickable, ISecretTileEntity
@@ -45,6 +46,11 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	public void update() {
 		if(mirrorState != null)
 			ParticleHandler.BLOCKBRAKERENDERMAP.put(pos, mirrorState.getBlock().getStateFromMeta(mirrorState.getBlock().getMetaFromState(mirrorState)));
+	}
+	
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(pos.add(-1, -1, -1), pos.add(1, 1, 1));
 	}
 	
 	@Override
