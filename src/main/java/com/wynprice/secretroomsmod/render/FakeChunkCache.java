@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.render;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import com.wynprice.secretroomsmod.SecretRooms5;
@@ -53,7 +54,6 @@ public class FakeChunkCache extends ChunkCache
 	{
 		if(super.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(world, pos) != null) 
 		{
-			new Exception().printStackTrace();
 			try
 			{
 				Field field = Class.forName("ChunkCacheOF").getDeclaredField("cacheBlockStates");
@@ -70,7 +70,7 @@ public class FakeChunkCache extends ChunkCache
 				if(!(Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) && 
 						((ISecretBlock)super.getBlockState(pos).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() != FakeBlockModel.class &&
 						(Thread.currentThread().getStackTrace()[3].getClassName().equals(RenderChunk.class.getName())) || 
-						Thread.currentThread().getStackTrace()[3].getMethodName().equals("func_175626_b")) {
+						Arrays.asList("func_187491_a", "func_175626_b").contains(Thread.currentThread().getStackTrace()[3].getMethodName())) {
 					return oldCache.getBlockState(pos);
 				}
 			}

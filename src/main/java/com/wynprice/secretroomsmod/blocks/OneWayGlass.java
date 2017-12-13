@@ -81,7 +81,7 @@ public class OneWayGlass extends BaseFakeBlock
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) 
 	{
-		EnumFacing facing = placer.getEntityData().getBoolean("glassDirection") ? EnumFacing.getDirectionFromEntityLiving(pos, placer) : EnumFacing.getDirectionFromEntityLiving(pos, placer).getOpposite();
+		EnumFacing facing = placer.getEntityData().getBoolean("glassDirection") ? EnumFacing.getDirectionFromEntityLiving(pos, placer).getOpposite() : EnumFacing.getDirectionFromEntityLiving(pos, placer);
 		worldIn.setBlockState(pos, state.withProperty(BlockDirectional.FACING, facing), 3);
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
