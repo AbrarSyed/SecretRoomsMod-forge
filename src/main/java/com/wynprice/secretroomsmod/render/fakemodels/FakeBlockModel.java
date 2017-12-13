@@ -64,7 +64,7 @@ public class FakeBlockModel implements IBakedModel
 	{
 		return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
 	}
-	
+		
 	public static IBakedModel getModel(ResourceLocation resourceLocation) 
 	{
 		IBakedModel bakedModel;

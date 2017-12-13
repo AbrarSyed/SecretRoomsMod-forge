@@ -70,7 +70,6 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 				      }
 					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), mirrorQuad.getFace(), 
 							mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
-//					finalList.add(quad);
 				}
 			}
 		return finalList;

@@ -50,7 +50,7 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(pos.add(-1, -1, -1), pos.add(1, 1, 1));
+		return new AxisAlignedBB(getPos().add(-1, -1, -1), getPos().add(1, 1, 1));
 	}
 	
 	@Override

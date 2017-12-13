@@ -7,6 +7,7 @@ import com.wynprice.secretroomsmod.base.BaseFakeBlock;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 
 public class OneSidedRender extends FakeBlockModel
@@ -15,6 +16,11 @@ public class OneSidedRender extends FakeBlockModel
 	private final EnumFacing face;
 
 	public OneSidedRender(IBlockState overstate, EnumFacing face) {
+		super(overstate);
+		this.face = face;
+	}
+	
+	public OneSidedRender(IBakedModel overstate, EnumFacing face) {
 		super(overstate);
 		this.face = face;
 	}
