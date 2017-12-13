@@ -3,6 +3,7 @@ package com.wynprice.secretroomsmod.proxy;
 import java.lang.reflect.Field;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
+import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.handler.HandlerUpdateChecker;
@@ -42,8 +43,7 @@ public class ClientProxy extends CommonProxy
 				
 		try
 		{
-			for (ASMDataTable.ASMData asmData : event.getAsmData().getAll(SecretOptifine.class.getCanonicalName()))
-				secretOptifine = Class.forName(asmData.getClassName()).newInstance();
+			secretOptifine = Class.forName(event.getAsmData().getAll(SecretOptifine.class.getCanonicalName()).iterator().next().getClassName()).newInstance();
 		}
 		catch (Throwable t) {
 			t.printStackTrace();
@@ -87,19 +87,20 @@ public class ClientProxy extends CommonProxy
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 		
-		try
-		{
-			for(Field field : RenderGlobal.class.getDeclaredFields())
-				if(field.getType() == IRenderChunkFactory.class)
-				{
-					field.setAccessible(true);
-					field.set(Minecraft.getMinecraft().renderGlobal, new FakeChunkRenderFactory((IRenderChunkFactory) field.get(Minecraft.getMinecraft().renderGlobal)));
-					field.setAccessible(false);
-				}
-		}
-		catch (Throwable e) {
-			e.printStackTrace();
-		}
+		if(SecretConfig.optifineConnectedTextures)
+			try
+			{
+				for(Field field : RenderGlobal.class.getDeclaredFields())
+					if(field.getType() == IRenderChunkFactory.class)
+					{
+						field.setAccessible(true);
+						field.set(Minecraft.getMinecraft().renderGlobal, new FakeChunkRenderFactory((IRenderChunkFactory) field.get(Minecraft.getMinecraft().renderGlobal)));
+						field.setAccessible(false);
+					}
+			}
+			catch (Throwable e) {
+				e.printStackTrace();
+			}
 		    	
     	ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 

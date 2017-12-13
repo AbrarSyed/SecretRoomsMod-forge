@@ -49,6 +49,7 @@ public class ProgrammableSwitchProbe extends Item
 			if(!(block instanceof ISecretBlock) && block != Blocks.AIR)
 			{
 				((ISecretBlock)state.getBlock()).forceBlockState(worldIn, pos, BlockPos.ORIGIN, block.getStateFromMeta(player.getHeldItem(hand).getTagCompound().getInteger("hit_meta")));
+				worldIn.markBlockRangeForRenderUpdate(pos.add(-1, -1, -1), pos.add(1, 1, 1));
 				return EnumActionResult.SUCCESS;
 			}
 		}

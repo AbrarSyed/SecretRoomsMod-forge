@@ -21,6 +21,8 @@ public class OneWayGlassFakeModel extends BaseTextureSwitchFakeModel
 	{
 		if(face != null && BaseTERender.currentWorld.getBlockState(BaseTERender.currentPos.offset(face)).getBlock() == SecretBlocks.ONE_WAY_GLASS)
 			return null;
+		if(face == null && BaseTERender.currentRender.getValue(BlockDirectional.FACING) == EnumFacing.UP)
+			return super.getRenderInfo(face, teMirrorState);
 		return BaseTERender.currentRender != null && BaseTERender.currentRender.getBlock() == SecretBlocks.ONE_WAY_GLASS && 
 				face != BaseTERender.currentRender.getValue(BlockDirectional.FACING) ? super.getRenderInfo(face, Blocks.GLASS.getDefaultState()) : super.getRenderInfo(face, teMirrorState);
 	}

@@ -69,8 +69,8 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 				        vList[pos + 5] = sList[pos + 5];
 				      }
 					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), mirrorQuad.getFace(), 
-								Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(BaseTERender.currentRender), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
-//					finalList.add(mirrorQuad);
+							mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+//					finalList.add(quad);
 				}
 			}
 		return finalList;

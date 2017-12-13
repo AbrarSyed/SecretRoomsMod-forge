@@ -4,16 +4,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.wynprice.secretroomsmod.render.fakemodels.FakeChunkCache;
-
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.chunk.ChunkCompileTaskGenerator;
+import net.minecraft.client.renderer.chunk.ListedRenderChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 
-public class FakeRenderChunk extends RenderChunk 
+public class FakeRenderChunk extends ListedRenderChunk 
 {
 	private final RenderChunk oldRender;
 	private FakeChunkCache worldView;
