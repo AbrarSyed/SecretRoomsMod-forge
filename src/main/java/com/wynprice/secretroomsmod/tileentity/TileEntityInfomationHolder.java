@@ -54,11 +54,12 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if(mirrorState != null)
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) 
+	{
+		if(getMirrorState() != null)
 		{
-			getTileData().setString("MirrorBlock", mirrorState.getBlock().getRegistryName().toString());
-			getTileData().setInteger("MirrorMeta", mirrorState.getBlock().getMetaFromState(mirrorState));
+			getTileData().setString("MirrorBlock",  getMirrorState().getBlock().getRegistryName().toString());
+			getTileData().setInteger("MirrorMeta", getMirrorState().getBlock().getMetaFromState(getMirrorState()));
 		}
 		getTileData().setBoolean("locked", locked);
 		return super.writeToNBT(compound);
@@ -70,6 +71,12 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 		if(mirrorState == null && RENDER_MAP.containsKey(pos))
 			mirrorState = ISecretTileEntity.getMap(world).get(pos);
 		return mirrorState;
+	}
+	
+	@Override
+	public double getMaxRenderDistanceSquared() 
+	{
+		return Double.MAX_VALUE;
 	}
 	
 	public void setMirrorState(IBlockState mirrorState, @Nullable BlockPos pos)

@@ -8,6 +8,7 @@ import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.handler.HandlerUpdateChecker;
 import com.wynprice.secretroomsmod.handler.ProbeSwitchRenderHander;
+import com.wynprice.secretroomsmod.handler.ReloadTrueSightModelsHandler;
 import com.wynprice.secretroomsmod.handler.SecretKeyBindings;
 import com.wynprice.secretroomsmod.render.FakeChunkRenderFactory;
 import com.wynprice.secretroomsmod.render.SecretOptifine;
@@ -60,7 +61,8 @@ public class ClientProxy extends CommonProxy
 		Object[] handlers = {
 				new ProbeSwitchRenderHander(),
 				new SecretKeyBindings(),
-				new HandlerUpdateChecker()
+				new HandlerUpdateChecker(),
+				new ReloadTrueSightModelsHandler()
     	};
     	for(Object o : handlers)
     		MinecraftForge.EVENT_BUS.register(o);

@@ -48,7 +48,6 @@ public class SecretItemBlock extends ItemBlock
             {
             	if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity)
             		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(mirrorState, pos);
-            	ISecretTileEntity.getMap(worldIn).put(pos, mirrorState);
                 iblockstate1 = worldIn.getBlockState(pos);
                 SoundType soundtype = iblockstate1.getBlock().getSoundType(iblockstate1, worldIn, pos, player);
                 worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);

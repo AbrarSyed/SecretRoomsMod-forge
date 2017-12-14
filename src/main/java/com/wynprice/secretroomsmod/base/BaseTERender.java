@@ -105,7 +105,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 		        	}
 		        	catch (Throwable e) {
 					}
-	        	if(SecretConfig.optifineConnectedTextures && !isHelmet)
+	        	if(SecretConfig.optifineConnectedTextures)
 	     	        for(EnumFacing face : EnumFacing.values())
 		     	        if(renderState.isOpaqueCube())
 		     	        	if(!(world.getBlockState(tileEntity.getPos().offset(face)).getBlock() instanceof ISecretBlock) && world.getBlockState(tileEntity.getPos().offset(face)).shouldSideBeRendered(world, tileEntity.getPos().offset(face), face.getOpposite()) && 
@@ -128,4 +128,5 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
         }
     	GlStateManager.popMatrix();
 	}
+
 }

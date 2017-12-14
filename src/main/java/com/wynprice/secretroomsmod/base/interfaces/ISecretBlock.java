@@ -145,7 +145,7 @@ public interface ISecretBlock extends ITileEntityProvider
 		for(TileEntity tileentity : list)
 			if(tileentity.getWorld() != null && tileentity.getWorld().isBlockLoaded(tileentity.getPos()) && tileentity.getWorld().getBlockState(tileentity.getPos()) == state && tileentity instanceof ISecretTileEntity)
 				blockstate = ISecretTileEntity.getMirrorState(tileentity.getWorld(), tileentity.getPos());
-		return blockstate != null && !(blockstate.getBlock() instanceof ISecretBlock) ? blockstate.getMaterial() : material;
+		return blockstate != null && !(blockstate.getBlock() instanceof ISecretBlock) && blockstate.getMaterial() != Material.WATER? blockstate.getMaterial() : material;
 	}
 	
 	default boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {

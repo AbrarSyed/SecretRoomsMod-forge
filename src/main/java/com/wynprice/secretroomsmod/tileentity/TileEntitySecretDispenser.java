@@ -41,6 +41,12 @@ public class TileEntitySecretDispenser extends TileEntityDispenser implements IS
 	}
 	
 	@Override
+	public double getMaxRenderDistanceSquared() 
+	{
+		return Double.MAX_VALUE;
+	}
+	
+	@Override
 	public void update() {
 		if(mirrorState != null)
 			ParticleHandler.BLOCKBRAKERENDERMAP.put(pos, mirrorState.getBlock().getStateFromMeta(mirrorState.getBlock().getMetaFromState(mirrorState)));
@@ -48,10 +54,10 @@ public class TileEntitySecretDispenser extends TileEntityDispenser implements IS
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if(mirrorState != null)
+		if(getMirrorState() != null)
 		{
-			getTileData().setString("MirrorBlock", mirrorState.getBlock().getRegistryName().toString());
-			getTileData().setInteger("MirrorMeta", mirrorState.getBlock().getMetaFromState(mirrorState));
+			getTileData().setString("MirrorBlock", getMirrorState().getBlock().getRegistryName().toString());
+			getTileData().setInteger("MirrorMeta", getMirrorState().getBlock().getMetaFromState(getMirrorState()));
 		}
 		getTileData().setBoolean("locked", locked);
 		return super.writeToNBT(compound);

@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.base;
 
 import com.wynprice.secretroomsmod.SecretRooms5;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 
 import net.minecraft.block.Block;
@@ -41,6 +42,7 @@ public class BaseItemDoor extends Item
         {
             IBlockState iblockstate = worldIn.getBlockState(pos);
             Block block = iblockstate.getBlock();
+            iblockstate = iblockstate.getBlock() instanceof ISecretBlock ? ISecretTileEntity.getMirrorState(worldIn, pos) : iblockstate;
             if (!block.isReplaceable(worldIn, pos))
             {
                 pos = pos.offset(facing);

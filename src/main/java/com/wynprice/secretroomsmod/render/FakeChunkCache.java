@@ -2,7 +2,6 @@ package com.wynprice.secretroomsmod.render;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
@@ -11,7 +10,6 @@ import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.proxy.ClientProxy;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.chunk.RenderChunk;
@@ -48,7 +46,7 @@ public class FakeChunkCache extends ChunkCache
 	public Biome getBiome(BlockPos pos) {
 		return oldCache.getBiome(pos);
 	}
-			
+				
 	@Override
 	public IBlockState getBlockState(BlockPos pos) 
 	{
@@ -75,8 +73,7 @@ public class FakeChunkCache extends ChunkCache
 				}
 			}
 			catch (Throwable t) {
-				if(Thread.currentThread().getStackTrace()[2].getClassName().equals(RenderChunk.class.getName()))
-					return oldCache.getBlockState(pos);
+				;
 			}
 			return ISecretTileEntity.getMirrorState(world, pos);
 		}
