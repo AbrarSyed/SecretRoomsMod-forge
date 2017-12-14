@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -23,6 +24,7 @@ public class TorchLever extends BlockTorch
 		setRegistryName("torch_lever");
 		setUnlocalizedName("torch_lever");
 		setHardness(0.0f);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(POWERED, false));
 	}
 	
 	@Override
@@ -65,31 +67,33 @@ public class TorchLever extends BlockTorch
         }
     }
 
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+    		float hitZ, int meta, EntityLivingBase placer, ItemStack stack) 
     {
-        IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
-        
-        if (this.canPlaceAt(worldIn, pos, facing))
-        {
-            return this.getDefaultState().withProperty(FACING, facing);
-        }
-        else
-        {
-            for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
-            {
-                if (worldIn.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
-                {
-                    return this.getDefaultState().withProperty(FACING, enumfacing);
-                }
-            }
+    	 IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
+         if (this.canPlaceAt(world, pos, facing))
+         {
+             return this.getDefaultState().withProperty(FACING, facing);
+         }
+         else
+         {
+             for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+             {
+                 if (world.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
+                 {
+                     return this.getDefaultState().withProperty(FACING, enumfacing);
+                 }
+             }
 
-            return this.getDefaultState();
-        }
+             return this.getDefaultState();
+         }
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (worldIn.isRemote)
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+    		EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    	if (worldIn.isRemote)
         {
             return true;
         }
@@ -105,7 +109,7 @@ public class TorchLever extends BlockTorch
             return true;
         }
     }
-
+    
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         if (((Boolean)state.getValue(POWERED)).booleanValue())

@@ -94,7 +94,7 @@ public class SwitchProbeRenderChange implements IPerspectiveAwareModel
             		return super.handleItemState(originalModel, stack, world, entity);
             	ItemStackHandler handler = new ItemStackHandler(1);
             	handler.deserializeNBT(stack.getTagCompound().getCompoundTag("hit_itemstack"));
-            	return handler.getStackInSlot(0).stackSize != 0 ? Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(handler.getStackInSlot(0), world, entity)
+            	return handler.getStackInSlot(0) != null ? Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(handler.getStackInSlot(0), world, entity)
             			: super.handleItemState(originalModel, stack, world, entity);
             }
         };

@@ -88,7 +88,7 @@ public class ClientProxy extends CommonProxy
 	    	{
 	        	ItemStackHandler handler = new ItemStackHandler(1);
 		    	handler.deserializeNBT(stack.getTagCompound().getCompoundTag("hit_itemstack"));
-		    	return itemColors.getColorFromItemstack(handler.getStackInSlot(0), tintIndex);
+		    	return handler.getStackInSlot(0) != null ? itemColors.getColorFromItemstack(handler.getStackInSlot(0), tintIndex) : 0xFFFFFF;
 	    	}
             return 0xFFFFFF;
         }, SecretItems.PROGRAMMABLE_SWITCH_PROBE);

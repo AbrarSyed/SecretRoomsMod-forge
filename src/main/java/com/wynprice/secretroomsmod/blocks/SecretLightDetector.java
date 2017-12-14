@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
@@ -28,7 +29,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.util.Random;
 
 public class SecretLightDetector extends BlockDaylightDetector implements ISecretBlock
 {
@@ -86,6 +86,7 @@ public class SecretLightDetector extends BlockDaylightDetector implements ISecre
 		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
 	}
 
+	@Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(SecretBlocks.SECRET_LIGHT_DETECTOR);

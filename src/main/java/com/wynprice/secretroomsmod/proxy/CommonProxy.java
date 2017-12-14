@@ -3,6 +3,7 @@ package com.wynprice.secretroomsmod.proxy;
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretItems;
+import com.wynprice.secretroomsmod.SecretRecipes;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
@@ -33,6 +34,8 @@ public class CommonProxy
 		SecretBlocks.preInit();
 				
 		SecretNetwork.preInit();
+		
+		SecretRecipes.init();
 		
 		RecipeHelperHandler.preInit();
     }
