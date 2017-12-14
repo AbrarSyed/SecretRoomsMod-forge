@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.11.2-5.1.8"
+version = "1.11.2-5.1.9"
 group= "com.wynprice.secretroomsmod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "secretroomsmod"
 
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.19-60"
+    //deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.19-60"
 }
 
 processResources {
