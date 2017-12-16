@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -48,7 +49,7 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	
 	@Override
 	public Item getItemDropped(IBlockState state, java.util.Random rand, int fortune) {
-		return this == SecretBlocks.SECRET_IRON_DOOR ? SecretItems.SECRET_IRON_DOOR : SecretItems.SECRET_WOODEN_DOOR;
+		return state.getValue(HALF) == EnumDoorHalf.LOWER ? this == SecretBlocks.SECRET_IRON_DOOR ? SecretItems.SECRET_IRON_DOOR : SecretItems.SECRET_WOODEN_DOOR : Items.AIR;
 	}
 	
 	@Override
