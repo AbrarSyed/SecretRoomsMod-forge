@@ -17,10 +17,12 @@ public class ReloadTrueSightModelsHandler
 	
 	boolean lastTickHelmet;
 	
+	int updated = 0;
+	
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event)
 	{
-		if(event.player instanceof EntityPlayerSP && event.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet != lastTickHelmet)
+		if(event.player instanceof EntityPlayerSP && (updated++ > 20 || event.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet != lastTickHelmet))
 		{
 			lastTickHelmet = event.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet;
 			for(TileEntity holder : ISecretBlock.ALL_SECRET_TILE_ENTITIES)

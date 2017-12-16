@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.render;
 
-import com.wynprice.secretroomsmod.SecretConfig;
+import org.apache.logging.log4j.core.util.Loader;
+
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 
@@ -34,7 +35,7 @@ public class FakeBlockAccess implements IBlockAccess
 
 	@Override
 	public IBlockState getBlockState(BlockPos pos) {
-		return base.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(base, pos) != null && SecretConfig.optifineConnectedTextures
+		return base.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(base, pos) != null && Loader.isClassAvailable("ChunkCacheOF")
 				? ISecretTileEntity.getMirrorState(base, pos) : base.getBlockState(pos);
 	}
 

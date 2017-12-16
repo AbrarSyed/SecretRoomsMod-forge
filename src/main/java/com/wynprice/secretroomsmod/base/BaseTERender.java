@@ -3,6 +3,7 @@ package com.wynprice.secretroomsmod.base;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.logging.log4j.core.util.Loader;
 import org.lwjgl.opengl.GL11;
 
 import com.wynprice.secretroomsmod.SecretConfig;
@@ -105,13 +106,13 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 		        	}
 		        	catch (Throwable e) {
 					}
-	        	if(SecretConfig.optifineConnectedTextures)
+	        	if(Loader.isClassAvailable("ChunkCacheOF"))
 	     	        for(EnumFacing face : EnumFacing.values())
 		     	        if(renderState.isOpaqueCube())
 		     	        	if(!(world.getBlockState(tileEntity.getPos().offset(face)).getBlock() instanceof ISecretBlock) && world.getBlockState(tileEntity.getPos().offset(face)).shouldSideBeRendered(world, tileEntity.getPos().offset(face), face.getOpposite()) && 
 		     	        			Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(world.getBlockState(tileEntity.getPos().offset(face)).getActualState(world, tileEntity.getPos().offset(face))) != Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.AIR.getDefaultState()))
 			     	        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, new OneSidedRender(world.getBlockState(tileEntity.getPos().offset(face)).getActualState(world, tileEntity.getPos().offset(face)), face.getOpposite()), 
-				     	        			renderState.getBlock().getExtendedState(renderState, world, tileEntity.getPos().offset(face)), tileEntity.getPos().offset(face), Tessellator.getInstance().getBuffer(), false);
+			     	        				world.getBlockState(tileEntity.getPos().offset(face)).getBlock().getExtendedState(world.getBlockState(tileEntity.getPos().offset(face)), world, tileEntity.getPos().offset(face)), tileEntity.getPos().offset(face), Tessellator.getInstance().getBuffer(), false);
 	     	        		
 		     	        		else if(world.getBlockState(tileEntity.getPos().offset(face)).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(world, tileEntity.getPos().offset(face)) != null && ISecretTileEntity.getMirrorState(world, tileEntity.getPos().offset(face)).shouldSideBeRendered(world, tileEntity.getPos().offset(face), face.getOpposite()) &&
 			     	        			Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(ISecretTileEntity.getMirrorState(world, tileEntity.getPos().offset(face)).getActualState(world, tileEntity.getPos().offset(face))) != Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.AIR.getDefaultState()) &&

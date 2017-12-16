@@ -2,8 +2,9 @@ package com.wynprice.secretroomsmod.proxy;
 
 import java.lang.reflect.Field;
 
+import org.apache.logging.log4j.core.util.Loader;
+
 import com.wynprice.secretroomsmod.SecretBlocks;
-import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.handler.HandlerUpdateChecker;
@@ -28,7 +29,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.items.ItemStackHandler;
@@ -89,7 +89,8 @@ public class ClientProxy extends CommonProxy
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 		
-		if(SecretConfig.optifineConnectedTextures)
+		System.out.println(Loader.isClassAvailable("ChunkCacheOF"));
+		if(Loader.isClassAvailable("ChunkCacheOF"))
 			try
 			{
 				for(Field field : RenderGlobal.class.getDeclaredFields())
