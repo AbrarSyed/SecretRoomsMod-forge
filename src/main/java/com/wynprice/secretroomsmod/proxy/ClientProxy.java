@@ -6,6 +6,7 @@ import org.apache.logging.log4j.core.util.Loader;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.handler.HandlerUpdateChecker;
 import com.wynprice.secretroomsmod.handler.ProbeSwitchRenderHander;
@@ -89,10 +90,10 @@ public class ClientProxy extends CommonProxy
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 		
-		System.out.println(Loader.isClassAvailable("ChunkCacheOF"));
 		if(Loader.isClassAvailable("ChunkCacheOF"))
 			try
 			{
+				SecretRooms5.LOGGER.info("Enabling support for Optifine CTM");
 				for(Field field : RenderGlobal.class.getDeclaredFields())
 					if(field.getType() == IRenderChunkFactory.class)
 					{
