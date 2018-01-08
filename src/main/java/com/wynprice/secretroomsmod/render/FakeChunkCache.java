@@ -3,6 +3,7 @@ package com.wynprice.secretroomsmod.render;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import com.wynprice.secretroomsmod.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
@@ -52,28 +53,16 @@ public class FakeChunkCache extends ChunkCache
 	{
 		if(super.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(world, pos) != null) 
 		{
-			try
+			if(!SecretOptifineHelper.resetCached_C6())
 			{
-				Field field = Class.forName("ChunkCacheOF").getDeclaredField("cacheBlockStates");
-				field.setAccessible(true);
-				if(field.get(null).getClass() != ClientProxy.secretOptifine.getClass())
-					try {
-						field.set(null, ClientProxy.secretOptifine.getClass().newInstance());
-					}
-					catch (IllegalAccessException e) {
-						SecretRooms5.LOGGER.error("It seems like you're using an unsupported version of Optifine. Please use C6");
-					}
-
-				field.setAccessible(false);
-				if(((ISecretBlock)super.getBlockState(pos).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() != FakeBlockModel.class &&
-						(Thread.currentThread().getStackTrace()[3].getClassName().equals(RenderChunk.class.getName())) || 
-						Arrays.asList("func_187491_a", "func_175626_b").contains(Thread.currentThread().getStackTrace()[3].getMethodName()) || 
-						Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {
-					return oldCache.getBlockState(pos);
-				}
+				SecretRooms5.LOGGER.error("It seems like you're using an unsupported version of Optifine. Please use C6");
+				return oldCache.getBlockState(pos);
 			}
-			catch (Throwable t) {
-				;
+			if(((ISecretBlock)super.getBlockState(pos).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() != FakeBlockModel.class &&
+					(Thread.currentThread().getStackTrace()[3].getClassName().equals(RenderChunk.class.getName())) || 
+					Arrays.asList("func_187491_a", "func_175626_b").contains(Thread.currentThread().getStackTrace()[3].getMethodName()) || 
+					Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {
+				return oldCache.getBlockState(pos);
 			}
 			return ISecretTileEntity.getMirrorState(world, pos);
 		}

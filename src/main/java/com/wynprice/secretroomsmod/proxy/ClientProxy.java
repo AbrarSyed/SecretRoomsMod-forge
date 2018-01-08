@@ -6,6 +6,7 @@ import org.apache.logging.log4j.core.util.Loader;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
+import com.wynprice.secretroomsmod.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.handler.HandlerUpdateChecker;
@@ -41,8 +42,7 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
-		super.preInit(event);
-				
+		
 		try
 		{
 			secretOptifine = Class.forName(event.getAsmData().getAll(SecretOptifine.class.getCanonicalName()).iterator().next().getClassName()).newInstance();
@@ -50,6 +50,8 @@ public class ClientProxy extends CommonProxy
 		catch (Throwable t) {
 			t.printStackTrace();
 		}
+		
+		super.preInit(event);
 				
 		SecretItems.regRenders();
 		
@@ -90,7 +92,7 @@ public class ClientProxy extends CommonProxy
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 		
-		if(Loader.isClassAvailable("ChunkCacheOF"))
+		if(SecretOptifineHelper.IS_OPTIFINE)
 			try
 			{
 				SecretRooms5.LOGGER.info("Enabling support for Optifine CTM");

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.core.util.Loader;
 import org.lwjgl.opengl.GL11;
 
 import com.wynprice.secretroomsmod.SecretConfig;
+import com.wynprice.secretroomsmod.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
@@ -18,6 +19,7 @@ import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -46,8 +48,6 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	public void render(T tileEntity, double x, double y, double z, float partialTicks,
 			int destroyStage, float alpha) 
 	{
-		if(!(tileEntity instanceof ISecretTileEntity))
-			return;
 		ISecretTileEntity te = (ISecretTileEntity)tileEntity;
 		GlStateManager.pushMatrix();
         {
@@ -69,13 +69,12 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 	        World world = getWorld();
 	        Tessellator.getInstance().getBuffer().noColor();
 	        Tessellator tessellator = Tessellator.getInstance();
-	        tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 	        Block block = tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock();
 	        ArrayList<Integer> tintList = new ArrayList<>();
 	        currentRender = tileEntity.getWorld().getBlockState(tileEntity.getPos()).getActualState(tileEntity.getWorld(), tileEntity.getPos());
 	        currentPos = tileEntity.getPos();
 	        currentWorld = tileEntity.getWorld();
-			
+	        tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 	        if(block instanceof ISecretBlock && te.getMirrorState() != null)
 	        {
 	        	IBlockState renderState = te.getMirrorState().getBlock().getActualState(te.getMirrorState(), tileEntity.getWorld(), tileEntity.getPos());
@@ -83,18 +82,21 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 
         		currentRender = ((ISecretBlock)block).overrideThisState(world, currentPos, currentRender);
         		
-        		IBlockAccess access = new FakeBlockAccess(world);
-        		
+        		IBlockAccess access = SecretOptifineHelper.IS_OPTIFINE ? new FakeBlockAccess(world) : world;
+        		BufferBuilder buffer = Tessellator.getInstance().getBuffer();
 	        	if(!isHelmet)
 	        	{
 	        		try
 	        		{
-		        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(access, ((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)),
-		        				renderState, tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
+	            		if(((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)).getClass() == FakeBlockModel.class)
+	            				Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock(renderState, tileEntity.getPos(), new FakeBlockAccess(world), buffer);
+	            		else
+			        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(access, ((ISecretBlock)block).phaseModel(new FakeBlockModel(renderState)),
+			        				renderState, tileEntity.getPos(), buffer, true);
 	        		}
 	        		catch (Throwable t) {
 	        			Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(access, ((ISecretBlock)block).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())),
-		        				Blocks.STONE.getDefaultState(), tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
+		        				Blocks.STONE.getDefaultState(), tileEntity.getPos(), buffer, true);
 					}
 	        	}
 	        	else
@@ -102,7 +104,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 		        	{
 		        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer()
 		        		.renderModel(access, ((ISecretBlock)block).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderState))),
-		        				tileEntity.getWorld().getBlockState(tileEntity.getPos()), tileEntity.getPos(), Tessellator.getInstance().getBuffer(), false);
+		        				tileEntity.getWorld().getBlockState(tileEntity.getPos()), tileEntity.getPos(), buffer, true);
 		        	}
 		        	catch (Throwable e) {
 					}
@@ -112,13 +114,13 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 		     	        	if(!(world.getBlockState(tileEntity.getPos().offset(face)).getBlock() instanceof ISecretBlock) && world.getBlockState(tileEntity.getPos().offset(face)).shouldSideBeRendered(world, tileEntity.getPos().offset(face), face.getOpposite()) && 
 		     	        			Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(world.getBlockState(tileEntity.getPos().offset(face)).getActualState(world, tileEntity.getPos().offset(face))) != Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.AIR.getDefaultState()))
 			     	        		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, new OneSidedRender(world.getBlockState(tileEntity.getPos().offset(face)).getActualState(world, tileEntity.getPos().offset(face)), face.getOpposite()), 
-			     	        				world.getBlockState(tileEntity.getPos().offset(face)).getBlock().getExtendedState(world.getBlockState(tileEntity.getPos().offset(face)), world, tileEntity.getPos().offset(face)), tileEntity.getPos().offset(face), Tessellator.getInstance().getBuffer(), false);
+			     	        				world.getBlockState(tileEntity.getPos().offset(face)).getBlock().getExtendedState(world.getBlockState(tileEntity.getPos().offset(face)), world, tileEntity.getPos().offset(face)), tileEntity.getPos().offset(face), buffer, true);
 	     	        		
 		     	        		else if(world.getBlockState(tileEntity.getPos().offset(face)).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(world, tileEntity.getPos().offset(face)) != null && ISecretTileEntity.getMirrorState(world, tileEntity.getPos().offset(face)).shouldSideBeRendered(world, tileEntity.getPos().offset(face), face.getOpposite()) &&
 			     	        			Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(ISecretTileEntity.getMirrorState(world, tileEntity.getPos().offset(face)).getActualState(world, tileEntity.getPos().offset(face))) != Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.AIR.getDefaultState()) &&
 			     	        			((ISecretBlock)world.getBlockState(tileEntity.getPos().offset(face)).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() == FakeBlockModel.class)
 		     	        			Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, new OneSidedRender(((ISecretBlock)world.getBlockState(tileEntity.getPos().offset(face)).getBlock()).phaseModel(new FakeBlockModel(ISecretTileEntity.getMirrorState(world, tileEntity.getPos().offset(face)).getActualState(world, tileEntity.getPos().offset(face)))), face.getOpposite()), 
-				     	        			ISecretTileEntity.getMirrorState(world, currentPos).getBlock().getExtendedState(ISecretTileEntity.getMirrorState(world, currentPos), world, tileEntity.getPos().offset(face)), tileEntity.getPos().offset(face), Tessellator.getInstance().getBuffer(), false);
+				     	        			ISecretTileEntity.getMirrorState(world, currentPos).getBlock().getExtendedState(ISecretTileEntity.getMirrorState(world, currentPos), world, tileEntity.getPos().offset(face)), tileEntity.getPos().offset(face), buffer, true);
 	        }
 	       
 	        tessellator.draw();
