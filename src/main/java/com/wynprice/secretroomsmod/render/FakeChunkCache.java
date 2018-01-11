@@ -1,14 +1,12 @@
 package com.wynprice.secretroomsmod.render;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.wynprice.secretroomsmod.SecretOptifineHelper;
-import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
-import com.wynprice.secretroomsmod.proxy.ClientProxy;
+import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
 import net.minecraft.block.state.IBlockState;
@@ -31,10 +29,17 @@ public class FakeChunkCache extends ChunkCache
 	
 	private final ChunkCache oldCache;
 	
+	private final BlockPos fromPos;
+	private final BlockPos toPos;
+	private final int sub;
+	
 	public FakeChunkCache(World world, BlockPos from, BlockPos to, int sub, ChunkCache oldCache)
 	{
 		super(world, from, to, sub);
 		this.oldCache = oldCache;
+		this.fromPos = from;
+		this.toPos = to;
+		this.sub = sub;
 	}
 	
 	@Override
@@ -44,20 +49,28 @@ public class FakeChunkCache extends ChunkCache
 	}
 	
 	@Override
-	public Biome getBiome(BlockPos pos) {
+	public Biome getBiome(BlockPos pos) 
+	{
 		return oldCache.getBiome(pos);
 	}
-				
+			
+	public int prevInt = -1;
+	
 	@Override
 	public IBlockState getBlockState(BlockPos pos) 
 	{
+		if(Arrays.asList("C7", "C8").contains(SecretOptifineHelper.version) && prevInt != -1)
+		{
+			for(Object[] list : new ArrayList<>(SecretOptifineHelper.CURRENT_C7_LIST))
+				if(list != null && prevInt >= 0 && prevInt < list.length)
+					list[prevInt] = null;
+			prevInt = -1;
+		}
 		if(super.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(world, pos) != null) 
 		{
-			if(!SecretOptifineHelper.resetCached_C6())
-			{
-				SecretRooms5.LOGGER.error("It seems like you're using an unsupported version of Optifine. Please use C6");
+			prevInt = SecretOptifineHelper.getPositionIndex(fromPos, toPos, sub, pos);
+			if(!SecretOptifineHelper.resetCached())
 				return oldCache.getBlockState(pos);
-			}
 			if(((ISecretBlock)super.getBlockState(pos).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() != FakeBlockModel.class &&
 					(Thread.currentThread().getStackTrace()[3].getClassName().equals(RenderChunk.class.getName())) || 
 					Arrays.asList("func_187491_a", "func_175626_b").contains(Thread.currentThread().getStackTrace()[3].getMethodName()) || 
@@ -70,42 +83,50 @@ public class FakeChunkCache extends ChunkCache
 	}	
 	
 	@Override
-	public int getCombinedLight(BlockPos pos, int lightValue) {
+	public int getCombinedLight(BlockPos pos, int lightValue) 
+	{
 		return oldCache.getCombinedLight(pos, lightValue);
 	}
 	
 	@Override
-	public int getLightFor(EnumSkyBlock type, BlockPos pos) {
+	public int getLightFor(EnumSkyBlock type, BlockPos pos) 
+	{
 		return oldCache.getLightFor(type, pos);
 	}
 	
 	@Override
-	public int getStrongPower(BlockPos pos, EnumFacing direction) {
+	public int getStrongPower(BlockPos pos, EnumFacing direction) 
+	{
 		return oldCache.getStrongPower(pos, direction);
 	}
 	
 	@Override
-	public TileEntity getTileEntity(BlockPos pos) {
+	public TileEntity getTileEntity(BlockPos pos) 
+	{
 		return oldCache.getTileEntity(pos);
 	}
 	
 	@Override
-	public TileEntity getTileEntity(BlockPos pos, EnumCreateEntityType p_190300_2_) {
+	public TileEntity getTileEntity(BlockPos pos, EnumCreateEntityType p_190300_2_)
+	{
 		return oldCache.getTileEntity(pos, p_190300_2_);
 	}
 	
 	@Override
-	public WorldType getWorldType() {
+	public WorldType getWorldType() 
+	{
 		return oldCache.getWorldType();
 	}
 	
 	@Override
-	public boolean isAirBlock(BlockPos pos) {
+	public boolean isAirBlock(BlockPos pos) 
+	{
 		return oldCache.isAirBlock(pos);
 	}
 	
 	@Override
-	public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
+	public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) 
+	{
 		return oldCache.isSideSolid(pos, side, _default);
 	}
 }

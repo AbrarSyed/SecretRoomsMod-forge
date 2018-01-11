@@ -2,19 +2,18 @@ package com.wynprice.secretroomsmod.proxy;
 
 import java.lang.reflect.Field;
 
-import org.apache.logging.log4j.core.util.Loader;
-
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
-import com.wynprice.secretroomsmod.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.handler.HandlerUpdateChecker;
 import com.wynprice.secretroomsmod.handler.ProbeSwitchRenderHander;
 import com.wynprice.secretroomsmod.handler.ReloadTrueSightModelsHandler;
 import com.wynprice.secretroomsmod.handler.SecretKeyBindings;
+import com.wynprice.secretroomsmod.optifinehelpers.EOACV;
+import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifine;
+import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.render.FakeChunkRenderFactory;
-import com.wynprice.secretroomsmod.render.SecretOptifine;
 import com.wynprice.secretroomsmod.render.TERenders.TileEntityInfomationHolderRenderPlate;
 import com.wynprice.secretroomsmod.render.TERenders.TileEntityInfomationHolderRenderer;
 import com.wynprice.secretroomsmod.render.TERenders.TileEntityInfomationHolderRendererDispenser;
@@ -31,28 +30,27 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
+import net.minecraftforge.fml.common.discovery.asm.ModAnnotation.EnumHolder;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ClientProxy extends CommonProxy 
-{
-	public static Object secretOptifine;
-	
+{	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
-		
-		try
-		{
-			secretOptifine = Class.forName(event.getAsmData().getAll(SecretOptifine.class.getCanonicalName()).iterator().next().getClassName()).newInstance();
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
+		for(ASMData data : event.getAsmData().getAll(SecretOptifine.class.getCanonicalName()))
+			try {
+				EOACV.valueOf(((EnumHolder)data.getAnnotationInfo().get("version")).getValue()).arrayCache = Class.forName(data.getClassName()).newInstance();
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
 		
 		super.preInit(event);
-				
+
+		
 		SecretItems.regRenders();
 		
 		SecretBlocks.regRenders();
@@ -91,7 +89,6 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
-		
 		if(SecretOptifineHelper.IS_OPTIFINE)
 			try
 			{

@@ -7,10 +7,10 @@ import org.apache.logging.log4j.core.util.Loader;
 import org.lwjgl.opengl.GL11;
 
 import com.wynprice.secretroomsmod.SecretConfig;
-import com.wynprice.secretroomsmod.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
+import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.OneSidedRender;
@@ -108,7 +108,7 @@ public class BaseTERender<T extends TileEntity> extends TileEntitySpecialRendere
 		        	}
 		        	catch (Throwable e) {
 					}
-	        	if(Loader.isClassAvailable("ChunkCacheOF"))
+	        	if(SecretOptifineHelper.IS_OPTIFINE)
 	     	        for(EnumFacing face : EnumFacing.values())
 		     	        if(renderState.isOpaqueCube())
 		     	        	if(!(world.getBlockState(tileEntity.getPos().offset(face)).getBlock() instanceof ISecretBlock) && world.getBlockState(tileEntity.getPos().offset(face)).shouldSideBeRendered(world, tileEntity.getPos().offset(face), face.getOpposite()) && 

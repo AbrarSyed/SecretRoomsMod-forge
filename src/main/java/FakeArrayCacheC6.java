@@ -1,19 +1,19 @@
 import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 
-import com.wynprice.secretroomsmod.SecretRooms5;
-import com.wynprice.secretroomsmod.render.SecretOptifine;
+import com.wynprice.secretroomsmod.optifinehelpers.EOACV;
+import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifine;
 
 import net.minecraft.block.state.IBlockState;
 
-@SecretOptifine
-public class FakeArrayCache extends ArrayCache
+@SecretOptifine(version=EOACV.C6)
+public class FakeArrayCacheC6 extends ArrayCache
 {
 	private Class elementClass = null;
     private int maxCacheSize = 0;
     private ArrayDeque cache = new ArrayDeque();
 
-    public FakeArrayCache()
+    public FakeArrayCacheC6()
     {
     	super(IBlockState.class, 16);
         this.elementClass = IBlockState.class;

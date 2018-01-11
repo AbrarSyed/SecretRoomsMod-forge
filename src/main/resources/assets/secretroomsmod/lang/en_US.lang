@@ -10,6 +10,7 @@ message.secretroomsmod.commandShow.hide=Camo blocks made secret
 #config
 config.do_update.comment=Should the Update Checker be run on startup
 config.ao.comment=Should Ambient Occlusion be forced on. If false, AO will be turned on if Minecraft permits it, If true it will be forced on no matter what.
+config.oflist=Optifine can do some pretty funky stuff to this mod. I cannot gaurentee that all Optifine Versions will work, only the ones listed here: http://www.wynprice.com/supported-optifine/<newline>please following format: OptiFine_<MC version>_<Optifine Version>
 
 #update Checker
 update.version=[%s] The Mod is out of date. Your version %s, target version: %s. Click here to go to page
