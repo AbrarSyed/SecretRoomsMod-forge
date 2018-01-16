@@ -17,7 +17,9 @@ update.version=[%s] The Mod is out of date. Your version %s, target version: %s.
 update.hover=Click To go to %s
 
 # keybindings
+key.categories.secretroomsmod=SecretRoomsMod Keybindings
 key.secretroomsmod.oneWayface=Toggle OneWay face
+key.secretroomsmod.energizedpaste=Use Energized Paste
 
 # blocks
 tile.torch_lever.name=Torch Lever
@@ -52,8 +54,13 @@ gui.programmable.info=Type in the block name<br>or OreDict name of<br>the block 
 #items
 item.secret_iron_door.name=Secret Iron Door
 item.camouflage_paste.name=Camouflage Paste
+item.energized_camouflage_paste.name=Energized Camouflage Paste
 item.secret_wooden_door.name=Secret Wooden Door
 item.switch_probe.name=Switch Probe
 item.programmable_switch_probe.name=Programmable Switch Probe
 item.iron_exposing_helmet.name=Helmet of True Sight (Iron)
 item.diamond_exposing_helmet.name=Helmet of True Sight (Diamond)
+
+#Camouflage Info
+camopaste.pressshift=Press Shift for more info
+camopaste.info=Camouflage 

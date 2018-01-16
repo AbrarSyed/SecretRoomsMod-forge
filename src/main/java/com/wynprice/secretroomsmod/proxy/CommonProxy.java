@@ -4,6 +4,7 @@ import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms5;
+import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.handler.RecipeHelperHandler;
@@ -51,7 +52,8 @@ public class CommonProxy
     		GameRegistry.registerTileEntity(clas, SecretRooms5.MODID + clas.getSimpleName());
     	
     	Object[] handlers = {
-    			new ParticleHandler()	
+    			new ParticleHandler(),
+    			new EnergizedPasteHandler()
     	};
     	for(Object o : handlers)
     		MinecraftForge.EVENT_BUS.register(o);

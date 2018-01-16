@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
@@ -82,6 +83,9 @@ public class FakeChunkCache extends ChunkCache
 				return ISecretTileEntity.getMirrorState(world, pos);
 			}
 		}
+		if(!(super.getBlockState(pos).getBlock() instanceof ISecretBlock) && EnergizedPasteHandler.hasReplacedState(world, pos))
+			return EnergizedPasteHandler.getReplacedState(world, pos);
+
 		return oldCache.getBlockState(pos);
 	}	
 	

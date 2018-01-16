@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.network;
 
 import com.wynprice.secretroomsmod.SecretRooms5;
+import com.wynprice.secretroomsmod.network.packets.MessagePacketEnergizedPaste;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketToggleGlassDirection;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateClient;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketUpdateProbe;
@@ -23,6 +24,7 @@ public class SecretNetwork
 		registerMessage(MessagePacketUpdateClient.class, Side.CLIENT);
 		registerMessage(MessagePacketToggleGlassDirection.class, Side.SERVER);
 		registerMessage(MessagePacketUpdateProbe.class, Side.SERVER);
+		registerMessage(MessagePacketEnergizedPaste.class, Side.SERVER);
 	}
 	
 	private static int idCount = -1;
