@@ -6,7 +6,8 @@
      "item": "minecraft:redstone_torch"
     },
     {
-      "item": "secretroomsmod:camouflage_paste"
+      "item": "secretroomsmod:camouflage_paste",
+      "data": 0
     }
   ],
   "result": {

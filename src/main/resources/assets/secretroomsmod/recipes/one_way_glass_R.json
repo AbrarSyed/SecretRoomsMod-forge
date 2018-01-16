@@ -8,7 +8,8 @@
   ],
   "key": {
     "X": {
-      "item": "secretroomsmod:camouflage_paste"
+      "item": "secretroomsmod:camouflage_paste",
+      "data": 0
     },
     "0": 
     {

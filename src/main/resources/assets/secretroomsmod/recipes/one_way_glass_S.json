@@ -3,7 +3,8 @@
   "group": "secret_items",
   "ingredients": [
     {
-     "item": "secretroomsmod:camouflage_paste"
+     "item": "secretroomsmod:camouflage_paste",
+      "data": 0
     },
     {
       "type": "forge:ore_dict",
