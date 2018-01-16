@@ -90,20 +90,21 @@ public class ClientProxy extends CommonProxy
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 		if(SecretOptifineHelper.IS_OPTIFINE)
-			try
-			{
-				SecretRooms5.LOGGER.info("Enabling support for Optifine CTM");
-				for(Field field : RenderGlobal.class.getDeclaredFields())
-					if(field.getType() == IRenderChunkFactory.class)
-					{
-						field.setAccessible(true);
-						field.set(Minecraft.getMinecraft().renderGlobal, new FakeChunkRenderFactory((IRenderChunkFactory) field.get(Minecraft.getMinecraft().renderGlobal)));
-						field.setAccessible(false);
-					}
-			}
-			catch (Throwable e) {
-				e.printStackTrace();
-			}
+			SecretRooms5.LOGGER.info("Enabling support for Optifine CTM");
+
+		try
+		{
+			for(Field field : RenderGlobal.class.getDeclaredFields())
+				if(field.getType() == IRenderChunkFactory.class)
+				{
+					field.setAccessible(true);
+					field.set(Minecraft.getMinecraft().renderGlobal, new FakeChunkRenderFactory((IRenderChunkFactory) field.get(Minecraft.getMinecraft().renderGlobal)));
+					field.setAccessible(false);
+				}
+		}
+		catch (Throwable e) {
+			e.printStackTrace();
+		}
 		    	
     	ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 

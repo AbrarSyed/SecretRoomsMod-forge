@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.wynprice.secretroomsmod.base.BaseItemDoor;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifine;
+import com.wynprice.secretroomsmod.items.CamouflagePaste;
 import com.wynprice.secretroomsmod.items.ProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.items.SwitchProbe;
 
@@ -12,13 +13,14 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 
 public class SecretItems 
 {
-	public static final Item CAMOUFLAGE_PASTE = new Item().setRegistryName(SecretRooms5.MODID, "camouflage_paste").setUnlocalizedName("camouflage_paste");
+	public static final Item CAMOUFLAGE_PASTE = new CamouflagePaste();
 	public static final Item SECRET_WOODEN_DOOR = new BaseItemDoor(SecretBlocks.SECRET_WOODEN_DOOR, "secret_wooden_door");
 	public static final Item SECRET_IRON_DOOR = new BaseItemDoor(SecretBlocks.SECRET_IRON_DOOR, "secret_iron_door");
 	public static final Item SWITCH_PROBE = new SwitchProbe();
@@ -74,12 +76,28 @@ public class SecretItems
 		ForgeRegistries.ITEMS.register(item);
 	}
 	
-	
-	
 	private static void regRender(Item item)
 	{
+		if(item.getHasSubtypes())
+		{
+			int metaAmount = 1;
+			ResourceLocation[] fileNames = {item.getRegistryName()};
+			if(item == CAMOUFLAGE_PASTE)
+			{
+				metaAmount = 2;
+				fileNames = new ResourceLocation[] {new ResourceLocation(SecretRooms5.MODID, "camouflage_paste"), new ResourceLocation(SecretRooms5.MODID, "energized_camouflage_paste")};
+			}
+			for(int i = 0; i < metaAmount; i++)
+				regRender(item, i, fileNames[i]);
+		}
+		else
+			regRender(item, 0, item.getRegistryName());
+	}
+	
+	private static void regRender(Item item, int meta, ResourceLocation fileName)
+	{
 		item.setCreativeTab(SecretRooms5.TAB);
-		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(fileName, "inventory"));
 	}
 	
 }

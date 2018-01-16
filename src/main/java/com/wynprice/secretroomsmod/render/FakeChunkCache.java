@@ -59,25 +59,28 @@ public class FakeChunkCache extends ChunkCache
 	@Override
 	public IBlockState getBlockState(BlockPos pos) 
 	{
-		if(Arrays.asList("C7", "C8").contains(SecretOptifineHelper.version) && prevInt != -1)
+		if(SecretOptifineHelper.IS_OPTIFINE)
 		{
-			for(Object[] list : new ArrayList<>(SecretOptifineHelper.CURRENT_C7_LIST))
-				if(list != null && prevInt >= 0 && prevInt < list.length)
-					list[prevInt] = null;
-			prevInt = -1;
-		}
-		if(super.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(world, pos) != null) 
-		{
-			prevInt = SecretOptifineHelper.getPositionIndex(fromPos, toPos, sub, pos);
-			if(!SecretOptifineHelper.resetCached())
-				return oldCache.getBlockState(pos);
-			if(((ISecretBlock)super.getBlockState(pos).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() != FakeBlockModel.class &&
-					(Thread.currentThread().getStackTrace()[3].getClassName().equals(RenderChunk.class.getName())) || 
-					Arrays.asList("func_187491_a", "func_175626_b").contains(Thread.currentThread().getStackTrace()[3].getMethodName()) || 
-					Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {
-				return oldCache.getBlockState(pos);
+			if(Arrays.asList("C7", "C8").contains(SecretOptifineHelper.version) && prevInt != -1)
+			{
+				for(Object[] list : new ArrayList<>(SecretOptifineHelper.CURRENT_C7_LIST))
+					if(list != null && prevInt >= 0 && prevInt < list.length)
+						list[prevInt] = null;
+				prevInt = -1;
 			}
-			return ISecretTileEntity.getMirrorState(world, pos);
+			if(super.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(world, pos) != null) 
+			{
+				prevInt = SecretOptifineHelper.getPositionIndex(fromPos, toPos, sub, pos);
+				if(!SecretOptifineHelper.resetCached())
+					return oldCache.getBlockState(pos);
+				if(((ISecretBlock)super.getBlockState(pos).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() != FakeBlockModel.class &&
+						(Thread.currentThread().getStackTrace()[3].getClassName().equals(RenderChunk.class.getName())) || 
+						Arrays.asList("func_187491_a", "func_175626_b").contains(Thread.currentThread().getStackTrace()[3].getMethodName()) || 
+						Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {
+					return oldCache.getBlockState(pos);
+				}
+				return ISecretTileEntity.getMirrorState(world, pos);
+			}
 		}
 		return oldCache.getBlockState(pos);
 	}	
