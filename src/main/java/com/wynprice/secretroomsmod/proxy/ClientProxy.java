@@ -141,7 +141,7 @@ public class ClientProxy extends CommonProxy
 			@Override
 			public int colorMultiplier(ItemStack stack, int tintIndex) 
 			{
-				return stack.getMetadata() == 1? color(stack.hasTagCompound() && stack.getTagCompound().hasKey("hit_color", 99) ? stack.getTagCompound().getInteger("hit_color") == 0 ? 0xFFFFFF : stack.getTagCompound().getInteger("hit_color") : 0) : -1;
+				return stack.getMetadata() == 1? color(stack.hasTagCompound() && stack.getTagCompound().hasKey("hit_color", 99) ? stack.getTagCompound().getInteger("hit_color") == 0 ? 0xFFFFFF : stack.getTagCompound().getInteger("hit_color") : 0xFFFFFF) : -1;
 			}
 			
 			private int color(int stackcolor)

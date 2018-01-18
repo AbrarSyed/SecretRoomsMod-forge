@@ -7,6 +7,8 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
+import com.wynprice.secretroomsmod.network.SecretNetwork;
+import com.wynprice.secretroomsmod.network.packets.MessagePacketEnergizedPaste;
 import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
@@ -84,7 +86,16 @@ public class FakeChunkCache extends ChunkCache
 			}
 		}
 		if(!(super.getBlockState(pos).getBlock() instanceof ISecretBlock) && EnergizedPasteHandler.hasReplacedState(world, pos))
-			return EnergizedPasteHandler.getReplacedState(world, pos);
+		{
+			if(EnergizedPasteHandler.getSetBlockState(world, pos).getBlock() != super.getBlockState(pos).getBlock()
+					|| EnergizedPasteHandler.getSetBlockState(world, pos).getBlock().getMetaFromState(EnergizedPasteHandler.getSetBlockState(world, pos)) != super.getBlockState(pos).getBlock().getMetaFromState(super.getBlockState(pos)))
+			{
+				EnergizedPasteHandler.removeReplacedState(world.provider.getDimension(), pos);
+				SecretNetwork.sendToServer(new MessagePacketEnergizedPaste(pos, false));
+			}
+			else
+				return EnergizedPasteHandler.getReplacedState(world, pos);
+		}
 
 		return oldCache.getBlockState(pos);
 	}	

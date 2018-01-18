@@ -3,10 +3,18 @@ package com.wynprice.secretroomsmod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
+import com.wynprice.secretroomsmod.network.SecretNetwork;
+import com.wynprice.secretroomsmod.network.packets.MessagePacketSyncEnergizedPaste;
 import com.wynprice.secretroomsmod.proxy.CommonProxy;
 
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -14,6 +22,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(
 		modid = SecretRooms5.MODID,
@@ -25,7 +35,7 @@ public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
-    public static final String VERSION = "5.1.13";
+    public static final String VERSION = "5.2.1";
     public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
 	
     
@@ -60,5 +70,12 @@ public class SecretRooms5
     public void postInit(FMLPostInitializationEvent event)
     {
     	proxy.postInit(event);
+    }
+    
+    @EventHandler
+    public void onServerLoaded(FMLServerStartingEvent event)
+    {
+    	//Debugging command to clean if it gets too laggs
+    	event.registerServerCommand(new CommandBase() {@Override public int getRequiredPermissionLevel() {return 0;}@Override public String getUsage(ICommandSender sender) {return "Resets the energized blocks";}@Override public String getName() {return "resetenergized";}@Override public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {EnergizedPasteHandler.getEnergized_map().clear();SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(EnergizedPasteHandler.saveToNBT(), null));}});
     }
 }

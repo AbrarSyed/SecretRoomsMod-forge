@@ -15,8 +15,7 @@ public class MessagePacketUpdateProbe extends BaseMessagePacket<MessagePacketUpd
 	}
 	
 	private NBTTagCompound compound;
-	public MessagePacketUpdateProbe(NBTTagCompound compound) 
-	{
+	public MessagePacketUpdateProbe(NBTTagCompound compound) {
 		this.compound = compound;
 	}
 	
