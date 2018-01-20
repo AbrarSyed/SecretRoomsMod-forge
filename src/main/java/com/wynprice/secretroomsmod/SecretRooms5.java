@@ -76,6 +76,6 @@ public class SecretRooms5
     public void onServerLoaded(FMLServerStartingEvent event)
     {
     	//Debugging command to clean if it gets too laggs
-    	event.registerServerCommand(new CommandBase() {@Override public int getRequiredPermissionLevel() {return 0;}@Override public String getUsage(ICommandSender sender) {return "Resets the energized blocks";}@Override public String getName() {return "resetenergized";}@Override public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {EnergizedPasteHandler.getEnergized_map().clear();SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(EnergizedPasteHandler.saveToNBT(), null));}});
+    	event.registerServerCommand(new CommandBase() {@Override public int getRequiredPermissionLevel(){return 2;}@Override public String getUsage(ICommandSender sender) {return "Resets the energized blocks";}@Override public String getName() {return "resetenergized";}@Override public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {EnergizedPasteHandler.getEnergized_map().clear();SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(EnergizedPasteHandler.saveToNBT(), null));}});
     }
 }
