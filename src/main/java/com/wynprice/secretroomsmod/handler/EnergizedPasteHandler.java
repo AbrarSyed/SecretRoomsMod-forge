@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
@@ -38,11 +37,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -330,10 +329,9 @@ public class EnergizedPasteHandler
 	}
 	
 	@SubscribeEvent
-	public void onPlayerJoin(EntityJoinWorldEvent event)
+	public void onPlayerJoin(PlayerLoggedInEvent event)
 	{
-		if(!event.getWorld().isRemote && event.getEntity() instanceof EntityPlayer)
-			SecretNetwork.sendToPlayer((EntityPlayer) event.getEntity(), new MessagePacketSyncEnergizedPaste(saveToNBT(), null));
+		SecretNetwork.sendToPlayer(event.player, new MessagePacketSyncEnergizedPaste(saveToNBT(), null));
 	}
 	
 	public static HashMap<Integer, HashMap<BlockPos, Pair<IBlockState, IBlockState>>> getEnergized_map() {
