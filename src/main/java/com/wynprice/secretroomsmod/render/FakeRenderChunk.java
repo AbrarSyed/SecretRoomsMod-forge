@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.chunk.ChunkCompileTaskGenerator;
-import net.minecraft.client.renderer.chunk.ListedRenderChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 
-public class FakeRenderChunk extends ListedRenderChunk 
+public class FakeRenderChunk extends RenderChunk 
 {
 	private final RenderChunk oldRender;
 	private FakeChunkCache worldView;
@@ -58,10 +56,4 @@ public class FakeRenderChunk extends ListedRenderChunk
 		super.deleteGlResources();
 		this.oldRender.deleteGlResources();
 	}
-	
-	@Override
-	public void rebuildChunk(float x, float y, float z, ChunkCompileTaskGenerator generator) 
-	{
-		super.rebuildChunk(x, y, z, generator);
-    }
 }

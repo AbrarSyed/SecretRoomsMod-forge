@@ -1,5 +1,6 @@
 package com.wynprice.secretroomsmod.render;
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.chunk.IRenderChunkFactory;
 import net.minecraft.client.renderer.chunk.RenderChunk;
@@ -15,7 +16,7 @@ public class FakeChunkRenderFactory implements IRenderChunkFactory
 	
 	@Override
 	public RenderChunk create(World worldIn, RenderGlobal renderGlobalIn, int index) {
-		return new FakeRenderChunk(worldIn, renderGlobalIn, index, base.create(worldIn, renderGlobalIn, index));
+		return OpenGlHelper.useVbo() ? new FakeRenderChunk(worldIn, renderGlobalIn, index, base.create(worldIn, renderGlobalIn, index)) : new FakeRenderChunkListed(worldIn, renderGlobalIn, index, base.create(worldIn, renderGlobalIn, index));
 	}
 
 }
