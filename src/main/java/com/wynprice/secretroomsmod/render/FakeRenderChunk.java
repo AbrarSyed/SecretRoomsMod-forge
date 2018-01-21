@@ -52,6 +52,12 @@ public class FakeRenderChunk extends ListedRenderChunk
 		}
 		return super.createRegionRenderCache(world, from, to, subtract);
 	}
+
+	@Override
+	public void deleteGlResources() {
+		super.deleteGlResources();
+		this.oldRender.deleteGlResources();
+	}
 	
 	@Override
 	public void rebuildChunk(float x, float y, float z, ChunkCompileTaskGenerator generator) 
