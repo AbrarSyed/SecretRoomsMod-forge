@@ -67,7 +67,7 @@ public class ClientProxy extends CommonProxy
 				new SecretKeyBindings(),
 				new HandlerUpdateChecker(),
 				new ReloadTrueSightModelsHandler()
-    	};
+		};
     	for(Object o : handlers)
     		MinecraftForge.EVENT_BUS.register(o);
 	}

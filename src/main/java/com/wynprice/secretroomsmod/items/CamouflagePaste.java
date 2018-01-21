@@ -50,33 +50,7 @@ public class CamouflagePaste extends Item
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) 
 	{
-		if(playerIn.getHeldItem(handIn).getMetadata() == 0 || !playerIn.getHeldItem(handIn).hasTagCompound())
-			return super.onItemRightClick(worldIn, playerIn, handIn);
-		playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_block");
-		playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_meta");
-		playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_color");
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
-	}
-	
-	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
-			EnumFacing facing, float hitX, float hitY, float hitZ) 
-	{
-
-		if(player.getHeldItem(hand).getMetadata() == 0)
-			return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-		IBlockState state = worldIn.getBlockState(pos);
-		if(state.getBlock() == Blocks.AIR)
-			return EnumActionResult.PASS;
-		
-		if(!player.getHeldItem(hand).hasTagCompound())
-			player.getHeldItem(hand).setTagCompound(new NBTTagCompound());
-
-		player.getHeldItem(hand).getTagCompound().setString("hit_block", worldIn.getBlockState(pos).getBlock().getRegistryName().toString());
-		player.getHeldItem(hand).getTagCompound().setInteger("hit_meta", worldIn.getBlockState(pos).getBlock().getMetaFromState(worldIn.getBlockState(pos)));
-		player.getHeldItem(hand).getTagCompound().setInteger("hit_color", worldIn.getBlockState(pos).getMapColor(worldIn, pos).colorValue);
-		
-		return EnumActionResult.SUCCESS;
+		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
 	@Override

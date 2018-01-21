@@ -24,7 +24,6 @@ public class SecretKeyBindings
 	
 	private static final KeyBinding CHANGE_GLASS_DIRECTION = registerKey(new KeyBinding("key.secretroomsmod.oneWayface", Keyboard.KEY_BACKSLASH, "key.categories.secretroomsmod"));
 	
-	private static final KeyBinding USE_ENERGIZED_PASTE = registerKey(new KeyBinding("key.secretroomsmod.energizedpaste", Keyboard.KEY_G, "key.categories.secretroomsmod"));
 	@SubscribeEvent
 	public void onKeyPressed(KeyInputEvent event)
 	{
@@ -34,15 +33,6 @@ public class SecretKeyBindings
 			SecretNetwork.sendToServer(new MessagePacketToggleGlassDirection());
 			Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("message.secretroomsmod.oneWay."
 					+ (Minecraft.getMinecraft().player.getEntityData().getBoolean("glassDirection") ? "towards" : "away")), true);
-		}
-		
-		if(USE_ENERGIZED_PASTE.isPressed() && Minecraft.getMinecraft().objectMouseOver.getBlockPos() != BlockPos.ORIGIN && Minecraft.getMinecraft().objectMouseOver.getBlockPos() != null && Minecraft.getMinecraft().objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK)
-		{
-			SecretNetwork.sendToServer(new MessagePacketEnergizedPaste(Minecraft.getMinecraft().objectMouseOver.getBlockPos(), true));
-			EntityPlayer player = Minecraft.getMinecraft().player;
-			for(EnumHand hand : EnumHand.values())
-				if(player.getHeldItem(hand).getMetadata() == 1 && player.getHeldItem(hand).getItem() instanceof CamouflagePaste)
-					player.swingArm(hand);
 		}
 	}
 	

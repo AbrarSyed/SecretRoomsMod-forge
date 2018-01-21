@@ -18,6 +18,7 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.items.CamouflagePaste;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketRemoveEnergizedPaste;
+import com.wynprice.secretroomsmod.network.packets.MessagePacketSwingArm;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketSyncEnergizedPaste;
 
 import net.minecraft.block.Block;
@@ -28,13 +29,16 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
@@ -196,12 +200,47 @@ public class EnergizedPasteHandler
         }
 	}
 	
-	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onMouseRightClick(RightClickBlock event)
 	{
 		if(event.getWorld().isRemote && hasReplacedState(event.getWorld(), event.getPos()) && event.getEntityPlayer().getHeldItemMainhand().isEmpty() && event.getEntityPlayer().isSneaking())
 			SecretNetwork.sendToServer(new MessagePacketRemoveEnergizedPaste(event.getPos()));
+		if(event.getEntityPlayer().getHeldItemMainhand().getItem() == SecretItems.CAMOUFLAGE_PASTE && event.getEntityPlayer().getHeldItemMainhand().getMetadata() == 1)
+		{
+			if(event.getEntityPlayer().isSneaking())
+			{
+				if(!event.getEntityPlayer().getHeldItemMainhand().hasTagCompound())
+					event.getEntityPlayer().getHeldItemMainhand().setTagCompound(new NBTTagCompound());
+
+				event.getEntityPlayer().getHeldItemMainhand().getTagCompound().setString("hit_block", event.getWorld().getBlockState(event.getPos()).getBlock().getRegistryName().toString());
+				event.getEntityPlayer().getHeldItemMainhand().getTagCompound().setInteger("hit_meta", event.getWorld().getBlockState(event.getPos()).getBlock().getMetaFromState(event.getWorld().getBlockState(event.getPos())));
+				event.getEntityPlayer().getHeldItemMainhand().getTagCompound().setInteger("hit_color", event.getWorld().getBlockState(event.getPos()).getMapColor(event.getWorld(), event.getPos()).colorValue);
+				event.getEntityPlayer().swingArm(EnumHand.MAIN_HAND);
+			}
+			else if(!event.getWorld().isRemote)
+			{
+				event.setCanceled(true);
+				ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+				if(stack.hasTagCompound() && stack.getTagCompound().hasKey("hit_block", 8) && stack.getTagCompound().hasKey("hit_meta", 99))
+				{
+					Block block = Block.REGISTRY.getObject(new ResourceLocation(stack.getTagCompound().getString("hit_block")));
+					if(block != Blocks.AIR)
+					{
+						IBlockState state = block.getStateFromMeta(stack.getTagCompound().getInteger("hit_meta"));
+						if(EnergizedPasteHandler.canBlockBeMirrored(block, event.getWorld(), state, event.getPos()) && EnergizedPasteHandler.canBlockBeReplaced(event.getWorld().getBlockState(event.getPos()).getBlock(), event.getWorld(), event.getWorld().getBlockState(event.getPos()), event.getPos()))
+						{
+							if(EnergizedPasteHandler.putState(event.getWorld(), event.getPos(), state))
+							{
+								SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(event.getWorld().provider.getDimension(), event.getPos(), state, true));
+								event.getEntityPlayer().getHeldItemMainhand().shrink(1);
+							}
+							event.getEntityPlayer().swingArm(EnumHand.MAIN_HAND);
+							SecretNetwork.sendToPlayer(event.getEntityPlayer(), new MessagePacketSwingArm(EnumHand.MAIN_HAND));
+						}
+					}
+				}
+			}
+		}
 
 	}
 	
