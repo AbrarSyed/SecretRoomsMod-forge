@@ -232,7 +232,8 @@ public class EnergizedPasteHandler
 							if(EnergizedPasteHandler.putState(event.getWorld(), event.getPos(), state))
 							{
 								SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(event.getWorld().provider.getDimension(), event.getPos(), state, true));
-								event.getEntityPlayer().getHeldItemMainhand().shrink(1);
+								if(((EntityPlayerMP)event.getEntityPlayer()).interactionManager.getGameType() == GameType.SURVIVAL)
+									event.getEntityPlayer().getHeldItemMainhand().shrink(1);
 							}
 							event.getEntityPlayer().swingArm(EnumHand.MAIN_HAND);
 							SecretNetwork.sendToPlayer(event.getEntityPlayer(), new MessagePacketSwingArm(EnumHand.MAIN_HAND));
