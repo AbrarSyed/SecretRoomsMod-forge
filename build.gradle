@@ -53,7 +53,7 @@ dependencies {
 //Adds the LoadingPlugin description to the manifest so forge finds it.
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'com.wynprice.secretroomsmod.core.UVCore',
+        attributes 'FMLCorePlugin': 'com.wynprice.secretroomsmod.core.SRMCore',
                 'FMLCorePluginContainsFMLMod': 'true'
     }
 }

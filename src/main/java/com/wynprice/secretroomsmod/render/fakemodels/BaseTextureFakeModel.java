@@ -6,6 +6,7 @@ import java.util.List;
 import com.wynprice.secretroomsmod.base.BaseTERender;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.core.UVTransformer;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -69,7 +70,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 				        vList[pos + 2] = sList[pos + 2];
 				        try 
 				        {
-							BlockFaceUV faceUV = null; //TODO
+							BlockFaceUV faceUV = UVTransformer.getUV(sList, pos);
 							if(faceUV != null)
 							{
 								vList[pos + 4] = Float.floatToRawIntBits(mirrorQuad.getSprite().getInterpolatedU((double)faceUV.getVertexU(i) * .999 + faceUV.getVertexU((i + 2) % 4) * .001));

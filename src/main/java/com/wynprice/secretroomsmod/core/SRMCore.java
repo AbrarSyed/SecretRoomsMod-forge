@@ -7,16 +7,16 @@ import com.wynprice.secretroomsmod.SecretRooms5;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
-@IFMLLoadingPlugin.Name(value = "SRM UV-Core")
+@IFMLLoadingPlugin.Name(value = "SRM-Core")
 @IFMLLoadingPlugin.MCVersion(value = "1.12.2")
 @IFMLLoadingPlugin.TransformerExclusions({"com.wynprice.secretroomsmod.core"})
 @IFMLLoadingPlugin.SortingIndex(1001)
-public class UVCore implements IFMLLoadingPlugin {
+public class SRMCore implements IFMLLoadingPlugin {
 
     public static boolean isDebofEnabled = false;
 
-    public UVCore() {
-        FMLLog.info("[UV-Core] Initialized.");
+    public SRMCore() {
+        FMLLog.info("[SRM-Core] Initialized.");
     }
 
     @Override
