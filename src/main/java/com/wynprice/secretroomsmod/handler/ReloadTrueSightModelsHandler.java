@@ -27,7 +27,7 @@ public class ReloadTrueSightModelsHandler
 			for(TileEntity holder : ISecretBlock.ALL_SECRET_TILE_ENTITIES)
 				if(holder instanceof ISecretTileEntity)
 					event.player.world.markBlockRangeForRenderUpdate(holder.getPos().add(-1, -1, -1), holder.getPos().add(1, 1, 1));
-			if(EnergizedPasteHandler.getEnergized_map().get(event.player.world.provider.getDimension() != null)
+			if(EnergizedPasteHandler.getEnergized_map().get(event.player.world.provider.getDimension()) != null)
 				for(BlockPos pos : EnergizedPasteHandler.getEnergized_map().get(event.player.world.provider.getDimension()).keySet())
 					event.player.world.markBlockRangeForRenderUpdate(pos.add(-1, -1, -1), pos.add(1, 1, 1));
 
