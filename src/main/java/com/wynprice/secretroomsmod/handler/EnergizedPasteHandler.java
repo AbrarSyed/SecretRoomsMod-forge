@@ -2,6 +2,7 @@ package com.wynprice.secretroomsmod.handler;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -300,6 +301,9 @@ public class EnergizedPasteHandler
 			if(nbt != null)
 				readFromNBT(nbt);
 		} 
+		catch (FileNotFoundException e) {
+			SecretRooms5.LOGGER.info("Secret Rooms Mod file cannot be found. Assuming world creation");
+		}
 		catch (IOException e) 
 		{
 			e.printStackTrace();

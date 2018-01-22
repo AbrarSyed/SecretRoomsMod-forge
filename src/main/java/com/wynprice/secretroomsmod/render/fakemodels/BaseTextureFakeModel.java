@@ -1,5 +1,7 @@
 package com.wynprice.secretroomsmod.render.fakemodels;
 
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,13 +9,20 @@ import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.BaseTERender;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.handler.SecretModelHelper;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.init.Blocks;
+import net.minecraft.client.renderer.block.model.ModelBlock;
+import net.minecraft.client.renderer.block.model.ModelBlockDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelRotation;
+import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 
 public abstract class BaseTextureFakeModel extends FakeBlockModel 
 {
@@ -55,6 +64,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 					for(EnumFacing facing : fallbackOrder())
 						if(!renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand).isEmpty())
 							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
+				int t = 0;
 				for(BakedQuad mirrorQuad : secList)
 				{
 					int[] vList = new int[mirrorQuad.getVertexData().length];
@@ -65,12 +75,24 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 				      for (int i = 0; i < 4; i++)
 				      {
 				        int pos = i * quad.getVertexData().length / 4;
-				        vList[pos ] = sList[pos ];
+				        vList[pos ] = sList[pos];
 				        vList[pos + 1] = sList[pos + 1];
 				        vList[pos + 2] = sList[pos + 2];
+				        try 
+				        {
+							BlockFaceUV faceUV = SecretModelHelper.getUVFromState(normalState, side, t);
+							if(faceUV != null)
+							{
+								vList[pos + 4] = Float.floatToRawIntBits(mirrorQuad.getSprite().getInterpolatedU((double)faceUV.getVertexU(i) * .999 + faceUV.getVertexU((i + 2) % 4) * .001));
+						        vList[pos + 4 + 1] = Float.floatToRawIntBits(mirrorQuad.getSprite().getInterpolatedV((double)faceUV.getVertexV(i) * .999 + faceUV.getVertexV((i + 2) % 4) * .001));
+							}
+				        } catch (Throwable e) {
+//							e.printStackTrace();
+						}
 				      }
 					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), mirrorQuad.getFace(), 
 							mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+					++t;
 				}
 			}
 		return finalList;
