@@ -12,7 +12,7 @@ apply plugin: 'maven'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.12.2-5.2.2"
+version = "1.12.2-5.2.3"
 group = "com.wynprice.secretroomsmod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "secretroomsmod"
 
@@ -48,6 +48,14 @@ repositories {
 dependencies {
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.18-10"
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+}
+
+//Adds the LoadingPlugin description to the manifest so forge finds it.
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'com.wynprice.secretroomsmod.core.UVCore',
+                'FMLCorePluginContainsFMLMod': 'true'
+    }
 }
 
 processResources {
