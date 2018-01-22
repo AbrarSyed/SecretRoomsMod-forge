@@ -1,28 +1,17 @@
 package com.wynprice.secretroomsmod.render.fakemodels;
 
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.BaseTERender;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
-import com.wynprice.secretroomsmod.handler.SecretModelHelper;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ModelBlock;
-import net.minecraft.client.renderer.block.model.ModelBlockDefinition;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.model.ModelRotation;
-import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 
 public abstract class BaseTextureFakeModel extends FakeBlockModel 
 {
@@ -80,7 +69,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 				        vList[pos + 2] = sList[pos + 2];
 				        try 
 				        {
-							BlockFaceUV faceUV = SecretModelHelper.getUVFromState(normalState, side, t);
+							BlockFaceUV faceUV = null; //TODO
 							if(faceUV != null)
 							{
 								vList[pos + 4] = Float.floatToRawIntBits(mirrorQuad.getSprite().getInterpolatedU((double)faceUV.getVertexU(i) * .999 + faceUV.getVertexU((i + 2) % 4) * .001));
