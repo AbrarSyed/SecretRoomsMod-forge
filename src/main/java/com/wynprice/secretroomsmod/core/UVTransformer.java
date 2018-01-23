@@ -90,11 +90,11 @@ public class UVTransformer implements IClassTransformer
 		return basicClass;
 	}
 	
-	private static final HashMap<Vec3i, HashMap<Vec3i, BlockFaceUV>> BLOCKUV_DATA = new HashMap<>();
+	public static final HashMap<int[], BlockFaceUV> BLOCKUV_DATA = new HashMap<>();
 	
 	public static void storeVertexData(int[] faceData, int storeIndex, int vertexIndex, Vector3f position, int shadeColor, TextureAtlasSprite sprite, BlockFaceUV faceUV)
     {
-        int i = storeIndex * 7;
+		int i = storeIndex * (faceData.length / 4);
         int i1 = Float.floatToRawIntBits(position.x);
         int i2 = Float.floatToRawIntBits(position.y);
         int i3 = Float.floatToRawIntBits(position.z);
@@ -104,16 +104,14 @@ public class UVTransformer implements IClassTransformer
         int[] allInts = {i1, i2, i3, i4, i5, i6};
         for(int j = 0; j < 6; j++)
         	faceData[i + j] = allInts[j];
-        if(!BLOCKUV_DATA.containsKey(new Vec3i(i1, i2, i3)))
-        	BLOCKUV_DATA.put(new Vec3i(i1, i2, i3), new HashMap<>());
-        BLOCKUV_DATA.get(new Vec3i(i1, i2, i3)).put(new Vec3i(i4, i5, i6), faceUV);
+        BLOCKUV_DATA.put(faceData, faceUV);        	
     }
 	
 	public static BlockFaceUV getUV(int[] list, int pos)
 	{
-		Vec3i vec1 = new Vec3i(list[pos], list[pos + 1], list[pos + 2]);
-		Vec3i vec2 = new Vec3i(list[pos + 3], list[pos + 4], list[pos + 5]);
-		return BLOCKUV_DATA.containsKey(vec1) ? BLOCKUV_DATA.get(vec1).get(vec2) : null;
+		return BLOCKUV_DATA.containsKey(list) ? BLOCKUV_DATA.get(list) : null;
 	}
+	
+	
 
 }

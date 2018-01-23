@@ -77,9 +77,10 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 						        vList[pos + 4 + 1] = Float.floatToRawIntBits(mirrorQuad.getSprite().getInterpolatedV((double)faceUV.getVertexV(i) * .999 + faceUV.getVertexV((i + 2) % 4) * .001));
 							}
 				        } catch (Throwable e) {
-//							e.printStackTrace();
+							e.printStackTrace();
 						}
 				      }
+					
 					finalList.add(new BakedQuad(vList, mirrorQuad.getTintIndex(), mirrorQuad.getFace(), 
 							mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
 					++t;
