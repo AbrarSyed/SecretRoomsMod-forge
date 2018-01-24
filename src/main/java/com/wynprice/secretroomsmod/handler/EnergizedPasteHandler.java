@@ -27,22 +27,27 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.command.CommandResultStats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickEmpty;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -50,38 +55,24 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.util.Random;
 
 public class EnergizedPasteHandler 
 {
 	private static HashMap<Integer, HashMap<BlockPos, Pair<IBlockState, IBlockState>>> energized_map = new HashMap<>();
 	
 
-	public static boolean putState(World world, BlockPos pos, IBlockState state)
+	public static void putState(World world, BlockPos pos, IBlockState state)
 	{
-		return putState(world.provider.getDimension(), pos, state, world.getBlockState(pos));
+		putState(world.provider.getDimension(), pos, state, world.getBlockState(pos));
 	}
 	
-	public static boolean putState(int dim, BlockPos pos, IBlockState state, IBlockState replaceState)
+	public static void putState(int dim, BlockPos pos, IBlockState state, IBlockState replaceState)
 	{
 		pos = new BlockPos(pos);
 		HashMap<BlockPos, Pair<IBlockState, IBlockState>> innerMap = energized_map.get(dim) == null || energized_map.get(dim).keySet() == null || energized_map.get(dim).keySet().isEmpty() ? new HashMap<>() : energized_map.get(dim);
-		boolean hadBefore = false;
-		try
-		{
-			if(innerMap.containsKey(pos))
-			{
-				hadBefore = true;
-				innerMap.remove(pos);
-			}
-		}
-		catch (ConcurrentModificationException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
 		innerMap.put(pos, Pair.of(state, replaceState));
 		energized_map.put(dim, innerMap);
-		return hadBefore;
 	}
 	
 	public static void removeReplacedState(int dim, BlockPos pos)
@@ -201,14 +192,53 @@ public class EnergizedPasteHandler
         }
 	}
 	
+	private ArrayList<Location> previousServerTickMap = new ArrayList<>();
+	
 	@SubscribeEvent
 	public void onMouseRightClick(RightClickBlock event)
 	{
-		if(event.getWorld().isRemote && hasReplacedState(event.getWorld(), event.getPos()) && event.getEntityPlayer().getHeldItemMainhand().isEmpty() && event.getEntityPlayer().isSneaking())
-			SecretNetwork.sendToServer(new MessagePacketRemoveEnergizedPaste(event.getPos()));
-		if(event.getEntityPlayer().getHeldItemMainhand().getItem() == SecretItems.CAMOUFLAGE_PASTE && event.getEntityPlayer().getHeldItemMainhand().getMetadata() == 1)
+		Location location = new Location(event.getPos(), event.getWorld());
+		if((hasReplacedState(event.getWorld(), event.getPos()) && event.getEntityPlayer().getHeldItemMainhand().isEmpty() && event.getEntityPlayer().isSneaking()) || previousServerTickMap.contains(location))
+		{	
+			if(!event.getWorld().isRemote)
+			{
+				if(previousServerTickMap.contains(location))
+					previousServerTickMap.remove(location);
+				else
+				{
+					previousServerTickMap.add(location);
+					IBlockState state = EnergizedPasteHandler.getReplacedState(event.getWorld(), event.getPos());
+					EnergizedPasteHandler.removeReplacedState(event.getWorld().provider.getDimension(), event.getPos());
+					SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(event.getWorld().provider.getDimension(), event.getPos(), null, false));
+					if(((EntityPlayerMP)event.getEntityPlayer()).interactionManager.getGameType() == GameType.SURVIVAL)
+					{
+						NBTTagCompound nbt = new NBTTagCompound();
+						nbt.setString("hit_block", state.getBlock().getRegistryName().toString());
+						nbt.setInteger("hit_meta", state.getBlock().getMetaFromState(state));
+						nbt.setInteger("hit_color", state.getMapColor(event.getWorld(), event.getPos()).colorValue);
+						ItemStack stack = new ItemStack(SecretItems.CAMOUFLAGE_PASTE, 1, 1);
+						stack.setTagCompound(nbt);
+						boolean flag = event.getEntityPlayer().inventory.addItemStackToInventory(stack);
+			            if (flag)
+			            {
+			            	event.getEntityPlayer().world.playSound((EntityPlayer)null, event.getEntityPlayer().posX, event.getEntityPlayer().posY, event.getEntityPlayer().posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((event.getEntityPlayer().getRNG().nextFloat() - event.getEntityPlayer().getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			                event.getEntityPlayer().inventoryContainer.detectAndSendChanges();
+			            }
+			            else //Should not be possible, clicking with an empty hand, so there will always be a space. Will add code just in case
+			            {
+			                EntityItem entityitem = new EntityItem(event.getWorld(), event.getPos().getX() + 0.5d, event.getPos().getY() + 1d, event.getPos().getZ() + 0.5d, stack);
+			                entityitem.setNoPickupDelay();
+		                    entityitem.setOwner(event.getEntityPlayer().getName());
+		                    event.getWorld().spawnEntity(entityitem);
+			            }
+					}
+				}
+			}
+			event.setCanceled(true);
+		}
+		else if(event.getEntityPlayer().getHeldItemMainhand().getItem() == SecretItems.CAMOUFLAGE_PASTE && event.getEntityPlayer().getHeldItemMainhand().getMetadata() == 1)
 		{
-			if(event.getEntityPlayer().isSneaking())
+			if(event.getEntityPlayer().isSneaking() && EnergizedPasteHandler.canBlockBeMirrored(event.getWorld().getBlockState(event.getPos()).getBlock(), event.getWorld(), event.getWorld().getBlockState(event.getPos()), event.getPos()))
 			{
 				if(!event.getEntityPlayer().getHeldItemMainhand().hasTagCompound())
 					event.getEntityPlayer().getHeldItemMainhand().setTagCompound(new NBTTagCompound());
@@ -217,8 +247,11 @@ public class EnergizedPasteHandler
 				event.getEntityPlayer().getHeldItemMainhand().getTagCompound().setInteger("hit_meta", event.getWorld().getBlockState(event.getPos()).getBlock().getMetaFromState(event.getWorld().getBlockState(event.getPos())));
 				event.getEntityPlayer().getHeldItemMainhand().getTagCompound().setInteger("hit_color", event.getWorld().getBlockState(event.getPos()).getMapColor(event.getWorld(), event.getPos()).colorValue);
 				event.getEntityPlayer().swingArm(EnumHand.MAIN_HAND);
+				SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(SecretConfig.sound_set_name));
+				if(soundEvent == null) soundEvent = SoundEvents.BLOCK_SAND_PLACE;
+				event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), soundEvent, SoundCategory.BLOCKS, (float) SecretConfig.sound_set_vol, (float) SecretConfig.sound_set_pitch);
 			}
-			else if(!event.getWorld().isRemote)
+			else
 			{
 				event.setCanceled(true);
 				ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
@@ -230,20 +263,27 @@ public class EnergizedPasteHandler
 						IBlockState state = block.getStateFromMeta(stack.getTagCompound().getInteger("hit_meta"));
 						if(EnergizedPasteHandler.canBlockBeMirrored(block, event.getWorld(), state, event.getPos()) && EnergizedPasteHandler.canBlockBeReplaced(event.getWorld().getBlockState(event.getPos()).getBlock(), event.getWorld(), event.getWorld().getBlockState(event.getPos()), event.getPos()))
 						{
-							if(EnergizedPasteHandler.putState(event.getWorld(), event.getPos(), state))
+							if(!event.getWorld().isRemote)
 							{
+								EnergizedPasteHandler.putState(event.getWorld(), event.getPos(), state);
 								SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(event.getWorld().provider.getDimension(), event.getPos(), state, true));
 								if(((EntityPlayerMP)event.getEntityPlayer()).interactionManager.getGameType() == GameType.SURVIVAL)
 									event.getEntityPlayer().getHeldItemMainhand().shrink(1);
+								event.getEntityPlayer().swingArm(EnumHand.MAIN_HAND);
+								SecretNetwork.sendToPlayer(event.getEntityPlayer(), new MessagePacketSwingArm(EnumHand.MAIN_HAND));
 							}
-							event.getEntityPlayer().swingArm(EnumHand.MAIN_HAND);
-							SecretNetwork.sendToPlayer(event.getEntityPlayer(), new MessagePacketSwingArm(EnumHand.MAIN_HAND));
+							else
+							{
+								SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(SecretConfig.sound_use_name));
+								if(soundEvent == null) soundEvent = SoundEvents.BLOCK_SLIME_BREAK;
+								event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), soundEvent, SoundCategory.BLOCKS, (float) SecretConfig.sound_use_vol, (float) SecretConfig.sound_use_pitch);
+							}
+							
 						}
 					}
 				}
 			}
 		}
-
 	}
 	
 	@SubscribeEvent
@@ -380,6 +420,32 @@ public class EnergizedPasteHandler
 	
 	public static HashMap<Integer, HashMap<BlockPos, Pair<IBlockState, IBlockState>>> getEnergized_map() {
 		return energized_map;
+	}
+	
+	private class Location
+	{
+		private final BlockPos pos;
+		private final World world;
+		
+		public Location(BlockPos pos, World world) 
+		{
+			this.pos = pos;
+			this.world = world;
+		}
+		
+		public BlockPos getPos() {
+			return pos;
+		}
+		
+		public World getWorld() {
+			return world;
+		}
+		
+		@Override
+		public boolean equals(Object obj) 
+		{
+			return obj instanceof Location && ((Location)obj).pos.equals(pos) && ((Location)obj).world.provider.getDimension() == world.provider.getDimension();
+		}
 	}
 }
 	
