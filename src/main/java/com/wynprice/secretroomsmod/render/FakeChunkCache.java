@@ -9,6 +9,7 @@ import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketEnergizedPaste;
+import com.wynprice.secretroomsmod.optifinehelpers.EOACV;
 import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
@@ -26,6 +27,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk.EnumCreateEntityType;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FakeChunkCache extends ChunkCache
 {
@@ -103,8 +106,59 @@ public class FakeChunkCache extends ChunkCache
 	@Override
 	public int getCombinedLight(BlockPos pos, int lightValue) 
 	{
-		return oldCache.getCombinedLight(pos, lightValue);
+		int i = this.getLightForExt(EnumSkyBlock.SKY, pos);
+        int j = this.getLightForExt(EnumSkyBlock.BLOCK, pos);
+
+        if (j < lightValue)
+        {
+            j = lightValue;
+        }
+
+        return i << 20 | j << 4;
 	}
+	
+	@SideOnly(Side.CLIENT)
+    private int getLightForExt(EnumSkyBlock type, BlockPos pos)
+    {
+        if (type == EnumSkyBlock.SKY && !this.world.provider.hasSkyLight())
+        {
+            return 0;
+        }
+        else if (pos.getY() >= 0 && pos.getY() < 256)
+        {
+            if (this.getBlockState(pos).useNeighborBrightness() || EnergizedPasteHandler.hasReplacedState(world, pos))
+            {
+                int l = 0;
+
+                for (EnumFacing enumfacing : EnumFacing.values())
+                {
+                    int k = this.getLightFor(type, pos.offset(enumfacing));
+
+                    if (k > l)
+                    {
+                        l = k;
+                    }
+
+                    if (l >= 15)
+                    {
+                        return l;
+                    }
+                }
+
+                return l;
+            }
+            else
+            {
+                int i = (pos.getX() >> 4) - this.chunkX;
+                int j = (pos.getZ() >> 4) - this.chunkZ;
+                return i >= 0 && i < chunkArray.length && j >= 0 && j < chunkArray[i].length && chunkArray[i][j] != null ? this.chunkArray[i][j].getLightFor(type, pos) : type.defaultLightValue;
+            }
+        }
+        else
+        {
+            return type.defaultLightValue;
+        }
+    }
 	
 	@Override
 	public int getLightFor(EnumSkyBlock type, BlockPos pos) 

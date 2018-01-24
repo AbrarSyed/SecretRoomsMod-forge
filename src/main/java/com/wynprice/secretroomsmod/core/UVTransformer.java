@@ -1,6 +1,5 @@
 package com.wynprice.secretroomsmod.core;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,7 +22,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.common.FMLLog;
 
 public class UVTransformer implements IClassTransformer
@@ -95,15 +93,12 @@ public class UVTransformer implements IClassTransformer
 	public static void storeVertexData(int[] faceData, int storeIndex, int vertexIndex, Vector3f position, int shadeColor, TextureAtlasSprite sprite, BlockFaceUV faceUV)
     {
 		int i = storeIndex * (faceData.length / 4);
-        int i1 = Float.floatToRawIntBits(position.x);
-        int i2 = Float.floatToRawIntBits(position.y);
-        int i3 = Float.floatToRawIntBits(position.z);
-        int i4 = shadeColor;
-        int i5 = Float.floatToRawIntBits(sprite.getInterpolatedU((double)faceUV.getVertexU(vertexIndex) * .999 + faceUV.getVertexU((vertexIndex + 2) % 4) * .001));
-        int i6 = Float.floatToRawIntBits(sprite.getInterpolatedV((double)faceUV.getVertexV(vertexIndex) * .999 + faceUV.getVertexV((vertexIndex + 2) % 4) * .001));
-        int[] allInts = {i1, i2, i3, i4, i5, i6};
-        for(int j = 0; j < 6; j++)
-        	faceData[i + j] = allInts[j];
+        faceData[i] = Float.floatToRawIntBits(position.x);
+        faceData[i + 1] = Float.floatToRawIntBits(position.y);
+        faceData[i + 2] = Float.floatToRawIntBits(position.z);
+        faceData[i + 3] = shadeColor;
+        faceData[i + 4] = Float.floatToRawIntBits(sprite.getInterpolatedU((double)faceUV.getVertexU(vertexIndex) * .999 + faceUV.getVertexU((vertexIndex + 2) % 4) * .001));
+        faceData[i + 4 + 1] = Float.floatToRawIntBits(sprite.getInterpolatedV((double)faceUV.getVertexV(vertexIndex) * .999 + faceUV.getVertexV((vertexIndex + 2) % 4) * .001));
         BLOCKUV_DATA.put(faceData, faceUV);        	
     }
 	
