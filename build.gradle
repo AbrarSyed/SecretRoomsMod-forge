@@ -34,20 +34,34 @@ minecraft {
 
 repositories {
 
-     maven { // TOP
-         name 'tterrag maven'
-         url "http://maven.tterrag.com/"
+    maven { // TOP
+        name 'tterrag maven'
+        url "http://maven.tterrag.com/"
     }
 
     maven {
-         name = "CoFH Maven"
-         url = "http://maven.covers1624.net"
+        name = "CoFH Maven"
+        url = "http://maven.covers1624.net"
+    }
+
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "modmaven.k-4u.nl"
     }
 }
 
 dependencies {
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.18-10"
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+    deobfProvided "mezz.jei:jei_1.12.2:4.8.5.138:api"
+    runtime "mezz.jei:jei_1.12.2:4.8.5.138"
+   
 }
 
 //Adds the LoadingPlugin description to the manifest so forge finds it.
