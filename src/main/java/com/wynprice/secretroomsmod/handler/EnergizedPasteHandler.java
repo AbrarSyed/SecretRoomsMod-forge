@@ -307,26 +307,40 @@ public class EnergizedPasteHandler
 			if(entity instanceof EntityItem)
 			{
 				EntityItem ei = (EntityItem)entity;
-				if(ei.getItem().getItem() instanceof CamouflagePaste && ei.isBurning())
+				if(ei.getItem().getItem() instanceof CamouflagePaste)
 				{
-					NBTTagCompound compound = new NBTTagCompound();
-					ei.writeEntityToNBT(compound);
-					compound.setShort("Health", (short) 5);
-					ei.readEntityFromNBT(compound);
-					if(ei.getItem().getMaxDamage() == 0 && !ei.isDead && ei.getItem().getCount() >= 5)
+					if(ei.isBurning())
 					{
-						EntityItem newItem = new EntityItem(ei.world, ei.posX, ei.posY, ei.posZ, new ItemStack(SecretItems.CAMOUFLAGE_PASTE, Math.floorDiv(ei.getItem().getCount(), 5), 1));
-						newItem.motionX = ei.motionX;
-						newItem.motionY = ei.motionY;
-						newItem.motionZ = ei.motionZ;
-						newItem.hoverStart = ei.hoverStart;
-						newItem.rotationYaw = ei.rotationYaw;
-						if(ei.getItem().getCount() % 5 == 0)
-							ei.setDead();
-						else
-							ei.getItem().setCount(ei.getItem().getCount() % 5);
-						event.world.spawnEntity(newItem);
+						NBTTagCompound compound = new NBTTagCompound();
+						ei.writeEntityToNBT(compound);
+						compound.setShort("Health", (short) 100);
+						ei.readEntityFromNBT(compound);
+						if(ei.getItem().getMaxDamage() == 0 && !ei.isDead && ei.getItem().getCount() >= 5)
+						{
+							EntityItem newItem = new EntityItem(ei.world, ei.posX, ei.posY, ei.posZ, new ItemStack(SecretItems.CAMOUFLAGE_PASTE, Math.floorDiv(ei.getItem().getCount(), 5), 1));
+							newItem.motionX = ei.motionX;
+							newItem.motionY = ei.motionY;
+							newItem.motionZ = ei.motionZ;
+							newItem.hoverStart = ei.hoverStart;
+							newItem.rotationYaw = ei.rotationYaw;
+							if(ei.getItem().getCount() % 5 == 0)
+								ei.setDead();
+							else
+								ei.getItem().setCount(ei.getItem().getCount() % 5);
+							event.world.spawnEntity(newItem);
+						}
 					}
+					else
+					{
+						NBTTagCompound compound = new NBTTagCompound();
+						ei.writeEntityToNBT(compound);
+						if(compound.getShort("Health") > 5)
+						{
+							compound.setShort("Health", (short) 5);
+							ei.readEntityFromNBT(compound);
+						}
+					}
+						
 				}
 			}
 	}
