@@ -268,7 +268,13 @@ public class EnergizedPasteHandler
 								EnergizedPasteHandler.putState(event.getWorld(), event.getPos(), state);
 								SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(event.getWorld().provider.getDimension(), event.getPos(), state, true));
 								if(((EntityPlayerMP)event.getEntityPlayer()).interactionManager.getGameType() == GameType.SURVIVAL)
-									event.getEntityPlayer().getHeldItemMainhand().shrink(1);
+									if(!previousServerTickMap.contains(location))
+									{
+										event.getEntityPlayer().getHeldItemMainhand().shrink(1);
+										previousServerTickMap.add(location);
+									}
+									else
+										previousServerTickMap.remove(location);
 								event.getEntityPlayer().swingArm(EnumHand.MAIN_HAND);
 								SecretNetwork.sendToPlayer(event.getEntityPlayer(), new MessagePacketSwingArm(EnumHand.MAIN_HAND));
 							}
@@ -309,7 +315,7 @@ public class EnergizedPasteHandler
 				EntityItem ei = (EntityItem)entity;
 				if(ei.getItem().getItem() instanceof CamouflagePaste)
 				{
-					if(ei.isBurning())
+					if(ei.isBurning() || ei.world.getBlockState(ei.getPosition()).getBlock() == Blocks.FIRE)
 					{
 						NBTTagCompound compound = new NBTTagCompound();
 						ei.writeEntityToNBT(compound);
