@@ -18,7 +18,6 @@ import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.items.CamouflagePaste;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
-import com.wynprice.secretroomsmod.network.packets.MessagePacketRemoveEnergizedPaste;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketSwingArm;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketSyncEnergizedPaste;
 
@@ -27,7 +26,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.command.CommandResultStats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,7 +45,6 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickEmpty;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -55,7 +52,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.util.Random;
 
 public class EnergizedPasteHandler 
 {
@@ -133,11 +129,13 @@ public class EnergizedPasteHandler
 	
 	public static boolean canBlockBeMirrored(Block block, World world, IBlockState state, BlockPos pos)
 	{
+		if(block.hasTileEntity() || block.hasTileEntity(state))
+			return tileEntityOptIn(block, world, state, pos);
 		if(block instanceof ISecretBlock) return false;
 		boolean directFromClass = false;
 		try
 		{
-			directFromClass = (boolean) block.getClass().getMethod("canBlockBeMirrored", World.class, IBlockState.class, BlockPos.class).invoke(block, world, state,  pos);
+			directFromClass = (boolean) block.getClass().getMethod("SRMcanBlockBeMirrored", World.class, IBlockState.class, BlockPos.class).invoke(block, world, state,  pos);
 		}
 		catch (Throwable e) 
 		{
@@ -146,13 +144,36 @@ public class EnergizedPasteHandler
 		return directFromClass || !Arrays.asList(SecretConfig.energized_blacklist_mirror).contains(block.getRegistryName().toString());
 	}
 	
+	public static boolean tileEntityOptIn(Block block, World world, IBlockState state, BlockPos pos)
+	{
+		boolean directFromClass = false;
+		try
+		{
+			directFromClass = (boolean) block.getClass().getMethod("SRMdoesTileEntityOptIn", World.class, IBlockState.class, BlockPos.class).invoke(block, world, state,  pos);
+		}
+		catch (Throwable e) 
+		{
+			;
+		}
+		
+		boolean starred = false;
+		for(String te : SecretConfig.energized_whitelist_te)
+		{
+			ResourceLocation location = new ResourceLocation(te);
+			if(location.getResourcePath().equals("*") && location.getResourceDomain().equals(block.getRegistryName().getResourceDomain()))
+				starred = true;
+		}
+		
+		return directFromClass || Arrays.asList(SecretConfig.energized_whitelist_te).contains(block.getRegistryName().toString()) || starred;
+	}
+	
 	public static boolean canBlockBeReplaced(Block block, World world, IBlockState state, BlockPos pos)
 	{
 		if(block instanceof ISecretBlock) return false;
 		boolean directFromClass = false;
 		try
 		{
-			directFromClass = (boolean) block.getClass().getMethod("canBlockBeReplaced", World.class, IBlockState.class, BlockPos.class).invoke(block, world, state, pos);
+			directFromClass = (boolean) block.getClass().getMethod("SRMcanBlockBeReplaced", World.class, IBlockState.class, BlockPos.class).invoke(block, world, state, pos);
 		}
 		catch (Throwable e) 
 		{
