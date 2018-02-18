@@ -247,7 +247,7 @@ public interface ISecretBlock extends ITileEntityProvider
 			if(position != null)
 			{
 				TileEntity tileEntity = Minecraft.getMinecraft().world.getTileEntity(position);
-				if(tileEntity instanceof ISecretTileEntity) {
+				if(tileEntity instanceof ISecretTileEntity && ((ISecretTileEntity)tileEntity).getMirrorState() != null) {
 					return ((ISecretTileEntity)tileEntity).getMirrorState().getBlock().getBlockLayer() == layer;
 				}
 			}

@@ -12,7 +12,7 @@ apply plugin: 'maven'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.12.2-5.3.0"
+version = "1.12.2-5.3.1"
 group = "com.wynprice.secretroomsmod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "secretroomsmod"
 
@@ -54,11 +54,19 @@ repositories {
         name = "ModMaven"
         url = "modmaven.k-4u.nl"
     }
+    
+    maven {
+        //Hwyla
+        name = "Hwyla repo"
+        url "http://tehnut.info/maven"
+    }
 }
 
 dependencies {
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.18-10"
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+        deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
+   
     deobfProvided "mezz.jei:jei_1.12.2:4.8.5.138:api"
     runtime "mezz.jei:jei_1.12.2:4.8.5.138"
    

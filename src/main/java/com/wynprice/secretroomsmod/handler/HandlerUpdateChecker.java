@@ -8,9 +8,12 @@ import java.util.Map;
 
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
+import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretRooms5;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 
+import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;

@@ -60,7 +60,7 @@ public class CommonProxy
 
     	NetworkRegistry.INSTANCE.registerGuiHandler(SecretRooms5.instance, new GuiHandler());
     	
-        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "com.wynprice.secretroomsmod.intergration.TheOneProbeSupport");
+        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "com.wynprice.secretroomsmod.intergration.theoneprobe.TheOneProbeSupport");
 
 
     }

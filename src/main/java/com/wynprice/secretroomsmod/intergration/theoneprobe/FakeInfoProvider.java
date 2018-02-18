@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.intergration;
+package com.wynprice.secretroomsmod.intergration.theoneprobe;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
