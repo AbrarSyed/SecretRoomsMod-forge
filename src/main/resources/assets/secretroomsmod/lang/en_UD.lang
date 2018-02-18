@@ -1,0 +1,60 @@
+itemGroup.secretroomsmod=ɯooᴚ ʇǝɹɔǝS
+
+message.secretroomsmod.oneWay.towards=-- ¡¡¡ spɹɐʍo⟘ oʇ ʇǝs ᵷuᴉɔɐɟ ʞɔoꞁᗺʎɐMǝuO ¡¡¡ --
+message.secretroomsmod.oneWay.away=-- ¡¡¡ ʎɐʍⱯ oʇ ʇǝs ᵷuᴉɔɐɟ ʞɔoꞁᗺʎɐMǝuO ¡¡¡ --
+message.secretroomsmod.commandShow.show=snoᴉʌqo ǝpɐɯ sʞɔoꞁq oɯɐƆ
+message.secretroomsmod.commandShow.hide=ʇǝɹɔǝs ǝpɐɯ sʞɔoꞁq oɯɐƆ
+
+config.do_update.comment=dnʇɹɐʇs uo unɹ ǝq ɹǝʞɔǝɥƆ ǝʇɐpd∩ ǝɥʇ pꞁnoɥS
+config.ao.comment=˙ʇɐɥʍ ɹǝʇʇɐɯ ou uo pǝɔɹoɟ ǝq ꞁꞁᴉʍ ʇᴉ ǝnɹʇ ɟI 'ʇᴉ sʇᴉɯɹǝd ʇɟɐɹɔǝuᴉW ɟᴉ uo pǝuɹnʇ ǝq ꞁꞁᴉʍ OⱯ 'ǝsꞁɐɟ ɟI ˙uo pǝɔɹoɟ ǝq uoᴉsnꞁɔɔO ʇuǝᴉqɯⱯ pꞁnoɥS
+config.energizedpaste.blacklistpickup=sᴉɥʇ ɹoɹɹᴉɯ uɐɔ ʞɔoꞁq ɹǝɥʇo ou os 'ǝʇsɐԀ ǝᵷɐꞁɟnoɯɐƆ pǝzᴉᵷɹǝuƎ ǝɥʇ ǝq dn pǝʞɔᴉd ǝq oʇ ǝꞁqɐ ǝq ʇuoʍ ʇsᴉꞁ sᴉɥʇ uᴉ sʞɔoꞁᗺ
+config.energizedpaste.nonreplaceable=pǝᵷuɐɥɔ ǝq ʇuɐɔ ʞɔoꞁq sᴉɥʇ ɹoɟ ᵷuᴉɹǝpuǝɹ ǝɥʇ os 'ǝʇsɐԀ ǝᵷɐꞁɟnoɯɐƆ pǝzᴉᵷɹǝuƎ ǝɥʇ ʎq pǝɔɐꞁdǝɹ ǝq oʇ ǝꞁqɐ ǝq ʇuoʍ ʇsᴉꞁ sᴉɥʇ uᴉ sʞɔoꞁᗺ
+config.energizedpaste.sound.set=˙ǝʇsɐԀ pǝzᴉᵷɹǝuƎ ǝɥʇ oʇ ʇǝs sᴉ ʞɔoꞁq ɐ uǝɥʍ ʎɐꞁd oʇ ɥɔʇᴉԀ puɐ ǝɯnꞁoᴧ 'punoS ǝɥ⟘
+config.energizedpaste.sound.use=˙ʞɔoꞁq ʇɐɥʇ ɟo ǝɔuɐǝɹǝddɐ ǝɥʇ ᵷuᴉᵷuɐɥɔ 'ʞɔoꞁq ɹǝɥʇouɐ uo pǝsn sᴉ ǝʇsɐԀ pǝzᴉᵷɹǝuƎ uǝɥʍ ʎɐꞁd oʇ ɥɔʇᴉԀ puɐ ǝɯnꞁoᴧ 'punoS ǝɥ⟘
+
+update.version=ǝᵷɐd oʇ oᵷ oʇ ǝɹǝɥ ʞɔᴉꞁƆ ˙%3$s :uoᴉsɹǝʌ ʇǝᵷɹɐʇ '%2$s uoᴉsɹǝʌ ɹno⅄ ˙ǝʇɐp ɟo ʇno sᴉ poW ǝɥ⟘ [%1$s]
+update.hover=%s oʇ oᵷ o⟘ ʞɔᴉꞁƆ
+
+key.categories.secretroomsmod=sᵷuᴉpuᴉqʎǝʞ poWsɯooᴚʇǝɹɔǝS
+key.secretroomsmod.oneWayface=ǝɔɐɟ ʎɐMǝuO ǝꞁᵷᵷo⟘
+key.secretroomsmod.energizedpaste=ǝʇsɐԀ pǝzᴉᵷɹǝuƎ ǝs∩
+
+tile.torch_lever.name=ɹǝʌǝꞀ ɥɔɹo⟘
+tile.one_way_glass.name=ssɐꞁ⅁ ʎɐM-ǝuO
+tile.secret_gate.name=ǝʇɐ⅁ ʇǝɹɔǝS
+tile.secret_gate.name=ʞɔoꞁᗺ ǝʇɐ⅁ ʇǝɹɔǝS
+tile.secret_wooden_trapdoor.name=ɹooᗡdɐɹ⟘ uǝpooM ʇǝɹɔǝS
+tile.secret_iron_trapdoor.name=ɹooᗡdɐɹ⟘ uoɹI ʇǝɹɔǝS
+tile.secret_wooden_door.name=ɹooᗡ uǝpooM ʇǝɹɔǝS
+tile.secret_iron_door.name=ɹooᗡ uoɹI ʇǝɹɔǝS
+tile.ghost_block.name=ʞɔoꞁᗺ ʇsoɥ⅁
+tile.secret_lever.name=ɹǝʌǝꞁ ʇǝɹɔǝS
+tile.secret_redstone.name=ǝuoʇspǝᴚ ʇǝɹɔǝS
+tile.secret_stone_button.name=uoʇʇnᗺ ǝuoʇS ʇǝɹɔǝS
+tile.secret_wooden_button.name=uoʇʇnᗺ pooM ʇǝɹɔǝS
+tile.secret_pressure_plate.name=ǝʇɐꞁԀ ǝɹnssǝɹԀ ʇǝɹɔǝS
+tile.secret_player_pressure_plate.name=ǝʇɐꞁԀ ɹǝʎɐꞁԀ ʇǝɹɔǝS
+tile.secret_light_pressure_plate.name=(ʇɥᵷᴉꞁ) ǝʇɐꞁԀ pǝʇɥᵷᴉǝM ʇǝɹɔǝS
+tile.secret_heavy_pressure_plate.name=(ʎʌɐǝɥ) ǝʇɐꞁԀ pǝʇɥᵷᴉǝM ʇǝɹɔǝS
+tile.secret_stairs.name=sɹᴉɐʇS ʇǝɹɔǝS
+tile.secret_chest.name=ʇsǝɥƆ ʇǝɹɔǝS
+tile.secret_trapped_chest.name=ʇsǝɥƆ pǝddɐɹ⟘ ʇǝɹɔǝS
+tile.secret_light_detector.name=ɹoʇɔǝʇǝᗡ ʇɥᵷᴉꞀ ʇǝɹɔǝS
+tile.secret_inverted_light_detector.name=ɹoʇɔǝʇǝᗡ ʇɥᵷᴉꞀ ʇǝɹɔǝS
+tile.solid_air.name=ɹᴉⱯ pᴉꞁoS
+tile.secret_dispenser.name=ɹǝsuǝdsᴉᗡ ʇǝɹɔǝS
+
+gui.secret_chest.name=ʇsǝɥƆ ʇǝɹɔǝS
+
+item.secret_iron_door.name=ɹooᗡ uoɹI ʇǝɹɔǝS
+item.camouflage_paste.name=ǝʇsɐԀ ǝᵷɐꞁɟnoɯɐƆ
+item.energized_camouflage_paste.name=ǝʇsɐԀ ǝᵷɐꞁɟnoɯɐƆ pǝzᴉᵷɹǝuƎ
+item.secret_wooden_door.name=ɹooᗡ uǝpooM ʇǝɹɔǝS
+item.switch_probe.name=ǝqoɹԀ ɥɔʇᴉʍS
+item.programmable_switch_probe.name=ǝqoɹԀ ɥɔʇᴉʍS ǝꞁqɐɯɯɐɹᵷoɹԀ
+item.iron_exposing_helmet.name=(uoɹI) ʇɥᵷᴉS ǝnɹ⟘ ɟo ʇǝɯꞁǝH
+item.diamond_exposing_helmet.name=(puoɯɐᴉᗡ) ʇɥᵷᴉS ǝnɹ⟘ ɟo ʇǝɯꞁǝH
+
+camopaste.pressshift=oɟuᴉ ǝɹoɯ ɹoɟ ʇɟᴉɥS ssǝɹԀ
+
+jei.energizedpaste.name=sǝdᴉɔǝᴚ ᵷuᴉuɹnᗺ
