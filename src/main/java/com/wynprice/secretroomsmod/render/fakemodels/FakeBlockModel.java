@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -18,6 +19,9 @@ import net.minecraftforge.common.model.TRSRTransformation;
 public class FakeBlockModel implements IBakedModel
 {
 	protected final IBakedModel model;
+	
+	protected IBlockState currentRender;
+	protected BlockPos currentPos;
 	
 	public FakeBlockModel(IBlockState overstate) 
 	{
@@ -34,6 +38,17 @@ public class FakeBlockModel implements IBakedModel
 	{
 		return model.getQuads(state, side, rand);
 	}
+	
+	public FakeBlockModel setCurrentRender(IBlockState currentRender) {
+		this.currentRender = currentRender;
+		return this;
+	}
+	
+	public FakeBlockModel setCurrentPos(BlockPos currentPos) {
+		this.currentPos = currentPos;
+		return this;
+	}
+	
 
 	@Override
 	public boolean isAmbientOcclusion() {

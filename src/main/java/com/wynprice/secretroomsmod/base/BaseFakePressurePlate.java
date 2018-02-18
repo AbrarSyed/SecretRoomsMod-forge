@@ -22,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public abstract class BaseFakePressurePlate extends BaseFakeBlock
 {
@@ -132,7 +134,7 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {POWER});
+    	return new ExtendedBlockState(this, new IProperty[] {POWER}, new IUnlistedProperty[] {POSITIONPROPERTY});    
     }
 
 }

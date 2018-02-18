@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -37,6 +38,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -139,9 +143,27 @@ public class SecretRedstone extends Block implements ISecretBlock
 	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, java.util.Random rand) {
 	}
 	
-    public EnumBlockRenderType getRenderType(IBlockState state)
+	public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return EnumBlockRenderType.INVISIBLE;
+        return EnumBlockRenderType.MODEL;
+    }
+    
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+    	return BlockRenderLayer.TRANSLUCENT;
+    }
+    
+    @Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
+	{
+		if(state instanceof IExtendedBlockState)
+			state = ((IExtendedBlockState)state).withProperty(POSITIONPROPERTY, pos);
+		return super.getExtendedState(state, world, pos);
+	}
+    
+    @Override
+    protected BlockStateContainer createBlockState() {
+    	return new ExtendedBlockState(this, new IProperty[] {POWER}, new IUnlistedProperty[] {POSITIONPROPERTY});    
     }
 
     public boolean isOpaqueCube(IBlockState state)
@@ -293,11 +315,6 @@ public class SecretRedstone extends Block implements ISecretBlock
                 }
             }
         }
-    }
-    
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, new IProperty[] {POWER});
     }
 
     /**
@@ -460,6 +477,11 @@ public class SecretRedstone extends Block implements ISecretBlock
             return blockState.getBlock().canConnectRedstone(blockState, world, pos, side);
         }
     }
+    
+    @Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return ISecretBlock.super.getActualState(state, worldIn, pos, super.getActualState(state, worldIn, pos));
+	}
 
 }
 

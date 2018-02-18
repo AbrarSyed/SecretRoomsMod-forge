@@ -33,6 +33,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -256,10 +258,10 @@ public class SecretTrapDoor extends BaseFakeBlock
     {
         return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
     }
-
+    
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, OPEN, HALF});
+        return new ExtendedBlockState(this, new IProperty[] {FACING, OPEN, HALF}, new IUnlistedProperty[]{POSITIONPROPERTY});
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
@@ -278,6 +280,8 @@ public class SecretTrapDoor extends BaseFakeBlock
         }
         return false;
     }
+    
+    
 
     public static enum DoorHalf implements IStringSerializable
     {

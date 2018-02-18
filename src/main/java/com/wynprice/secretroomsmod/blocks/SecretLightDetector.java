@@ -1,5 +1,6 @@
 package com.wynprice.secretroomsmod.blocks;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -10,7 +11,9 @@ import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDaylightSensor;
 import net.minecraft.block.BlockDaylightDetector;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
@@ -19,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -27,6 +31,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -158,10 +165,28 @@ public class SecretLightDetector extends BlockDaylightDetector implements ISecre
 		return ISecretBlock.super.addDestroyEffects(world, pos, manager);
 	}
 	
-    public EnumBlockRenderType getRenderType(IBlockState state)
+	public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return EnumBlockRenderType.INVISIBLE;
+        return EnumBlockRenderType.MODEL;
     }
+    
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+    	return BlockRenderLayer.TRANSLUCENT;
+    }
+    
+    @Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
+	{
+		if(state instanceof IExtendedBlockState)
+			state = ((IExtendedBlockState)state).withProperty(POSITIONPROPERTY, pos);
+		return super.getExtendedState(state, world, pos);
+	}
+    
+    @Override
+    protected BlockStateContainer createBlockState() {
+    	Collection < IProperty<? >> properties = super.createBlockState().getProperties();
+    	return new ExtendedBlockState(this, properties.toArray(new IProperty[properties.size()]), new IUnlistedProperty[] {POSITIONPROPERTY});    }
 
     public boolean isOpaqueCube(IBlockState state)
     {
@@ -173,4 +198,9 @@ public class SecretLightDetector extends BlockDaylightDetector implements ISecre
     {
         return 1.0F;
     }
+    
+    @Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return ISecretBlock.super.getActualState(state, worldIn, pos, super.getActualState(state, worldIn, pos));
+	}
 }

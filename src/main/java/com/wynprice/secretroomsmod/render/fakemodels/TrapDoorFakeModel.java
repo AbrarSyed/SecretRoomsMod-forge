@@ -32,7 +32,7 @@ public class TrapDoorFakeModel extends BaseTextureFakeModel
 	}
 
 	@Override
-	public IBlockState getNormalStateWith(IBlockState s) {
+	public IBlockState getNormalStateWith(IBlockState s, IBlockState mirrorState) {
 		return Blocks.TRAPDOOR.getDefaultState().withProperty(BlockTrapDoor.FACING, s.getValue(BlockTrapDoor.FACING)).withProperty(BlockTrapDoor.HALF, s.getValue(BlockTrapDoor.HALF))
 				.withProperty(BlockTrapDoor.OPEN, s.getValue(BlockTrapDoor.OPEN));
 	}

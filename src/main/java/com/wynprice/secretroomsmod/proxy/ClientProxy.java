@@ -6,6 +6,8 @@ import java.lang.reflect.Field;
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms5;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.gui.GuiProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.handler.HandlerUpdateChecker;
 import com.wynprice.secretroomsmod.handler.ProbeSwitchRenderHander;
@@ -15,27 +17,28 @@ import com.wynprice.secretroomsmod.optifinehelpers.EOACV;
 import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifine;
 import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.render.FakeChunkRenderFactory;
-import com.wynprice.secretroomsmod.render.TERenders.TileEntityInfomationHolderRenderPlate;
-import com.wynprice.secretroomsmod.render.TERenders.TileEntityInfomationHolderRenderer;
-import com.wynprice.secretroomsmod.render.TERenders.TileEntityInfomationHolderRendererDispenser;
-import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
-import com.wynprice.secretroomsmod.tileentity.TileEntitySecretDispenser;
-import com.wynprice.secretroomsmod.tileentity.TileEntitySecretPressurePlate;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.chunk.IRenderChunkFactory;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation.EnumHolder;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ClientProxy extends CommonProxy 
@@ -57,9 +60,9 @@ public class ClientProxy extends CommonProxy
 		
 		SecretBlocks.regRenders();
 				
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInfomationHolder.class, new TileEntityInfomationHolderRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretDispenser.class, new TileEntityInfomationHolderRendererDispenser());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretPressurePlate.class, new TileEntityInfomationHolderRenderPlate());
+//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInfomationHolder.class, new TileEntityInfomationHolderRenderer());
+//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretDispenser.class, new TileEntityInfomationHolderRendererDispenser());
+//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretPressurePlate.class, new TileEntityInfomationHolderRenderPlate());
 		
 		Object[] handlers = {
 				new ProbeSwitchRenderHander(),
@@ -109,7 +112,8 @@ public class ClientProxy extends CommonProxy
 		}
 		    	
     	ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
-
+    	BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
+    	
         itemColors.registerItemColorHandler((stack, tintIndex) -> 
         {
 	        if(stack.hasTagCompound() && GuiScreen.isAltKeyDown())
@@ -162,6 +166,22 @@ public class ClientProxy extends CommonProxy
 			    return new Color((int) r, (int) g, (int) b, (int) a).getRGB();
 			}
 		}, SecretItems.CAMOUFLAGE_PASTE);
+        
+        for(Block block : ForgeRegistries.BLOCKS.getValues())
+        	if(block instanceof ISecretBlock)
+		        blockColors.registerBlockColorHandler(new IBlockColor() {
+					
+					@Override
+					public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) 
+					{
+						if(state == null || worldIn == null)
+							return -1;
+						TileEntity tileEntity = worldIn.getTileEntity(pos);
+						if(tileEntity instanceof ISecretTileEntity)
+							return blockColors.colorMultiplier(((ISecretTileEntity)tileEntity).getMirrorState(), worldIn, pos, tintIndex);
+						return -1;
+					}
+				}, block);
 	}
 	
 	@Override

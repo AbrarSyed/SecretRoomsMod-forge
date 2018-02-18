@@ -1,7 +1,6 @@
 package com.wynprice.secretroomsmod.blocks;
 
 import com.wynprice.secretroomsmod.base.BaseFakeBlock;
-import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.OneWayGlassFakeModel;
@@ -10,6 +9,7 @@ import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -20,6 +20,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,12 +34,6 @@ public class OneWayGlass extends BaseFakeBlock
 		this.setHardness(0.5f);
 		this.translucent = true;
     }
-		
-	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
-			EnumFacing side) {
-		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-	}
 	
 	@Override
 	public boolean allowForcedBlockColors() {
@@ -74,7 +70,7 @@ public class OneWayGlass extends BaseFakeBlock
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING);
+    	return new ExtendedBlockState(this, new IProperty[]{BlockDirectional.FACING}, new IUnlistedProperty[] {POSITIONPROPERTY});    
 	}
 	
 	@Override
@@ -84,11 +80,6 @@ public class OneWayGlass extends BaseFakeBlock
 		EnumFacing facing = placer.getEntityData().getBoolean("glassDirection") ? EnumFacing.getDirectionFromEntityLiving(pos, placer).getOpposite() : EnumFacing.getDirectionFromEntityLiving(pos, placer);
 		worldIn.setBlockState(pos, state.withProperty(BlockDirectional.FACING, facing), 3);
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	}
-	
-	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-		return super.getActualState(state, worldIn, pos);
 	}
 
 }

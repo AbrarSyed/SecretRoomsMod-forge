@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
+import com.wynprice.secretroomsmod.render.BlockPosUnlistedProperty;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
@@ -28,12 +29,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
 
 public interface ISecretBlock extends ITileEntityProvider
 {
+	
+	IUnlistedProperty<BlockPos> POSITIONPROPERTY = new BlockPosUnlistedProperty();
+	
 	default public IBlockState getState(IBlockAccess world, BlockPos pos)
 	{
 		return world.getTileEntity(pos) instanceof ISecretTileEntity ? ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() : null;
@@ -221,5 +226,11 @@ public interface ISecretBlock extends ITileEntityProvider
 	        }
 		}
 		return false;
+	}
+	
+	public default IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos, IBlockState superState)
+	{
+//		System.out.println(Thread.currentThread().getStackTrace()[4]);
+		return superState;
 	}
 }

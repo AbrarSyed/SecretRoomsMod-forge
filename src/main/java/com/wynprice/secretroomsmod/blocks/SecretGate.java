@@ -12,6 +12,7 @@ import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -22,6 +23,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -99,7 +102,7 @@ public class SecretGate extends BaseFakeBlock
 	@Override
 	protected BlockStateContainer createBlockState() 
 	{
-		return new BlockStateContainer(this, POWERED, FACING);
+    	return new ExtendedBlockState(this, new IProperty[] {POWERED, FACING}, new IUnlistedProperty[] {POSITIONPROPERTY});    
 	}
 	
 	@Override

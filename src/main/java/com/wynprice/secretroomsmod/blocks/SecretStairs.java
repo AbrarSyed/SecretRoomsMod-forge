@@ -1,16 +1,21 @@
 package com.wynprice.secretroomsmod.blocks;
 
+import java.util.Collection;
+
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -18,6 +23,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -103,9 +111,28 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
 		return ISecretBlock.super.addDestroyEffects(world, pos, manager);
 	}
 	
-    public EnumBlockRenderType getRenderType(IBlockState state)
+	public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return EnumBlockRenderType.INVISIBLE;
+        return EnumBlockRenderType.MODEL;
+    }
+    
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+    	return BlockRenderLayer.TRANSLUCENT;
+    }
+    
+    @Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
+	{
+		if(state instanceof IExtendedBlockState)
+			state = ((IExtendedBlockState)state).withProperty(POSITIONPROPERTY, pos);
+		return super.getExtendedState(state, world, pos);
+	}
+    
+    @Override
+    protected BlockStateContainer createBlockState() {
+    	Collection < IProperty<? >> properties = super.createBlockState().getProperties();
+    	return new ExtendedBlockState(this, properties.toArray(new IProperty[properties.size()]), new IUnlistedProperty[] {POSITIONPROPERTY});
     }
 
     public boolean isOpaqueCube(IBlockState state)
@@ -118,4 +145,9 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
     {
         return 1.0F;
     }
+    
+    @Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return ISecretBlock.super.getActualState(state, worldIn, pos, super.getActualState(state, worldIn, pos));
+	}
 }
