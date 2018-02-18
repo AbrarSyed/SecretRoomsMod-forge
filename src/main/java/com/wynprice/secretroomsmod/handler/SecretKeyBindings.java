@@ -32,7 +32,7 @@ public class SecretKeyBindings
 			Minecraft.getMinecraft().player.getEntityData().setBoolean("glassDirection", !Minecraft.getMinecraft().player.getEntityData().getBoolean("glassDirection"));
 			SecretNetwork.sendToServer(new MessagePacketToggleGlassDirection());
 			Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("message.secretroomsmod.oneWay."
-					+ (Minecraft.getMinecraft().player.getEntityData().getBoolean("glassDirection") ? "towards" : "away")), true);
+					+ (Minecraft.getMinecraft().player.getEntityData().getBoolean("glassDirection") ? "away" : "towards")), true);
 		}
 	}
 	

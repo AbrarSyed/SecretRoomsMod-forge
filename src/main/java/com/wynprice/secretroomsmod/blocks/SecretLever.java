@@ -135,9 +135,11 @@ public class SecretLever extends BlockLever implements ISecretBlock
         return EnumBlockRenderType.MODEL;
     }
     
+	@SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer() {
-    	return BlockRenderLayer.TRANSLUCENT;
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) 
+    {
+		return ISecretBlock.super.canRenderInLayer(state, layer);
     }
     
     @Override

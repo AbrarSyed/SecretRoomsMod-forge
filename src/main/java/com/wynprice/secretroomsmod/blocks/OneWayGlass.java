@@ -16,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -72,6 +73,13 @@ public class OneWayGlass extends BaseFakeBlock
 	protected BlockStateContainer createBlockState() {
     	return new ExtendedBlockState(this, new IProperty[]{BlockDirectional.FACING}, new IUnlistedProperty[] {POSITIONPROPERTY});    
 	}
+	
+	@SideOnly(Side.CLIENT)
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) 
+    {
+		return layer == BlockRenderLayer.CUTOUT;
+    }
 	
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,

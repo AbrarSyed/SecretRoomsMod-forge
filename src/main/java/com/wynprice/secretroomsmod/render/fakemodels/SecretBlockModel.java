@@ -9,6 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
+import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -42,6 +43,14 @@ public class SecretBlockModel implements IBakedModel
 			if(position != null)
 			{
 				IBlockState renderState = ISecretTileEntity.getMirrorState(Minecraft.getMinecraft().world, position);
+				try
+				{
+					renderState = renderState.getActualState(new FakeBlockAccess(Minecraft.getMinecraft().world), position);
+				}
+				catch (Throwable t) 
+				{
+					;
+				}
 				FakeBlockModel renderModel = ((ISecretBlock)state.getBlock()).phaseModel(new FakeBlockModel(renderState));
 				for(ItemStack stack : Minecraft.getMinecraft().player.getArmorInventoryList())
 	        		if(stack.getItem() instanceof TrueSightHelmet)

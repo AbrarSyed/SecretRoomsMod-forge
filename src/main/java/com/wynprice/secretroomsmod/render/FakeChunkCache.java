@@ -9,7 +9,6 @@ import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketEnergizedPaste;
-import com.wynprice.secretroomsmod.optifinehelpers.EOACV;
 import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
@@ -99,7 +98,8 @@ public class FakeChunkCache extends ChunkCache
 			else
 				return EnergizedPasteHandler.getReplacedState(world, pos);
 		}
-
+		if(oldCache.getBlockState(pos).getBlock() instanceof ISecretBlock)
+			return oldCache.getBlockState(pos).getBlock().getExtendedState(oldCache.getBlockState(pos).getActualState(oldCache, pos), oldCache, pos);
 		return oldCache.getBlockState(pos);
 	}	
 	

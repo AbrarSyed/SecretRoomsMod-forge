@@ -15,12 +15,14 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -228,9 +231,27 @@ public interface ISecretBlock extends ITileEntityProvider
 		return false;
 	}
 	
-	public default IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos, IBlockState superState)
+	default public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos, IBlockState superState)
 	{
-//		System.out.println(Thread.currentThread().getStackTrace()[4]);
+		if(superState instanceof IExtendedBlockState)
+			return ((IExtendedBlockState)superState).withProperty(POSITIONPROPERTY, null);
 		return superState;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	default public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) 
+	{
+		if(state instanceof IExtendedBlockState)
+		{
+			BlockPos position = ((IExtendedBlockState)state).getValue(POSITIONPROPERTY);
+			if(position != null)
+			{
+				TileEntity tileEntity = Minecraft.getMinecraft().world.getTileEntity(position);
+				if(tileEntity instanceof ISecretTileEntity) {
+					return ((ISecretTileEntity)tileEntity).getMirrorState().getBlock().getBlockLayer() == layer;
+				}
+			}
+		}
+    	return layer == BlockRenderLayer.SOLID;
 	}
 }

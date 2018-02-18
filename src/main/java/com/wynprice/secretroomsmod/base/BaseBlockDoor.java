@@ -179,9 +179,11 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
         return EnumBlockRenderType.MODEL;
     }
     
+	@SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer() {
-    	return BlockRenderLayer.TRANSLUCENT;
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) 
+    {
+		return ISecretBlock.super.canRenderInLayer(state, layer);
     }
     
     @Override
@@ -208,6 +210,11 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
     public float getAmbientOcclusionLightValue(IBlockState state)
     {
         return 1.0F;
+    }
+    
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    	return ISecretBlock.super.getActualState(state, worldIn, pos, super.getActualState(state, worldIn, pos));
     }
 
 }
