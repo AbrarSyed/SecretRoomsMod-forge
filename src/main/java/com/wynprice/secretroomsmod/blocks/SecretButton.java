@@ -30,11 +30,9 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.languageFeature.postfixOps;
 
 public class SecretButton extends BlockButton implements ISecretBlock
 {
@@ -174,15 +172,13 @@ public class SecretButton extends BlockButton implements ISecretBlock
     @Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
 	{
-		if(state instanceof IExtendedBlockState)
-			state = ((IExtendedBlockState)state).withProperty(POSITIONPROPERTY, pos);
-		return super.getExtendedState(state, world, pos);
+		return super.getExtendedState(ISecretBlock.super.getExtendedState(state, world, pos), world, pos);
 	}
     
     @Override
     protected BlockStateContainer createBlockState() {
     	Collection < IProperty<? >> properties = super.createBlockState().getProperties();
-    	return new ExtendedBlockState(this, properties.toArray(new IProperty[properties.size()]), new IUnlistedProperty[] {POSITIONPROPERTY});
+    	return new ExtendedBlockState(this, properties.toArray(new IProperty[properties.size()]), new IUnlistedProperty[] {RENDER_PROPERTY});
     }
 
     public boolean isOpaqueCube(IBlockState state)

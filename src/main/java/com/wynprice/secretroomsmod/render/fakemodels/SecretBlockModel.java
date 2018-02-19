@@ -27,6 +27,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 public class SecretBlockModel implements IBakedModel
 {
 	
+	public final ThreadLocal<Boolean> AO = ThreadLocal.withInitial(() -> false);
+	
 	private final IBakedModel model;
 
 	public SecretBlockModel(IBakedModel model) {
@@ -39,18 +41,9 @@ public class SecretBlockModel implements IBakedModel
 	{
 		if(state instanceof IExtendedBlockState)
 		{
-			BlockPos position = ((IExtendedBlockState)state).getValue(ISecretBlock.POSITIONPROPERTY);
-			if(position != null)
+			IBlockState renderState = ((IExtendedBlockState)state).getValue(ISecretBlock.RENDER_PROPERTY);
+			if(renderState != null)
 			{
-				IBlockState renderState = ISecretTileEntity.getMirrorState(Minecraft.getMinecraft().world, position);
-				try
-				{
-					renderState = renderState.getActualState(new FakeBlockAccess(Minecraft.getMinecraft().world), position);
-				}
-				catch (Throwable t) 
-				{
-					;
-				}
 				FakeBlockModel renderModel = ((ISecretBlock)state.getBlock()).phaseModel(new FakeBlockModel(renderState));
 				for(ItemStack stack : Minecraft.getMinecraft().player.getArmorInventoryList())
 	        		if(stack.getItem() instanceof TrueSightHelmet)
@@ -58,7 +51,7 @@ public class SecretBlockModel implements IBakedModel
 	        			renderModel = ((ISecretBlock)state.getBlock()).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderState)));
 	        			break;
 	        		}
-				return renderModel.setCurrentRender(state).setCurrentPos(position).getQuads(renderState, side, rand);
+				return renderModel.setCurrentRender(state).getQuads(renderState, side, rand);
 			}
 		}
 		return this.model.getQuads(state, side, rand);
@@ -66,7 +59,7 @@ public class SecretBlockModel implements IBakedModel
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return model.isAmbientOcclusion();
+		return AO.get();
 	}
 
 	@Override

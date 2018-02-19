@@ -134,7 +134,7 @@ public abstract class BaseFakePressurePlate extends BaseFakeBlock
 
     protected BlockStateContainer createBlockState()
     {
-    	return new ExtendedBlockState(this, new IProperty[] {POWER}, new IUnlistedProperty[] {POSITIONPROPERTY});    
+    	return new ExtendedBlockState(this, new IProperty[] {POWER}, new IUnlistedProperty[] {RENDER_PROPERTY});    
     }
 
 }

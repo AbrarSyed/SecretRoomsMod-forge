@@ -1,9 +1,10 @@
 package com.wynprice.secretroomsmod.render;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-public class BlockPosUnlistedProperty implements IUnlistedProperty<BlockPos>
+public class RenderStateUnlistedProperty implements IUnlistedProperty<IBlockState>
 {
 
 	@Override
@@ -13,19 +14,19 @@ public class BlockPosUnlistedProperty implements IUnlistedProperty<BlockPos>
 	}
 
 	@Override
-	public boolean isValid(BlockPos value) 
+	public boolean isValid(IBlockState value) 
 	{
 		return true;
 	}
 
 	@Override
-	public Class<BlockPos> getType() 
+	public Class<IBlockState> getType() 
 	{
-		return BlockPos.class;
+		return IBlockState.class;
 	}
 
 	@Override
-	public String valueToString(BlockPos value) 
+	public String valueToString(IBlockState value) 
 	{
 		return value.toString();
 	}

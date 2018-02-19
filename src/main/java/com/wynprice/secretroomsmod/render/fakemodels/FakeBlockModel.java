@@ -21,7 +21,6 @@ public class FakeBlockModel implements IBakedModel
 	protected final IBakedModel model;
 	
 	protected IBlockState currentRender;
-	protected BlockPos currentPos;
 	
 	public FakeBlockModel(IBlockState overstate) 
 	{
@@ -41,11 +40,6 @@ public class FakeBlockModel implements IBakedModel
 	
 	public FakeBlockModel setCurrentRender(IBlockState currentRender) {
 		this.currentRender = currentRender;
-		return this;
-	}
-	
-	public FakeBlockModel setCurrentPos(BlockPos currentPos) {
-		this.currentPos = currentPos;
 		return this;
 	}
 	

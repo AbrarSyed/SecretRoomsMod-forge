@@ -37,6 +37,15 @@ public class OneWayGlass extends BaseFakeBlock
     }
 	
 	@Override
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
+			EnumFacing side) 
+	{
+		if(blockAccess.getBlockState(pos.offset(side)).getBlock() == this)
+			return false;
+		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
+	
+	@Override
 	public boolean allowForcedBlockColors() {
 		return false;
 	}
@@ -71,7 +80,7 @@ public class OneWayGlass extends BaseFakeBlock
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-    	return new ExtendedBlockState(this, new IProperty[]{BlockDirectional.FACING}, new IUnlistedProperty[] {POSITIONPROPERTY});    
+    	return new ExtendedBlockState(this, new IProperty[]{BlockDirectional.FACING}, new IUnlistedProperty[] {RENDER_PROPERTY});    
 	}
 	
 	@SideOnly(Side.CLIENT)

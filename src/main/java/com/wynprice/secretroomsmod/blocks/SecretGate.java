@@ -102,7 +102,7 @@ public class SecretGate extends BaseFakeBlock
 	@Override
 	protected BlockStateContainer createBlockState() 
 	{
-    	return new ExtendedBlockState(this, new IProperty[] {POWERED, FACING}, new IUnlistedProperty[] {POSITIONPROPERTY});    
+    	return new ExtendedBlockState(this, new IProperty[] {POWERED, FACING}, new IUnlistedProperty[] {RENDER_PROPERTY});    
 	}
 	
 	@Override

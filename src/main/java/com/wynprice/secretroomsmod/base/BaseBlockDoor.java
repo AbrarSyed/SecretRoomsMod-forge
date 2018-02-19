@@ -189,15 +189,13 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
     @Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
 	{
-		if(state instanceof IExtendedBlockState)
-			state = ((IExtendedBlockState)state).withProperty(POSITIONPROPERTY, pos);
-		return super.getExtendedState(state, world, pos);
+		return super.getExtendedState(ISecretBlock.super.getExtendedState(state, world, pos), world, pos);
 	}
     
     @Override
     protected BlockStateContainer createBlockState() {
     	Collection < IProperty<? >> properties = super.createBlockState().getProperties();
-    	return new ExtendedBlockState(this, properties.toArray(new IProperty[properties.size()]), new IUnlistedProperty[] {POSITIONPROPERTY});
+    	return new ExtendedBlockState(this, properties.toArray(new IProperty[properties.size()]), new IUnlistedProperty[] {RENDER_PROPERTY});
     }
 
 

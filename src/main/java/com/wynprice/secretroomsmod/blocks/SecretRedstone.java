@@ -39,7 +39,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -155,17 +154,15 @@ public class SecretRedstone extends Block implements ISecretBlock
 		return ISecretBlock.super.canRenderInLayer(state, layer);
     }
     
-    @Override
+	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
 	{
-		if(state instanceof IExtendedBlockState)
-			state = ((IExtendedBlockState)state).withProperty(POSITIONPROPERTY, pos);
-		return super.getExtendedState(state, world, pos);
+		return super.getExtendedState(ISecretBlock.super.getExtendedState(state, world, pos), world, pos);
 	}
     
     @Override
     protected BlockStateContainer createBlockState() {
-    	return new ExtendedBlockState(this, new IProperty[] {POWER}, new IUnlistedProperty[] {POSITIONPROPERTY});    
+    	return new ExtendedBlockState(this, new IProperty[] {POWER}, new IUnlistedProperty[] {RENDER_PROPERTY});    
     }
 
     public boolean isOpaqueCube(IBlockState state)

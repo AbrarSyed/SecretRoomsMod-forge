@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
-import com.wynprice.secretroomsmod.render.BlockPosUnlistedProperty;
+import com.wynprice.secretroomsmod.render.FakeBlockAccess;
+import com.wynprice.secretroomsmod.render.RenderStateUnlistedProperty;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
+import com.wynprice.secretroomsmod.render.fakemodels.SecretBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 
@@ -17,8 +19,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -40,7 +41,7 @@ import scala.util.Random;
 public interface ISecretBlock extends ITileEntityProvider
 {
 	
-	IUnlistedProperty<BlockPos> POSITIONPROPERTY = new BlockPosUnlistedProperty();
+	IUnlistedProperty<IBlockState> RENDER_PROPERTY = new RenderStateUnlistedProperty();
 	
 	default public IBlockState getState(IBlockAccess world, BlockPos pos)
 	{
@@ -234,7 +235,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	default public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos, IBlockState superState)
 	{
 		if(superState instanceof IExtendedBlockState)
-			return ((IExtendedBlockState)superState).withProperty(POSITIONPROPERTY, null);
+			return ((IExtendedBlockState)superState).withProperty(RENDER_PROPERTY, null);//Make sure the unlisted property is removed for 
 		return superState;
 	}
 	
@@ -243,15 +244,32 @@ public interface ISecretBlock extends ITileEntityProvider
 	{
 		if(state instanceof IExtendedBlockState)
 		{
-			BlockPos position = ((IExtendedBlockState)state).getValue(POSITIONPROPERTY);
-			if(position != null)
-			{
-				TileEntity tileEntity = Minecraft.getMinecraft().world.getTileEntity(position);
-				if(tileEntity instanceof ISecretTileEntity && ((ISecretTileEntity)tileEntity).getMirrorState() != null) {
-					return ((ISecretTileEntity)tileEntity).getMirrorState().getBlock().getBlockLayer() == layer;
-				}
-			}
+			IBlockState renderState = ((IExtendedBlockState)state).getValue(RENDER_PROPERTY);
+			if(renderState != null)
+				return renderState.getBlock().getBlockLayer() == layer;
 		}
     	return layer == BlockRenderLayer.SOLID;
+	}
+	
+	default public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
+	{
+		
+		if(state instanceof IExtendedBlockState && world.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() !=  null)
+		{
+			IBlockState renderState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
+			try
+			{
+				renderState = renderState.getActualState(new FakeBlockAccess(world), pos);
+			}
+			catch (Exception e) 
+			{
+				;
+			}
+			IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+			if(model instanceof SecretBlockModel)
+				((SecretBlockModel)model).AO.set(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(renderState).isAmbientOcclusion());
+			state = ((IExtendedBlockState)state).withProperty(RENDER_PROPERTY, renderState);
+		}
+		return state;
 	}
 }

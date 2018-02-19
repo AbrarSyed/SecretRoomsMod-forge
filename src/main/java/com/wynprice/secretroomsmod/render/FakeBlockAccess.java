@@ -17,9 +17,9 @@ import net.minecraft.world.biome.Biome;
 public class FakeBlockAccess implements IBlockAccess
 {
 	
-	private final World base;
+	private final IBlockAccess base;
 	
-	public FakeBlockAccess(World base) {
+	public FakeBlockAccess(IBlockAccess base) {
 		this.base = base;
 	}
 
@@ -34,9 +34,10 @@ public class FakeBlockAccess implements IBlockAccess
 	}
 
 	@Override
-	public IBlockState getBlockState(BlockPos pos) {
-		return base.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(base, pos) != null
-				? ISecretTileEntity.getMirrorState(base, pos) : base.getBlockState(pos);
+	public IBlockState getBlockState(BlockPos pos) 
+	{
+		return base.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)base.getTileEntity(pos)).getMirrorState() != null
+				? ((ISecretTileEntity)base.getTileEntity(pos)).getMirrorState() : base.getBlockState(pos);
 	}
 
 	@Override

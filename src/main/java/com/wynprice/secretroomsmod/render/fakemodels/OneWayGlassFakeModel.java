@@ -18,8 +18,6 @@ public class OneWayGlassFakeModel extends BaseTextureSwitchFakeModel
 	@Override
 	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState) 
 	{
-		if(face != null && Minecraft.getMinecraft().world.getBlockState(currentPos.offset(face)).getBlock() == SecretBlocks.ONE_WAY_GLASS)
-			return null;
 		if(face == null && currentRender.getValue(BlockDirectional.FACING) == EnumFacing.UP)
 			return super.getRenderInfo(face, teMirrorState);			
 		return currentRender != null && currentRender.getBlock() == SecretBlocks.ONE_WAY_GLASS && 

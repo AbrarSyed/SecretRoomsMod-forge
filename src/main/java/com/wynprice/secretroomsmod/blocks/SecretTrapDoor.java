@@ -261,7 +261,7 @@ public class SecretTrapDoor extends BaseFakeBlock
     
     protected BlockStateContainer createBlockState()
     {
-        return new ExtendedBlockState(this, new IProperty[] {FACING, OPEN, HALF}, new IUnlistedProperty[]{POSITIONPROPERTY});
+        return new ExtendedBlockState(this, new IProperty[] {FACING, OPEN, HALF}, new IUnlistedProperty[]{RENDER_PROPERTY});
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
