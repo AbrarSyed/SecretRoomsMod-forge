@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -16,6 +17,7 @@ import mcp.mobius.waila.utils.Constants;
 import mcp.mobius.waila.utils.ModIdentification;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.config.Configuration;
@@ -28,7 +30,7 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 	@Override
 	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) 
 	{
-		if(accessor.getTileEntity() instanceof ISecretTileEntity)
+		if(accessor.getTileEntity() instanceof ISecretTileEntity && ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState() != null  && !(accessor.getPlayer().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet))
 		{
 			try
 			{
@@ -52,7 +54,7 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
 			IWailaConfigHandler config) 
 	{
-		if(accessor.getTileEntity() instanceof ISecretTileEntity)
+		if(accessor.getTileEntity() instanceof ISecretTileEntity && !(accessor.getPlayer().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet))
 		{
 			currenttip.clear();
 			if (accessor.getBlockState().getMaterial().isLiquid())
@@ -102,17 +104,10 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 	}
 	
 	@Override
-	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-			IWailaConfigHandler config) 
-	{
-		return IWailaDataProvider.super.getWailaHead(itemStack, currenttip, accessor, config);
-	}
-	
-	@Override
 	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
 			IWailaConfigHandler config) 
 	{
-		if(accessor.getTileEntity() instanceof ISecretTileEntity) 
+		if(accessor.getTileEntity() instanceof ISecretTileEntity && !(accessor.getPlayer().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet)) 
 		{
 			currenttip.clear();
 			

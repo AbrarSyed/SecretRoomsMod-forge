@@ -21,7 +21,6 @@ public class SecretWalia implements IWailaPlugin
 				continue;
 			registrar.registerStackProvider(SecretWaliaDataProvider.INSTANCE, block.getClass());
 			registrar.registerHeadProvider(SecretWaliaDataProvider.INSTANCE, block.getClass());
-			registrar.registerBodyProvider(SecretWaliaDataProvider.INSTANCE, block.getClass());
 			registrar.registerTailProvider(SecretWaliaDataProvider.INSTANCE, block.getClass());
 		}
 

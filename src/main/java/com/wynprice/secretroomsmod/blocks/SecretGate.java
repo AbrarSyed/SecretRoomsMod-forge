@@ -67,15 +67,20 @@ public class SecretGate extends BaseFakeBlock
 		IBlockState state = getState(worldIn, pos);
 		worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, direction).withProperty(POWERED, true));
 		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state, BlockPos.ORIGIN);
-		for(int i = 1; i < MAX_LEVELS + 1; i++)
+		for(int i = 1; i <= MAX_LEVELS; i++)
 		{
 			BlockPos position = new BlockPos(pos.getX() + (i * direction.getFrontOffsetX()), pos.getY() + (i * direction.getFrontOffsetY()), pos.getZ() + (i * direction.getFrontOffsetZ()));
 			if(!worldIn.getBlockState(position).getBlock().isReplaceable(worldIn, position))
 				break;
 			worldIn.setBlockState(position, SecretBlocks.SECRET_GATE_BLOCK.getDefaultState());
-			worldIn.getTileEntity(position).markDirty();
+			worldIn.setBlockState(position, SecretBlocks.SECRET_GATE_BLOCK.getDefaultState());
+//			worldIn.getTileEntity(position).markDirty();
 			((ISecretBlock)worldIn.getBlockState(pos).getBlock()).forceBlockState(worldIn, position, BlockPos.ORIGIN, getState(worldIn, pos));
 		}
+		
+		BlockPos position = new BlockPos(pos.getX() + ((MAX_LEVELS + 1) * direction.getFrontOffsetX()), pos.getY() + ((MAX_LEVELS + 1) * direction.getFrontOffsetY()), pos.getZ() + ((MAX_LEVELS + 1) * direction.getFrontOffsetZ()));
+		if(worldIn.getBlockState(position).getBlock() == this)
+			buildGate(worldIn, position);
 
 	}
 	
