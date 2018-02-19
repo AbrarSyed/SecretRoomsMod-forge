@@ -57,8 +57,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
 				for(BakedQuad mirrorQuad : secList)
 				{
-					BakedQuad quad2 = new BakedQuad(quad.getVertexData(), mirrorQuad.getTintIndex(), mirrorQuad.getFace(), quad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat());
-					finalList.add(new BakedQuad(new BakedQuadRetextured(quad2, mirrorQuad.getSprite()).getVertexData(), mirrorQuad.getTintIndex(), mirrorQuad.getFace(), mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+					finalList.add(new BakedQuad(new BakedQuadRetextured(quad, mirrorQuad.getSprite()).getVertexData(), mirrorQuad.getTintIndex(), mirrorQuad.getFace(), mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
 				}
 			}
 		return finalList;

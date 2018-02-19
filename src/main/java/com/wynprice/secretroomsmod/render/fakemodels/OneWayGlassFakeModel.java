@@ -6,6 +6,8 @@ import com.wynprice.secretroomsmod.base.BaseTextureSwitchFakeModel;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 
@@ -18,8 +20,6 @@ public class OneWayGlassFakeModel extends BaseTextureSwitchFakeModel
 	@Override
 	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState) 
 	{
-		if(face == null && currentRender.getValue(BlockDirectional.FACING) == EnumFacing.UP)
-			return super.getRenderInfo(face, teMirrorState);			
 		return currentRender != null && currentRender.getBlock() == SecretBlocks.ONE_WAY_GLASS && 
 				face != currentRender.getValue(BlockDirectional.FACING) ? super.getRenderInfo(face, Blocks.GLASS.getDefaultState()) : super.getRenderInfo(face, teMirrorState);
 	}

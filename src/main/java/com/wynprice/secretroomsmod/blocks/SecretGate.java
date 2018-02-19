@@ -54,10 +54,7 @@ public class SecretGate extends BaseFakeBlock
 			if(flag1)
 				buildGate(worldIn, pos);
 			else if(!flag1)
-			{
-				destroyGate(worldIn, pos, worldIn.getBlockState(pos));
-				worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, worldIn.getBlockState(pos).getValue(FACING)).withProperty(POWERED, false));
-			}
+				deactivateGate(worldIn, pos);
 
 	}
 	
@@ -67,21 +64,25 @@ public class SecretGate extends BaseFakeBlock
 		IBlockState state = getState(worldIn, pos);
 		worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, direction).withProperty(POWERED, true));
 		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state, BlockPos.ORIGIN);
+		BlockPos endPosition = new BlockPos(pos.getX() + ((MAX_LEVELS + 1) * direction.getFrontOffsetX()), pos.getY() + ((MAX_LEVELS + 1) * direction.getFrontOffsetY()), pos.getZ() + ((MAX_LEVELS + 1) * direction.getFrontOffsetZ()));
+
 		for(int i = 1; i <= MAX_LEVELS; i++)
 		{
 			BlockPos position = new BlockPos(pos.getX() + (i * direction.getFrontOffsetX()), pos.getY() + (i * direction.getFrontOffsetY()), pos.getZ() + (i * direction.getFrontOffsetZ()));
 			if(!worldIn.getBlockState(position).getBlock().isReplaceable(worldIn, position))
+			{
+				endPosition = position;
 				break;
+			}
 			worldIn.setBlockState(position, SecretBlocks.SECRET_GATE_BLOCK.getDefaultState());
-			worldIn.setBlockState(position, SecretBlocks.SECRET_GATE_BLOCK.getDefaultState());
-//			worldIn.getTileEntity(position).markDirty();
+			if(i == 1)
+				worldIn.setBlockState(position, SecretBlocks.SECRET_GATE_BLOCK.getDefaultState());
+			worldIn.getTileEntity(position).markDirty();
 			((ISecretBlock)worldIn.getBlockState(pos).getBlock()).forceBlockState(worldIn, position, BlockPos.ORIGIN, getState(worldIn, pos));
 		}
 		
-		BlockPos position = new BlockPos(pos.getX() + ((MAX_LEVELS + 1) * direction.getFrontOffsetX()), pos.getY() + ((MAX_LEVELS + 1) * direction.getFrontOffsetY()), pos.getZ() + ((MAX_LEVELS + 1) * direction.getFrontOffsetZ()));
-		if(worldIn.getBlockState(position).getBlock() == this)
-			buildGate(worldIn, position);
-
+		if(worldIn.getBlockState(endPosition).getBlock() == this) 
+			buildGate(worldIn, endPosition);
 	}
 	
 	@Override
@@ -91,17 +92,36 @@ public class SecretGate extends BaseFakeBlock
 		super.breakBlock(worldIn, pos, state);
 	}
 	
-	protected void destroyGate(World worldIn, BlockPos pos, IBlockState blockstate)
+	protected void deactivateGate(World worldIn, BlockPos pos)
+	{
+		BlockPos position = destroyGate(worldIn, pos, worldIn.getBlockState(pos));
+		EnumFacing direction = worldIn.getBlockState(pos).getValue(FACING);
+		worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, direction).withProperty(POWERED, false));
+		if(worldIn.getBlockState(position).getBlock() == this) 
+			deactivateGate(worldIn, position);
+	}
+	
+	protected BlockPos destroyGate(World worldIn, BlockPos pos, IBlockState blockstate)
 	{
 		EnumFacing direction = blockstate.getValue(FACING);
 		IBlockState state = getState(worldIn, pos);
 		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state, BlockPos.ORIGIN);
+		
+		BlockPos endPosition = new BlockPos(pos.getX() + ((MAX_LEVELS + 1) * direction.getFrontOffsetX()), pos.getY() + ((MAX_LEVELS + 1) * direction.getFrontOffsetY()), pos.getZ() + ((MAX_LEVELS + 1) * direction.getFrontOffsetZ()));
+
+		
 		for(int i = 1; i < MAX_LEVELS + 1; i++)
-			if(worldIn.getBlockState(new BlockPos(pos.getX() + (i * direction.getFrontOffsetX()), pos.getY() + (i * direction.getFrontOffsetY()), pos.getZ() + (i * direction.getFrontOffsetZ())))
-					.getBlock() == SecretBlocks.SECRET_GATE_BLOCK)
-				worldIn.setBlockToAir(new BlockPos(pos.getX() + (i * direction.getFrontOffsetX()), pos.getY() + (i * direction.getFrontOffsetY()), pos.getZ() + (i * direction.getFrontOffsetZ())));
+		{
+			BlockPos position = new BlockPos(pos.getX() + (i * direction.getFrontOffsetX()), pos.getY() + (i * direction.getFrontOffsetY()), pos.getZ() + (i * direction.getFrontOffsetZ()));
+			if(worldIn.getBlockState(position).getBlock() == SecretBlocks.SECRET_GATE_BLOCK)
+				worldIn.setBlockToAir(position);
 			else
-				break;
+				return position;
+		}
+		
+		return endPosition;
+		
+		
 	}
 	
 	@Override
