@@ -95,7 +95,7 @@ public interface ISecretBlock extends ITileEntityProvider
 			@Override
 			public IBlockState getBlockState(BlockPos pos) 
 			{
-				return ISecretTileEntity.getMirrorState(world, pos).getBlock() == Blocks.AIR ? world.getBlockState(pos) : ISecretTileEntity.getMirrorState(world, pos);
+				return ISecretTileEntity.getMirrorState(world, pos).getMaterial() == Material.AIR ? world.getBlockState(pos) : ISecretTileEntity.getMirrorState(world, pos);
 			}
 			
 			@Override

@@ -110,7 +110,7 @@ public class EnergizedPasteHandler
 				if(blockpos.equals(pos))
 					return energized_map.get(world.provider.getDimension()).get(blockpos).getLeft();
 		}
-		catch (NullPointerException e) //Can be thrown when /resetenergized is called. As it is a temp command, this is temp
+		catch (NullPointerException e) //Can be thrown when /resetenergized is called
 		{
 			;
 		}
@@ -279,9 +279,10 @@ public class EnergizedPasteHandler
 				if(stack.hasTagCompound() && stack.getTagCompound().hasKey("hit_block", 8) && stack.getTagCompound().hasKey("hit_meta", 99))
 				{
 					Block block = Block.REGISTRY.getObject(new ResourceLocation(stack.getTagCompound().getString("hit_block")));
-					if(block != Blocks.AIR)
+					IBlockState state = block.getStateFromMeta(stack.getTagCompound().getInteger("hit_meta"));
+
+					if(state.getMaterial() != Material.AIR)
 					{
-						IBlockState state = block.getStateFromMeta(stack.getTagCompound().getInteger("hit_meta"));
 						if(EnergizedPasteHandler.canBlockBeMirrored(block, event.getWorld(), state, event.getPos()) && EnergizedPasteHandler.canBlockBeReplaced(event.getWorld().getBlockState(event.getPos()).getBlock(), event.getWorld(), event.getWorld().getBlockState(event.getPos()), event.getPos()))
 						{
 							if(!event.getWorld().isRemote)

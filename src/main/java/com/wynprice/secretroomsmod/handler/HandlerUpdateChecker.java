@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretRooms5;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 
 public class HandlerUpdateChecker 
@@ -27,8 +29,9 @@ public class HandlerUpdateChecker
 	private boolean hasPosted;
 	
 	@SubscribeEvent
-	public void onPlayerTick(PlayerTickEvent event)
+	public void onPlayerJoin(FMLNetworkEvent.ClientConnectedToServerEvent event)
 	{
+		System.out.println("js");
 		if(!hasPosted)
 		{
 			hasPosted = true;
@@ -103,7 +106,7 @@ public class HandlerUpdateChecker
 	        	ITextComponent componant = new TextComponentTranslation("update.version", SecretRooms5.MODNAME, SecretRooms5.VERSION, target)
 	        			.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, (String)json.get("homepage"))));
 	        	componant.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("update.hover", (String)json.get("homepage"))));
-	        	event.player.sendMessage(componant);
+	        	Minecraft.getMinecraft().player.sendMessage(componant);
 
 	        }
 	        else

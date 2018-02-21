@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -15,6 +16,7 @@ import mcp.mobius.waila.config.FormattingConfig;
 import mcp.mobius.waila.overlay.DisplayUtil;
 import mcp.mobius.waila.utils.Constants;
 import mcp.mobius.waila.utils.ModIdentification;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -47,76 +49,20 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 			}
 			return new ItemStack(((ISecretTileEntity)accessor.getTileEntity()).getMirrorState().getBlock());
 		}
-		return accessor.getStack();
-	}
-	
-	@Override
-	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-			IWailaConfigHandler config) 
-	{
-		if(accessor.getTileEntity() instanceof ISecretTileEntity && !(accessor.getPlayer().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet))
+		else if(EnergizedPasteHandler.hasReplacedState(accessor.getWorld(), accessor.getPosition()))
 		{
-			currenttip.clear();
-			if (accessor.getBlockState().getMaterial().isLiquid())
-	            return currenttip;
-
-	        String name = null;
-	        String displayName = TextFormatting.WHITE + ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState().getBlock().getLocalizedName();
-
-	        
-	        try
+			IBlockState state = EnergizedPasteHandler.getReplacedState(accessor.getWorld(), accessor.getPosition());
+			ItemStack ret = new ItemStack(state.getBlock());
+			try
 			{
-	        	ItemStack stack = ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState().getBlock().getPickBlock(
-						((ISecretTileEntity)accessor.getTileEntity()).getMirrorState(), 
-						accessor.getMOP(), 
-						accessor.getWorld(),
-						accessor.getPosition(),
-						accessor.getPlayer());
-	        	
-	        	if(!stack.isEmpty())
-	        		displayName = DisplayUtil.itemDisplayNameShort(stack);
+				ret = state.getBlock().getPickBlock(state, accessor.getMOP(), accessor.getWorld(), accessor.getPosition(), accessor.getPlayer());
 			}
-			catch (Throwable t) 
+			catch (Exception e) 
 			{
 				;
 			}
-	        	        
-	        int metadata = ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState().getBlock().getMetaFromState(((ISecretTileEntity)accessor.getTileEntity()).getMirrorState());
-	        if (displayName != null && !displayName.endsWith("Unnamed"))
-	            name = displayName;
-	        if (name != null)
-	            currenttip.add(name);
-
-	        if (itemStack.getItem() == Items.REDSTONE) {
-	            String redstoneMeta = "" + metadata;
-	            if (redstoneMeta.length() < 2)
-	                redstoneMeta = " " + redstoneMeta;
-	            currenttip.set(currenttip.size() - 1, name + " " + redstoneMeta);
-	        }
-	        if (currenttip.size() == 0)
-	            currenttip.add("\u00a7r" + String.format(FormattingConfig.blockFormat, "< Unnamed >"));
-	        else if (ConfigHandler.instance().getConfig(Configuration.CATEGORY_GENERAL, Constants.CFG_WAILA_METADATA, true) && !Strings.isNullOrEmpty(FormattingConfig.metaFormat))
-	            currenttip.add("\u00a7r" + String.format(FormattingConfig.metaFormat, ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState().getBlock().getRegistryName().toString(), metadata));
-
-	        return currenttip;
+			return ret;
 		}
-		return currenttip;
-	}
-	
-	@Override
-	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-			IWailaConfigHandler config) 
-	{
-		if(accessor.getTileEntity() instanceof ISecretTileEntity && !(accessor.getPlayer().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet)) 
-		{
-			currenttip.clear();
-			
-			String modName = ModIdentification.findModContainer(((ISecretTileEntity)accessor.getTileEntity()).getMirrorState().getBlock().getRegistryName().getResourceDomain()).getName();
-	        if (!Strings.isNullOrEmpty(FormattingConfig.modNameFormat))
-	            currenttip.add(String.format(FormattingConfig.modNameFormat, modName));
-		}
-		
-
-        return currenttip;
+		return ItemStack.EMPTY;
 	}
 }
