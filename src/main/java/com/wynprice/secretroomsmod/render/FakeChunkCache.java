@@ -92,7 +92,7 @@ public class FakeChunkCache extends ChunkCache
 			if(EnergizedPasteHandler.getSetBlockState(world, pos).getBlock() != super.getBlockState(pos).getBlock()
 					|| EnergizedPasteHandler.getSetBlockState(world, pos).getBlock().getMetaFromState(EnergizedPasteHandler.getSetBlockState(world, pos)) != super.getBlockState(pos).getBlock().getMetaFromState(super.getBlockState(pos)))
 			{
-				EnergizedPasteHandler.removeReplacedState(world.provider.getDimension(), pos);
+				//EnergizedPasteHandler.removeReplacedState(world.provider.getDimension(), pos);
 				SecretNetwork.sendToServer(new MessagePacketEnergizedPaste(pos, false));
 			}
 			else
