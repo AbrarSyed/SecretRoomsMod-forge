@@ -168,7 +168,7 @@ public class EnergizedPasteHandler
 		for(BlockPos blockpos : energized_map.get(world.provider.getDimension()).keySet())
 			if(blockpos.equals(pos))
 				return energized_map.get(world.provider.getDimension()).get(blockpos).getRight();
-		return null;
+		return Blocks.STONE.getDefaultState();
 	}
 	
 	/**
