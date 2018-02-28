@@ -38,115 +38,119 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.util.Random;
 
+/**
+ * The interface used by all SRM blocks. Most methods here are called directly from the block, as to store all the same code in the same place. 
+ * Extends {@link ITileEntityProvider} as all SRM blocks have TileEntities. 
+ * <br>Not needed but means,
+ * <br>{@code public class SRMBlock implements ISecretBlock, ITileEntityProvider}
+ * <br>becomes:
+ * <br>{@code public class SRMBlock implements ISecretBlock}
+ * @author Wyn Price
+ *
+ */
 public interface ISecretBlock extends ITileEntityProvider
 {
 	
+	/**
+	 * The unlisted property used to store the RenderState
+	 */
 	IUnlistedProperty<IBlockState> RENDER_PROPERTY = new RenderStateUnlistedProperty();
 	
+	/**
+	 * Used to get the renderState from the World and the position
+	 * @param world the world the blocks in
+	 * @param pos the position of the block
+	 * @return the rendered state of the block, or null if there is none
+	 */
 	default public IBlockState getState(IBlockAccess world, BlockPos pos)
 	{
 		return world.getTileEntity(pos) instanceof ISecretTileEntity ? ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() : null;
 	}
 	
-	default public void forceBlockState(World world, BlockPos tePos, BlockPos hitPos, IBlockState state)
+	/**
+	 * Used to force the block render state to the {@link ISecretTileEntity}, if it exists.
+	 * @param world the world the SRM blocks in
+	 * @param tePos the position of the block 
+	 * @param state the state of which to force the block to
+	 */
+	default public void forceBlockState(World world, BlockPos tePos, IBlockState state)
 	{
 		if(world.getTileEntity(tePos) instanceof ISecretTileEntity)
-			((ISecretTileEntity)world.getTileEntity(tePos)).setMirrorStateForcable(state, hitPos);
+			((ISecretTileEntity)world.getTileEntity(tePos)).setMirrorStateForcable(state);
 	}
 	
 	@Override
 	default TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityInfomationHolder();
 	}
-	
-	default IBlockAccess phaseBlockAccess(IBlockAccess world) {
-		return new IBlockAccess() {
-			
-			@Override
-			public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
-				return world.isSideSolid(pos, side, _default);
-			}
-			
-			@Override
-			public boolean isAirBlock(BlockPos pos) {
-				return world.isAirBlock(pos);
-			}
-			
-			@Override
-			public WorldType getWorldType() {
-				return world.getWorldType();
-			}
-			
-			@Override
-			public TileEntity getTileEntity(BlockPos pos) {
-				return world.getTileEntity(pos);
-			}
-			
-			@Override
-			public int getStrongPower(BlockPos pos, EnumFacing direction) {
-				return world.getStrongPower(pos, direction);
-			}
-			
-			@Override
-			public int getCombinedLight(BlockPos pos, int lightValue) {
-				return world.getCombinedLight(pos, lightValue);
-			}
-			
-			@Override
-			public IBlockState getBlockState(BlockPos pos) 
-			{
-				return ISecretTileEntity.getMirrorState(world, pos).getMaterial() == Material.AIR ? world.getBlockState(pos) : ISecretTileEntity.getMirrorState(world, pos);
-			}
-			
-			@Override
-			public Biome getBiome(BlockPos pos) {
-				return world.getBiome(pos);
-			}
-		};
-	}
-	
-	default boolean allowForcedBlockColors() {
-		return true;
-	}
-	
-	default void onMessageRecieved(World world, BlockPos pos){
-	}
-	
+
+	/**
+	 * Used so individual blocks can change the BlockModel for rendering. Used for things like Glass and Doors to make them different
+	 * @param model the original model, will be returned if the Block dosn't need different visuals
+	 * @return the model that will be rendered
+	 */
 	@SideOnly(Side.CLIENT)
-	default FakeBlockModel phaseModel(FakeBlockModel model){
+	default FakeBlockModel phaseModel(FakeBlockModel model) {
 		return model;
 	}
 	
+	/**
+	 * Used so individual blocks can change the BlockModel for rendering, when the Helmet of True Sight is on.
+	 * @param model the original model, will be returned if the Block dosn't need different visuals
+	 * @return the model that will be rendered
+	 */
 	@SideOnly(Side.CLIENT)
-	default TrueSightModel phaseTrueModel(TrueSightModel model)
-	{
+	default TrueSightModel phaseTrueModel(TrueSightModel model) {
 		return model;
 	}
 	
-	@SideOnly(Side.CLIENT)
-	default IBlockState overrideThisState(World world, BlockPos pos, IBlockState defaultState)
-	{
-		return defaultState;
-	}
-	
-	
-	
+	/**
+	 * Used as an override to SRM blocks. Used to attempt to get the Mirrored State bounding box
+	 * @param state The input state. not needed what so ever. <b> Exists because {@link Block#getBoundingBox(IBlockState, IBlockAccess, BlockPos)} has the {@link IBlockState} as a field. </b>
+	 * @param source the world
+	 * @param pos the position
+	 * @return the bounding box of the Mirrored State, or {@link Block#FULL_BLOCK_AABB} if does there is no tileEntity at the position.
+	 */
 	default AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		if(source.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState() != null)
 			return ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState().getBoundingBox(source, pos);
 		return Block.FULL_BLOCK_AABB;
 	}
 	
+	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#canBeConnectedTo(IBlockAccess, BlockPos, EnumFacing)} on the MirrorState
+     * @param world The current world
+     * @param pos The position of the block
+     * @param facing The side the connecting block is on
+     * @return True to allow another block to connect to this block
+     */
 	default boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
 		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
 	}
 	
+	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#getBlockFaceShape(IBlockAccess, IBlockState, BlockPos, EnumFacing)} on Mirror State.
+	 * @param worldIn The current world
+	 * @param state The {@link IBlockState} of the current position
+	 * @param pos The position of the block
+	 * @param face The side thats being checked
+	 * @return an approximation of the form of the given face.
+	 */
 	default BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return ISecretTileEntity.getMirrorState(worldIn, pos).getBlockFaceShape(worldIn, pos, face);
 	}
 	
+	/**
+	 * A list of all ISecretTileEntities. Used to get Material and things like that
+	 */
 	public static final ArrayList<TileEntity> ALL_SECRET_TILE_ENTITIES = new ArrayList<>();
 	
+	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#getMaterial(IBlockState)}, if exists. 
+	 * @param state The BlockState of the SRM block
+	 * @param material The default material of the SRM block
+	 * @return the material of the Mirrored IBlockState, or {@code material} if it cannot be found
+	 */
 	default Material getMaterial(IBlockState state, Material material) 
 	{
 		IBlockState blockstate = null;
@@ -157,10 +161,28 @@ public interface ISecretBlock extends ITileEntityProvider
 		return blockstate != null && !(blockstate.getBlock() instanceof ISecretBlock) && blockstate.getMaterial() != Material.WATER? blockstate.getMaterial() : material;
 	}
 	
+	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#isSideSolid(IBlockState, IBlockAccess, BlockPos, EnumFacing)} on the mirrored state
+	 * @param base_state The base state, getActualState should be called first
+     * @param world The current world
+     * @param pos Block position in world
+     * @param side The side to check
+     * @return True if the mirrored state is solid on the specified side.
+	 */
 	default boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return ISecretTileEntity.getMirrorState(world, pos).isSideSolid(world, pos, side);
 	}
 	
+	/**
+	 * Used as an override for SRM blocks. Used to run {@link Block#addCollisionBoxToList(IBlockState, World, BlockPos, AxisAlignedBB, List, Entity, boolean)} on the mirrored state
+	 * @param state The current BlockState
+	 * @param worldIn The current World
+	 * @param pos The current BlockPos
+	 * @param entityBox The colliding Entities bounding box
+	 * @param collidingBoxes The list of bounding boxes
+	 * @param entityIn The Entity Colliding with the block
+	 * @param isActualState 
+	 */
 	default void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
 			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
 	{
@@ -170,12 +192,28 @@ public interface ISecretBlock extends ITileEntityProvider
 			Blocks.STONE.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 	}
 	
+	/**
+	 * Used as an override for SRM blocks. Used to run {@link Block#getSoundType(IBlockState, World, BlockPos, Entity)} on the mirrored state
+     * @param state The state
+     * @param world The world
+     * @param pos The position. Note that the world may not necessarily have {@code state} here!
+     * @param entity The entity that is breaking/stepping on/placing/hitting/falling on this block, or null if no entity is in this context
+     * @return A SoundType to use
+     */
 	default SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) 
 	{
 		return world.getTileEntity(pos) instanceof ISecretTileEntity && ISecretTileEntity.getMirrorState(world, pos) != null ? 
 				ISecretTileEntity.getMirrorState(world, pos).getBlock().getSoundType() : SoundType.STONE;
 	}
 	
+	/**
+	 * Used to override the vanilla hit effects of a block. Called from SRM blocks ({@link Block#addHitEffects(IBlockState, World, RayTraceResult, ParticleManager)})
+	 * @param state The current BlockState
+	 * @param worldObj The current world
+	 * @param target The rayTrace used to get the Hit Effects
+	 * @param manager The ParticleManager in use
+	 * @return true if the blocks position has an SRM block, meaning that the hit effects are overridden
+	 */
 	@SideOnly(Side.CLIENT)
 	default boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) 
 	{
@@ -205,6 +243,13 @@ public interface ISecretBlock extends ITileEntityProvider
 		return false;
 	}
 	
+	/**
+	 * Used to override the vanilla destroy effects of a block. Called from SRM blocks ({@link Block#addDestroyEffects(World, BlockPos, ParticleManager)})
+	 * @param world The current world 
+	 * @param pos The current BlockPos
+	 * @param manager The particle manager in used
+	 * @return true if the blocks position has an SRM block, meaning that the destroy effects are overridden
+	 */
 	@SideOnly(Side.CLIENT)
 	default boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) 
 	{
@@ -240,6 +285,15 @@ public interface ISecretBlock extends ITileEntityProvider
 		return false;
 	}
 	
+	/**
+	 * Called from SRM blocks ({@link Block#getActualState(IBlockState, IBlockAccess, BlockPos)})
+	 * Used to remove the {@link IUnlistedProperty} from the blockstate ({@link ISecretBlock#RENDER_PROPERTY})
+	 * @param state The current blockstate. Can be null, not used
+	 * @param worldIn The current world. Can be null, not used
+	 * @param pos The current BlockPos. Can be null, not used
+	 * @param superState The state used from calling {@code super.getActualState(IBlockState, IBlockAccess, BlockPos)} in SRM block classes
+	 * @return the IBlockState, with its {@link ISecretBlock#RENDER_PROPERTY} stripped from it
+	 */
 	default public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos, IBlockState superState)
 	{
 		if(superState instanceof IExtendedBlockState)
@@ -247,6 +301,12 @@ public interface ISecretBlock extends ITileEntityProvider
 		return superState;
 	}
 	
+	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#canRenderInLayer(IBlockState, BlockRenderLayer)} on the mirrored state
+	 * @param state The current IBlockState
+	 * @param layer the layer used
+	 * @return if the block can render in the mirrored state, or if the layer is {@link BlockRenderLayer#SOLID}, if it does not exist
+	 */
 	@SideOnly(Side.CLIENT)
 	default public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) 
 	{
@@ -259,6 +319,15 @@ public interface ISecretBlock extends ITileEntityProvider
     	return layer == BlockRenderLayer.SOLID;
 	}
 	
+	/**
+	 * Used to get the extended state from a SRM block. Used to put {@link RenderStateUnlistedProperty} into the block.
+	 * <br><br>
+	 * Also used to set {@link SecretBlockModel#AO} to if the models blockstates model is ambient occlusion
+	 * @param state The current state
+	 * @param world The current world 
+	 * @param pos the current position
+	 * @return {@code state}, or the IBlockState with {@link ISecretBlock#RENDER_PROPERTY} set to the mirror state
+	 */
 	default public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
 	{
 		

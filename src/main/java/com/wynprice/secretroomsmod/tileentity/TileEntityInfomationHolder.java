@@ -79,14 +79,14 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 		return Double.MAX_VALUE;
 	}
 	
-	public void setMirrorState(IBlockState mirrorState, @Nullable BlockPos pos)
+	public void setMirrorState(IBlockState mirrorState)
 	{
 		if(!locked)
-			setMirrorStateForcable(mirrorState, pos);
+			setMirrorStateForcable(mirrorState);
 		locked = true;
 	}
 	
-	public void setMirrorStateForcable(IBlockState mirrorState, @Nullable BlockPos pos)
+	public void setMirrorStateForcable(IBlockState mirrorState)
 	{
 		if(mirrorState.getBlock() instanceof ISecretBlock)
 			mirrorState = Blocks.STONE.getDefaultState();

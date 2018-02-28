@@ -10,6 +10,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+/**
+ * Used to update the clients ISecretTileEntity. Received ClientSide
+ * @author Wyn Price
+ *
+ */
 public class MessagePacketUpdateClient extends BaseMessagePacket<MessagePacketUpdateClient>
 {
 	

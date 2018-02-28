@@ -12,11 +12,21 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * Used to add walking particles
+ * @author Wyn Price
+ *
+ */
 public class ParticleHandler 
 {
+	/**
+	 * Used to keep info of where blocks are being broken, as the tile-entity will no longer exist
+	 */
 	public static final HashMap<BlockPos, IBlockState> BLOCKBRAKERENDERMAP = new HashMap<>();
-
 	
+	/**
+	 * Spawns the Spriting particles
+	 */
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{

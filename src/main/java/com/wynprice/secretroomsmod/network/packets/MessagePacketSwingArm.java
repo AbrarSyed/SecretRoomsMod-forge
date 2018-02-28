@@ -6,6 +6,11 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 
+/**
+ * Used to swing the players arm. Thats it. Received ClientSide
+ * @author Wyn Price
+ *
+ */
 public class MessagePacketSwingArm extends BaseMessagePacket<MessagePacketSwingArm>
 {
 	

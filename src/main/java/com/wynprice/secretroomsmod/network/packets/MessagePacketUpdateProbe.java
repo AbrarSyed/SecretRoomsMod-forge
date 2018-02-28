@@ -9,6 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+/**
+ * Packet used to update the programmable switch probe. Received ServerSide
+ * @author Wyn Price
+ *
+ */
 public class MessagePacketUpdateProbe extends BaseMessagePacket<MessagePacketUpdateProbe> 
 {
 	public MessagePacketUpdateProbe() {

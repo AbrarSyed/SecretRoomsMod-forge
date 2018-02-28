@@ -6,6 +6,12 @@ import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifine;
 
 import net.minecraft.block.state.IBlockState;
 
+/**
+ * Used with Optifine as to help with optifine integration.
+ * <br>Only used with Optifine C6
+ * @author Wyn Price
+ *
+ */
 @SecretOptifine(version=EOACV.C6)
 public class FakeArrayCacheC6 extends ArrayCache
 {
@@ -19,26 +25,12 @@ public class FakeArrayCacheC6 extends ArrayCache
         this.elementClass = IBlockState.class;
         this.maxCacheSize = 16;
     }
-
+    
+    /**
+     * Override for this class, returns a new array, of size 0, and class {@link #elementClass}
+     */
     public synchronized Object allocate(int p_allocate_1_)
     {
         return Array.newInstance(this.elementClass, 0);
-    }
-
-    public synchronized void free(Object p_free_1_)
-    {
-        if (p_free_1_ != null)
-        {
-            Class oclass = p_free_1_.getClass();
-
-            if (oclass.getComponentType() != this.elementClass)
-            {
-                throw new IllegalArgumentException("Wrong component type");
-            }
-            else if (this.cache.size() < this.maxCacheSize)
-            {
-                this.cache.add(p_free_1_);
-            }
-        }
     }
 }

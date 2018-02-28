@@ -72,14 +72,6 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	}
 	
 	@Override
-	public IBlockState overrideThisState(World world, BlockPos pos, IBlockState defaultState)
-	{
-		return defaultState.getValue(HALF) != EnumDoorHalf.UPPER || world.getBlockState(pos.down()).getBlock() != this ? defaultState : 
-			defaultState.withProperty(OPEN, world.getBlockState(pos.down()).getValue(OPEN)).withProperty(FACING, world.getBlockState(pos.down()).getValue(FACING))
-			.withProperty(POWERED, world.getBlockState(pos.down()).getValue(POWERED));
-	}
-	
-	@Override
 	public Material getMaterial(IBlockState state) 
 	{
 		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));

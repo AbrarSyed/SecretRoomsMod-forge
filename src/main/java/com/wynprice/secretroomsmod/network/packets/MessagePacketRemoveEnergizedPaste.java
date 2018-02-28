@@ -14,6 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * Used to remove energized paste from a block. Received ServerSide
+ * @author Wyn Price
+ *
+ */
 public class MessagePacketRemoveEnergizedPaste extends BaseMessagePacket<MessagePacketRemoveEnergizedPaste>
 {
 	

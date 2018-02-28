@@ -45,11 +45,6 @@ public class OneWayGlass extends BaseFakeBlock
 		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 	
-	@Override
-	public boolean allowForcedBlockColors() {
-		return false;
-	}
-	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public TrueSightModel phaseTrueModel(TrueSightModel model) {

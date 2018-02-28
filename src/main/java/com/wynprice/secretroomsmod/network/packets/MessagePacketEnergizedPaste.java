@@ -15,6 +15,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * Message packet used when anything EnergizedPaste is called.
+ * @author Wyn Price
+ *
+ */
 public class MessagePacketEnergizedPaste extends BaseMessagePacket<MessagePacketEnergizedPaste>
 {
 	public MessagePacketEnergizedPaste() {

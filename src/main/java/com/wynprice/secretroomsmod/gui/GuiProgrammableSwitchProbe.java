@@ -43,9 +43,15 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+/**
+ * The Gui used for a programmable Switch
+ * @author Wyn Price
+ *
+ */
+
 public class GuiProgrammableSwitchProbe extends GuiContainer
 {
-	
+
 	private GuiButton buttonExit;
 	private GuiTextField textInput;
 	private ItemStack stack;	

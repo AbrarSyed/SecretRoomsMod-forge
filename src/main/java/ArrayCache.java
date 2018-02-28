@@ -2,6 +2,11 @@
 import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 
+/**
+ * Class Used from Optifine, here so I can override it.
+ * @author sp614x
+ *
+ */
 public class ArrayCache
 {
     private Class elementClass = null;

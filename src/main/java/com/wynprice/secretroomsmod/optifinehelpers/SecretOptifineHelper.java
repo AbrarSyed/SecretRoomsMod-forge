@@ -17,7 +17,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber
+/**
+ * Used to help with getting optifine to work with SRM
+ * @author Wyn Price
+ *
+ */
 public class SecretOptifineHelper 
 {	
 	public static String version = "null";
@@ -27,6 +31,10 @@ public class SecretOptifineHelper
 	
 	public static final ArrayList<IBlockState[]> CURRENT_C7_LIST = new ArrayList<>();
 		
+	/**
+	 * Used to detect if Optifine is installed, and if the version of optifine is supported
+	 * @return True if optifine is installed and the version is supported
+	 */
 	private static boolean getIsOptifine()
 	{
 		try
@@ -57,11 +65,24 @@ public class SecretOptifineHelper
 		return false;
 	}
 	
+	/**
+	 * Used to get the position index from the data. 
+	 * @param posFromIn the start pos
+	 * @param posToIn the end pos
+	 * @param subIn the sub (who knows)
+	 * @param position the position to get the index of
+	 * @return the index of {@code position}
+	 */
 	public static int getPositionIndex(BlockPos posFromIn, BlockPos posToIn, int subIn, BlockPos position)
 	{
 		return new PositionIndex(posFromIn, posToIn, subIn).getPositionIndex(position);
 	}
 	
+	/**
+	 * Used for maths. Stolen from Optifine
+	 * @author sp614x
+	 *
+	 */
 	private static class PositionIndex
 	{
 		public final int posX;
@@ -110,15 +131,22 @@ public class SecretOptifineHelper
 		}
 	}
 
-	
+	/**
+	 * Used to reset the {@link ArrayCache} of ChunkCache
+	 * @return if the cache was reset
+	 */
 	public static boolean resetCached()
 	{
 		if(version.equals("C6")) return resetCached_C6();
 		if(version.equals("C7")) return resetCached_C7();
 		if(version.equals("C8")) return resetCached_C7();//No need to change, code stayed the same
-		throw new RuntimeException("SecretRoomsMod: There is somthing wrong with the config. " + actualVersion + " is not a valid Optifine Version. The Reduced Optifine version Applied Optifine Version: " + version);
+		throw new RuntimeException("SecretRoomsMod: There is somthing wrong with the config. " + actualVersion + " is not a valid Optifine Version. The Applied Optifine Version: " + version);
 	}
 	
+	/**
+	 * Used to reset the cache for C6
+	 * @return true if done correctly
+	 */
 	private static boolean resetCached_C6()
 	{
 		try
@@ -142,6 +170,10 @@ public class SecretOptifineHelper
 		}
 	}
 		
+	/**
+	 * Used to reset certain fields for C7. 
+	 * @return true if done correctly
+	 */
 	private static boolean setC7Field(String fieldName)
 	{
 		try
@@ -183,6 +215,10 @@ public class SecretOptifineHelper
 		}
 	}
 	
+	/**
+	 * Used to reset the cache for C7
+	 * @return true if done correctly
+	 */
 	private static boolean resetCached_C7()
 	{
 		setC7Field("combinedLights");

@@ -26,6 +26,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,16 +54,36 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * The handler for EnergizedPaste
+ * @author Wyn Price
+ *
+ */
 public class EnergizedPasteHandler 
 {
-	private static HashMap<Integer, HashMap<BlockPos, Pair<IBlockState, IBlockState>>> energized_map = new HashMap<>();
-	
+	/**
+	 * The map used to keep track of everything Energized Paste related
+	 */
+	private static HashMap<Integer, HashMap<BlockPos, Pair<IBlockState, IBlockState>>> energized_map = new HashMap<>();	
 
+	/**
+	 * Used to put the EnergizedPaste into the {@link #energized_map}. Calls {@link #putState(int, BlockPos, IBlockState, IBlockState)}
+	 * @param world the current world
+	 * @param pos the current position
+	 * @param state the current blockstate
+	 */
 	public static void putState(World world, BlockPos pos, IBlockState state)
 	{
 		putState(world.provider.getDimension(), pos, state, world.getBlockState(pos));
 	}
 	
+	/**
+	 * Used to put the EnergizedPaste into the {@link #energized_map}
+	 * @param dim the worlds dimension
+	 * @param pos the position
+	 * @param state the state to be used to render with
+	 * @param replaceState the state thats just been replaced
+	 */
 	public static void putState(int dim, BlockPos pos, IBlockState state, IBlockState replaceState)
 	{
 		pos = new BlockPos(pos);
@@ -71,6 +92,11 @@ public class EnergizedPasteHandler
 		energized_map.put(dim, innerMap);
 	}
 	
+	/**
+	 * Used to remove the replaced state.
+	 * @param dim The worlds dimension
+	 * @param pos The block position
+	 */
 	public static void removeReplacedState(int dim, BlockPos pos)
 	{
 		pos = new BlockPos(pos);
@@ -89,6 +115,12 @@ public class EnergizedPasteHandler
 		energized_map.put(dim, innerMap);
 	}
 	
+	/**
+	 * Used to see if the world and position has a replaced state
+	 * @param world The current world
+	 * @param pos The current position
+	 * @return True if there's a energized paste at {@code pos}
+	 */
 	public static boolean hasReplacedState(World world, BlockPos pos)
 	{
 		pos = new BlockPos(pos);
@@ -100,10 +132,16 @@ public class EnergizedPasteHandler
 		return false;
 	}
 	
+	/**
+	 * Used to get the state used to be rendered
+	 * @param world The current world
+	 * @param pos The current position
+	 * @return the state used to be rendered, or {@link Blocks#STONE} if {@link EnergizedPasteHandler#hasReplacedState(World, BlockPos)} returns false
+	 */
 	public static IBlockState getReplacedState(World world, BlockPos pos)
 	{
 		pos = new BlockPos(pos);
-		if(!hasReplacedState(world, pos)) return Blocks.AIR.getDefaultState(); // should never happen
+		if(!hasReplacedState(world, pos)) return Blocks.STONE.getDefaultState(); // should never happen
 		try
 		{
 			for(BlockPos blockpos : energized_map.get(world.provider.getDimension()).keySet())
@@ -117,16 +155,32 @@ public class EnergizedPasteHandler
 		return Blocks.AIR.getDefaultState();
 	}
 	
+	/**
+	 * Used to get the blockstate that actually exists in the world. Used to detect when the block changes
+	 * @param world The current world
+	 * @param pos The current position
+	 * @return the actual state in the world, or {@link Blocks#STONE} if there is no state set to the world and position
+	 */
 	public static IBlockState getSetBlockState(World world, BlockPos pos)
 	{
 		pos = new BlockPos(pos);
-		if(!hasReplacedState(world, pos)) return null; // should never happen
+		if(!hasReplacedState(world, pos)) return Blocks.STONE.getDefaultState(); // should never happen
 		for(BlockPos blockpos : energized_map.get(world.provider.getDimension()).keySet())
 			if(blockpos.equals(pos))
 				return energized_map.get(world.provider.getDimension()).get(blockpos).getRight();
 		return null;
 	}
 	
+	/**
+	 * Used to detect if the block can be used to be rendered on other blocks
+	 * @param block the block
+	 * @param world the current world
+	 * @param state the current state
+	 * @param pos the current blockpos
+	 * @return True if the block can be used to render on another block
+	 * @deprecated Convert to API. However, still used
+	 */
+	@Deprecated
 	public static boolean canBlockBeMirrored(Block block, World world, IBlockState state, BlockPos pos)
 	{
 		if(block.hasTileEntity() || block.hasTileEntity(state))
@@ -144,6 +198,15 @@ public class EnergizedPasteHandler
 		return directFromClass || !Arrays.asList(SecretConfig.energized_blacklist_mirror).contains(block.getRegistryName().toString());
 	}
 	
+	/**
+	 * Used to detect if a a tileEntity has opted in or not.
+	 * @param block the block
+	 * @param world the world
+	 * @param state the state
+	 * @param pos the position
+	 * @return True if the block has the method {@link Block#SRMdoesTileEntityOptIn(World, IBlockState, BlockPos)} which returns true, or the config has the tileEntity in the whitelist
+	 */
+	@Deprecated
 	public static boolean tileEntityOptIn(Block block, World world, IBlockState state, BlockPos pos)
 	{
 		boolean directFromClass = false;
@@ -167,6 +230,16 @@ public class EnergizedPasteHandler
 		return directFromClass || Arrays.asList(SecretConfig.energized_whitelist_te).contains(block.getRegistryName().toString()) || starred;
 	}
 	
+	/**
+	 * Used to detect if the block can have its rendering changed
+	 * @param block the block
+	 * @param world the current world
+	 * @param state the current state
+	 * @param pos the current blockpos
+	 * @return True if the block can change its rendering
+	 * @deprecated Convert to API. However, still used
+	 */
+	@Deprecated
 	public static boolean canBlockBeReplaced(Block block, World world, IBlockState state, BlockPos pos)
 	{
 		if(block instanceof ISecretBlock) return false;
@@ -183,6 +256,9 @@ public class EnergizedPasteHandler
 	}
 	
 	
+	/**
+	 * Used to render the correct bounding box for the energized paste block. Uses same code from {@link RenderGlobal#drawSelectionBox(EntityPlayer, RayTraceResult, int, float)}
+	 */
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onBlockBoundingBoxDrawn(DrawBlockHighlightEvent event)
@@ -213,8 +289,14 @@ public class EnergizedPasteHandler
         }
 	}
 	
+	/**
+	 * A list of previously ticked positions. Used to keep track of when a blocks hit or not
+	 */
 	private ArrayList<Location> previousServerTickMap = new ArrayList<>();
 	
+	/**
+	 * Used to figure out when a Energized Paste block is hit, and then what to do with that being hit. (i.e. removing it, placing it, setting the hit state of it, etc, etc)
+	 */
 	@SubscribeEvent
 	public void onMouseRightClick(RightClickBlock event)
 	{
@@ -314,6 +396,9 @@ public class EnergizedPasteHandler
 		}
 	}
 	
+	/**
+	 * Called when the world is saved. Used to save the energized paste map
+	 */
 	@SubscribeEvent
 	public void onWorldSaved(WorldEvent.Save event)
 	{
@@ -327,6 +412,9 @@ public class EnergizedPasteHandler
 		}
 	}
 	
+	/**
+	 * Used for the Energized Paste recipe.
+	 */
 	@SubscribeEvent
 	public void onEntityTick(WorldTickEvent event)
 	{
@@ -373,6 +461,9 @@ public class EnergizedPasteHandler
 			}
 	}
 	
+	/**
+	 * Used when the world is loaded, used to load the {@link EnergizedPasteHandler#energized_map}
+	 */
 	@SubscribeEvent
 	public void onWorldLoaded(WorldEvent.Load event)
 	{
@@ -393,6 +484,10 @@ public class EnergizedPasteHandler
 		}
 	}
 	
+	/**
+	 * Used to save {@link EnergizedPasteHandler#energized_map} to an NBTTagCompound
+	 * @return the saved Tag Compound
+	 */
 	public static NBTTagCompound saveToNBT()
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
@@ -436,6 +531,10 @@ public class EnergizedPasteHandler
 		return nbt;
 	}
 	
+	/**
+	 * Used to set the {@link EnergizedPasteHandler#energized_map} from an NBTTagCompound
+	 * @param nbt the tag with saved info
+	 */
 	public static void readFromNBT(NBTTagCompound nbt)
 	{
 		energized_map.clear();
@@ -454,16 +553,29 @@ public class EnergizedPasteHandler
 		}
 	}
 	
+	/**
+	 * Used to send the data to the player when they join
+	 * @param event
+	 */
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerLoggedInEvent event)
 	{
 		SecretNetwork.sendToPlayer(event.player, new MessagePacketSyncEnergizedPaste(saveToNBT(), null));
 	}
 	
+	/**
+	 * Used as a getter of {@link EnergizedPasteHandler#energized_map}
+	 * @return {@link EnergizedPasteHandler#energized_map}
+	 */
 	public static HashMap<Integer, HashMap<BlockPos, Pair<IBlockState, IBlockState>>> getEnergized_map() {
 		return energized_map;
 	}
 	
+	/**
+	 * Used as a small location and world saving class
+	 * @author Wyn Price
+	 *
+	 */
 	private class Location
 	{
 		private final BlockPos pos;

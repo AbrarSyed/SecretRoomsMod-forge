@@ -12,6 +12,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
+/**
+ * The {@link IGuiHandler} for SecretRoomsMod
+ * @author Wyn Price
+ *
+ */
 public class GuiHandler implements IGuiHandler
 {
 	

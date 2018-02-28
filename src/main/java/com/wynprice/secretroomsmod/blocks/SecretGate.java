@@ -63,7 +63,7 @@ public class SecretGate extends BaseFakeBlock
 		EnumFacing direction = worldIn.getBlockState(pos).getValue(FACING);
 		IBlockState state = getState(worldIn, pos);
 		worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, direction).withProperty(POWERED, true));
-		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state, BlockPos.ORIGIN);
+		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state);
 		BlockPos endPosition = new BlockPos(pos.getX() + ((MAX_LEVELS + 1) * direction.getFrontOffsetX()), pos.getY() + ((MAX_LEVELS + 1) * direction.getFrontOffsetY()), pos.getZ() + ((MAX_LEVELS + 1) * direction.getFrontOffsetZ()));
 
 		for(int i = 1; i <= MAX_LEVELS; i++)
@@ -78,7 +78,7 @@ public class SecretGate extends BaseFakeBlock
 			if(i == 1)
 				worldIn.setBlockState(position, SecretBlocks.SECRET_GATE_BLOCK.getDefaultState());
 			worldIn.getTileEntity(position).markDirty();
-			((ISecretBlock)worldIn.getBlockState(pos).getBlock()).forceBlockState(worldIn, position, BlockPos.ORIGIN, getState(worldIn, pos));
+			((ISecretBlock)worldIn.getBlockState(pos).getBlock()).forceBlockState(worldIn, position, getState(worldIn, pos));
 		}
 		
 		if(worldIn.getBlockState(endPosition).getBlock() == this) 
@@ -105,7 +105,7 @@ public class SecretGate extends BaseFakeBlock
 	{
 		EnumFacing direction = blockstate.getValue(FACING);
 		IBlockState state = getState(worldIn, pos);
-		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state, BlockPos.ORIGIN);
+		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state);
 		
 		BlockPos endPosition = new BlockPos(pos.getX() + ((MAX_LEVELS + 1) * direction.getFrontOffsetX()), pos.getY() + ((MAX_LEVELS + 1) * direction.getFrontOffsetY()), pos.getZ() + ((MAX_LEVELS + 1) * direction.getFrontOffsetZ()));
 
@@ -141,13 +141,6 @@ public class SecretGate extends BaseFakeBlock
         return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
     }
 	
-	@Override
-	public void onMessageRecieved(World world, BlockPos pos) 
-	{
-		if(world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0)
-			buildGate(world, pos);
-	}
-
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;

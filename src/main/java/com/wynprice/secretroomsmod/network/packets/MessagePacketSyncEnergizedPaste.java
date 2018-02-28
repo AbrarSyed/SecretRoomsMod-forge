@@ -13,6 +13,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+/**
+ * Message packet used to update everything energized paste related. Called ClientSide
+ * @author Wyn Price
+ *
+ */
 public class MessagePacketSyncEnergizedPaste extends BaseMessagePacket<MessagePacketSyncEnergizedPaste>
 {
 	

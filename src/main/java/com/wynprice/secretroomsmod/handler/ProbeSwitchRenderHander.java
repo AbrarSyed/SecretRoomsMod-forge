@@ -14,6 +14,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * Used to switch the models on bake event
+ * @author Wyn Price
+ *
+ */
 public class ProbeSwitchRenderHander 
 {
 	 @SubscribeEvent

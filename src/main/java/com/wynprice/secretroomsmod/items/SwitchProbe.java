@@ -40,7 +40,7 @@ public class SwitchProbe extends Item
 				Block block = Block.REGISTRY.getObject(new ResourceLocation(player.getHeldItem(hand).getTagCompound().getString("hit_block")));
 				if(block != Blocks.AIR)
 				{
-					((ISecretBlock)state.getBlock()).forceBlockState(worldIn, pos, BlockPos.ORIGIN, block.getStateFromMeta(player.getHeldItem(hand).getTagCompound().getInteger("hit_meta")));
+					((ISecretBlock)state.getBlock()).forceBlockState(worldIn, pos, block.getStateFromMeta(player.getHeldItem(hand).getTagCompound().getInteger("hit_meta")));
 					worldIn.markBlockRangeForRenderUpdate(pos.add(-1, -1, -1), pos.add(1, 1, 1));
 					return EnumActionResult.SUCCESS;
 				}

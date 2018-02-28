@@ -5,7 +5,12 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotItemStuck extends Slot{
+/**
+ * Slot that doesn't allow Items to be picked up or moved
+ * @author Wyn Price
+ *
+ */
+public class SlotItemStuck extends Slot {
 
 	private final ItemStack stack;
 	

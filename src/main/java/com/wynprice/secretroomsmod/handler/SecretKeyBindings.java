@@ -19,9 +19,16 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
+/**
+ * The handler for the SecretRoomsMod keybindings
+ * @author Wyn Price
+ *
+ */
 public class SecretKeyBindings
 {
-	
+	/**
+	 * Key binding for changing the glass direction
+	 */
 	private static final KeyBinding CHANGE_GLASS_DIRECTION = registerKey(new KeyBinding("key.secretroomsmod.oneWayface", Keyboard.KEY_BACKSLASH, "key.categories.secretroomsmod"));
 	
 	@SubscribeEvent

@@ -5,6 +5,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+/**
+ * Used to add "doorWooden", "blockWool" and "blockStair" to the oreDictionary 
+ * @author Wyn Price
+ *
+ */
 public class RecipeHelperHandler 
 {
 	public static void preInit()

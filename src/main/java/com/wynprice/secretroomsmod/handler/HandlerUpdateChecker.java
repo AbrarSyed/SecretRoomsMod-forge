@@ -24,6 +24,13 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 
+/**
+ * Used to check for an update. 
+ * @deprecated rewrite. Bed code
+ * @author Wyn Price
+ *
+ */
+@Deprecated
 public class HandlerUpdateChecker 
 {
 	private boolean hasPosted;

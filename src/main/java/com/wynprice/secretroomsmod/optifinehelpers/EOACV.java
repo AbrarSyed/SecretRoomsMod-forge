@@ -1,6 +1,11 @@
 package com.wynprice.secretroomsmod.optifinehelpers;
 
-public enum EOACV//Shorter than EnumOptifineArrayCacheVersion
+/**
+ * Shorter than EnumOptifineArrayCacheVersion. Used to get the right ArrayCache for the right version
+ * @author Wyn Price
+ *
+ */
+public enum EOACV
 {
 	C6, C7;
 	

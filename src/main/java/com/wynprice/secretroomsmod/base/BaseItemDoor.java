@@ -94,8 +94,8 @@ public class BaseItemDoor extends Item
         IBlockState iblockstate = door.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, isRightHinge ? BlockDoor.EnumHingePosition.RIGHT : BlockDoor.EnumHingePosition.LEFT).withProperty(BlockDoor.POWERED, Boolean.valueOf(flag2)).withProperty(BlockDoor.OPEN, Boolean.valueOf(flag2));
         worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 3);
         worldIn.setBlockState(blockpos2, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 3);
-        ((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(mirrorState, pos);
-        ((ISecretTileEntity)worldIn.getTileEntity(blockpos2)).setMirrorState(mirrorState, blockpos2);
+        ((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(mirrorState);
+        ((ISecretTileEntity)worldIn.getTileEntity(blockpos2)).setMirrorState(mirrorState);
         worldIn.notifyNeighborsOfStateChange(pos, door, false);
         worldIn.notifyNeighborsOfStateChange(blockpos2, door, false);
     }
