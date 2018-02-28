@@ -50,6 +50,18 @@ public class CamouflagePaste extends Item
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) 
 	{
+		ifstatment:
+		if(playerIn.getHeldItem(handIn).getMetadata() == 1 && playerIn.isSneaking())
+		{
+			if(playerIn.getHeldItem(handIn).getTagCompound() == null) break ifstatment;
+			playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_block");
+			playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_meta");
+			playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_color");
+			if(playerIn.getHeldItem(handIn).getTagCompound().getSize() == 0)
+				playerIn.getHeldItem(handIn).setTagCompound(null);
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+		}
+			
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
