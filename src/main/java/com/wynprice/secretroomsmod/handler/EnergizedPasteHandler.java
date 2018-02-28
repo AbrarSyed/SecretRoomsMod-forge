@@ -354,7 +354,7 @@ public class EnergizedPasteHandler
 				if(soundEvent == null) soundEvent = SoundEvents.BLOCK_SAND_PLACE;
 				event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), soundEvent, SoundCategory.BLOCKS, (float) SecretConfig.sound_set_vol, (float) SecretConfig.sound_set_pitch);
 			}
-			else
+			else if(!hasReplacedState(event.getWorld(), event.getPos()))
 			{
 				event.setCanceled(true);
 				ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();

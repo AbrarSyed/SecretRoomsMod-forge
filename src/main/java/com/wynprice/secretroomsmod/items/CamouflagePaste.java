@@ -17,9 +17,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
 
 public class CamouflagePaste extends Item
@@ -49,19 +52,22 @@ public class CamouflagePaste extends Item
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) 
-	{
-		ifstatment:
-		if(playerIn.getHeldItem(handIn).getMetadata() == 1 && playerIn.isSneaking())
+	{		
+		RayTraceResult ray = ForgeHooks.rayTraceEyes(playerIn, playerIn.getAttributeMap().getAttributeInstance(EntityPlayer.REACH_DISTANCE).getAttributeValue() - (playerIn.isCreative() ? 0 : 0.5f));
+		if(ray == null)
 		{
-			if(playerIn.getHeldItem(handIn).getTagCompound() == null) break ifstatment;
-			playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_block");
-			playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_meta");
-			playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_color");
-			if(playerIn.getHeldItem(handIn).getTagCompound().getSize() == 0)
-				playerIn.getHeldItem(handIn).setTagCompound(null);
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+			ifstatment:
+			if(playerIn.getHeldItem(handIn).getMetadata() == 1 && playerIn.isSneaking())
+			{
+				if(playerIn.getHeldItem(handIn).getTagCompound() == null) break ifstatment;
+				playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_block");
+				playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_meta");
+				playerIn.getHeldItem(handIn).getTagCompound().removeTag("hit_color");
+				if(playerIn.getHeldItem(handIn).getTagCompound().getSize() == 0)
+					playerIn.getHeldItem(handIn).setTagCompound(null);
+				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+			}
 		}
-			
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
