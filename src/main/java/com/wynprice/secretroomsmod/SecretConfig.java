@@ -7,6 +7,11 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Loader;
 
+/**
+ * The poorly written config file for SRM
+ * @author Wyn Price
+ *
+ */
 public class SecretConfig 
 {		
 	public static final Configuration CONFIG = new Configuration(new File(Loader.instance().getConfigDir(), SecretRooms5.MODID + ".cfg"));

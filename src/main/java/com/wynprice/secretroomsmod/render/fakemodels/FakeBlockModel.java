@@ -16,10 +16,18 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.TRSRTransformation;
 
+/**
+ * The base Model for all SRM models. All this does is render the input model
+ * @author Wyn Price
+ *
+ */
 public class FakeBlockModel implements IBakedModel
 {
 	protected final IBakedModel model;
 	
+	/**
+	 * The actual state of the SRM block in the world
+	 */
 	protected IBlockState currentRender;
 	
 	public FakeBlockModel(IBlockState overstate) 
@@ -38,6 +46,11 @@ public class FakeBlockModel implements IBakedModel
 		return model.getQuads(state, side, rand);
 	}
 	
+	/**
+	 * Used to set the current state of the SRM block thats actually in the world
+	 * @param currentRender
+	 * @return this instance
+	 */
 	public FakeBlockModel setCurrentRender(IBlockState currentRender) {
 		this.currentRender = currentRender;
 		return this;
@@ -69,12 +82,23 @@ public class FakeBlockModel implements IBakedModel
 		return model.getOverrides();
 	}
 	
+	/**
+	 * Used to get the model from the IBlockState
+	 * @param state the state to get the model from
+	 * @return the model used to render {@code state}
+	 */
 	public static IBakedModel getModel(IBlockState state)
 	{
 		return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
 	}
 		
-	public static IBakedModel getModel(ResourceLocation resourceLocation) 
+	/**
+	 * Gets the model from the {@link ResourceLocation}
+	 * @param resourceLocation the location of the model
+	 * @return the model, at the {@link ResourceLocation}
+	 * @throws RuntimeException if the model can't be loaded
+	 */
+	public static IBakedModel getModel(ResourceLocation resourceLocation) throws RuntimeException
 	{
 		IBakedModel bakedModel;
 		IModel model;

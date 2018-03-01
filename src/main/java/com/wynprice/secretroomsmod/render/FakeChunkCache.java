@@ -29,6 +29,11 @@ import net.minecraft.world.chunk.Chunk.EnumCreateEntityType;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Fake chunk cache. Used to help seemless rendering of SRM blocks and to make Energized Paste work
+ * @author Wyn Price
+ *
+ */
 public class FakeChunkCache extends ChunkCache
 {
 	

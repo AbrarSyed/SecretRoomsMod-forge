@@ -11,6 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.ItemStackHandler;
 
+/**
+ * The gui for Secret Chests
+ * @author Wyn Price
+ *
+ */
 public class GuiSecretChest extends GuiContainer
 {
     private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");

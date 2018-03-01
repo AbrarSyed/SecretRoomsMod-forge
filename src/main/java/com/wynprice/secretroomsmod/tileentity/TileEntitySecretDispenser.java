@@ -8,6 +8,7 @@ import com.wynprice.secretroomsmod.handler.ParticleHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -16,6 +17,11 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * The TileEntity for The SecretDispenser. This is currently (5.3.2) the only instance where it does not extend {@link TileEntityInfomationHolder}
+ * @author Wyn Price
+ *
+ */
 public class TileEntitySecretDispenser extends TileEntityDispenser implements ISecretTileEntity
 {
 	protected IBlockState mirrorState;

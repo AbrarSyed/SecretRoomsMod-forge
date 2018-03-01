@@ -1,30 +1,47 @@
 package com.wynprice.secretroomsmod.render.fakemodels;
 
-import java.time.chrono.MinguoEra;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 
+/**
+ * The class used to take textures from one model, and put it on another model
+ * @author Wyn Price
+ *
+ */
 public abstract class BaseTextureFakeModel extends FakeBlockModel 
 {
 	public BaseTextureFakeModel(FakeBlockModel model) {
 		super(model);
 	}
 	
-	public abstract IBlockState getNormalStateWith(IBlockState s, IBlockState mirrorState);
+	/**
+	 * Used to convert the {@link IBlockState} {@code actualWorldState} to have the same properties as {@code mirrorState}
+	 * @param actualWorldState the SRM block thats actually in the world
+	 * @param mirrorState the mirror state
+	 * @return the mirror state, but with the same properties as the actualWorldState
+	 */
+	public abstract IBlockState getNormalStateWith(IBlockState actualWorldState, IBlockState mirrorState);
 	
+	/**
+	 * Used to get the base state, to make sure that a state with a different blockstate properties wont be used.
+	 * @return The base class that will be rendered
+	 */
 	protected abstract Class<? extends ISecretBlock> getBaseBlockClass();
 	
+	/**
+	 * Used to get the order of EnumFacing values that will be resorted to if {@link #getQuads(IBlockState, EnumFacing, long)} returns a null or empty list on default.
+	 * @return a list of EnumFacings, one of which may be null
+	 * @deprecated Was used to fix a bug, which was later fixed anyway. Keeping here because I can't be bothered to remove it. It works how it is
+	 */
+	@Deprecated
 	protected EnumFacing[] fallbackOrder()
 	{
 		EnumFacing[] list = new EnumFacing[EnumFacing.VALUES.length + 1];
@@ -34,6 +51,12 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		return list;
 	}
 	
+	/**
+	 * Used to get the visuals that will be put onto a different model
+	 * @param face the direction thats being rendered. Can be null
+	 * @param teMirrorState the state being mirrored by the SRM block
+	 * @return The RenderInfo containing the {@link IBlockState} and the {@link IBakedModel} that going to be rendered
+	 */
 	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState)
 	{
 		return new RenderInfo(teMirrorState, getModel(teMirrorState));
@@ -56,13 +79,16 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 						if(!renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand).isEmpty())
 							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
 				for(BakedQuad mirrorQuad : secList)
-				{
 					finalList.add(new BakedQuad(new BakedQuadRetextured(quad, mirrorQuad.getSprite()).getVertexData(), mirrorQuad.getTintIndex(), mirrorQuad.getFace(), mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
-				}
 			}
 		return finalList;
 	}
 	
+	/**
+	 * Used as a container for rendering info
+	 * @author Wyn Price
+	 *
+	 */
 	public static class RenderInfo
 	{
 		public final IBlockState blockstate;

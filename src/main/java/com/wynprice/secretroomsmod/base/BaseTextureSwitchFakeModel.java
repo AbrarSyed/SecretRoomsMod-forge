@@ -6,6 +6,11 @@ import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
 import net.minecraft.block.state.IBlockState;
 
+/**
+ * The basic texture switch model. Implements more things that {@link BaseTextureFakeModel}
+ * @author Wyn Price
+ *
+ */
 public abstract class BaseTextureSwitchFakeModel extends BaseTextureFakeModel 
 {
 

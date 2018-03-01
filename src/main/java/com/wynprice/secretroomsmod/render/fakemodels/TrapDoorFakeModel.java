@@ -8,6 +8,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 
+/**
+ * The trapdoor fake model
+ * @author Wyn Price
+ *
+ */
 public class TrapDoorFakeModel extends BaseTextureFakeModel
 {
 

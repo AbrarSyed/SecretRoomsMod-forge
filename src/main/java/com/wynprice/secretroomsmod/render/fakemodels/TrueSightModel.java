@@ -7,6 +7,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * The basic true sight model. All True Sight models extend this class.
+ * @author Wyn Price
+ *
+ */
 public class TrueSightModel extends BaseTextureSwitchFakeModel
 {
 

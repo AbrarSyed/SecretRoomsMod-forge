@@ -4,13 +4,18 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
+/**
+ * The unlisted Property containing the render state
+ * @author Wyn Price
+ *
+ */
 public class RenderStateUnlistedProperty implements IUnlistedProperty<IBlockState>
 {
 
 	@Override
 	public String getName() 
 	{
-		return "UnlistedPosition";
+		return "UnlistedMirrorState";
 	}
 
 	@Override

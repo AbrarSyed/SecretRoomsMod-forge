@@ -2,6 +2,11 @@ package com.wynprice.secretroomsmod.tileentity;
 
 import net.minecraft.block.BlockDaylightDetector;
 
+/**
+ * The TileEntity for Secret daylight sensors
+ * @author Wyn Price
+ *
+ */
 public class TileEntitySecretDaylightSensor extends TileEntityInfomationHolder
 {
 	public void update()

@@ -6,6 +6,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+/**
+ * The TileEntity for SRM the chest and SecretChest
+ * @author Wyn Price
+ *
+ */
 public class TileEntitySecretChest extends TileEntityInfomationHolder
 {
 	private ItemStackHandler handler = new ItemStackHandler(27);

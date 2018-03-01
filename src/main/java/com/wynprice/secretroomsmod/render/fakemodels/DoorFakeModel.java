@@ -7,6 +7,11 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
+/**
+ * Fake model for the door
+ * @author Wyn Price
+ *
+ */
 public class DoorFakeModel extends BaseTextureFakeModel
 {
 

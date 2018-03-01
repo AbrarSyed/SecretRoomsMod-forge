@@ -11,6 +11,11 @@ import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 
+/**
+ * The OneWayGlass model
+ * @author Wyn Price
+ *
+ */
 public class OneWayGlassFakeModel extends BaseTextureSwitchFakeModel
 {
 	public OneWayGlassFakeModel(FakeBlockModel model) {

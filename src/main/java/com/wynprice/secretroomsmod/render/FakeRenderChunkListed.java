@@ -14,6 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 
+/**
+ * A fake ListedRenderChunk, used to add my own ChunkCache
+ * @author Wyn Price
+ *
+ */
 public class FakeRenderChunkListed extends ListedRenderChunk 
 {
 	

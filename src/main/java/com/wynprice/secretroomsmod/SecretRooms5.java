@@ -26,7 +26,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-
+/**
+ * The mod class for ye old SecretRoomsMod
+ * @author Wyn Price
+ *
+ */
 @Mod(
 		modid = SecretRooms5.MODID,
 		name = SecretRooms5.MODNAME,
@@ -77,7 +81,6 @@ public class SecretRooms5
     @EventHandler
     public void onServerLoaded(FMLServerStartingEvent event)
     {
-    	//Debugging command to clean if it gets too laggs
     	event.registerServerCommand(new CommandBase() {@Override public int getRequiredPermissionLevel(){return 2;}@Override public String getUsage(ICommandSender sender) {return "Resets the energized blocks";}@Override public String getName() {return "resetenergized";}@Override public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {EnergizedPasteHandler.getEnergized_map().clear();SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(EnergizedPasteHandler.saveToNBT(), null));}});
     }
 }

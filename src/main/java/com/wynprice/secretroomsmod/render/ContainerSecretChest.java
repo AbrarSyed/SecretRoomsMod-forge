@@ -11,6 +11,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+/**
+ * The container for the SecretRoomsMod chest and trapped chest
+ * @author Wyn Price
+ *
+ */
 public class ContainerSecretChest extends Container
 {
 	

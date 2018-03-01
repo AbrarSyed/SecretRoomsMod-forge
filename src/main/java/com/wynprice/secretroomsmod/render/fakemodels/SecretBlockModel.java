@@ -7,9 +7,7 @@ import javax.vecmath.Matrix4f;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
-import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
-import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -21,12 +19,19 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
+/**
+ * The Model used to replace blocks with 
+ * @author Wyn Price
+ *
+ */
 public class SecretBlockModel implements IBakedModel
 {
 	
+	/**
+	 * The ThreadLocal used to control what {@link #isAmbientOcclusion()} should return
+	 */
 	public final ThreadLocal<Boolean> AO = ThreadLocal.withInitial(() -> false);
 	
 	private final IBakedModel model;

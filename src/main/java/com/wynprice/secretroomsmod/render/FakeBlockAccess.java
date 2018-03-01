@@ -14,6 +14,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 
+/**
+ * A custom IBlockAccess used to return the mirrored state of a block, if it exists.
+ * @author Wyn Price
+ *
+ */
 public class FakeBlockAccess implements IBlockAccess
 {
 	
@@ -33,6 +38,9 @@ public class FakeBlockAccess implements IBlockAccess
 		return base.getCombinedLight(pos, lightValue);
 	}
 
+	/**
+	 * If the blockpos holds a SRM block, then the mirrored state will be returned instead
+	 */
 	@Override
 	public IBlockState getBlockState(BlockPos pos) 
 	{

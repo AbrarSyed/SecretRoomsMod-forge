@@ -6,8 +6,14 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.chunk.IRenderChunkFactory;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 
+/**
+ * Custom {@link IRenderChunkFactory} used to create my own {@link ChunkCache}
+ * @author Wyn Price
+ *
+ */
 public class FakeChunkRenderFactory implements IRenderChunkFactory 
 {
 	private final IRenderChunkFactory base;

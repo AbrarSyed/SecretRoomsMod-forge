@@ -18,10 +18,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * Basic TileEntity for SRM blocks. Note that all SRM blocks will not extend this. They will however impiment {@link ISecretTileEntity}
+ * @author Wyn Price
+ *
+ */
 public class TileEntityInfomationHolder extends TileEntity implements ITickable, ISecretTileEntity
 {
+	/**
+	 * The mirrored state
+	 */
 	protected IBlockState mirrorState;
 		
+	
+	/**
+	 * If the TileEntity is locked then {@link #setMirrorState(IBlockState)} will not work
+	 */
 	private boolean locked;
 	
 	@Override
@@ -86,6 +98,7 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 		locked = true;
 	}
 	
+	@Override
 	public void setMirrorStateForcable(IBlockState mirrorState)
 	{
 		if(mirrorState.getBlock() instanceof ISecretBlock)

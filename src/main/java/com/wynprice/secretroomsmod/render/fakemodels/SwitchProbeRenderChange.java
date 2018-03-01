@@ -28,6 +28,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.items.ItemStackHandler;
 
+/**
+ * The SwitchProbe model. Used for when the player presses the Alt key, causing the selected item to show
+ * @author Wyn Price
+ *
+ */
 public class SwitchProbeRenderChange implements IBakedModel 
 {
     private IBakedModel base;
@@ -36,6 +41,9 @@ public class SwitchProbeRenderChange implements IBakedModel
         this.base = base;
     }
     
+    /**
+     * All the default transformation types
+     */
     private final static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> DEFAULT_ITEM_TRANSFORM = 
     		 ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
             .put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, getTransform(0, 3, 1, 0, 0, 0, 0.55f))
@@ -101,6 +109,9 @@ public class SwitchProbeRenderChange implements IBakedModel
         };
     }
     
+    /**
+     * Use math to convert the given inputs to a {@link TRSRTransformation}
+     */
     private static TRSRTransformation getTransform(float tx, float ty, float tz, float ax, float ay, float az, float s) {
         return new TRSRTransformation(
             new Vector3f(tx / 16, ty / 16, tz / 16),

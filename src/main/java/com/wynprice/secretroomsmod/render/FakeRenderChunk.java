@@ -10,6 +10,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 
+/**
+ * A fake {@link RenderChunk} used to add custom ChunkCache
+ * @author Wyn Price
+ *
+ */
 public class FakeRenderChunk extends RenderChunk 
 {
 	private final RenderChunk oldRender;
