@@ -3,11 +3,11 @@ package com.wynprice.secretroomsmod;
 import java.util.ArrayList;
 
 import com.wynprice.secretroomsmod.base.BaseItemDoor;
-import com.wynprice.secretroomsmod.items.TrueSightHelmet;
-import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifine;
+import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretCompactMalisisDoors;
 import com.wynprice.secretroomsmod.items.CamouflagePaste;
 import com.wynprice.secretroomsmod.items.ProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.items.SwitchProbe;
+import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class SecretItems 
 {
 	public static final Item CAMOUFLAGE_PASTE = new CamouflagePaste();
-	public static final Item SECRET_WOODEN_DOOR = new BaseItemDoor(SecretBlocks.SECRET_WOODEN_DOOR, "secret_wooden_door");
+	public static final Item SECRET_WOODEN_DOOR = SecretCompactMalisisDoors.ENABLED ? SecretCompactMalisisDoors.WOODEN_DOOR_ITEM: new BaseItemDoor(SecretBlocks.SECRET_WOODEN_DOOR, "secret_wooden_door");
 	public static final Item SECRET_IRON_DOOR = new BaseItemDoor(SecretBlocks.SECRET_IRON_DOOR, "secret_iron_door");
 	public static final Item SWITCH_PROBE = new SwitchProbe();
 	public static final Item PROGRAMMABLE_SWITCH_PROBE = new ProgrammableSwitchProbe();

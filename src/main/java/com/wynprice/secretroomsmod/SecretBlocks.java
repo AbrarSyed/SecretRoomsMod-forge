@@ -23,6 +23,8 @@ import com.wynprice.secretroomsmod.blocks.SecretTrappedChest;
 import com.wynprice.secretroomsmod.blocks.SecretWeightedPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SolidAir;
 import com.wynprice.secretroomsmod.blocks.TorchLever;
+import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretCompactMalisisDoors;
+import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretMalisisDoor;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -53,8 +55,8 @@ public class SecretBlocks
 	public static final Block SECRET_PLAYER_PRESSURE_PLATE = new SecretPlayerPressurePlate();
 	public static final Block SOLID_AIR = new SolidAir();
 	public static final Block SECRET_CHEST = new SecretChest("secret_chest");
-	public static final BaseBlockDoor SECRET_WOODEN_DOOR = new BaseBlockDoor("secret_wooden_door", Material.WOOD);
-	public static final BaseBlockDoor SECRET_IRON_DOOR = new BaseBlockDoor("secret_iron_door", Material.IRON);
+	public static final Block SECRET_WOODEN_DOOR = SecretCompactMalisisDoors.ENABLED ? SecretCompactMalisisDoors.WOODEN_DOOR : new BaseBlockDoor("secret_wooden_door", Material.WOOD);
+	public static final Block SECRET_IRON_DOOR = new BaseBlockDoor("secret_iron_door", Material.IRON);
 	public static final Block SECRET_WOODEN_TRAPDOOR = new SecretTrapDoor("secret_wooden_trapdoor", Material.WOOD);
 	public static final Block SECRET_IRON_TRAPDOOR = new SecretTrapDoor("secret_iron_trapdoor", Material.IRON);
 	public static final Block SECRET_DISPENSER = new SecretDispenser();
