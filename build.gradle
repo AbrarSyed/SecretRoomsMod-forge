@@ -30,9 +30,9 @@ compileJava {
 }
 
 minecraft {
-	version = "1.12.2-14.23.1.2562"
+	version = "1.12.2-14.23.2.2624"
 	runDir = "run"
-	mappings = "snapshot_20171003"
+	mappings = "snapshot_20180302"
 
 	replace "@CHANGE_VERSION@", "[5.0.0,)"
 	replace "@MC_VERSION@", project.minecraft.version
@@ -81,14 +81,14 @@ repositories {
 }
 
 dependencies {
-	//deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.18-10"
-	//deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
-	//deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
-	//deobfCompile "malisiscore:malisiscore-1.12.2:6.4.0:dev"
-	//deobfCompile "malisisdoors:malisisdoors-1.12.2:7.3.0:dev"
+	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.18-10"
+	deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+	deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
+	deobfCompile "malisiscore:malisiscore-1.12.2:6.4.0:dev"
+	deobfCompile "malisisdoors:malisisdoors-1.12.2:7.3.0:dev"
 	
-	//deobfProvided "mezz.jei:jei_1.12.2:4.8.5.138:api"
-	//runtime "mezz.jei:jei_1.12.2:4.8.5.138"
+	deobfProvided "mezz.jei:jei_1.12.2:4.8.5.138:api"
+	runtime "mezz.jei:jei_1.12.2:4.8.5.138"
 	
 	compile('org.spongepowered:mixin:0.7.4-SNAPSHOT') {
         exclude module: 'asm-commons'
