@@ -38,7 +38,6 @@ public class HandlerUpdateChecker
 	@SubscribeEvent
 	public void onPlayerJoin(FMLNetworkEvent.ClientConnectedToServerEvent event)
 	{
-		System.out.println("js");
 		if(!hasPosted)
 		{
 			hasPosted = true;

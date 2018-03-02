@@ -31,6 +31,7 @@ public class SecretBlockIconProvider implements IBlockIconProvider
 	@Override
 	public Icon getIcon(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) 
 	{
+		System.out.println("ss");
 		if(world.getBlockState(pos).getBlock() instanceof ISecretBlock) {
 			return Icon.from(((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState());
 		}

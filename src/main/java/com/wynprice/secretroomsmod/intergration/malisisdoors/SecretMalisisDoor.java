@@ -8,13 +8,14 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.render.fakemodels.DoorFakeModel;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
+import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.doors.DoorDescriptor;
 import net.malisis.doors.block.Door;
+import net.malisis.doors.renderer.DoorRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -37,6 +38,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@MalisisRendered(block = SecretDoorRenderer.class)
 public class SecretMalisisDoor extends Door implements ISecretBlock
 {
 
