@@ -2,8 +2,13 @@ package com.wynprice.secretroomsmod.intergration.malisisdoors;
 
 import java.util.List;
 
+import com.wynprice.secretroomsmod.SecretBlocks;
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.items.TrueSightHelmet;
+import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
+import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 
 import net.malisis.core.block.IComponent;
 import net.malisis.core.renderer.RenderParameters;
@@ -20,7 +25,9 @@ import net.malisis.doors.renderer.DoorRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class SecretDoorRenderer extends DoorRenderer
@@ -37,13 +44,6 @@ public class SecretDoorRenderer extends DoorRenderer
 		ensureBlock(SecretMalisisDoor.class);
 		rp.calculateAOColor.set(true);
 		rp.deductParameters.set(true);
-	}
-	
-	@Override
-	public void render() 
-	{
-		initialize(); ///REMOVE
-		super.render();
 	}
 	
 	@Override
@@ -65,10 +65,15 @@ public class SecretDoorRenderer extends DoorRenderer
 				facing = EnumFacingUtils.getRealSide(blockState, facing);
 				IBlockState mirrorState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
 				List<BakedQuad> quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirrorState).getQuads(mirrorState, facing, MathHelper.getPositionRandom(pos));
+				if(quadList.isEmpty())
+					quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirrorState).getQuads(mirrorState, null, MathHelper.getPositionRandom(pos));
 				Face controllFace = new Face(f, sParams);
 				for(BakedQuad quad : quadList) {
 					sParams.quadSprite.set(quad.getSprite());
-					if(!quad.hasTintIndex()) {
+					if(Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {
+						sParams.quadSprite.set(FakeBlockModel.getModel(new ResourceLocation(SecretRooms5.MODID, "block/secret_" + (block == SecretBlocks.SECRET_WOODEN_DOOR ? "wooden" : "iron") + "_door")).getParticleTexture());
+					}
+					if(!quad.hasTintIndex() || Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {
 						sParams.colorMultiplier.set(-1);
 					} else {
 						sParams.colorMultiplier.set(Minecraft.getMinecraft().getBlockColors().colorMultiplier(mirrorState, world, pos, quad.getTintIndex()));

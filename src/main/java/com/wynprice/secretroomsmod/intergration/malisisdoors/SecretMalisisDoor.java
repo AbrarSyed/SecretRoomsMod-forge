@@ -11,8 +11,10 @@ import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.doors.DoorDescriptor;
+import net.malisis.doors.DoorDescriptor.RedstoneBehavior;
 import net.malisis.doors.block.Door;
 import net.malisis.doors.renderer.DoorRenderer;
+import net.malisis.doors.tileentity.DoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
@@ -90,75 +92,6 @@ public class SecretMalisisDoor extends Door implements ISecretBlock
 	{
 		return ISecretBlock.super.getSoundType(state, world, pos, entity);
 	}
-	
-	public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-	
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
-        {
-            BlockPos blockpos = pos.down();
-            IBlockState iblockstate = worldIn.getBlockState(blockpos);
-
-            if (iblockstate.getBlock() != this)
-            {
-                worldIn.setBlockToAir(pos);
-            }
-            else if (blockIn != this)
-            {
-                iblockstate.neighborChanged(worldIn, blockpos, blockIn, fromPos);
-            }
-        }
-        else
-        {
-            boolean flag1 = false;
-            BlockPos blockpos1 = pos.up();
-            IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
-
-            if (iblockstate1.getBlock() != this)
-            {
-                worldIn.setBlockToAir(pos);
-                flag1 = true;
-            }
-
-            if (!worldIn.getBlockState(pos.down()).isSideSolid(worldIn,  pos.down(), EnumFacing.UP))
-            {
-                worldIn.setBlockToAir(pos);
-                flag1 = true;
-
-                if (iblockstate1.getBlock() == this)
-                {
-                    worldIn.setBlockToAir(blockpos1);
-                }
-            }
-
-            if (flag1)
-            {
-                if (!worldIn.isRemote)
-                {
-                    this.dropBlockAsItem(worldIn, pos, state, 0);
-                }
-            }
-            else
-            {
-                boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos1);
-
-                if (blockIn != this && (flag || blockIn.getDefaultState().canProvidePower()) && flag != ((Boolean)iblockstate1.getValue(POWERED)).booleanValue())
-                {
-                    worldIn.setBlockState(blockpos1, iblockstate1.withProperty(POWERED, Boolean.valueOf(flag)), 2);
-
-                    if (flag != ((Boolean)state.getValue(OPEN)).booleanValue())
-                    {
-                        worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
-                        worldIn.markBlockRangeForRenderUpdate(pos, pos);
-                    }
-                }
-            }
-        }
-    }
 	
     @SideOnly(Side.CLIENT)
 	@Override
