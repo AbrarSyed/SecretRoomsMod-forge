@@ -58,9 +58,8 @@ public class SecretMalisisDoor extends Door implements ISecretBlock
 		return new SecretBlockIconProvider();
 	}
 	
-	
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+	protected ItemStack getDoorItemStack(IBlockAccess world, BlockPos pos) {
 		return new ItemStack(this == SecretBlocks.SECRET_IRON_DOOR ? SecretItems.SECRET_IRON_DOOR : SecretItems.SECRET_WOODEN_DOOR);
 	}
 	

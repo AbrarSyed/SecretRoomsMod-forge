@@ -32,6 +32,8 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 	@Override
 	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) 
 	{
+		if(true)
+			return ItemStack.EMPTY;
 		if(accessor.getTileEntity() instanceof ISecretTileEntity && ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState() != null  && !(accessor.getPlayer().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet))
 		{
 			try
@@ -61,7 +63,8 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 			{
 				;
 			}
-			return ret;
+			if(ret != null)
+				return ret;
 		}
 		return ItemStack.EMPTY;
 	}
