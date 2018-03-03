@@ -48,6 +48,8 @@ public class SecretMalisisDoor extends Door implements ISecretBlock
 	
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
+		if (isTop(state))
+			return ISecretBlock.super.createNewTileEntity(world, getMetaFromState(state));
 		return new SecretMalisisTileEntityDoor();
 	}
 	
