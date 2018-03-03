@@ -36,7 +36,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 		name = SecretRooms5.MODNAME,
 		version = SecretRooms5.VERSION,
 		acceptedMinecraftVersions = "[1.12.2,1.13]",
-		dependencies = "required-after:forge@[14.23.0.2502,)")
+		dependencies = "required-after:forge@[14.23.0.2502,);after:malisidoors")
 public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";

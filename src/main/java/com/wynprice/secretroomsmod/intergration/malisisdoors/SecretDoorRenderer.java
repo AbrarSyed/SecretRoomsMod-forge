@@ -88,6 +88,21 @@ public class SecretDoorRenderer extends DoorRenderer
 	}
 	
 	@Override
+	protected boolean shouldRenderFace(Face face, RenderParameters params) {
+		boolean ret = super.shouldRenderFace(face, params);
+		if(ret) {
+			if (!topBlock && face.name().equals("Top")) {
+				return false;
+			}
+
+			if (topBlock && face.name().equals("Bottom")) {
+				return false;
+			}
+		}
+		return ret;
+	}
+	
+	@Override
 	protected Icon getIcon(Face face, RenderParameters params)
 	{
 		
