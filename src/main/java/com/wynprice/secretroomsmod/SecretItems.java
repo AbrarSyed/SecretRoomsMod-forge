@@ -21,8 +21,8 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class SecretItems 
 {
 	public static final Item CAMOUFLAGE_PASTE = new CamouflagePaste();
-	public static final Item SECRET_WOODEN_DOOR = SecretCompactMalisisDoors.ENABLED ? SecretCompactMalisisDoors.WOODEN_DOOR_ITEM: new BaseItemDoor(SecretBlocks.SECRET_WOODEN_DOOR, "secret_wooden_door");
-	public static final Item SECRET_IRON_DOOR = new BaseItemDoor(SecretBlocks.SECRET_IRON_DOOR, "secret_iron_door");
+	public static final Item SECRET_WOODEN_DOOR = SecretCompactMalisisDoors.ENABLED ? SecretCompactMalisisDoors.WOODEN_DOOR_ITEM : new BaseItemDoor(SecretBlocks.SECRET_WOODEN_DOOR, "secret_wooden_door");
+	public static final Item SECRET_IRON_DOOR = SecretCompactMalisisDoors.ENABLED ? SecretCompactMalisisDoors.IRON_DOOR_ITEM : new BaseItemDoor(SecretBlocks.SECRET_IRON_DOOR, "secret_iron_door");
 	public static final Item SWITCH_PROBE = new SwitchProbe();
 	public static final Item PROGRAMMABLE_SWITCH_PROBE = new ProgrammableSwitchProbe();
 	public static final Item IRON_EXPOSING_HELMET = new TrueSightHelmet("iron_exposing_helmet", ItemArmor.ArmorMaterial.IRON, 2, EntityEquipmentSlot.HEAD);

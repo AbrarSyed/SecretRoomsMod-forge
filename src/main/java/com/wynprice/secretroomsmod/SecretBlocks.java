@@ -56,7 +56,7 @@ public class SecretBlocks
 	public static final Block SOLID_AIR = new SolidAir();
 	public static final Block SECRET_CHEST = new SecretChest("secret_chest");
 	public static final Block SECRET_WOODEN_DOOR = SecretCompactMalisisDoors.ENABLED ? SecretCompactMalisisDoors.WOODEN_DOOR : new BaseBlockDoor("secret_wooden_door", Material.WOOD);
-	public static final Block SECRET_IRON_DOOR = new BaseBlockDoor("secret_iron_door", Material.IRON);
+	public static final Block SECRET_IRON_DOOR = SecretCompactMalisisDoors.ENABLED ? SecretCompactMalisisDoors.IRON_DOOR : new BaseBlockDoor("secret_iron_door", Material.IRON);
 	public static final Block SECRET_WOODEN_TRAPDOOR = new SecretTrapDoor("secret_wooden_trapdoor", Material.WOOD);
 	public static final Block SECRET_IRON_TRAPDOOR = new SecretTrapDoor("secret_iron_trapdoor", Material.IRON);
 	public static final Block SECRET_DISPENSER = new SecretDispenser();
