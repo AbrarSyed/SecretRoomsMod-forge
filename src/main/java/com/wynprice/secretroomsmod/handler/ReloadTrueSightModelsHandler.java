@@ -28,7 +28,7 @@ public class ReloadTrueSightModelsHandler
 	{
 		if(event.player instanceof EntityPlayerSP && (updated++ == 20 || event.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet != lastTickHelmet))
 		{
-			lastTickHelmet = event.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet;
+			lastTickHelmet = TrueSightHelmet.isHelmet();
 			for(TileEntity holder : ISecretBlock.ALL_SECRET_TILE_ENTITIES)
 				if(holder instanceof ISecretTileEntity)
 					event.player.world.markBlockRangeForRenderUpdate(holder.getPos().add(-1, -1, -1), holder.getPos().add(1, 1, 1));

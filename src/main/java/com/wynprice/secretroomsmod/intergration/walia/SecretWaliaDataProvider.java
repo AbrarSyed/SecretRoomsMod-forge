@@ -33,7 +33,7 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) 
 	{
 		ItemStack ret = ItemStack.EMPTY;
-		if(accessor.getTileEntity() instanceof ISecretTileEntity && ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState() != null  && !(accessor.getPlayer().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet))
+		if(accessor.getTileEntity() instanceof ISecretTileEntity && ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState() != null  && !TrueSightHelmet.isHelmet(accessor.getPlayer()))
 		{
 			try
 			{

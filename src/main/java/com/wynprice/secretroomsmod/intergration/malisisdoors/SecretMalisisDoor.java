@@ -111,7 +111,12 @@ public class SecretMalisisDoor extends Door implements ISecretBlock
     {
         return EnumBlockRenderType.MODEL;
     }
-    
+   
+	@Override
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)  {
+		return ISecretBlock.super.getBlockHardness(blockState, worldIn, pos);
+	}
+	
 	@SideOnly(Side.CLIENT)
     @Override
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) 

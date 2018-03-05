@@ -50,12 +50,9 @@ public class SecretBlockModel implements IBakedModel
 			if(renderState != null)
 			{
 				FakeBlockModel renderModel = ((ISecretBlock)state.getBlock()).phaseModel(new FakeBlockModel(renderState));
-				for(ItemStack stack : Minecraft.getMinecraft().player.getArmorInventoryList())
-	        		if(stack.getItem() instanceof TrueSightHelmet)
-	        		{
-	        			renderModel = ((ISecretBlock)state.getBlock()).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderState)));
-	        			break;
-	        		}
+				if(TrueSightHelmet.isHelmet()) {
+        			renderModel = ((ISecretBlock)state.getBlock()).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderState)));
+        		}
 				return renderModel.setCurrentRender(state).getQuads(renderState, side, rand);
 			}
 		}

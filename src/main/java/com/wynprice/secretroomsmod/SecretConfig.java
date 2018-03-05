@@ -32,6 +32,8 @@ public class SecretConfig
 	public static String sound_use_name;
 	public static double sound_use_vol, sound_use_pitch;
 	
+	public static boolean singlePlayerHelmet;
+	
 	{
 		SecretConfig.syncConfig();
 	}
@@ -56,6 +58,7 @@ public class SecretConfig
 		Property p_sound_use_vol = CONFIG.get(CATEGORYENERGIZEDPASTE, "sound_use_volume", 0.2d);
 		Property p_sound_use_pitch = CONFIG.get(CATEGORYENERGIZEDPASTE, "sound_use_pitch", 3d);
 
+		Property p_single_helmet = CONFIG.get(CATEGORYGENRAL, "single_player_helmet", false, new TextComponentTranslation("config.singleplayerhelmet").getUnformattedText());
 		
 		updateChecker = doUpdate.getBoolean();
 		forceAO = doesForcedAO.getBoolean();
@@ -73,6 +76,7 @@ public class SecretConfig
 		sound_use_vol = p_sound_use_vol.getDouble();
 		sound_use_pitch = p_sound_use_pitch.getDouble();
 
+		singlePlayerHelmet = p_single_helmet.getBoolean();
 		
 		doUpdate.set(updateChecker);
 		doesForcedAO.set(forceAO);
@@ -89,6 +93,8 @@ public class SecretConfig
 		p_sound_use_name.set(sound_use_name);
 		p_sound_use_vol.set(sound_use_vol);
 		p_sound_use_pitch.set(sound_use_pitch);
+		
+		p_single_helmet.set(singlePlayerHelmet);
 
 		if(CONFIG.hasChanged())
 			CONFIG.save();

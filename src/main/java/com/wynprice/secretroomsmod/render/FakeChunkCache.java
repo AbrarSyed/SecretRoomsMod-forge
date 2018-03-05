@@ -86,7 +86,7 @@ public class FakeChunkCache extends ChunkCache
 				if(((ISecretBlock)super.getBlockState(pos).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() != FakeBlockModel.class &&
 						(Thread.currentThread().getStackTrace()[3].getClassName().equals(RenderChunk.class.getName())) || 
 						Arrays.asList("func_187491_a", "func_175626_b").contains(Thread.currentThread().getStackTrace()[3].getMethodName()) || 
-						Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {
+						TrueSightHelmet.isHelmet()) {
 					return oldCache.getBlockState(pos);
 				}
 				return ISecretTileEntity.getMirrorState(world, pos);

@@ -29,8 +29,8 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 			IBlockState blockState, IProbeHitData data) 
 	{
 		if(blockState.getBlock() instanceof ISecretBlock)
-			DefaultProbeInfoProvider.showStandardBlockInfo(new ProbeConfig(), mode, probeInfo, player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
-					blockState : ISecretTileEntity.getMirrorState(world, data.getPos()), player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
+			DefaultProbeInfoProvider.showStandardBlockInfo(new ProbeConfig(), mode, probeInfo, TrueSightHelmet.isHelmet(player) ? 
+					blockState : ISecretTileEntity.getMirrorState(world, data.getPos()), TrueSightHelmet.isHelmet(player) ? 
 					blockState.getBlock() : ISecretTileEntity.getMirrorState(world, data.getPos()).getBlock(), world, data.getPos(), player, new IProbeHitData() {
 						
 						@Override
@@ -45,7 +45,7 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 						
 						@Override
 						public ItemStack getPickBlock() {
-							return player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? data.getPickBlock() : 
+							return TrueSightHelmet.isHelmet(player) ? data.getPickBlock() : 
 								ISecretTileEntity.getMirrorState(world, data.getPos()).getBlock()
 									.getPickBlock(ISecretTileEntity.getMirrorState(world, data.getPos()), 
 											world.rayTraceBlocks(player.getPositionVector(), player.getPositionVector()
@@ -58,8 +58,8 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 						}
 					});
 		if(EnergizedPasteHandler.hasReplacedState(world, data.getPos()))
-			DefaultProbeInfoProvider.showStandardBlockInfo(new ProbeConfig(), mode, probeInfo, player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
-					blockState : EnergizedPasteHandler.getReplacedState(world, data.getPos()), player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? 
+			DefaultProbeInfoProvider.showStandardBlockInfo(new ProbeConfig(), mode, probeInfo, TrueSightHelmet.isHelmet(player) ? 
+					blockState : EnergizedPasteHandler.getReplacedState(world, data.getPos()), TrueSightHelmet.isHelmet(player) ? 
 					blockState.getBlock() : EnergizedPasteHandler.getReplacedState(world, data.getPos()).getBlock(), world, data.getPos(), player, new IProbeHitData() {
 						
 						@Override
@@ -74,7 +74,7 @@ public class FakeInfoProvider implements IBlockDisplayOverride
 						
 						@Override
 						public ItemStack getPickBlock() {
-							return player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet ? data.getPickBlock() : 
+							return TrueSightHelmet.isHelmet(player) ? data.getPickBlock() : 
 								EnergizedPasteHandler.getReplacedState(world, data.getPos()).getBlock()
 									.getPickBlock(EnergizedPasteHandler.getReplacedState(world, data.getPos()), 
 											world.rayTraceBlocks(player.getPositionVector(), player.getPositionVector()

@@ -11,5 +11,11 @@
   ],
   "result": {
     "item": "secretroomsmod:iron_exposing_helmet"
-  }
+  },
+  
+  "conditions": [
+        {
+            "type": "secretroomsmod:helmet"
+        }
+    ]
 }

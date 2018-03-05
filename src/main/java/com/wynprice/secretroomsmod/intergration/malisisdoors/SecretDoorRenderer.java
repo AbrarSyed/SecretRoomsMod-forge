@@ -70,7 +70,7 @@ public class SecretDoorRenderer extends DoorRenderer
 				Face controllFace = new Face(f, sParams);
 				for(BakedQuad quad : quadList) {
 					sParams.quadSprite.set(quad.getSprite());
-					if(Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {
+					if(TrueSightHelmet.isHelmet()) {
 						sParams.quadSprite.set(FakeBlockModel.getModel(new ResourceLocation(SecretRooms5.MODID, "block/secret_" + (block == SecretBlocks.SECRET_WOODEN_DOOR ? "wooden" : "iron") + "_door")).getParticleTexture());
 					}
 					if(!quad.hasTintIndex() || Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet) {

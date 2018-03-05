@@ -11,6 +11,7 @@ config.energizedpaste.blacklistpickup=sᴉɥʇ ɹoɹɹᴉɯ uɐɔ ʞɔoꞁq ɹǝ
 config.energizedpaste.nonreplaceable=pǝᵷuɐɥɔ ǝq ʇuɐɔ ʞɔoꞁq sᴉɥʇ ɹoɟ ᵷuᴉɹǝpuǝɹ ǝɥʇ os 'ǝʇsɐԀ ǝᵷɐꞁɟnoɯɐƆ pǝzᴉᵷɹǝuƎ ǝɥʇ ʎq pǝɔɐꞁdǝɹ ǝq oʇ ǝꞁqɐ ǝq ʇuoʍ ʇsᴉꞁ sᴉɥʇ uᴉ sʞɔoꞁᗺ
 config.energizedpaste.sound.set=˙ǝʇsɐԀ pǝzᴉᵷɹǝuƎ ǝɥʇ oʇ ʇǝs sᴉ ʞɔoꞁq ɐ uǝɥʍ ʎɐꞁd oʇ ɥɔʇᴉԀ puɐ ǝɯnꞁoᴧ 'punoS ǝɥ⟘
 config.energizedpaste.sound.use=˙ʞɔoꞁq ʇɐɥʇ ɟo ǝɔuɐǝɹǝddɐ ǝɥʇ ᵷuᴉᵷuɐɥɔ 'ʞɔoꞁq ɹǝɥʇouɐ uo pǝsn sᴉ ǝʇsɐԀ pǝzᴉᵷɹǝuƎ uǝɥʍ ʎɐꞁd oʇ ɥɔʇᴉԀ puɐ ǝɯnꞁoᴧ 'punoS ǝɥ⟘
+config.singleplayerhelmet=¿ɹǝʎɐldǝlƃuᴉs uᴉ sɹǝʎɐld oʇ ǝlqɐlᴉɐʌɐ ǝq ʇǝɯlǝɥ ǝɥʇ plnoɥS
 
 update.version=ǝᵷɐd oʇ oᵷ oʇ ǝɹǝɥ ʞɔᴉꞁƆ ˙%3$s :uoᴉsɹǝʌ ʇǝᵷɹɐʇ '%2$s uoᴉsɹǝʌ ɹno⅄ ˙ǝʇɐp ɟo ʇno sᴉ poW ǝɥ⟘ [%1$s]
 update.hover=%s oʇ oᵷ o⟘ ʞɔᴉꞁƆ
