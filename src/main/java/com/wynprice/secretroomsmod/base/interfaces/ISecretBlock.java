@@ -141,6 +141,17 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#getBlockHardness(IBlockState, World, BlockPos)} on the Mirrored state
+	 * @param worldIn The current world
+	 * @param state The {@link IBlockState} of the current position
+	 * @param pos The position of the block
+	 * @return the hardness of the block
+	 */
+	default float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+		return ISecretTileEntity.getMirrorState(worldIn, pos).getBlockHardness(worldIn, pos);
+	}
+	
+	/**
 	 * A list of all ISecretTileEntities. Used to get Material and things like that
 	 */
 	public static final ArrayList<TileEntity> ALL_SECRET_TILE_ENTITIES = new ArrayList<>();

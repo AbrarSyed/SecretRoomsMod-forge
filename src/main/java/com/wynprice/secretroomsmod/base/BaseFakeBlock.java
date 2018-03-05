@@ -71,6 +71,16 @@ public class BaseFakeBlock extends Block implements ISecretBlock
 	}
 	
 	@Override
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)  {
+		return ISecretBlock.super.getBlockHardness(blockState, worldIn, pos);
+	}
+	
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		return super.getHarvestTool(state);
+	}
+	
+	@Override
 	public Material getMaterial(IBlockState state) {
 		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
 	}

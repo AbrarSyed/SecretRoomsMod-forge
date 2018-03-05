@@ -87,6 +87,11 @@ public class SecretButton extends BlockButton implements ISecretBlock
 		return ISecretBlock.super.isSideSolid(base_state, world, pos, side);
 	}
 	
+	@Override
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)  {
+		return ISecretBlock.super.getBlockHardness(blockState, worldIn, pos);
+	}
+	
 	 private void checkPressed(IBlockState state, World worldIn, BlockPos pos)
 	 {
 		 List <? extends Entity > list = new ArrayList<>();

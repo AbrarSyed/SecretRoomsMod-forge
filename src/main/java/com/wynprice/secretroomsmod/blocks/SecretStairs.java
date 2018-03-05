@@ -81,6 +81,11 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
 	}
 	
 	@Override
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)  {
+		return ISecretBlock.super.getBlockHardness(blockState, worldIn, pos);
+	}
+	
+	@Override
 	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return ISecretBlock.super.isSideSolid(base_state, world, pos, side);
 	}
