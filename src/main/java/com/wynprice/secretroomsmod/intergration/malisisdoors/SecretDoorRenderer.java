@@ -22,12 +22,16 @@ import net.malisis.core.renderer.icon.provider.IItemIconProvider;
 import net.malisis.core.util.EnumFacingUtils;
 import net.malisis.doors.iconprovider.DoorIconProvider;
 import net.malisis.doors.renderer.DoorRenderer;
+import net.malisis.doors.tileentity.DoorTileEntity;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.MathHelper;
 
 public class SecretDoorRenderer extends DoorRenderer
@@ -64,6 +68,19 @@ public class SecretDoorRenderer extends DoorRenderer
 				facing = facing == null ? EnumFacing.SOUTH : facing; //was in build somewhere, just leave it here
 				facing = EnumFacingUtils.getRealSide(blockState, facing);
 				IBlockState mirrorState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
+				
+				boolean facingX = blockState.getValue(BlockDoor.FACING).getAxis() == Axis.X !=  blockState.getValue(BlockDoor.OPEN);
+				
+				
+				DoorTileEntity te = ((DoorTileEntity)world.getTileEntity(blockState.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER? pos : pos.down()));
+				if(te.getTimer().elapsedTick() > te.getOpeningTime() && te.isMoving()) {
+					facingX = !facingX;
+				}
+				
+				if(!facingX) {
+					facing = facing.rotateAround(Axis.Y);
+				}
+				
 				List<BakedQuad> quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirrorState).getQuads(mirrorState, facing, MathHelper.getPositionRandom(pos));
 				if(quadList.isEmpty())
 					quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirrorState).getQuads(mirrorState, null, MathHelper.getPositionRandom(pos));
