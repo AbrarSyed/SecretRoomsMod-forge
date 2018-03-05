@@ -41,7 +41,7 @@ public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
-    public static final String VERSION = "5.3.2";
+    public static final String VERSION = "5.4.0";
     public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
 	
     

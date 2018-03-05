@@ -10,10 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Loader;
 
 public class SecretCompactMalisisDoors 
-{
-	
-	public static final boolean ENABLED = Loader.isModLoaded("malisisdoors");
-	
+{	
 	private static final DoorDescriptor wooden_desc = new DoorDescriptor();
 	private static final DoorDescriptor iron_desc = new DoorDescriptor();
 

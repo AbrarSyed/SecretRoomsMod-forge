@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.proxy;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
+import com.wynprice.secretroomsmod.SecretCompatibility;
 import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms5;
@@ -8,6 +9,7 @@ import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.handler.RecipeHelperHandler;
+import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretCompactMalisisDoors;
 import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretMalisisTileEntityDoor;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
@@ -49,9 +51,12 @@ public class CommonProxy
     			TileEntitySecretDaylightSensor.class,
     			TileEntitySecretPressurePlate.class,
     			
-    			
-    			SecretMalisisTileEntityDoor.class //For malisis support
     	};
+		
+		if(SecretCompatibility.MALISISDOORS) {
+			GameRegistry.registerTileEntity(SecretMalisisTileEntityDoor.class, SecretRooms5.MODID + SecretMalisisTileEntityDoor.class.getSimpleName());
+		}
+		
     	for(Class clas : tileEntityClasses)
     		GameRegistry.registerTileEntity(clas, SecretRooms5.MODID + clas.getSimpleName());
     	
