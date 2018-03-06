@@ -46,6 +46,7 @@ public class SecretMalisisDoor extends Door implements ISecretBlock
 
 	public SecretMalisisDoor(DoorDescriptor desc) {
 		super(desc);
+		desc.set(this, null);
 	}
 	
 	@Override

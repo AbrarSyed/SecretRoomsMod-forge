@@ -26,6 +26,7 @@ public class SecretMalisiItemDoor extends DoorItem
 	public SecretMalisiItemDoor(DoorDescriptor desc)
 	{
 		super(desc);
+		desc.set(desc.getBlock(), this);
 	}
 
 	
