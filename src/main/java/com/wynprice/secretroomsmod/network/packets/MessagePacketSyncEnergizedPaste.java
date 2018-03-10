@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
- * Message packet used to update everything energized paste related. Called ClientSide
+ * Message packet used to update everything energized paste related. Recieved ClientSide
  * @author Wyn Price
  *
  */
@@ -79,6 +79,7 @@ public class MessagePacketSyncEnergizedPaste extends BaseMessagePacket<MessagePa
 	@Override
 	public void onReceived(MessagePacketSyncEnergizedPaste message, EntityPlayer player) 
 	{
+		
 		if(message.nbt != null)
 			EnergizedPasteHandler.readFromNBT(message.nbt);
 		else
