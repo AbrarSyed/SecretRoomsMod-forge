@@ -96,9 +96,9 @@ public class SecretGate extends BaseFakeBlock
 	{
 		BlockPos position = destroyGate(worldIn, pos, worldIn.getBlockState(pos));
 		EnumFacing direction = worldIn.getBlockState(pos).getValue(FACING);
+		deactivateGate(worldIn, position);
 		worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, direction).withProperty(POWERED, false));
-		if(worldIn.getBlockState(position).getBlock() == this) 
-			deactivateGate(worldIn, position);
+
 	}
 	
 	protected BlockPos destroyGate(World worldIn, BlockPos pos, IBlockState blockstate)
