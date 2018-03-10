@@ -2,6 +2,7 @@ package com.wynprice.secretroomsmod.tileentity;
 
 import javax.annotation.Nullable;
 
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
@@ -101,8 +102,17 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	@Override
 	public void setMirrorStateForcable(IBlockState mirrorState)
 	{
-		if(mirrorState.getBlock() instanceof ISecretBlock)
+		if(mirrorState.getBlock() == null) {
+			SecretRooms5.LOGGER.error("Null BlockState passed in at: {}, {}, {}. This is most likely doue to world corruption. Setting mirrored state to {}", getPos().getX(), getPos().getY(), getPos().getZ(), this.mirrorState == null ? "default (stone)" : this.mirrorState);
+			if(this.mirrorState == null) {
+				mirrorState = Blocks.STONE.getDefaultState();
+			} else {
+				return;
+			}
+		}
+		if(mirrorState.getBlock() instanceof ISecretBlock) {
 			mirrorState = Blocks.STONE.getDefaultState();
+		}
 		ISecretTileEntity.getMap(world).put(this.pos, mirrorState);
 		this.mirrorState = mirrorState.getBlock().getStateFromMeta(mirrorState.getBlock().getMetaFromState(mirrorState));
 	}
