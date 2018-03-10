@@ -16,6 +16,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -28,9 +29,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -52,16 +56,6 @@ public class SecretLever extends BlockLever implements ISecretBlock
 	@Override
 	public Material getMaterial(IBlockState state) {
 		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
-	}
-	
-	@Override
-	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		return ISecretBlock.super.canBeConnectedTo(world, pos, facing);
-	}
-	
-	@Override
-	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
-		return false;
 	}
 	
 	@Override
@@ -157,15 +151,17 @@ public class SecretLever extends BlockLever implements ISecretBlock
     	Collection < IProperty<? >> properties = super.createBlockState().getProperties();
     	return new ExtendedBlockState(this, properties.toArray(new IProperty[properties.size()]), new IUnlistedProperty[] {RENDER_PROPERTY});    }
 
+    @SideOnly(Side.CLIENT)
+    @Override
     public boolean isOpaqueCube(IBlockState state)
     {
-        return false;
+    	return ISecretBlock.super.isOpaqueCube(state);
     }
 
     @SideOnly(Side.CLIENT)
-    public float getAmbientOcclusionLightValue(IBlockState state)
-    {
-        return 1.0F;
+    @Override
+    public float getAmbientOcclusionLightValue(IBlockState state) {
+    	return ISecretBlock.super.getAmbientOcclusionLightValue(state);
     }
 	
 	@Override
@@ -174,7 +170,79 @@ public class SecretLever extends BlockLever implements ISecretBlock
 	}
 	
 	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
+		return ISecretBlock.super.canCreatureSpawn(state, world, pos, type);
+	}
+	
+	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		return ISecretBlock.super.getActualState(state, worldIn, pos, super.getActualState(state, worldIn, pos));
 	}
+	
+	@Override
+	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+		return ISecretBlock.super.canHarvestBlock(world, pos, player);
+	}
+	
+	@Override
+	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		return ISecretBlock.super.canBeConnectedTo(world, pos, facing);
+	}
+	
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return ISecretBlock.super.getLightOpacity(state, world, pos);
+	}
+	
+	@Override
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return ISecretBlock.super.getLightValue(state, world, pos);
+	}
+	
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		return ISecretBlock.super.getHarvestTool(state);
+	}
+	
+	@Override
+	public int getHarvestLevel(IBlockState state) {
+		return ISecretBlock.super.getHarvestLevel(state);
+	}
+	
+	@Override
+	public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
+		return ISecretBlock.super.addRunningEffects(state, world, pos, entity);
+	}
+	
+	@Override
+	public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition,
+			IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
+		return ISecretBlock.super.addLandingEffects(state, worldObj, blockPosition, iblockstate, entity, numberOfParticles);
+	}
+	
+	@Override
+	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return ISecretBlock.super.canConnectRedstone(state, world, pos, side);
+	}
+	
+	@Override
+	public float getSlipperiness(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+		return ISecretBlock.super.getSlipperiness(state, world, pos, entity);
+	}
+	
+	@Override
+	public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return ISecretBlock.super.canPlaceTorchOnTop(state, world, pos);
+	}
+	
+	@Override
+	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start,
+			Vec3d end) {
+		return ISecretBlock.super.collisionRayTrace(blockState, worldIn, pos, start, end);
+	}
+	
+	@Override
+    public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
+    	return ISecretBlock.super.getPackedLightmapCoords(state, source, pos);
+    }
 }

@@ -2,6 +2,7 @@ package com.wynprice.secretroomsmod.base.interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.render.FakeBlockAccess;
@@ -21,22 +22,27 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.util.Random;
 
 /**
  * The interface used by all SRM blocks. Most methods here are called directly from the block, as to store all the same code in the same place. 
@@ -64,7 +70,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	 */
 	default public IBlockState getState(IBlockAccess world, BlockPos pos)
 	{
-		return world.getTileEntity(pos) instanceof ISecretTileEntity ? ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() : null;
+		return world.getTileEntity(pos) instanceof ISecretTileEntity ? ISecretTileEntity.getMirrorState(world, pos) : Blocks.STONE.getDefaultState();
 	}
 	
 	/**
@@ -105,6 +111,28 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#canCreatureSpawn(IBlockState, IBlockAccess, BlockPos, SpawnPlacementType)} on Mirrored states
+	 * @param state The current state
+     * @param world The current world
+     * @param pos Block position in world
+     * @param type The Mob Category Type
+     * @return True to allow a mob of the specified category to spawn, false to prevent it.
+	 */
+	default boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
+		return getState(world, pos).getBlock().canCreatureSpawn(getState(world, pos), new FakeBlockAccess(world), pos, type);
+	}
+	
+	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#canHarvestBlock(IBlockAccess, BlockPos, EntityPlayer)} on mirrored states
+     * @param player The player damaging the block
+     * @param pos The block's current position
+     * @return True to spawn the drops
+     */
+	default boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+		return getState(world, pos).getBlock().canHarvestBlock(new FakeBlockAccess(world), pos, player);
+	}
+	
+	/**
 	 * Used as an override to SRM blocks. Used to attempt to get the Mirrored State bounding box
 	 * @param state The input state. not needed what so ever. <b> Exists because {@link Block#getBoundingBox(IBlockState, IBlockAccess, BlockPos)} has the {@link IBlockState} as a field. </b>
 	 * @param source the world
@@ -113,7 +141,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	 */
 	default AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		if(source.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState() != null)
-			return ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState().getBoundingBox(source, pos);
+			return ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState().getBoundingBox(new FakeBlockAccess(source), pos);
 		return Block.FULL_BLOCK_AABB;
 	}
 	
@@ -125,7 +153,7 @@ public interface ISecretBlock extends ITileEntityProvider
      * @return True to allow another block to connect to this block
      */
 	default boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		return getState(world, pos).getBlock().canBeConnectedTo(world, pos, facing);
+		return getState(world, pos).getBlock().canBeConnectedTo(new FakeBlockAccess(world), pos, facing);
 	}
 	
 	/**
@@ -137,7 +165,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	 * @return an approximation of the form of the given face.
 	 */
 	default BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return ISecretTileEntity.getMirrorState(worldIn, pos).getBlockFaceShape(worldIn, pos, face);
+		return getState(worldIn, pos).getBlockFaceShape(new FakeBlockAccess(worldIn), pos, face);
 	}
 	
 	/**
@@ -149,6 +177,55 @@ public interface ISecretBlock extends ITileEntityProvider
 	 */
 	default float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
 		return ISecretTileEntity.getMirrorState(worldIn, pos).getBlockHardness(worldIn, pos);
+	}
+	
+	/**
+	 * Used as an override for SRM blocks. Used to run {@link #canConnectRedstone(IBlockState, IBlockAccess, BlockPos, EnumFacing)} on the mirrored state
+     * @param state The current state
+     * @param world The current world
+     * @param pos Block position in world
+     * @param side The side that is trying to make the connection, CAN BE NULL
+     * @return True to make the connection
+     */
+	default public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return getState(world, pos).getBlock().canConnectRedstone(getState(world, pos), new FakeBlockAccess(world), pos, side);
+	}
+	
+	/**
+	 * Used as an override for SRM blocks. Used to run {@link Block#getSlipperiness(IBlockState, IBlockAccess, BlockPos, Entity)} on the mirrored state
+     * @param state state of the block
+     * @param world the world
+     * @param pos the position in the world
+     * @param entity the entity in question
+     * @return the factor by which the entity's motion should be multiplied
+	 */
+	default public float getSlipperiness(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+		return getState(world, pos).getBlock().getSlipperiness(getState(world, pos), new FakeBlockAccess(world), pos, entity);
+	}
+	
+	/**
+	 * Used as an override for SRM block. Used to run {@link Block#canPlaceTorchOnTop(IBlockState, IBlockAccess, BlockPos)}	on the mirrored state
+     * @param state The current state
+     * @param world The current world
+     * @param pos Block position in world
+     * @return True to allow the torch to be placed
+     */
+	default public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return getState(world, pos).getBlock().canPlaceTorchOnTop(getState(world, pos), new FakeBlockAccess(world), pos);
+	}
+	
+	/**
+	 * Used as an override for SRM blocks. Used to run {@link Block#collisionRayTrace(IBlockState, World, BlockPos, Vec3d, Vec3d)} on the mirrored state
+	 * @param blockState The current state
+	 * @param worldIn the current world
+	 * @param pos the current position
+	 * @param start the start of the raytrace
+	 * @param end the end of the raytrace
+	 * @return the raytrace to use
+	 */
+	default public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start,
+			Vec3d end) {
+		return getState(worldIn, pos).collisionRayTrace(worldIn, pos, start, end);
 	}
 	
 	/**
@@ -181,7 +258,7 @@ public interface ISecretBlock extends ITileEntityProvider
      * @return True if the mirrored state is solid on the specified side.
 	 */
 	default boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return ISecretTileEntity.getMirrorState(world, pos).isSideSolid(world, pos, side);
+		return getState(world, pos).isSideSolid(new FakeBlockAccess(world), pos, side);
 	}
 	
 	/**
@@ -216,6 +293,68 @@ public interface ISecretBlock extends ITileEntityProvider
 		return world.getTileEntity(pos) instanceof ISecretTileEntity && ISecretTileEntity.getMirrorState(world, pos) != null ? 
 				ISecretTileEntity.getMirrorState(world, pos).getBlock().getSoundType() : SoundType.STONE;
 	}
+	
+	
+	/**
+	 * Used to override the opacity of a block. Used to call {@link Block#getLightOpacity(IBlockState)} on the mirrored state
+	 * @param state the state
+	 * @param world the world
+	 * @param pos the position
+	 * @return the opacity
+	 */
+	default int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return ISecretTileEntity.getMirrorState(world, pos).getLightOpacity(new FakeBlockAccess(world), pos); //Dont use getState as the tileEntity may be null
+	}
+	
+	/**
+	 * Used to override the light of a block. Used to call {@link Block#getLightValue(IBlockState, IBlockAccess, BlockPos) on the mirrored state
+	 * @param state the state
+	 * @param world the world
+	 * @param pos the position
+	 * @return the lightvalue
+	 */
+	default int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return ISecretTileEntity.getMirrorState(world, pos).getLightValue(new FakeBlockAccess(world), pos); //Dont use getState as the tileEntity may be null
+	}
+	
+	/**
+	 * Used as an override of SRM blocks. Runs {@link Block#isOpaqueCube(IBlockState)(IBlockState)} on the mirrored state, which it got using the {@link #RENDER_PROPERTY}
+	 * @param state the current state
+	 * @return if the mirrored state is a opaque cube, or fale if {@code state} dosnt contain the value for {@link #RENDER_PROPERTY}
+	 */
+	@SideOnly(Side.CLIENT)
+	default public boolean isOpaqueCube(IBlockState state)
+    {
+    	if(state instanceof IExtendedBlockState && ((IExtendedBlockState)state).getValue(RENDER_PROPERTY) != null) {
+    		return ((IExtendedBlockState)state).getValue(RENDER_PROPERTY).isOpaqueCube();
+    	}
+        return false;
+    }
+	
+	/**
+	 * Used as an override of SRM blocks. Runs {@link Block#getAmbientOcclusionLightValue(IBlockState)} on the mirrored state, which it got using the {@link #RENDER_PROPERTY}
+	 * @param state the current state
+	 * @return the mirrored states ambient occulstion value, or 1.0F if {@code state} dosnt contain the value for {@link #RENDER_PROPERTY}
+	 */
+	@SideOnly(Side.CLIENT)
+	default public float getAmbientOcclusionLightValue(IBlockState state)
+    {
+    	if(state instanceof IExtendedBlockState && ((IExtendedBlockState)state).getValue(RENDER_PROPERTY) != null) {
+    		return ((IExtendedBlockState)state).getValue(RENDER_PROPERTY).getAmbientOcclusionLightValue();
+    	}
+        return 1.0F;
+    }
+	
+	/**
+	 * Used as an override for SRM blocks. Runs {@link Block#getPackedLightmapCoords(IBlockState, IBlockAccess, BlockPos)} on the mirrored state
+	 * @param state the current state
+	 * @param source the current world
+	 * @param pos the current blockpos
+	 * @return the packed light coords on the mirrored state
+	 */
+	default public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
+    	return getState(source, pos).getBlock().getPackedLightmapCoords(getState(source, pos), new FakeBlockAccess(source), pos);
+    }
 	
 	/**
 	 * Used to override the vanilla hit effects of a block. Called from SRM blocks ({@link Block#addHitEffects(IBlockState, World, RayTraceResult, ParticleManager)})
@@ -297,8 +436,63 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	/**
+	 * An override for SRM blocks. Used to spawn the correct running particles
+     * @param state  The BlockState the entity is running on.
+     * @param world  The world.
+     * @param pos    The position at the entities feet.
+     * @param entity The entity running on the block.
+     * @return True to prevent vanilla running particles from spawning.
+	 */
+	default public boolean addRunningEffects(IBlockState state, World world, BlockPos blockpos, Entity entity) {
+        IBlockState mirrorState = getState(world, blockpos);
+		boolean overriden;
+		try {
+			overriden = mirrorState.getBlock().addRunningEffects(mirrorState, world, blockpos, entity);
+		} catch (Exception e) {
+			overriden = false;
+		}
+        if (!overriden && mirrorState.getRenderType() != EnumBlockRenderType.INVISIBLE) {
+        	Random rand = new Random();
+            world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, entity.posX + ((double)rand.nextFloat() - 0.5D) * (double)entity.width, entity.getEntityBoundingBox().minY + 0.1D, entity.posZ + ((double)rand.nextFloat() - 0.5D) * (double)entity.width, -entity.motionX * 4.0D, 1.5D, -entity.motionZ * 4.0D, Block.getStateId(mirrorState));
+        }
+        return true;
+	}
+	
+	/**
+	 * 
+	 * @param state
+	 * @param world
+	 * @param blockPosition
+	 * @param iblockstate
+	 * @param entity
+	 * @param numberOfParticles
+	 * @return
+	 */
+	default public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos blockPosition,
+			IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
+		IBlockState mirrorState = getState(world, blockPosition);
+		boolean overriden;
+		try {
+			overriden = mirrorState.getBlock().addLandingEffects(mirrorState, world, blockPosition, iblockstate, entity, numberOfParticles);
+		} catch (Exception e) {
+			overriden = false;
+		}
+		if(!overriden) {
+			world.spawnParticle(EnumParticleTypes.BLOCK_DUST, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(mirrorState));
+		}
+		return true;
+	}
+	
+	/**
+	 * A cache of the mirrored state, stored when {@link #getActualState(IBlockState, IBlockAccess, BlockPos, IBlockState)} is called. 
+	 * <br> Used to determine the correct harvest tool
+	 */
+	ThreadLocal<IBlockState> cachedMirrorState = ThreadLocal.withInitial(() -> Blocks.STONE.getDefaultState()); //Probally shouldnt use a ThreadLocal, but theres no harm in doing so
+	
+	/**
 	 * Called from SRM blocks ({@link Block#getActualState(IBlockState, IBlockAccess, BlockPos)})
-	 * Used to remove the {@link IUnlistedProperty} from the blockstate ({@link ISecretBlock#RENDER_PROPERTY})
+	 * Used to remove the {@link IUnlistedProperty} from the blockstate ({@link ISecretBlock#RENDER_PROPERTY}).
+	 * Also sets the {@link #cachedMirrorState} to the mirrored state 
 	 * @param state The current blockstate. Can be null, not used
 	 * @param worldIn The current world. Can be null, not used
 	 * @param pos The current BlockPos. Can be null, not used
@@ -307,9 +501,28 @@ public interface ISecretBlock extends ITileEntityProvider
 	 */
 	default public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos, IBlockState superState)
 	{
+		cachedMirrorState.set(getState(worldIn, pos));
 		if(superState instanceof IExtendedBlockState)
 			return ((IExtendedBlockState)superState).withProperty(RENDER_PROPERTY, null);//Make sure the unlisted property is removed for 
 		return superState;
+	}
+	
+	/**
+	 * Used as an override to SRM blocks. Returns -1, so all tools can break this block.
+	 * @param state the state
+	 * @return -1
+	 */
+	default public int getHarvestLevel(IBlockState state) {
+		return -1;
+	}
+	
+	/**
+	 * Used as an override to SRM blocks. Used to run {@link Block#getHarvestTool(IBlockState)} on the mirrored state
+	 * @param state the state
+	 * @return the tool used to harvest the mirrored block
+	 */
+	default public String getHarvestTool(IBlockState state) {
+		return cachedMirrorState.get().getBlock().getHarvestTool(cachedMirrorState.get());
 	}
 	
 	/**

@@ -37,6 +37,11 @@ public class OneWayGlass extends BaseFakeBlock
     }
 	
 	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+	
+	@Override
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
 			EnumFacing side) 
 	{
