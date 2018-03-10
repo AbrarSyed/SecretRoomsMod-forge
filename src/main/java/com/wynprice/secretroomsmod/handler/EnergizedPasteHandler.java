@@ -356,7 +356,6 @@ public class EnergizedPasteHandler
 			}
 			else if(!hasReplacedState(event.getWorld(), event.getPos()))
 			{
-				event.setCanceled(true);
 				ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
 				if(stack.hasTagCompound() && stack.getTagCompound().hasKey("hit_block", 8) && stack.getTagCompound().hasKey("hit_meta", 99))
 				{
@@ -388,11 +387,11 @@ public class EnergizedPasteHandler
 								if(soundEvent == null) soundEvent = SoundEvents.BLOCK_SLIME_BREAK;
 								event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), soundEvent, SoundCategory.BLOCKS, (float) SecretConfig.sound_use_vol, (float) SecretConfig.sound_use_pitch);
 							}
-							
 						}
 					}
 				}
 			}
+			event.setCanceled(true);
 		}
 	}
 	

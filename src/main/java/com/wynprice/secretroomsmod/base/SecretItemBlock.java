@@ -44,6 +44,8 @@ public class SecretItemBlock extends ItemBlock
             int i = this.getMetadata(itemstack.getMetadata());
             IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 
+            ISecretTileEntity.getMap(worldIn).put(pos, mirrorState);
+            
             if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1))
             {
             	if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity)
@@ -52,6 +54,8 @@ public class SecretItemBlock extends ItemBlock
                 SoundType soundtype = iblockstate1.getBlock().getSoundType(iblockstate1, worldIn, pos, player);
                 worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
                 itemstack.shrink(1);
+            } else {
+                ISecretTileEntity.getMap(worldIn).remove(pos);
             }
 
             return EnumActionResult.SUCCESS;
