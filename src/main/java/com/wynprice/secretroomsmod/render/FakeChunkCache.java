@@ -1,8 +1,11 @@
 package com.wynprice.secretroomsmod.render;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
@@ -14,7 +17,6 @@ import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk.EnumCreateEntityType;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -78,19 +81,6 @@ public class FakeChunkCache extends ChunkCache
 						list[prevInt] = null;
 				prevInt = -1;
 			}
-			if(super.getBlockState(pos).getBlock() instanceof ISecretBlock && ISecretTileEntity.getMirrorState(world, pos) != null) 
-			{
-				prevInt = SecretOptifineHelper.getPositionIndex(fromPos, toPos, sub, pos);
-				if(!SecretOptifineHelper.resetCached())
-					return oldCache.getBlockState(pos);
-				if(((ISecretBlock)super.getBlockState(pos).getBlock()).phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass() != FakeBlockModel.class &&
-						(Thread.currentThread().getStackTrace()[3].getClassName().equals(RenderChunk.class.getName())) || 
-						Arrays.asList("func_187491_a", "func_175626_b").contains(Thread.currentThread().getStackTrace()[3].getMethodName()) || 
-						TrueSightHelmet.isHelmet()) {
-					return oldCache.getBlockState(pos);
-				}
-				return ISecretTileEntity.getMirrorState(world, pos);
-			}
 		}
 		if(!(super.getBlockState(pos).getBlock() instanceof ISecretBlock) && EnergizedPasteHandler.hasReplacedState(world, pos) && !(Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet))
 		{
@@ -103,8 +93,27 @@ public class FakeChunkCache extends ChunkCache
 			else
 				return EnergizedPasteHandler.getReplacedState(world, pos);
 		}
-		if(oldCache.getBlockState(pos).getBlock() instanceof ISecretBlock)
-			return oldCache.getBlockState(pos).getBlock().getExtendedState(oldCache.getBlockState(pos).getActualState(oldCache, pos), oldCache, pos);
+		if(oldCache.getBlockState(pos).getBlock() instanceof ISecretBlock) {
+			IBlockState mirroredState = ((ISecretTileEntity)oldCache.getTileEntity(pos)).getMirrorState();
+			
+			ArrayList<Class<?>> interfaces = new ArrayList<>(); //Used so the class implements the correct interfaces. Say if a mod set up its own IBlockState then this would still work for it
+			Class<?> currentClass = mirroredState.getClass();
+			while(currentClass != null) {
+				for(Class<?> cls : currentClass.getInterfaces()) {
+					if(IBlockState.class.isAssignableFrom(cls)) {
+						interfaces.add(cls);
+					}
+				}
+				currentClass = currentClass.getSuperclass();
+			}
+
+			return (IBlockState) Proxy.newProxyInstance(this.getClass().getClassLoader(), interfaces.toArray(new Class<?>[0]), (proxy, method, args) -> {
+						if(method.getName().equals("doesSideBlockRendering") && ((ISecretBlock)oldCache.getBlockState(pos).getBlock()).getModelClass() != FakeBlockModel.class) {
+							return false;
+						}
+						return method.invoke(mirroredState, args);
+					});
+		}
 		return oldCache.getBlockState(pos);
 	}	
 	
@@ -202,8 +211,7 @@ public class FakeChunkCache extends ChunkCache
 	}
 	
 	@Override
-	public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) 
-	{
+	public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
 		return oldCache.isSideSolid(pos, side, _default);
 	}
 }

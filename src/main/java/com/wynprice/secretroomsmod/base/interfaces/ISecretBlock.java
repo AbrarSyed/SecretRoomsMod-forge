@@ -101,6 +101,15 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	/**
+	 * Used to get the class from {@link #phaseModel(FakeBlockModel)}
+	 * @return the class that {@link #phaseModel(FakeBlockModel)} uses, with the default being {@link FakeBlockModel}
+	 */
+	@SideOnly(Side.CLIENT)
+	default Class<? extends FakeBlockModel> getModelClass() {
+		return phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass();
+	}
+	
+	/**
 	 * Used so individual blocks can change the BlockModel for rendering, when the Helmet of True Sight is on.
 	 * @param model the original model, will be returned if the Block dosn't need different visuals
 	 * @return the model that will be rendered
