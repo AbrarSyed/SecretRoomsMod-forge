@@ -107,12 +107,7 @@ public class FakeChunkCache extends ChunkCache
 				currentClass = currentClass.getSuperclass();
 			}
 
-			return (IBlockState) Proxy.newProxyInstance(this.getClass().getClassLoader(), interfaces.toArray(new Class<?>[0]), (proxy, method, args) -> {
-						if(method.getName().equals("doesSideBlockRendering") && ((ISecretBlock)oldCache.getBlockState(pos).getBlock()).getModelClass() != FakeBlockModel.class) {
-							return false;
-						}
-						return method.invoke(mirroredState, args);
-					});
+			return mirroredState;
 		}
 		return oldCache.getBlockState(pos);
 	}	
