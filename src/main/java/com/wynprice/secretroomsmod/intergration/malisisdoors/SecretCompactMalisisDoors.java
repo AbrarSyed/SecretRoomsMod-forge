@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.ModContainerFactory;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class SecretCompactMalisisDoors 
 {	
@@ -43,5 +44,9 @@ public class SecretCompactMalisisDoors
 	
 	private static DoorDescriptor createDoorDescriptor(DoorDescriptorFactory factory) {
 		return factory.getDescriptor();
+	}
+	
+	public static void registerTileEntity() {
+		GameRegistry.registerTileEntity(SecretMalisisTileEntityDoor.class, SecretRooms5.MODID + SecretMalisisTileEntityDoor.class.getSimpleName());
 	}
 }

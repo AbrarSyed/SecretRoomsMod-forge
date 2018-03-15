@@ -8,6 +8,7 @@ import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.RecipeHelperHandler;
+import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretCompactMalisisDoors;
 import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretMalisisTileEntityDoor;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
@@ -52,7 +53,7 @@ public class CommonProxy
     	};
 		
 		if(SecretCompatibility.MALISISDOORS) {
-			GameRegistry.registerTileEntity(SecretMalisisTileEntityDoor.class, SecretRooms5.MODID + SecretMalisisTileEntityDoor.class.getSimpleName());
+			SecretCompactMalisisDoors.registerTileEntity();
 		}
 		
     	for(Class clas : tileEntityClasses)

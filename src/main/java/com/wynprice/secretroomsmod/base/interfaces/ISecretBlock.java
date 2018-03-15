@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 import com.wynprice.secretroomsmod.render.RenderStateUnlistedProperty;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
@@ -21,8 +22,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -32,7 +33,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
@@ -40,6 +40,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -70,6 +71,16 @@ public interface ISecretBlock extends ITileEntityProvider
 	default public IBlockState getState(IBlockAccess world, BlockPos pos)
 	{
 		return world.getTileEntity(pos) instanceof ISecretTileEntity ? ISecretTileEntity.getMirrorState(world, pos) : Blocks.STONE.getDefaultState();
+	}
+	
+	/**
+	 * Gets the world from the TileEntity at the position
+	 * @param access The world 
+	 * @param pos the position of the tilentity
+	 * @return The world, or null if it cant be found
+	 */
+	default public World getWorld(IBlockAccess access, BlockPos pos) {
+		return access.getTileEntity(pos) != null ? access.getTileEntity(pos).getWorld() : null;
 	}
 	
 	/**
@@ -542,11 +553,12 @@ public interface ISecretBlock extends ITileEntityProvider
 	@SideOnly(Side.CLIENT)
 	default public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) 
 	{
-		if(state instanceof IExtendedBlockState)
+		if(SecretBlockModel.instance().SRMBLOCK.get() instanceof IExtendedBlockState)
 		{
-			IBlockState renderState = ((IExtendedBlockState)state).getValue(RENDER_PROPERTY);
-			if(renderState != null)
+			IBlockState renderState = ((IExtendedBlockState)SecretBlockModel.instance().SRMBLOCK.get()).getValue(RENDER_PROPERTY);
+			if(renderState != null) {
 				return renderState.getBlock().getBlockLayer() == layer;
+			}
 		}
     	return layer == BlockRenderLayer.SOLID;
 	}
@@ -559,26 +571,30 @@ public interface ISecretBlock extends ITileEntityProvider
 	 * @param world The current world 
 	 * @param pos the current position
 	 * @return {@code state}, or the IBlockState with {@link ISecretBlock#RENDER_PROPERTY} set to the mirror state
+	 * @deprecated no longer used 
 	 */
+	@Deprecated
 	default public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) 
 	{
-		
-		if(state instanceof IExtendedBlockState && world.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() !=  null)
-		{
-			IBlockState renderState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
-			try
-			{
-				renderState = renderState.getActualState(new FakeBlockAccess(world), pos);
-			}
-			catch (Exception e) 
-			{
-				;
-			}
-			IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
-			if(model instanceof SecretBlockModel)
-				((SecretBlockModel)model).AO.set(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(renderState).isAmbientOcclusion());
-			state = ((IExtendedBlockState)state).withProperty(RENDER_PROPERTY, renderState);
-		}
+//		if(state instanceof IExtendedBlockState && world.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState() !=  null)
+//		{
+//			IBlockState renderState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
+//			try
+//			{
+//				renderState = renderState.getActualState(new FakeBlockAccess(world), pos);
+//			}
+//			catch (Exception e) 
+//			{
+//				;
+//			}
+//			IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+//			state = ((IExtendedBlockState)state).withProperty(RENDER_PROPERTY, renderState);
+//			System.out.println("jef");
+//			if(model instanceof SecretBlockModel) {
+//				((SecretBlockModel)model).AO.set(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(renderState).isAmbientOcclusion());
+//				((SecretBlockModel)model).SRMBLOCK.set(state);
+//			}
+//		}
 		return state;
 	}
 }

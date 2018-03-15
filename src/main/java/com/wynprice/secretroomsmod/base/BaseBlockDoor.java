@@ -204,7 +204,8 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-		return ISecretBlock.super.getActualState(state, worldIn, pos, super.getActualState(state, worldIn, pos));
+		World world = getWorld(worldIn, pos);
+		return ISecretBlock.super.getActualState(state, worldIn, pos, super.getActualState(state, world == null ? worldIn : world, pos));
 	}
 	
 	@Override

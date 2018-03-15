@@ -6,6 +6,9 @@ import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.google.common.collect.Lists;
+import com.wynprice.secretroomsmod.SecretBlocks;
+import com.wynprice.secretroomsmod.SecretCompatibility;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
@@ -17,6 +20,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -29,23 +33,35 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 public class SecretBlockModel implements IBakedModel
 {
 	
+	private static SecretBlockModel instance;
+	
 	/**
 	 * The ThreadLocal used to control what {@link #isAmbientOcclusion()} should return
 	 */
 	public final ThreadLocal<Boolean> AO = ThreadLocal.withInitial(() -> false);
 	
+	/**
+	 * The ThreadLocal used to control what SecretRoomsBlock is being rendered at the moment. 
+	 */
+	public final ThreadLocal<IBlockState> SRMBLOCK = ThreadLocal.withInitial(() -> null);
+	
 	private final IBakedModel model;
 
 	public SecretBlockModel(IBakedModel model) {
 		this.model = model;
+		instance = this;
 	}
 	
 	
 	@Override
 	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) 
 	{
-		if(state instanceof IExtendedBlockState)
-		{
+		if(SRMBLOCK.get() != null) {
+			state = SRMBLOCK.get();
+			System.out.println(state);
+			if(SecretCompatibility.MALISISDOORS && (state.getBlock() == SecretBlocks.SECRET_WOODEN_DOOR || state.getBlock() == SecretBlocks.SECRET_IRON_DOOR)) {
+				return Lists.newArrayList(); //If malisisdoors is enabled, dont render anything
+			}
 			IBlockState renderState = ((IExtendedBlockState)state).getValue(ISecretBlock.RENDER_PROPERTY);
 			if(renderState != null)
 			{
@@ -93,6 +109,10 @@ public class SecretBlockModel implements IBakedModel
 	@Override
 	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
 		return model.handlePerspective(cameraTransformType);
+	}
+	
+	public static SecretBlockModel instance() {
+		return instance;
 	}
 	
 }

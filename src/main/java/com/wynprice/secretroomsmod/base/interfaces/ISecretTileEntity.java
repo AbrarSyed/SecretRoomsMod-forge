@@ -86,7 +86,9 @@ public interface ISecretTileEntity extends ITickable
 			return ((ISecretTileEntity)access.getTileEntity(pos)).getMirrorState();
 		} else if(access instanceof World) {
 			returnState = getMirrorState((World)access, pos);
-		} else {
+		} else if(access.getTileEntity(pos) != null && access.getTileEntity(pos).getWorld() != null) {
+			returnState = getMirrorState(access.getTileEntity(pos).getWorld(), pos);
+		} else { //Last resort
 			for(int dim : RENDER_MAP.keySet()) {
 				if(FMLCommonHandler.instance().getMinecraftServerInstance() == null) {
 					returnState = getMirrorState(SecretRooms5.proxy.getPlayer().world, pos);
