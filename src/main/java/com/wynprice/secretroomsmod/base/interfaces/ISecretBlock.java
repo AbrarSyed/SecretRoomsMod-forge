@@ -18,9 +18,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,7 +38,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -597,4 +594,22 @@ public interface ISecretBlock extends ITileEntityProvider
 //		}
 		return state;
 	}
+	
+    /**
+     * Gets the blockstate this facade appears as.
+     *
+     * @param world
+     *            {@link World}
+     * @param pos
+     *            The Blocks position
+     * @param side
+     *            The side being rendered, NOT the side being connected from.
+     *            <p/>
+     *            This value can be null if no side is specified. Please handle this appropriately.
+     * @return The blockstate which your block appears as.
+     */
+	default IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return ISecretTileEntity.getMirrorState(world, pos);
+	}
+
 }

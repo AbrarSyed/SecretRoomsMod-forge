@@ -2,6 +2,8 @@ package com.wynprice.secretroomsmod.render.fakemodels;
 
 import java.util.List;
 
+import com.wynprice.secretroomsmod.handler.Location;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -11,7 +13,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -29,6 +30,10 @@ public class FakeBlockModel implements IBakedModel
 	 * The actual state of the SRM block in the world
 	 */
 	protected IBlockState currentRender;
+	
+	protected IBlockState currentActualState;
+
+	protected Location currentLocation;
 	
 	public FakeBlockModel(IBlockState overstate) 
 	{
@@ -56,7 +61,26 @@ public class FakeBlockModel implements IBakedModel
 		return this;
 	}
 	
-
+	/**
+	 * Used to set the current actual state of the block being rendered
+	 * @param currentActualState
+	 * @return this instance
+	 */
+	public FakeBlockModel setCurrentActualState(IBlockState currentActualState) {
+		this.currentActualState = currentActualState;
+		return this;
+	}
+	
+	/**
+	 * Used to set the current location
+	 * @param currentLocation the location
+	 * @return this instance
+	 */
+	public FakeBlockModel setCurrentLocation(Location currentLocation) {
+		this.currentLocation = currentLocation;
+		return this;
+	}
+	
 	@Override
 	public boolean isAmbientOcclusion() {
 		return model.isAmbientOcclusion();

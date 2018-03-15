@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.intergration.ctm.SecretCompatCTM;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -37,7 +38,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 	protected abstract Class<? extends ISecretBlock> getBaseBlockClass();
 	
 	/**
-	 * Used to get the order of EnumFacing values that will be resorted to if {@link #getQuads(IBlockState, EnumFacing, long)} returns a null or empty list on default.
+	 * Used to get the order of EnumFacing values that will be resorted Tto if {@link #getQuads(IBlockState, EnumFacing, long)} returns a null or empty list on default.
 	 * @return a list of EnumFacings, one of which may be null
 	 * @deprecated Was used to fix a bug, which was later fixed anyway. Keeping here because I can't be bothered to remove it. It works how it is
 	 */
@@ -68,18 +69,19 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		if(getBaseBlockClass() != null && !(getBaseBlockClass().isAssignableFrom(currentRender.getBlock().getClass())))
 			return super.getQuads(state, side, rand);
 		ArrayList<BakedQuad> finalList = new ArrayList<BakedQuad>();
-		RenderInfo renderInfo = getRenderInfo(side, state);
-		IBlockState normalState = getNormalStateWith(currentRender, state);
+		RenderInfo renderInfo = getRenderInfo(side, currentActualState);
+		IBlockState normalState = getNormalStateWith(currentRender, currentActualState);
 		if(renderInfo != null)
-			for(BakedQuad quad : getModel(normalState).getQuads(normalState, side, rand))
+			for(BakedQuad quad : getModel(currentActualState).getQuads(state, side, rand))
 			{
-				List<BakedQuad> secList = new ArrayList<>(renderInfo.renderModel.getQuads(renderInfo.blockstate, side, rand));
+				List<BakedQuad> secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, side, rand);
 				if(secList == null || secList.isEmpty())
 					for(EnumFacing facing : fallbackOrder())
 						if(!renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand).isEmpty())
 							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
-				for(BakedQuad mirrorQuad : secList)
+				for(BakedQuad mirrorQuad : secList) {
 					finalList.add(new BakedQuad(new BakedQuadRetextured(quad, mirrorQuad.getSprite()).getVertexData(), mirrorQuad.getTintIndex(), mirrorQuad.getFace(), mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
+				}
 			}
 		return finalList;
 	}

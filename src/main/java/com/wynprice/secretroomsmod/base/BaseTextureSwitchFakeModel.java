@@ -20,9 +20,9 @@ public abstract class BaseTextureSwitchFakeModel extends BaseTextureFakeModel
 	
 	@Override
 	public IBlockState getNormalStateWith(IBlockState s, IBlockState mirrorState) {
-		if(((ISecretBlock)currentRender.getBlock()).phaseModel(this) instanceof BaseTextureFakeModel &&
-				!(((ISecretBlock)currentRender.getBlock()).phaseModel(this) instanceof BaseTextureSwitchFakeModel))
-			return ((BaseTextureFakeModel)((ISecretBlock)currentRender.getBlock()).phaseModel(this)).getNormalStateWith(s, mirrorState);
+//		if(((ISecretBlock)currentRender.getBlock()).phaseModel(this) instanceof BaseTextureFakeModel &&
+//				!(((ISecretBlock)currentRender.getBlock()).phaseModel(this) instanceof BaseTextureSwitchFakeModel))
+//			return ((BaseTextureFakeModel)((ISecretBlock)currentRender.getBlock()).phaseModel(this)).getNormalStateWith(s, mirrorState);
 		
 		return mirrorState;
 	}

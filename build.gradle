@@ -42,7 +42,7 @@ minecraft {
 
 repositories {
 
-	maven { // TOP
+	maven { // TOP and CTM
 		name 'tterrag maven'
 		url "http://maven.tterrag.com/"
 	}
@@ -86,7 +86,8 @@ dependencies {
 	deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
 	deobfCompile "malisiscore:malisiscore-1.12.2:6.4.0:dev"
 	deobfCompile "malisisdoors:malisisdoors-1.12.2:7.3.0:dev"
-	
+	deobfCompile "team.chisel.ctm:CTM:MC1.12-0.2.3.12"
+
 	deobfProvided "mezz.jei:jei_1.12.2:4.8.5.138:api"
 	runtime "mezz.jei:jei_1.12.2:4.8.5.138"
 	

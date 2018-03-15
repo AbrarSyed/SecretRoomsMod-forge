@@ -10,19 +10,21 @@ import com.google.common.collect.Lists;
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretCompatibility;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.handler.Location;
+import com.wynprice.secretroomsmod.intergration.ctm.SecretCompatCTM;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 /**
@@ -45,6 +47,9 @@ public class SecretBlockModel implements IBakedModel
 	 */
 	public final ThreadLocal<IBlockState> SRMBLOCK = ThreadLocal.withInitial(() -> null);
 	
+	public final ThreadLocal<Location> LOCATION = ThreadLocal.withInitial(() -> null);
+
+	
 	private final IBakedModel model;
 
 	public SecretBlockModel(IBakedModel model) {
@@ -57,19 +62,18 @@ public class SecretBlockModel implements IBakedModel
 	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) 
 	{
 		if(SRMBLOCK.get() != null) {
-			state = SRMBLOCK.get();
-			System.out.println(state);
-			if(SecretCompatibility.MALISISDOORS && (state.getBlock() == SecretBlocks.SECRET_WOODEN_DOOR || state.getBlock() == SecretBlocks.SECRET_IRON_DOOR)) {
+			IBlockState secretBlockState = SRMBLOCK.get();
+			if(SecretCompatibility.MALISISDOORS && (secretBlockState.getBlock() == SecretBlocks.SECRET_WOODEN_DOOR || secretBlockState.getBlock() == SecretBlocks.SECRET_IRON_DOOR)) {
 				return Lists.newArrayList(); //If malisisdoors is enabled, dont render anything
 			}
-			IBlockState renderState = ((IExtendedBlockState)state).getValue(ISecretBlock.RENDER_PROPERTY);
-			if(renderState != null)
+			IBlockState renderActualState = ((IExtendedBlockState)secretBlockState).getValue(ISecretBlock.RENDER_PROPERTY);
+			if(renderActualState != null)
 			{
-				FakeBlockModel renderModel = ((ISecretBlock)state.getBlock()).phaseModel(new FakeBlockModel(renderState));
+				FakeBlockModel renderModel = ((ISecretBlock)secretBlockState.getBlock()).phaseModel(new FakeBlockModel(renderActualState));
 				if(TrueSightHelmet.isHelmet()) {
-        			renderModel = ((ISecretBlock)state.getBlock()).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderState)));
+        			renderModel = ((ISecretBlock)secretBlockState.getBlock()).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderActualState)));
         		}
-				return renderModel.setCurrentRender(state).getQuads(renderState, side, rand);
+				return SecretCompatCTM.getQuads(renderModel.setCurrentRender(secretBlockState).setCurrentActualState(renderActualState).setCurrentLocation(LOCATION.get()), state, side, rand);
 			}
 		}
 		return this.model.getQuads(state, side, rand);
