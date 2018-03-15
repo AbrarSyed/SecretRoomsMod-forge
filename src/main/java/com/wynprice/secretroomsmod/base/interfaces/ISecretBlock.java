@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 import com.wynprice.secretroomsmod.render.RenderStateUnlistedProperty;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
@@ -468,14 +467,14 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	/**
-	 * 
-	 * @param state
-	 * @param world
-	 * @param blockPosition
-	 * @param iblockstate
-	 * @param entity
-	 * @param numberOfParticles
-	 * @return
+	 * An override for SRM blocks. Used to spawn the correct particles when the player lands on the block
+	 * @param state The blockstate being landed on
+	 * @param world the world
+	 * @param blockPosition the position of the block thats being landed on
+	 * @param iblockstate the blockstate of the block thats being landed on
+	 * @param entity the entity landing on the block
+	 * @param numberOfParticles the amount of particles to spawn
+	 * @return true to prevent vanilla landing particles from spawning.
 	 */
 	default public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos blockPosition,
 			IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
