@@ -8,6 +8,7 @@ import com.wynprice.secretroomsmod.render.fakemodels.TrueSightFaceDiffrentModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
 
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
@@ -45,9 +46,18 @@ public class OneWayGlass extends BaseFakeBlock
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
 			EnumFacing side) 
 	{
-		if(blockAccess.getBlockState(pos.offset(side)).getBlock() == this)
+		if(blockState.getValue(BlockDirectional.FACING) != side && ((blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockGlass && blockAccess.getBlockState(pos.offset(side)).getBlockFaceShape(blockAccess, pos, side.getOpposite()) == BlockFaceShape.SOLID) || blockAccess.getBlockState(pos.offset(side)).getBlock() == this)) {
 			return false;
+		}
 		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
+	
+	@Override
+	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+		if(world.getBlockState(pos.offset(face)).getBlock() instanceof BlockGlass && world.getBlockState(pos.offset(face)).getBlockFaceShape(world, pos, face.getOpposite()) == BlockFaceShape.SOLID) {
+			return true;
+		}
+		return false;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -63,8 +73,7 @@ public class OneWayGlass extends BaseFakeBlock
 	}
 	
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) 
-	{
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return face != state.getValue(BlockDirectional.FACING) ? BlockFaceShape.SOLID : ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBlockFaceShape(worldIn, pos, face);
 	}
 	
