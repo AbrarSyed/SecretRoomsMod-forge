@@ -23,10 +23,10 @@ public class OneWayGlassFakeModel extends BaseTextureSwitchFakeModel
 	}
 	
 	@Override
-	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState) 
+	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState, IBlockState teMirrorStateExtended) 
 	{
 		return currentRender != null && currentRender.getBlock() == SecretBlocks.ONE_WAY_GLASS && 
-				face != currentRender.getValue(BlockDirectional.FACING) ? super.getRenderInfo(face, Blocks.GLASS.getDefaultState()) : super.getRenderInfo(face, teMirrorState);
+				face != currentRender.getValue(BlockDirectional.FACING) ? super.getRenderInfo(face, Blocks.GLASS.getDefaultState()) : super.getRenderInfo(face, teMirrorState, teMirrorStateExtended);
 	}
 
 }

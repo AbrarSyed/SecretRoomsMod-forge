@@ -56,11 +56,19 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 	 * Used to get the visuals that will be put onto a different model
 	 * @param face the direction thats being rendered. Can be null
 	 * @param teMirrorState the state being mirrored by the SRM block
+	 * @param teMirrorStateExtended the extended state being rendered by the SRM block
 	 * @return The RenderInfo containing the {@link IBlockState} and the {@link IBakedModel} that going to be rendered
 	 */
-	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState)
+	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState, IBlockState teMirrorStateExtended)
 	{
-		return new RenderInfo(teMirrorState, getModel(teMirrorState));
+		return new RenderInfo(teMirrorState, getModel(teMirrorStateExtended));
+	}
+	
+	/**
+	 * Try not to use. Will get the model from the state
+	 */
+	public final RenderInfo getRenderInfo(EnumFacing face, IBlockState state) {
+		return new RenderInfo(state, getModel(state));
 	}
 		
 	@Override
@@ -69,7 +77,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		if(getBaseBlockClass() != null && !(getBaseBlockClass().isAssignableFrom(currentRender.getBlock().getClass())))
 			return super.getQuads(state, side, rand);
 		ArrayList<BakedQuad> finalList = new ArrayList<BakedQuad>();
-		RenderInfo renderInfo = getRenderInfo(side, currentActualState);
+		RenderInfo renderInfo = getRenderInfo(side, state, currentActualState);
 		IBlockState normalState = getNormalStateWith(currentRender, currentActualState);
 		if(renderInfo != null)
 			for(BakedQuad quad : getModel(currentActualState).getQuads(state, side, rand))

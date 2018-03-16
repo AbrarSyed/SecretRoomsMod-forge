@@ -22,9 +22,9 @@ public class TrueSightFaceDiffrentModel extends TrueSightModel
 	}
 	
 	@Override
-	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState) 
+	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState, IBlockState teMirrorStateExtended) 
 	{
-		return face == currentRender.getValue(BlockDirectional.FACING) ? super.getRenderInfo(face, teMirrorState) : 
+		return face == currentRender.getValue(BlockDirectional.FACING) ? super.getRenderInfo(face, teMirrorState, teMirrorStateExtended) : 
 			new RenderInfo(currentRender, sides);
 	}
 

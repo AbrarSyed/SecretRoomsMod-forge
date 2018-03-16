@@ -20,7 +20,7 @@ public class TrueSightModel extends BaseTextureSwitchFakeModel
 	}
 	
 	@Override
-	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState) 
+	protected RenderInfo getRenderInfo(EnumFacing face, IBlockState teMirrorState, IBlockState teMirrorStateExtended) 
 	{
 		return new RenderInfo(currentRender, getModel(new ResourceLocation(SecretRooms5.MODID, "block/" + currentRender.getBlock().getRegistryName().getResourcePath())));
 	}
