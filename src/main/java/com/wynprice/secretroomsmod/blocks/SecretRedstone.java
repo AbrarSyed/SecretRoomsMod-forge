@@ -71,11 +71,6 @@ public class SecretRedstone extends Block implements ISecretBlock
 		return true;
 	}
 	
-	@Override
-	public Material getMaterial(IBlockState state) {
-		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
-	}
-	
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(SecretBlocks.FAKE_REDSTONE);

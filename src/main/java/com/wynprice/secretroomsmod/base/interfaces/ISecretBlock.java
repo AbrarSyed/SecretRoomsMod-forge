@@ -250,22 +250,6 @@ public interface ISecretBlock extends ITileEntityProvider
 	public static final ArrayList<TileEntity> ALL_SECRET_TILE_ENTITIES = new ArrayList<>();
 	
 	/**
-	 * Used as an override to SRM blocks. Used to run {@link Block#getMaterial(IBlockState)}, if exists. 
-	 * @param state The BlockState of the SRM block
-	 * @param material The default material of the SRM block
-	 * @return the material of the Mirrored IBlockState, or {@code material} if it cannot be found
-	 */
-	default Material getMaterial(IBlockState state, Material material) 
-	{
-		IBlockState blockstate = null;
-		ArrayList<TileEntity> list = new ArrayList<>(ALL_SECRET_TILE_ENTITIES);
-		for(TileEntity tileentity : list)
-			if(tileentity.getWorld() != null && tileentity.getWorld().isBlockLoaded(tileentity.getPos()) && tileentity.getWorld().getBlockState(tileentity.getPos()) == state && tileentity instanceof ISecretTileEntity)
-				blockstate = ISecretTileEntity.getMirrorState(tileentity.getWorld(), tileentity.getPos());
-		return blockstate != null && !(blockstate.getBlock() instanceof ISecretBlock) && blockstate.getMaterial() != Material.WATER? blockstate.getMaterial() : material;
-	}
-	
-	/**
 	 * Used as an override to SRM blocks. Used to run {@link Block#isSideSolid(IBlockState, IBlockAccess, BlockPos, EnumFacing)} on the mirrored state
 	 * @param base_state The base state, getActualState should be called first
      * @param world The current world

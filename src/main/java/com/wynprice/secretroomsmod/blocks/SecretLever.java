@@ -54,11 +54,6 @@ public class SecretLever extends BlockLever implements ISecretBlock
 	}
 	
 	@Override
-	public Material getMaterial(IBlockState state) {
-		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
-	}
-	
-	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
 			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
 	{

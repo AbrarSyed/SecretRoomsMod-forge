@@ -52,11 +52,6 @@ public class SecretButton extends BlockButton implements ISecretBlock
 		this.translucent = true;
     }
 	
-	@Override
-	public Material getMaterial(IBlockState state) {
-		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
-	}
-	
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         if (!worldIn.isRemote)

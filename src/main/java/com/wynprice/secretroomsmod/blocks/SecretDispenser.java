@@ -67,12 +67,6 @@ public class SecretDispenser extends BlockDispenser implements ISecretBlock
 	}
 	
 	@Override
-	public Material getMaterial(IBlockState state) 
-	{
-		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
-	}
-	
-	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
 		boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.up());

@@ -83,12 +83,6 @@ public class SecretLightDetector extends BlockDaylightDetector implements ISecre
             return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
         }
     }
-	
-	@Override
-	public Material getMaterial(IBlockState state) 
-	{
-		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
-	}
 
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {

@@ -131,11 +131,6 @@ public class BaseFakeBlock extends Block implements ISecretBlock
 	}
 	
 	@Override
-	public Material getMaterial(IBlockState state) {
-		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
-	}
-	
-	@Override
 	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return ISecretBlock.super.isSideSolid(base_state, world, pos, side);
 	}

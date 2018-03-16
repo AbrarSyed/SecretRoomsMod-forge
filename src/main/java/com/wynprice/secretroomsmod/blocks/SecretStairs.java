@@ -60,12 +60,6 @@ public class SecretStairs extends BlockStairs implements ISecretBlock
 	}
 	
 	@Override
-	public Material getMaterial(IBlockState state) 
-	{
-		return ISecretBlock.super.getMaterial(state, super.getMaterial(state));
-	}
-	
-	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return ISecretBlock.super.getBlockFaceShape(worldIn, state, pos, face);
 	}
