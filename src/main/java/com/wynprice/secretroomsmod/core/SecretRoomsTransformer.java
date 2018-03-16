@@ -173,9 +173,6 @@ public class SecretRoomsTransformer implements IClassTransformer {
 	public static IBlockState getBlockState(IBlockAccess world, BlockPos pos) {
 		if(world.getTileEntity(pos) instanceof ISecretTileEntity) {
 			IBlockState state = world.getTileEntity(pos).getWorld().getBlockState(pos);
-			if(isMalisisDoor(state)) {
-				return world.getBlockState(pos);
-			}
 			IBlockState renderState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
 			try
 			{
