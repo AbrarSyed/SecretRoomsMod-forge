@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.handler.SpriteCreator;
 import com.wynprice.secretroomsmod.intergration.ctm.SecretCompatCTM;
 
 import net.minecraft.block.state.IBlockState;
@@ -11,6 +12,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 /**
  * The class used to take textures from one model, and put it on another model
@@ -54,14 +56,6 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 	}
 	
 	/**
-	 * Should the given side use CTM quads, meaning the uv will be of the rendered ctm block
-	 * @param side the side
-	 */
-	protected boolean shouldSideCTM(EnumFacing side) {
-		return false;
-	}
-	
-	/**
 	 * Used to get the visuals that will be put onto a different model
 	 * @param face the direction thats being rendered. Can be null
 	 * @param teMirrorState the state being mirrored by the SRM block
@@ -89,16 +83,24 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		RenderInfo renderInfo = getRenderInfo(side, state, currentActualState);
 		IBlockState normalState = getNormalStateWith(currentRender, currentActualState);
 		if(renderInfo != null) {
-			for(BakedQuad quad : getModel(normalState).getQuads(shouldSideCTM(side) ? state : currentActualState, side, rand))
+			for(BakedQuad quad : getModel(normalState).getQuads(currentActualState, side, rand))
 			{
+				int uvIndex = quad.getFormat().getUvOffsetById(0) / 4;
+
 				List<BakedQuad> secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, side, rand);
 				if(secList == null || secList.isEmpty())
 					for(EnumFacing facing : fallbackOrder())
 						if(!renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand).isEmpty())
 							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
+				
 				for(BakedQuad mirrorQuad : secList) {
-					finalList.add(new BakedQuad(new BakedQuadRetextured(quad, mirrorQuad.getSprite()).getVertexData(), mirrorQuad.getTintIndex(), mirrorQuad.getFace(), mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
-				}
+					SpriteCreator sprite = SpriteCreator.createSprite(mirrorQuad.getSprite()).setuvs(
+							Float.intBitsToFloat(mirrorQuad.getVertexData()[0 * mirrorQuad.getFormat().getIntegerSize() + uvIndex]), 
+							Float.intBitsToFloat(mirrorQuad.getVertexData()[0 * mirrorQuad.getFormat().getIntegerSize() + uvIndex + 1]), 
+							Float.intBitsToFloat(mirrorQuad.getVertexData()[2 * mirrorQuad.getFormat().getIntegerSize() + uvIndex]), 
+							Float.intBitsToFloat(mirrorQuad.getVertexData()[2 * mirrorQuad.getFormat().getIntegerSize() + uvIndex + 1])
+							);
+					finalList.add(new BakedQuad(new BakedQuadRetextured(quad, sprite).getVertexData(), mirrorQuad.getTintIndex(), mirrorQuad.getFace(), sprite, mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));				}
 			}
 		}
 		return finalList;

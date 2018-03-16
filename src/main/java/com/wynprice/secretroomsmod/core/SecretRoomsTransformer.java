@@ -10,6 +10,8 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -20,15 +22,17 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 import com.wynprice.secretroomsmod.render.FakeChunkCache;
-import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.SecretBlockModel;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockGlass;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -86,6 +90,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 				list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsTransformer", "doesSideBlockRendering", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
 				list.add(new InsnNode(Opcodes.IRETURN));
 				list.add(endLabel);
+				methodNode.instructions = list;
 			} else if(methodNode.name.equals(getName("shouldSideBeRendered", "func_185894_c"))) {
 				for(int i = 0; i < methodNode.instructions.size(); i++) {
 					AbstractInsnNode ins = methodNode.instructions.get(i);
@@ -126,6 +131,44 @@ public class SecretRoomsTransformer implements IClassTransformer {
 		}
 	};
 	
+	private final Consumer<ClassNode> BlockBreakable = (node) -> {
+		for(MethodNode methodNode : node.methods) {
+			if(methodNode.name.equals(getName("shouldSideBeRendered", "func_176225_a")) && methodNode.desc.equals("(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z")) {
+				AbstractInsnNode startLabel = methodNode.instructions.getFirst();
+				AbstractInsnNode lineNumberLabel = methodNode.instructions.get(1);
+				AbstractInsnNode endLabel = methodNode.instructions.getLast();
+				InsnList list = new InsnList();
+				list.add(startLabel);
+				list.add(lineNumberLabel);
+				list.add(new VarInsnNode(Opcodes.ALOAD, 1));
+				list.add(new VarInsnNode(Opcodes.ALOAD, 2));
+				list.add(new VarInsnNode(Opcodes.ALOAD, 3));
+				list.add(new VarInsnNode(Opcodes.ALOAD, 4));
+				list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/util/math/BlockPos", getName("offset", "func_177972_a"), "(Lnet/minecraft/util/EnumFacing;)Lnet/minecraft/util/math/BlockPos;", false));
+				list.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, "net/minecraft/world/IBlockAccess", getName("getBlockState", "func_180495_p"), "(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;", true));
+				LabelNode label32 = new LabelNode();
+ 				list.add(new JumpInsnNode(Opcodes.IF_ACMPEQ, label32));
+				list.add(new VarInsnNode(Opcodes.ALOAD, 0));
+				list.add(new VarInsnNode(Opcodes.ALOAD, 1));
+				list.add(new VarInsnNode(Opcodes.ALOAD, 2));
+				list.add(new VarInsnNode(Opcodes.ALOAD, 3));
+				list.add(new VarInsnNode(Opcodes.ALOAD, 4));
+				list.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "net/minecraft/block/Block", getName("shouldSideBeRendered", "func_176225_a"), "(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
+				list.add(new JumpInsnNode(Opcodes.IFEQ, label32));
+				list.add(new InsnNode(Opcodes.ICONST_1));
+				LabelNode label33 = new LabelNode();
+				list.add(new JumpInsnNode(Opcodes.GOTO, label33));
+				list.add(label32);
+				list.add(new InsnNode(Opcodes.ICONST_0));
+				list.add(label33);
+				list.add(new InsnNode(Opcodes.IRETURN));
+				list.add(endLabel);
+				methodNode.instructions = list;
+				return;
+			}
+		}
+	};
+	
 	public SecretRoomsTransformer() {
 		FMLLog.info("[SecretRoomsTransformer] Registered");
 	}
@@ -140,6 +183,8 @@ public class SecretRoomsTransformer implements IClassTransformer {
 			basicClass = runConsumer(BlockModelRenderer, transformedName, basicClass);
 		} else if(transformedName.equals("net.minecraft.client.renderer.BlockRendererDispatcher")) {
 			basicClass = runConsumer(BlockRendererDispatcher, transformedName, basicClass);
+		} else if(transformedName.equals("net.minecraft.block.BlockBreakable")) {
+			basicClass = runConsumer(BlockBreakable, transformedName, basicClass);
 		}
 		return basicClass;
 		
@@ -196,8 +241,12 @@ public class SecretRoomsTransformer implements IClassTransformer {
 	 * @param block Is not needed, however having this as the first param makes asm easier
 	 */
 	public static boolean doesSideBlockRendering(Block block, IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		if(!isMalisisDoor(state) && world.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretBlock)world.getTileEntity(pos).getWorld().getBlockState(pos).getBlock()).getModelClass() != FakeBlockModel.class) {
-			return false;
+		if(world.getTileEntity(pos) instanceof ISecretTileEntity) {
+			IBlockState otherState = world.getTileEntity(pos).getWorld().getBlockState(pos);
+			return otherState.getBlock().doesSideBlockRendering(otherState, world, pos, face);
+//			if(!isMalisisDoor(state) && ((ISecretBlock)world.getTileEntity(pos).getWorld().getBlockState(pos).getBlock()).getModelClass() != FakeBlockModel.class) {
+//				return false;
+//			} 
 		}
 		return block.doesSideBlockRendering(state, world, pos, face);
 	}

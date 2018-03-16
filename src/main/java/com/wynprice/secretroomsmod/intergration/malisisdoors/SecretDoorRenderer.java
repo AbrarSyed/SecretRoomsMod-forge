@@ -28,11 +28,15 @@ import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 public class SecretDoorRenderer extends DoorRenderer
 {
@@ -69,8 +73,15 @@ public class SecretDoorRenderer extends DoorRenderer
 				facing = EnumFacingUtils.getRealSide(blockState, facing);
 				IBlockState mirrorState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
 				
-				boolean facingX = blockState.getValue(BlockDoor.FACING).getAxis() == Axis.X !=  blockState.getValue(BlockDoor.OPEN);
+				try {
+					mirrorState = mirrorState.getActualState(world, pos);
+				} catch (Exception e) {
+					;
+				}
 				
+				IBlockState extendedMirrorState = mirrorState.getBlock().getExtendedState(mirrorState, world, pos);
+				
+				boolean facingX = blockState.getValue(BlockDoor.FACING).getAxis() == Axis.X !=  blockState.getValue(BlockDoor.OPEN);
 				
 				DoorTileEntity te = ((DoorTileEntity)world.getTileEntity(blockState.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER? pos : pos.down()));
 				if(te.getTimer().elapsedTick() > te.getOpeningTime() && te.isMoving()) {
@@ -80,13 +91,25 @@ public class SecretDoorRenderer extends DoorRenderer
 				if(!facingX) {
 					facing = facing.rotateAround(Axis.Y);
 				}
-				
-				List<BakedQuad> quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirrorState).getQuads(mirrorState, facing, MathHelper.getPositionRandom(pos));
+				BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
+				ForgeHooksClient.setRenderLayer(mirrorState.getBlock().getBlockLayer());
+				List<BakedQuad> quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirrorState).getQuads(extendedMirrorState, facing, MathHelper.getPositionRandom(pos));
 				if(quadList.isEmpty())
-					quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirrorState).getQuads(mirrorState, null, MathHelper.getPositionRandom(pos));
+					quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirrorState).getQuads(extendedMirrorState, null, MathHelper.getPositionRandom(pos));
+				ForgeHooksClient.setRenderLayer(layer);
 				Face controllFace = new Face(f, sParams);
 				for(BakedQuad quad : quadList) {
-					sParams.quadSprite.set(quad.getSprite());
+					Icon icon = new Icon(quad.getSprite());
+					int uvIndex = quad.getFormat().getUvOffsetById(0) / 4;
+					
+					icon.setUVs(
+							Float.intBitsToFloat(quad.getVertexData()[0 * quad.getFormat().getIntegerSize() + uvIndex]), 
+							Float.intBitsToFloat(quad.getVertexData()[0 * quad.getFormat().getIntegerSize() + uvIndex + 1]), 
+							Float.intBitsToFloat(quad.getVertexData()[2 * quad.getFormat().getIntegerSize() + uvIndex]), 
+							Float.intBitsToFloat(quad.getVertexData()[2 * quad.getFormat().getIntegerSize() + uvIndex + 1])
+					);
+					
+					sParams.quadSprite.set(icon);
 					if(TrueSightHelmet.isHelmet()) {
 						sParams.quadSprite.set(FakeBlockModel.getModel(new ResourceLocation(SecretRooms5.MODID, "block/secret_" + (block == SecretBlocks.SECRET_WOODEN_DOOR ? "wooden" : "iron") + "_door")).getParticleTexture());
 					}
