@@ -2,8 +2,6 @@ package com.wynprice.secretroomsmod.render.fakemodels;
 
 import java.util.List;
 
-import com.wynprice.secretroomsmod.handler.Location;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -32,8 +30,6 @@ public class FakeBlockModel implements IBakedModel
 	protected IBlockState currentRender;
 	
 	protected IBlockState currentActualState;
-
-	protected Location currentLocation;
 	
 	public FakeBlockModel(IBlockState overstate) 
 	{
@@ -68,16 +64,6 @@ public class FakeBlockModel implements IBakedModel
 	 */
 	public FakeBlockModel setCurrentActualState(IBlockState currentActualState) {
 		this.currentActualState = currentActualState;
-		return this;
-	}
-	
-	/**
-	 * Used to set the current location
-	 * @param currentLocation the location
-	 * @return this instance
-	 */
-	public FakeBlockModel setCurrentLocation(Location currentLocation) {
-		this.currentLocation = currentLocation;
 		return this;
 	}
 	

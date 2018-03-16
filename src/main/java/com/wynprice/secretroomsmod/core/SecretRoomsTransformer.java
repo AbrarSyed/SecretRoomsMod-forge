@@ -18,7 +18,6 @@ import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretCompatibility;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
-import com.wynprice.secretroomsmod.handler.Location;
 import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 import com.wynprice.secretroomsmod.render.FakeChunkCache;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
@@ -190,7 +189,6 @@ public class SecretRoomsTransformer implements IClassTransformer {
 			state = ((IExtendedBlockState)state).withProperty(ISecretBlock.RENDER_PROPERTY, renderState);
 			SecretBlockModel.instance().AO.set(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(renderState).isAmbientOcclusion());
 			SecretBlockModel.instance().SRMBLOCK.set(state);
-			SecretBlockModel.instance().LOCATION.set(new Location(world, pos));
 			return state;
 		}
 		return world.getBlockState(pos);

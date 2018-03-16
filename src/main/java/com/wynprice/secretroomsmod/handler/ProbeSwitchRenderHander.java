@@ -24,6 +24,7 @@ public class ProbeSwitchRenderHander
 	 @SubscribeEvent
 	 public void onModelBake(ModelBakeEvent e) 
 	 {
+		 boolean instanceSet = false;
 		 for(ModelResourceLocation model : e.getModelRegistry().getKeys())
 		 {
 	            if(model.getResourceDomain().equals(SecretRooms5.MODID) && (model.getResourcePath().equals(SecretItems.SWITCH_PROBE.getRegistryName().getResourcePath())
@@ -33,8 +34,13 @@ public class ProbeSwitchRenderHander
 	            if(!model.getVariant().equals("inventory"))
 	            {
 	            	Block block = Block.REGISTRY.getObject(new ResourceLocation(model.getResourceDomain(), model.getResourcePath()));
-	            	if(block instanceof ISecretBlock)
-	            		e.getModelRegistry().putObject(model, new SecretBlockModel(e.getModelRegistry().getObject(model)));
+	            	if(block instanceof ISecretBlock) {
+	            		if(!instanceSet) {
+	            			SecretBlockModel.setInstance(e.getModelRegistry().getObject(model));
+	            			instanceSet = true;
+	            		}
+	            		e.getModelRegistry().putObject(model, SecretBlockModel.instance());
+	            	}
 	            }
 		 }
 		 

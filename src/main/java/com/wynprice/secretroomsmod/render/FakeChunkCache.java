@@ -1,11 +1,8 @@
 package com.wynprice.secretroomsmod.render;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
@@ -13,11 +10,9 @@ import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketEnergizedPaste;
 import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
-import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -28,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk.EnumCreateEntityType;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

@@ -25,6 +25,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 	
 	/**
 	 * Used to convert the {@link IBlockState} {@code actualWorldState} to have the same properties as {@code mirrorState}
+	 * <br>Used to get the block that will be used to get the model
 	 * @param actualWorldState the SRM block thats actually in the world
 	 * @param mirrorState the mirror state
 	 * @return the mirror state, but with the same properties as the actualWorldState
@@ -50,6 +51,14 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 			list[i] = EnumFacing.VALUES[i];
 		list[EnumFacing.VALUES.length] = null;
 		return list;
+	}
+	
+	/**
+	 * Should the given side use CTM quads, meaning the uv will be of the rendered ctm block
+	 * @param side the side
+	 */
+	protected boolean shouldSideCTM(EnumFacing side) {
+		return false;
 	}
 	
 	/**
@@ -79,8 +88,8 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		ArrayList<BakedQuad> finalList = new ArrayList<BakedQuad>();
 		RenderInfo renderInfo = getRenderInfo(side, state, currentActualState);
 		IBlockState normalState = getNormalStateWith(currentRender, currentActualState);
-		if(renderInfo != null)
-			for(BakedQuad quad : getModel(currentActualState).getQuads(state, side, rand))
+		if(renderInfo != null) {
+			for(BakedQuad quad : getModel(normalState).getQuads(shouldSideCTM(side) ? state : currentActualState, side, rand))
 			{
 				List<BakedQuad> secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, side, rand);
 				if(secList == null || secList.isEmpty())
@@ -91,6 +100,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 					finalList.add(new BakedQuad(new BakedQuadRetextured(quad, mirrorQuad.getSprite()).getVertexData(), mirrorQuad.getTintIndex(), mirrorQuad.getFace(), mirrorQuad.getSprite(), mirrorQuad.shouldApplyDiffuseLighting(), mirrorQuad.getFormat()));
 				}
 			}
+		}
 		return finalList;
 	}
 	

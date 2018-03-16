@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretCompatibility;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
-import com.wynprice.secretroomsmod.handler.Location;
 import com.wynprice.secretroomsmod.intergration.ctm.SecretCompatCTM;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
@@ -21,10 +20,8 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 /**
@@ -32,8 +29,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
  * @author Wyn Price
  *
  */
-public class SecretBlockModel implements IBakedModel
-{
+public class SecretBlockModel extends FakeBlockModel
+{	
 	
 	private static SecretBlockModel instance;
 	
@@ -47,13 +44,9 @@ public class SecretBlockModel implements IBakedModel
 	 */
 	public final ThreadLocal<IBlockState> SRMBLOCK = ThreadLocal.withInitial(() -> null);
 	
-	public final ThreadLocal<Location> LOCATION = ThreadLocal.withInitial(() -> null);
-
 	
-	private final IBakedModel model;
-
-	public SecretBlockModel(IBakedModel model) {
-		this.model = model;
+	public SecretBlockModel(IBakedModel stone) {
+		super(stone);
 		instance = this;
 	}
 	
@@ -73,7 +66,7 @@ public class SecretBlockModel implements IBakedModel
 				if(TrueSightHelmet.isHelmet()) {
         			renderModel = ((ISecretBlock)secretBlockState.getBlock()).phaseTrueModel(new TrueSightModel(new FakeBlockModel(renderActualState)));
         		}
-				return SecretCompatCTM.getQuads(renderModel.setCurrentRender(secretBlockState).setCurrentActualState(renderActualState).setCurrentLocation(LOCATION.get()), state, side, rand);
+				return SecretCompatCTM.getQuads(renderModel.setCurrentRender(secretBlockState).setCurrentActualState(renderActualState), state, side, rand);
 			}
 		}
 		return this.model.getQuads(state, side, rand);
@@ -83,40 +76,13 @@ public class SecretBlockModel implements IBakedModel
 	public boolean isAmbientOcclusion() {
 		return AO.get();
 	}
-
-	@Override
-	public boolean isGui3d() {
-		return model.isGui3d();
-	}
-
-	@Override
-	public boolean isBuiltInRenderer() {
-		return false;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() 
-	{
-		return model.getParticleTexture();
-	}
-
-	@Override
-	public ItemOverrideList getOverrides() {
-		return model.getOverrides();
-	}
-	
-	@Override
-	public ItemCameraTransforms getItemCameraTransforms() {
-		return model.getItemCameraTransforms();
-	}
-	
-	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-		return model.handlePerspective(cameraTransformType);
-	}
 	
 	public static SecretBlockModel instance() {
 		return instance;
 	}
 	
+	public static SecretBlockModel setInstance(IBakedModel stoneModel) {
+		instance = new SecretBlockModel(stoneModel);
+		return instance;
+	}
 }
