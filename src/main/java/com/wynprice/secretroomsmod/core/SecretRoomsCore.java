@@ -4,6 +4,8 @@ import java.util.Map;
 
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * CoreMod for SecretRoomsMod
@@ -14,6 +16,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 @IFMLLoadingPlugin.MCVersion(value = "1.12.2")
 @IFMLLoadingPlugin.TransformerExclusions({"com.wynprice.secretroomsmod.core"})
 @IFMLLoadingPlugin.SortingIndex(1001)
+@SideOnly(Side.CLIENT)
 public class SecretRoomsCore implements IFMLLoadingPlugin {
 
     public static boolean isDebofEnabled = false;
