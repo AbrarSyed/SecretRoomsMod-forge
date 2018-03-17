@@ -12,6 +12,7 @@ import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretRooms5;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -19,6 +20,7 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -26,7 +28,7 @@ import net.minecraftforge.fml.common.versioning.ComparableVersion;
 
 /**
  * Used to check for an update. 
- * @deprecated rewrite. Bed code
+ * @deprecated rewrite. Bad code
  * @author Wyn Price
  *
  */
@@ -36,9 +38,9 @@ public class HandlerUpdateChecker
 	private boolean hasPosted;
 	
 	@SubscribeEvent
-	public void onPlayerJoin(FMLNetworkEvent.ClientConnectedToServerEvent event)
+	public void onPlayerJoin(EntityJoinWorldEvent event)
 	{
-		if(!hasPosted)
+		if(event.getEntity() instanceof EntityPlayer && !hasPosted)
 		{
 			hasPosted = true;
 			if(!SecretConfig.updateChecker)
@@ -112,7 +114,7 @@ public class HandlerUpdateChecker
 	        	ITextComponent componant = new TextComponentTranslation("update.version", SecretRooms5.MODNAME, SecretRooms5.VERSION, target)
 	        			.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, (String)json.get("homepage"))));
 	        	componant.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("update.hover", (String)json.get("homepage"))));
-	        	Minecraft.getMinecraft().player.sendMessage(componant);
+	        	event.getEntity().sendMessage(componant);
 
 	        }
 	        else
