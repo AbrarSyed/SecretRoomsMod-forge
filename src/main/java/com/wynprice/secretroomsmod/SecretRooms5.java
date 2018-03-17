@@ -36,12 +36,13 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 		name = SecretRooms5.MODNAME,
 		version = SecretRooms5.VERSION,
 		acceptedMinecraftVersions = "[1.12.2,1.13]",
-		dependencies = "required-after:forge@[14.23.0.2502,);")
+		dependencies = "required-after:forge@[14.23.0.2502,);",
+		updateJSON = SecretRooms5.UPDATE_URL)
 public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
-    public static final String VERSION = "5.5.0";
+    public static final String VERSION = "5.5.1";
     public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
 	
     
@@ -81,6 +82,6 @@ public class SecretRooms5
     @EventHandler
     public void onServerLoaded(FMLServerStartingEvent event)
     {
-    	event.registerServerCommand(new CommandBase() {@Override public int getRequiredPermissionLevel(){return 2;}@Override public String getUsage(ICommandSender sender) {return "Resets the energized blocks";}@Override public String getName() {return "resetenergized";}@Override public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {EnergizedPasteHandler.getEnergized_map().clear();SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(EnergizedPasteHandler.saveToNBT(), null)); System.out.println(sender.getEntityWorld().getBlockState(sender.getPosition()).getBlock().getClass());}});
+    	event.registerServerCommand(new CommandBase() {@Override public int getRequiredPermissionLevel(){return 2;}@Override public String getUsage(ICommandSender sender) {return "Resets the energized blocks";}@Override public String getName() {return "resetenergized";}@Override public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {EnergizedPasteHandler.getEnergized_map().clear();SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(EnergizedPasteHandler.saveToNBT(), null));}});
     }
 }
