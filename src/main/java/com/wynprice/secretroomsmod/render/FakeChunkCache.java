@@ -1,7 +1,6 @@
 package com.wynprice.secretroomsmod.render;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
@@ -9,7 +8,6 @@ import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketEnergizedPaste;
-import com.wynprice.secretroomsmod.optifinehelpers.SecretOptifineHelper;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -66,16 +64,6 @@ public class FakeChunkCache extends ChunkCache
 	@Override
 	public IBlockState getBlockState(BlockPos pos) 
 	{
-		if(SecretOptifineHelper.IS_OPTIFINE)
-		{
-			if(Arrays.asList("C7", "C8").contains(SecretOptifineHelper.version) && prevInt != -1)
-			{
-				for(Object[] list : new ArrayList<>(SecretOptifineHelper.CURRENT_C7_LIST))
-					if(list != null && prevInt >= 0 && prevInt < list.length)
-						list[prevInt] = null;
-				prevInt = -1;
-			}
-		}
 		if(!(super.getBlockState(pos).getBlock() instanceof ISecretBlock) && EnergizedPasteHandler.hasReplacedState(world, pos) && !(Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet))
 		{
 			if(EnergizedPasteHandler.getSetBlockState(world, pos).getBlock() != super.getBlockState(pos).getBlock()
