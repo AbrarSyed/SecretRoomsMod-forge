@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.intergration.malisisdoors;
+package com.wynprice.secretroomsmod.integration.malisisdoors;
 
 import net.malisis.doors.DoorDescriptor;
 

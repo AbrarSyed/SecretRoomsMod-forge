@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.intergration.theoneprobe;
+package com.wynprice.secretroomsmod.integration.theoneprobe;
 
 import mcjty.theoneprobe.api.ITheOneProbe;
 

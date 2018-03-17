@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretCompatibility;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
-import com.wynprice.secretroomsmod.intergration.ctm.SecretCompatCTM;
+import com.wynprice.secretroomsmod.integration.ctm.SecretCompatCTM;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 
 import net.minecraft.block.state.IBlockState;

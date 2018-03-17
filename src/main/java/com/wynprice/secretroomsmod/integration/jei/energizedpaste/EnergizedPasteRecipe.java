@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.intergration.jei.energizedpaste;
+package com.wynprice.secretroomsmod.integration.jei.energizedpaste;
 
 import java.util.ArrayList;
 import java.util.List;

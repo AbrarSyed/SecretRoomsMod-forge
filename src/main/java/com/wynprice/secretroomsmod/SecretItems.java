@@ -3,7 +3,7 @@ package com.wynprice.secretroomsmod;
 import java.util.ArrayList;
 
 import com.wynprice.secretroomsmod.base.BaseItemDoor;
-import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretCompactMalisisDoors;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretCompactMalisisDoors;
 import com.wynprice.secretroomsmod.items.CamouflagePaste;
 import com.wynprice.secretroomsmod.items.ProgrammableSwitchProbe;
 import com.wynprice.secretroomsmod.items.SwitchProbe;

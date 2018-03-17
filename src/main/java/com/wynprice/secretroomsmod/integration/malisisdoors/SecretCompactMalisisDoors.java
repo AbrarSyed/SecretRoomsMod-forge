@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.intergration.malisisdoors;
+package com.wynprice.secretroomsmod.integration.malisisdoors;
 
 import com.google.common.base.Function;
 import com.wynprice.secretroomsmod.SecretRooms5;

@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.intergration.ctm;
+package com.wynprice.secretroomsmod.integration.ctm;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 

@@ -1,12 +1,12 @@
-package com.wynprice.secretroomsmod.intergration.jei;
+package com.wynprice.secretroomsmod.integration.jei;
 
 import java.util.Arrays;
 
 import com.google.common.collect.Lists;
 import com.wynprice.secretroomsmod.SecretItems;
-import com.wynprice.secretroomsmod.intergration.jei.energizedpaste.EnergizedPasteCategory;
-import com.wynprice.secretroomsmod.intergration.jei.energizedpaste.EnergizedPasteJEIHandler;
-import com.wynprice.secretroomsmod.intergration.jei.energizedpaste.EnergizedPasteRecipe;
+import com.wynprice.secretroomsmod.integration.jei.energizedpaste.EnergizedPasteCategory;
+import com.wynprice.secretroomsmod.integration.jei.energizedpaste.EnergizedPasteJEIHandler;
+import com.wynprice.secretroomsmod.integration.jei.energizedpaste.EnergizedPasteRecipe;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;

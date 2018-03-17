@@ -8,8 +8,8 @@ import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.RecipeHelperHandler;
-import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretCompactMalisisDoors;
-import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretMalisisTileEntityDoor;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretCompactMalisisDoors;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretMalisisTileEntityDoor;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.tileentity.TileEntitySecretChest;
@@ -68,7 +68,7 @@ public class CommonProxy
 
     	NetworkRegistry.INSTANCE.registerGuiHandler(SecretRooms5.instance, new GuiHandler());
     	
-        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "com.wynprice.secretroomsmod.intergration.theoneprobe.TheOneProbeSupport");
+        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "com.wynprice.secretroomsmod.integration.theoneprobe.TheOneProbeSupport");
 
 
     }

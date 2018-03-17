@@ -23,8 +23,8 @@ import com.wynprice.secretroomsmod.blocks.SecretTrappedChest;
 import com.wynprice.secretroomsmod.blocks.SecretWeightedPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SolidAir;
 import com.wynprice.secretroomsmod.blocks.TorchLever;
-import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretCompactMalisisDoors;
-import com.wynprice.secretroomsmod.intergration.malisisdoors.SecretMalisisDoor;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretCompactMalisisDoors;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretMalisisDoor;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

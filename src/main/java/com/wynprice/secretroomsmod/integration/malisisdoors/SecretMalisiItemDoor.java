@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.intergration.malisisdoors;
+package com.wynprice.secretroomsmod.integration.malisisdoors;
 
 import com.wynprice.secretroomsmod.base.BaseBlockDoor;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;

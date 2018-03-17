@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.handler.SpriteCreator;
-import com.wynprice.secretroomsmod.intergration.ctm.SecretCompatCTM;
+import com.wynprice.secretroomsmod.integration.ctm.SecretCompatCTM;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;

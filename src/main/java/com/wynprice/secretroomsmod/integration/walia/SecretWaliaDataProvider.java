@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.intergration.walia;
+package com.wynprice.secretroomsmod.integration.walia;
 
 import java.util.List;
 

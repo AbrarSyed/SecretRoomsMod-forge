@@ -1,9 +1,9 @@
-package com.wynprice.secretroomsmod.intergration.jei.energizedpaste;
+package com.wynprice.secretroomsmod.integration.jei.energizedpaste;
 
 import java.awt.Point;
 
 import com.wynprice.secretroomsmod.SecretRooms5;
-import com.wynprice.secretroomsmod.intergration.jei.SecretRoomsJEI;
+import com.wynprice.secretroomsmod.integration.jei.SecretRoomsJEI;
 
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
