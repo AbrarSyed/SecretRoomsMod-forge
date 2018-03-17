@@ -39,6 +39,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 
 public class SecretRoomsTransformer implements IClassTransformer {
@@ -57,7 +58,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 					if(ins instanceof MethodInsnNode) {
 						MethodInsnNode mIns = ((MethodInsnNode)ins);
 						if(mIns.getOpcode() == Opcodes.INVOKEVIRTUAL && (mIns.owner.equals("ChunkCacheOF")/*Needed so Optifine works with SRM*/ || mIns.owner.equals("net/minecraft/world/ChunkCache")) && mIns.name.equals(getName("getBlockState", "func_180495_p")) && mIns.desc.equals("(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;")) {
-							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsTransformer", "getBlockState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;", false));
+							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "getBlockState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;", false));
 							return;
 						} 
 					}
@@ -87,7 +88,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 				list.add(new VarInsnNode(Opcodes.ALOAD, 1));
 				list.add(new VarInsnNode(Opcodes.ALOAD, 2));
 				list.add(new VarInsnNode(Opcodes.ALOAD, 3));
-				list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsTransformer", "doesSideBlockRendering", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
+				list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "doesSideBlockRendering", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
 				list.add(new InsnNode(Opcodes.IRETURN));
 				list.add(endLabel);
 				methodNode.instructions = list;
@@ -97,7 +98,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 					if(ins instanceof MethodInsnNode) {
 						MethodInsnNode mIns = ((MethodInsnNode)ins);
 						if(mIns.getOpcode() == Opcodes.INVOKEVIRTUAL && mIns.owner.equals("net/minecraft/block/Block") && mIns.name.equals(getName("shouldSideBeRendered", "func_176225_a")) && mIns.desc.equals("(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z")) {
-							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsTransformer", "shouldSideBeRendered", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
+							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "shouldSideBeRendered", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
 						}
 					}
 				}
@@ -109,7 +110,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 		for(MethodNode methodNode : node.methods) {
 			if(methodNode.name.equals(getName("renderModel", "func_187493_a")) && methodNode.desc.equals("(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/client/renderer/block/model/IBakedModel;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/renderer/BufferBuilder;ZJ)Z")) {
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ASTORE, 2));
-				methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsTransformer", "getActualModel", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/renderer/block/model/IBakedModel;)Lnet/minecraft/client/renderer/block/model/IBakedModel;", false));
+				methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "getActualModel", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/renderer/block/model/IBakedModel;)Lnet/minecraft/client/renderer/block/model/IBakedModel;", false));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 2));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 4));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 1));
@@ -122,7 +123,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 		for(MethodNode methodNode : node.methods) {
 			if(methodNode.name.equals(getName("renderBlock", "func_175018_a")) && methodNode.desc.equals("(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/client/renderer/BufferBuilder;)Z")) {
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ASTORE, 1));
-				methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsTransformer", "getActualState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/block/state/IBlockState;", false));
+				methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "getActualState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/block/state/IBlockState;", false));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 1));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 2));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 3));
@@ -210,86 +211,6 @@ public class SecretRoomsTransformer implements IClassTransformer {
 	 */
 	private String getName(String workspaceName, String mcpName) {
 		return SecretRoomsCore.isDebofEnabled ? mcpName : workspaceName;
-	}
-	
-	/**
-	 * @see #RenderChunk
-	 */
-	public static IBlockState getBlockState(IBlockAccess world, BlockPos pos) {
-		if(world.getTileEntity(pos) instanceof ISecretTileEntity) {
-			IBlockState state = world.getTileEntity(pos).getWorld().getBlockState(pos);
-			IBlockState renderState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
-			try
-			{
-				renderState = renderState.getActualState(new FakeBlockAccess(world.getTileEntity(pos).getWorld()), pos);
-				state = state.getActualState(world, pos);
-			}
-			catch (Exception e) 
-			{
-				;
-			}
-			state = ((IExtendedBlockState)state).withProperty(ISecretBlock.RENDER_PROPERTY, renderState);
-			SecretBlockModel.instance().AO.set(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(renderState).isAmbientOcclusion());
-			SecretBlockModel.instance().SRMBLOCK.set(state);
-			return state;
-		}
-		return world.getBlockState(pos);
-	}
-	
-	/**
-	 * @see #StateImplementation
-	 * @param block Is not needed, however having this as the first param makes asm easier
-	 */
-	public static boolean doesSideBlockRendering(Block block, IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		if(world.getTileEntity(pos) instanceof ISecretTileEntity) {
-			IBlockState otherState = world.getTileEntity(pos).getWorld().getBlockState(pos);
-			return otherState.getBlock().doesSideBlockRendering(otherState, world, pos, face);
-//			if(!isMalisisDoor(state) && ((ISecretBlock)world.getTileEntity(pos).getWorld().getBlockState(pos).getBlock()).getModelClass() != FakeBlockModel.class) {
-//				return false;
-//			} 
-		}
-		return block.doesSideBlockRendering(state, world, pos, face);
-	}
-	
-	public static boolean shouldSideBeRendered(Block block, IBlockState state, IBlockAccess access, BlockPos pos, EnumFacing face) {
-		if(!isMalisisDoor(state) && access.getTileEntity(pos) instanceof ISecretTileEntity) {
-			World world = access.getTileEntity(pos).getWorld(); //Need to use world as the IBlockAccess wont return the right states
-			IBlockState blockState = world.getTileEntity(pos).getWorld().getBlockState(pos);
-			return blockState.getBlock().shouldSideBeRendered(blockState, world, pos, face);
-		}
-		return block.shouldSideBeRendered(state, access, pos, face);
-	}
-	
-	public static IBakedModel getActualModel(IBlockAccess access, BlockPos pos, IBakedModel model) {
-		if(access.getTileEntity(pos) instanceof ISecretTileEntity) {
-			IBlockState state = access.getTileEntity(pos).getWorld().getBlockState(pos);
-			if(isMalisisDoor(state)) {
-				return model;
-			}
-			return SecretBlockModel.instance();
-		}
-		return model;
-	}
-	
-	public static IBlockState getActualState(IBlockAccess access, BlockPos pos, IBlockState state) {
-		if(isMalisisDoor(state)) {
-			return state;
-		}
-		
-		if(state.getBlock() instanceof ISecretBlock) {
-			IBlockState mirroredState = access.getBlockState(pos);
-			try {
-				mirroredState = mirroredState.getActualState(access, pos);
-			} catch (Exception e) {
-				;
-			}
-			return mirroredState;
-		}
-		return state;
-	}
-	
-	private static boolean isMalisisDoor(IBlockState state) {
-		return SecretCompatibility.MALISISDOORS && (state.getBlock() == SecretBlocks.SECRET_WOODEN_DOOR || state.getBlock() == SecretBlocks.SECRET_IRON_DOOR);
 	}
 	
 }
