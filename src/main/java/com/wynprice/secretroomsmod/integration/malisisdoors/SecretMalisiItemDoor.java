@@ -87,6 +87,8 @@ public class SecretMalisiItemDoor extends DoorItem
         BlockPos blockpos2 = pos.up();
         boolean flag2 = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos2);
         IBlockState iblockstate = door.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, isRightHinge ? BlockDoor.EnumHingePosition.RIGHT : BlockDoor.EnumHingePosition.LEFT).withProperty(BlockDoor.POWERED, Boolean.valueOf(flag2)).withProperty(BlockDoor.OPEN, Boolean.valueOf(flag2));
+        ISecretTileEntity.getMap(worldIn).put(pos, mirrorState);
+        ISecretTileEntity.getMap(worldIn).put(blockpos2, mirrorState);
         worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 3);
         worldIn.setBlockState(blockpos2, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 3);
         ((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(mirrorState);
