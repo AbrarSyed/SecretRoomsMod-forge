@@ -40,7 +40,7 @@ public class HandlerUpdateChecker
 		if(event.getEntity() instanceof EntityPlayer && !hasPosted)
 		{
 			hasPosted = true;
-			if(!SecretConfig.General.update_checker) {
+			if(!SecretConfig.GENERAL.updateChecker) {
 				return;
 			}
 			Status status = Status.PENDING;

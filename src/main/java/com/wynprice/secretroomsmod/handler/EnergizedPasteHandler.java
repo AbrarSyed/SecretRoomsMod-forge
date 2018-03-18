@@ -195,7 +195,7 @@ public class EnergizedPasteHandler
 		{
 			;
 		}
-		return directFromClass || !Arrays.asList(SecretConfig.EnergizedPaste.blacklist_mirror).contains(block.getRegistryName().toString());
+		return directFromClass || !Arrays.asList(SecretConfig.ENERGIZED_PASTE.blacklistMirror).contains(block.getRegistryName().toString());
 	}
 	
 	/**
@@ -220,14 +220,14 @@ public class EnergizedPasteHandler
 		}
 		
 		boolean starred = false;
-		for(String te : SecretConfig.EnergizedPaste.whitelisted_tileentities)
+		for(String te : SecretConfig.ENERGIZED_PASTE.tileEntityWhitelist)
 		{
 			ResourceLocation location = new ResourceLocation(te);
 			if(location.getResourcePath().equals("*") && location.getResourceDomain().equals(block.getRegistryName().getResourceDomain()))
 				starred = true;
 		}
 		
-		return directFromClass || Arrays.asList(SecretConfig.EnergizedPaste.whitelisted_tileentities).contains(block.getRegistryName().toString()) || starred;
+		return directFromClass || Arrays.asList(SecretConfig.ENERGIZED_PASTE.tileEntityWhitelist).contains(block.getRegistryName().toString()) || starred;
 	}
 	
 	/**
@@ -252,7 +252,7 @@ public class EnergizedPasteHandler
 		{
 			;
 		}
-		return directFromClass || !Arrays.asList(SecretConfig.EnergizedPaste.non_replaceable).contains(block.getRegistryName().toString());
+		return directFromClass || !Arrays.asList(SecretConfig.ENERGIZED_PASTE.replacementBlacklist).contains(block.getRegistryName().toString());
 	}
 	
 	
@@ -350,9 +350,9 @@ public class EnergizedPasteHandler
 				event.getEntityPlayer().getHeldItemMainhand().getTagCompound().setInteger("hit_meta", event.getWorld().getBlockState(event.getPos()).getBlock().getMetaFromState(event.getWorld().getBlockState(event.getPos())));
 				event.getEntityPlayer().getHeldItemMainhand().getTagCompound().setInteger("hit_color", event.getWorld().getBlockState(event.getPos()).getMapColor(event.getWorld(), event.getPos()).colorValue);
 				event.getEntityPlayer().swingArm(EnumHand.MAIN_HAND);
-				SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(SecretConfig.EnergizedPaste.sound_set_name));
+				SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(SecretConfig.ENERGIZED_PASTE.soundSetName));
 				if(soundEvent == null) soundEvent = SoundEvents.BLOCK_SAND_PLACE;
-				event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), soundEvent, SoundCategory.BLOCKS, (float) SecretConfig.EnergizedPaste.sound_set_volume, (float) SecretConfig.EnergizedPaste.sound_set_pitch);
+				event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), soundEvent, SoundCategory.BLOCKS, (float) SecretConfig.ENERGIZED_PASTE.soundSetVolume, (float) SecretConfig.ENERGIZED_PASTE.soundSetPitch);
 			}
 			else if(!hasReplacedState(event.getWorld(), event.getPos()))
 			{
@@ -383,9 +383,9 @@ public class EnergizedPasteHandler
 							}
 							else
 							{
-								SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(SecretConfig.EnergizedPaste.sound_use_name));
+								SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(SecretConfig.ENERGIZED_PASTE.soundUseName));
 								if(soundEvent == null) soundEvent = SoundEvents.BLOCK_SLIME_BREAK;
-								event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), soundEvent, SoundCategory.BLOCKS, (float) SecretConfig.EnergizedPaste.sound_use_volume, (float) SecretConfig.EnergizedPaste.sound_use_pitch);
+								event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), soundEvent, SoundCategory.BLOCKS, (float) SecretConfig.ENERGIZED_PASTE.soundUseVolume, (float) SecretConfig.ENERGIZED_PASTE.soundUsePitch);
 							}
 						}
 					}

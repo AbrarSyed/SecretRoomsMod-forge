@@ -12,6 +12,6 @@ public class RecipeConfigHandler implements IConditionFactory
 {
 	@Override
 	public BooleanSupplier parse(JsonContext context, JsonObject json) {
-		return () -> SecretConfig.General.single_player_helmet;
+		return () -> SecretConfig.GENERAL.survivalModeHelmet;
 	}
 }
