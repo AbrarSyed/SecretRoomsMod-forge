@@ -96,7 +96,9 @@ public class SecretGate extends BaseFakeBlock
 	{
 		BlockPos position = destroyGate(worldIn, pos, worldIn.getBlockState(pos));
 		EnumFacing direction = worldIn.getBlockState(pos).getValue(FACING);
-		deactivateGate(worldIn, position);
+		if(worldIn.getBlockState(position).getBlock() == this) {
+			deactivateGate(worldIn, position);
+		}
 		worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, direction).withProperty(POWERED, false));
 
 	}
@@ -105,10 +107,8 @@ public class SecretGate extends BaseFakeBlock
 	{
 		EnumFacing direction = blockstate.getValue(FACING);
 		IBlockState state = getState(worldIn, pos);
-		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state);
 		
 		BlockPos endPosition = new BlockPos(pos.getX() + ((MAX_LEVELS + 1) * direction.getFrontOffsetX()), pos.getY() + ((MAX_LEVELS + 1) * direction.getFrontOffsetY()), pos.getZ() + ((MAX_LEVELS + 1) * direction.getFrontOffsetZ()));
-
 		
 		for(int i = 1; i < MAX_LEVELS + 1; i++)
 		{
@@ -118,6 +118,8 @@ public class SecretGate extends BaseFakeBlock
 			else
 				return position;
 		}
+		
+		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(state);
 		
 		return endPosition;
 		
