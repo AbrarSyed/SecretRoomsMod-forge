@@ -5,14 +5,6 @@ message.secretroomsmod.oneWay.away=-- ¡¡¡ ʎɐʍⱯ oʇ ʇǝs ᵷuᴉɔɐɟ �
 message.secretroomsmod.commandShow.show=snoᴉʌqo ǝpɐɯ sʞɔoꞁq oɯɐƆ
 message.secretroomsmod.commandShow.hide=ʇǝɹɔǝs ǝpɐɯ sʞɔoꞁq oɯɐƆ
 
-config.do_update.comment=dnʇɹɐʇs uo unɹ ǝq ɹǝʞɔǝɥƆ ǝʇɐpd∩ ǝɥʇ pꞁnoɥS
-config.ao.comment=˙ʇɐɥʍ ɹǝʇʇɐɯ ou uo pǝɔɹoɟ ǝq ꞁꞁᴉʍ ʇᴉ ǝnɹʇ ɟI 'ʇᴉ sʇᴉɯɹǝd ʇɟɐɹɔǝuᴉW ɟᴉ uo pǝuɹnʇ ǝq ꞁꞁᴉʍ OⱯ 'ǝsꞁɐɟ ɟI ˙uo pǝɔɹoɟ ǝq uoᴉsnꞁɔɔO ʇuǝᴉqɯⱯ pꞁnoɥS
-config.energizedpaste.blacklistpickup=sᴉɥʇ ɹoɹɹᴉɯ uɐɔ ʞɔoꞁq ɹǝɥʇo ou os 'ǝʇsɐԀ ǝᵷɐꞁɟnoɯɐƆ pǝzᴉᵷɹǝuƎ ǝɥʇ ǝq dn pǝʞɔᴉd ǝq oʇ ǝꞁqɐ ǝq ʇuoʍ ʇsᴉꞁ sᴉɥʇ uᴉ sʞɔoꞁᗺ
-config.energizedpaste.nonreplaceable=pǝᵷuɐɥɔ ǝq ʇuɐɔ ʞɔoꞁq sᴉɥʇ ɹoɟ ᵷuᴉɹǝpuǝɹ ǝɥʇ os 'ǝʇsɐԀ ǝᵷɐꞁɟnoɯɐƆ pǝzᴉᵷɹǝuƎ ǝɥʇ ʎq pǝɔɐꞁdǝɹ ǝq oʇ ǝꞁqɐ ǝq ʇuoʍ ʇsᴉꞁ sᴉɥʇ uᴉ sʞɔoꞁᗺ
-config.energizedpaste.sound.set=˙ǝʇsɐԀ pǝzᴉᵷɹǝuƎ ǝɥʇ oʇ ʇǝs sᴉ ʞɔoꞁq ɐ uǝɥʍ ʎɐꞁd oʇ ɥɔʇᴉԀ puɐ ǝɯnꞁoᴧ 'punoS ǝɥ⟘
-config.energizedpaste.sound.use=˙ʞɔoꞁq ʇɐɥʇ ɟo ǝɔuɐǝɹǝddɐ ǝɥʇ ᵷuᴉᵷuɐɥɔ 'ʞɔoꞁq ɹǝɥʇouɐ uo pǝsn sᴉ ǝʇsɐԀ pǝzᴉᵷɹǝuƎ uǝɥʍ ʎɐꞁd oʇ ɥɔʇᴉԀ puɐ ǝɯnꞁoᴧ 'punoS ǝɥ⟘
-config.singleplayerhelmet=¿ɹǝʎɐldǝlƃuᴉs uᴉ sɹǝʎɐld oʇ ǝlqɐlᴉɐʌɐ ǝq ʇǝɯlǝɥ ǝɥʇ plnoɥS
-
 update.version=ǝᵷɐd oʇ oᵷ oʇ ǝɹǝɥ ʞɔᴉꞁƆ ˙%3$s :uoᴉsɹǝʌ ʇǝᵷɹɐʇ '%2$s uoᴉsɹǝʌ ɹno⅄ ˙ǝʇɐp ɟo ʇno sᴉ poW ǝɥ⟘ [%1$s]
 update.hover=%s oʇ oᵷ o⟘ ʞɔᴉꞁƆ
 

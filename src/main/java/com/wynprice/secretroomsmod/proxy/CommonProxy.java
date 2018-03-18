@@ -2,14 +2,12 @@ package com.wynprice.secretroomsmod.proxy;
 
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretCompatibility;
-import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
 import com.wynprice.secretroomsmod.handler.RecipeHelperHandler;
 import com.wynprice.secretroomsmod.integration.malisisdoors.SecretCompactMalisisDoors;
-import com.wynprice.secretroomsmod.integration.malisisdoors.SecretMalisisTileEntityDoor;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 import com.wynprice.secretroomsmod.tileentity.TileEntitySecretChest;
@@ -35,9 +33,7 @@ public class CommonProxy
 		SecretBlocks.preInit();
 				
 		SecretNetwork.preInit();
-		
-		SecretConfig.syncConfig();
-		
+				
 		RecipeHelperHandler.preInit();
     }
 	

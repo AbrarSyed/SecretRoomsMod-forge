@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretRooms5;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -22,8 +21,6 @@ import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 
 /**
@@ -43,8 +40,9 @@ public class HandlerUpdateChecker
 		if(event.getEntity() instanceof EntityPlayer && !hasPosted)
 		{
 			hasPosted = true;
-			if(!SecretConfig.updateChecker)
+			if(!SecretConfig.General.update_checker) {
 				return;
+			}
 			Status status = Status.PENDING;
 	        ComparableVersion target = null;
 			InputStream con = null;

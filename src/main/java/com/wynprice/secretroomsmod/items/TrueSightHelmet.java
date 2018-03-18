@@ -19,7 +19,7 @@ public class TrueSightHelmet extends ItemArmor
 	}
 	
 	public static boolean isHelmet(EntityPlayer player) {
-		return player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet && (player.isCreative() || player.isSpectator() || SecretConfig.singlePlayerHelmet);
+		return player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet && (player.isCreative() || player.isSpectator() || SecretConfig.General.single_player_helmet);
 	}
 	
 	@SideOnly(Side.CLIENT)

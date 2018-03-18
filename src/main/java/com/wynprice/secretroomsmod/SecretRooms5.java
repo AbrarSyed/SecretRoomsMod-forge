@@ -8,10 +8,8 @@ import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketSyncEnergizedPaste;
 import com.wynprice.secretroomsmod.proxy.CommonProxy;
 
-import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -23,7 +21,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 /**
@@ -42,7 +39,7 @@ public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
-    public static final String VERSION = "5.5.2";
+    public static final String VERSION = "5.5.3";
     public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
 	
     
