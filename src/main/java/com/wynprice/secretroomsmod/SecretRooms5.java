@@ -28,20 +28,15 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
  * @author Wyn Price
  *
  */
-@Mod(
-		modid = SecretRooms5.MODID,
-		name = SecretRooms5.MODNAME,
-		version = SecretRooms5.VERSION,
-		acceptedMinecraftVersions = "[1.12.2,1.13]",
-		dependencies = "required-after:forge@[14.23.0.2502,);",
-		updateJSON = SecretRooms5.UPDATE_URL)
+@Mod(modid = SecretRooms5.MODID, name = SecretRooms5.MODNAME, version = SecretRooms5.VERSION, acceptedMinecraftVersions = SecretRooms5.MCVERSION, dependencies = SecretRooms5.DEPENDENCIES,updateJSON = SecretRooms5.UPDATE_URL)
 public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
     public static final String VERSION = "5.5.3";
+	public static final String MCVERSION = "[1.12.2,1.13]";
+	public static final String DEPENDENCIES = "required-after:forge@[14.23.0.2502,);";
     public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
-	
     
     @SidedProxy(modId = MODID, clientSide = "com.wynprice.secretroomsmod.proxy.ClientProxy", serverSide = "com.wynprice.secretroomsmod.proxy.ServerProxy")
     public static CommonProxy proxy;

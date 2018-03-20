@@ -88,10 +88,14 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 				int uvIndex = quad.getFormat().getUvOffsetById(0) / 4;
 
 				List<BakedQuad> secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, side, rand);
-				if(secList == null || secList.isEmpty())
-					for(EnumFacing facing : fallbackOrder())
-						if(!renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand).isEmpty())
-							secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, rand);
+				if(secList == null || secList.isEmpty()) {
+					for(EnumFacing facing : fallbackOrder()) {
+						List<BakedQuad> secList2 = SecretCompatCTM.getQuadsNull(renderInfo.renderModel, renderInfo.blockstate, side, rand);
+						if(!secList2.isEmpty()) {
+							secList = secList2;
+						}
+					}
+				}
 				
 				for(BakedQuad mirrorQuad : secList) {
 					SpriteCreator sprite = SpriteCreator.createSprite(mirrorQuad.getSprite()).setuvs(

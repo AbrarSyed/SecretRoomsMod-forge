@@ -22,4 +22,12 @@ public class SecretCompatCTM {
 		ForgeHooksClient.setRenderLayer(layer);
 		return ret;
 	}
+	
+	public static List<BakedQuad> getQuadsNull(IBakedModel model, IBlockState state, EnumFacing side, long rand) {
+		BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
+		ForgeHooksClient.setRenderLayer(null);
+		List<BakedQuad> ret = model.getQuads(state, side, rand);
+		ForgeHooksClient.setRenderLayer(layer);
+		return ret;
+	}
 }
