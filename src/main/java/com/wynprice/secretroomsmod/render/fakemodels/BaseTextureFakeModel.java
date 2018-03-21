@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 /**
  * The class used to take textures from one model, and put it on another model
@@ -77,8 +76,9 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 	@Override
 	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
 	{
-		if(getBaseBlockClass() != null && !(getBaseBlockClass().isAssignableFrom(currentRender.getBlock().getClass())))
+		if(getBaseBlockClass() != null && !(getBaseBlockClass().isAssignableFrom(currentRender.getBlock().getClass()))) {
 			return super.getQuads(state, side, rand);
+		}
 		ArrayList<BakedQuad> finalList = new ArrayList<BakedQuad>();
 		RenderInfo renderInfo = getRenderInfo(side, state, currentActualState);
 		IBlockState normalState = getNormalStateWith(currentRender, currentActualState);

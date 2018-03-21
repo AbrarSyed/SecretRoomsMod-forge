@@ -1,9 +1,14 @@
 package com.wynprice.secretroomsmod.core;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretCompatibility;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 import com.wynprice.secretroomsmod.render.fakemodels.SecretBlockModel;
 
@@ -11,7 +16,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -80,6 +87,21 @@ public class SecretRoomsHooks {
 		}
 		return model;
 	}
+	
+	public static void addCollisionBoxToList(Block block, IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+    {
+		if(EnergizedPasteHandler.hasReplacedState(worldIn, pos)) {
+			IBlockState energizedState = EnergizedPasteHandler.getReplacedState(worldIn, pos);
+			try {
+				energizedState = energizedState.getActualState(worldIn, pos);
+			} catch (Exception e) {
+				;
+			}
+			energizedState.getBlock().addCollisionBoxToList(energizedState, worldIn, pos, entityBox, collidingBoxes, entityIn, true);
+		} else {
+			block.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+		}
+    }
 	
 	public static IBlockState getActualState(IBlockAccess access, BlockPos pos, IBlockState state) {
 		if(isMalisisDoor(state)) {

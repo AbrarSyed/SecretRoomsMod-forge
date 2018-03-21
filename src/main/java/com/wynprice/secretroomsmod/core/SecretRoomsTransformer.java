@@ -102,6 +102,16 @@ public class SecretRoomsTransformer implements IClassTransformer {
 						}
 					}
 				}
+			} else if(methodNode.name.equals(getName("addCollisionBoxToList", "func_185908_a"))) {
+				for(int i = 0; i < methodNode.instructions.size(); i++) {
+					AbstractInsnNode ins = methodNode.instructions.get(i);
+					if(ins instanceof MethodInsnNode) {
+						MethodInsnNode mIns = ((MethodInsnNode)ins);
+						if(mIns.getOpcode() == Opcodes.INVOKEVIRTUAL && mIns.owner.equals("net/minecraft/block/Block") && mIns.name.equals(getName("addCollisionBoxToList", "func_185477_a")) && mIns.desc.equals("(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/AxisAlignedBB;Ljava/util/List;Lnet/minecraft/entity/Entity;Z)V")) {
+							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "addCollisionBoxToList", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/AxisAlignedBB;Ljava/util/List;Lnet/minecraft/entity/Entity;Z)V", false));
+						}
+					}
+				}
 			}
 		}
 	};
