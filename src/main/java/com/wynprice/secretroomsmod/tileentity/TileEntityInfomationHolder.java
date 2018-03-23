@@ -50,7 +50,9 @@ public class TileEntityInfomationHolder extends TileEntity implements ITickable,
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		ISecretTileEntity.super.readDataFromNBT(compound);
+		TileEntityData data = ISecretTileEntity.super.readDataFromNBT(compound, getTileData());
+		mirrorState = data.getMirroredState();
+		locked = data.isLocked();	
 	}
 	
 	@Override

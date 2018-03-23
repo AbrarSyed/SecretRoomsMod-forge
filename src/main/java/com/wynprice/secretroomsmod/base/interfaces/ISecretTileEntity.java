@@ -153,20 +153,20 @@ public interface ISecretTileEntity extends ITickable
 	/**
 	 * Default readFromNBT performed on tile entities
 	 * @param compound
-	 * @param tileData
 	 * @return
 	 */
-	default public TileEntityData readDataFromNBT(NBTTagCompound compound) {
+	default public TileEntityData readDataFromNBT(NBTTagCompound compound, NBTTagCompound tileData) {
 		IBlockState mirrorState = null;
 		boolean locked;
 		if(!compound.hasKey("SecretRoomsMod", 10)) { //Old method
-			locked = compound.getBoolean("locked");
-			Block testBlock = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("MirrorBlock")));
+			locked = tileData.getBoolean("locked");
+			Block testBlock = Block.REGISTRY.getObject(new ResourceLocation(tileData.getString("MirrorBlock")));
 			if(testBlock != Blocks.AIR) {
-				mirrorState = testBlock.getStateFromMeta(compound.getInteger("MirrorMeta"));
+				mirrorState = testBlock.getStateFromMeta(tileData.getInteger("MirrorMeta"));
 			}
-			if(mirrorState != null && mirrorState.getBlock() instanceof ISecretBlock)
+			if(mirrorState != null && mirrorState.getBlock() instanceof ISecretBlock) {
 				mirrorState = null;
+			}
 		} else {
 			NBTTagCompound nbt = compound.getCompoundTag("SecretRoomsMod");
 			int v = nbt.getInteger("DataVersion");
@@ -179,20 +179,13 @@ public interface ISecretTileEntity extends ITickable
 		}
 	
 		if(mirrorState == null) {
-			new NullPointerException("NBT Compound returned a null state. NBTTAG: " + compound.toString()).printStackTrace(new PrintStream(new OutputStream() {
-				
-				@Override
-				public void write(int b) throws IOException {
-					System.out.print((char)b);
-				}
-			}));
+			SecretRooms5.LOGGER.error("NBT Compound returned a null state. NBTTAG: {}", compound.toString());
 			mirrorState = Blocks.STONE.getDefaultState();
 		}
 		
 		if(!ISecretBlock.ALL_SECRET_TILE_ENTITIES.contains(this)) {
 			ISecretBlock.ALL_SECRET_TILE_ENTITIES.add((TileEntity) this);
 		}
-		
 		return new TileEntityData().setMirroredState(mirrorState).setLocked(locked);
 	}
 	
@@ -205,6 +198,7 @@ public interface ISecretTileEntity extends ITickable
 		}
 //		getTileData().setString("MirrorBlock", getMirrorState().getBlock().getRegistryName().toString());
 //		getTileData().setInteger("MirrorMeta", getMirrorState().getBlock().getMetaFromState(getMirrorState()));
+		
 		nbt.setTag("MirroredState", NBTUtil.writeBlockState(new NBTTagCompound(), data.getMirroredState()));	
 		nbt.setInteger("DataVersion", 1);
 		nbt.setBoolean("locked", data.isLocked());

@@ -38,7 +38,7 @@ public class SecretMalisisTileEntityDoor extends DoorTileEntity implements ISecr
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		TileEntityData data = ISecretTileEntity.super.readDataFromNBT(compound);
+		TileEntityData data = ISecretTileEntity.super.readDataFromNBT(compound, getTileData());
 		mirrorState = data.getMirroredState();
 		locked = data.isLocked();
 	}
