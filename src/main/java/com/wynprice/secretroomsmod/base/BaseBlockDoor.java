@@ -254,12 +254,6 @@ public class BaseBlockDoor extends BlockDoor implements ISecretBlock
 	}
 	
 	@Override
-	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start,
-			Vec3d end) {
-		return ISecretBlock.super.collisionRayTrace(blockState, worldIn, pos, start, end);
-	}
-	
-	@Override
     public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
     	return ISecretBlock.super.getPackedLightmapCoords(state, source, pos);
     }

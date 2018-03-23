@@ -31,6 +31,8 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -304,6 +306,12 @@ public class SecretTrapDoor extends BaseFakeBlock
         {
             return this.name;
         }
+    }
+    
+    @Override
+    public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start,
+    		Vec3d end) {
+        return this.rayTrace(pos, start, end, blockState.getBoundingBox(worldIn, pos));
     }
 
 }
