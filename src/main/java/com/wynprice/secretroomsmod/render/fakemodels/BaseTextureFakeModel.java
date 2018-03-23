@@ -90,7 +90,7 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 				List<BakedQuad> secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, side, rand);
 				if(secList == null || secList.isEmpty()) {
 					for(EnumFacing facing : fallbackOrder()) {
-						List<BakedQuad> secList2 = SecretCompatCTM.getQuadsNull(renderInfo.renderModel, renderInfo.blockstate, side, rand);
+						List<BakedQuad> secList2 = SecretCompatCTM.getQuadsNull(renderInfo.renderModel, renderInfo.blockstate, facing, rand);
 						if(!secList2.isEmpty()) {
 							secList = secList2;
 						}
