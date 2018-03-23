@@ -162,8 +162,8 @@ public class ClientProxy extends CommonProxy
 						if(state == null || worldIn == null)
 							return -1;
 						TileEntity tileEntity = worldIn.getTileEntity(pos);
-						if(tileEntity instanceof ISecretTileEntity && ((ISecretTileEntity)tileEntity).getMirrorState() != null)
-							return blockColors.colorMultiplier(((ISecretTileEntity)tileEntity).getMirrorState(), worldIn, pos, tintIndex);
+						if(tileEntity instanceof ISecretTileEntity && ((ISecretTileEntity)tileEntity).getMirrorStateSafely() != null)
+							return blockColors.colorMultiplier(((ISecretTileEntity)tileEntity).getMirrorStateSafely(), worldIn, pos, tintIndex);
 						return -1;
 					}
 				}, block);

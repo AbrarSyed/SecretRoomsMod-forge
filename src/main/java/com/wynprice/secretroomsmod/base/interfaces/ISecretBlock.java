@@ -156,8 +156,8 @@ public interface ISecretBlock extends ITileEntityProvider
 	 * @return the bounding box of the Mirrored State, or {@link Block#FULL_BLOCK_AABB} if does there is no tileEntity at the position.
 	 */
 	default AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		if(source.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState() != null)
-			return ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorState().getBoundingBox(new FakeBlockAccess(source), pos);
+		if(source.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorStateSafely() != null)
+			return ((ISecretTileEntity)source.getTileEntity(pos)).getMirrorStateSafely().getBoundingBox(new FakeBlockAccess(source), pos);
 		return Block.FULL_BLOCK_AABB;
 	}
 	
@@ -368,13 +368,13 @@ public interface ISecretBlock extends ITileEntityProvider
 	default boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) 
 	{
 		if (target.getBlockPos() != null && worldObj.getTileEntity(target.getBlockPos()) instanceof ISecretTileEntity && 
-				((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState() != null)
+				((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorStateSafely() != null)
         {
             int i = target.getBlockPos().getX();
             int j = target.getBlockPos().getY();
             int k = target.getBlockPos().getZ();
             float f = 0.1F;
-            AxisAlignedBB axisalignedbb = ((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState().getBoundingBox(worldObj, target.getBlockPos());
+            AxisAlignedBB axisalignedbb = ((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorStateSafely().getBoundingBox(worldObj, target.getBlockPos());
             double d0 = (double)i + new Random().nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minX;
             double d1 = (double)j + new Random().nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minY;
             double d2 = (double)k + new Random().nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minZ;
@@ -386,7 +386,7 @@ public interface ISecretBlock extends ITileEntityProvider
             if (target.sideHit == EnumFacing.EAST) d0 = (double)i + axisalignedbb.maxX + 0.10000000149011612D;
             manager.addEffect(((net.minecraft.client.particle.ParticleDigging)new net.minecraft.client.particle.ParticleDigging.Factory()
             		.createParticle(0, worldObj, d0, d1, d2, 0, 0, 0, 
-            				Block.getStateId(((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorState())))
+            				Block.getStateId(((ISecretTileEntity)worldObj.getTileEntity(target.getBlockPos())).getMirrorStateSafely())))
             		.setBlockPos(target.getBlockPos()).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
             return true;
         }

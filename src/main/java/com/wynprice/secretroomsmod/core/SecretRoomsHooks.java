@@ -32,7 +32,7 @@ public class SecretRoomsHooks {
 	public static IBlockState getBlockState(IBlockAccess world, BlockPos pos) {
 		if(world.getTileEntity(pos) instanceof ISecretTileEntity) {
 			IBlockState state = world.getTileEntity(pos).getWorld().getBlockState(pos);
-			IBlockState renderState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
+			IBlockState renderState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorStateSafely();
 			try
 			{
 				renderState = renderState.getActualState(new FakeBlockAccess(world.getTileEntity(pos).getWorld()), pos);

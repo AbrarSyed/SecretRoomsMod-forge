@@ -33,12 +33,12 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) 
 	{
 		ItemStack ret = ItemStack.EMPTY;
-		if(accessor.getTileEntity() instanceof ISecretTileEntity && ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState() != null  && !TrueSightHelmet.isHelmet(accessor.getPlayer()))
+		if(accessor.getTileEntity() instanceof ISecretTileEntity && ((ISecretTileEntity)accessor.getTileEntity()).getMirrorStateSafely() != null  && !TrueSightHelmet.isHelmet(accessor.getPlayer()))
 		{
 			try
 			{
-				ret = ((ISecretTileEntity)accessor.getTileEntity()).getMirrorState().getBlock().getPickBlock(
-						((ISecretTileEntity)accessor.getTileEntity()).getMirrorState(), 
+				ret = ((ISecretTileEntity)accessor.getTileEntity()).getMirrorStateSafely().getBlock().getPickBlock(
+						((ISecretTileEntity)accessor.getTileEntity()).getMirrorStateSafely(), 
 						accessor.getMOP(), 
 						accessor.getWorld(),
 						accessor.getPosition(),
@@ -48,7 +48,7 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 			{
 				;
 			}
-			ret = new ItemStack(((ISecretTileEntity)accessor.getTileEntity()).getMirrorState().getBlock());
+			ret = new ItemStack(((ISecretTileEntity)accessor.getTileEntity()).getMirrorStateSafely().getBlock());
 		}
 		else if(EnergizedPasteHandler.hasReplacedState(accessor.getWorld(), accessor.getPosition()))
 		{

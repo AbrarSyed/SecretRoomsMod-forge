@@ -84,8 +84,8 @@ public class SecretButton extends BlockButton implements ISecretBlock
 	 private void checkPressed(IBlockState state, World worldIn, BlockPos pos)
 	 {
 		 List <? extends Entity > list = new ArrayList<>();
-		 if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState() != null)
-			 list = worldIn.<Entity>getEntitiesWithinAABB(EntityArrow.class, ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorState().getBoundingBox(worldIn, pos).offset(pos));
+		 if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorStateSafely() != null)
+			 list = worldIn.<Entity>getEntitiesWithinAABB(EntityArrow.class, ((ISecretTileEntity)worldIn.getTileEntity(pos)).getMirrorStateSafely().getBoundingBox(worldIn, pos).offset(pos));
 		 boolean flag = !list.isEmpty();
 	     boolean flag1 = ((Boolean)state.getValue(POWERED)).booleanValue();
 

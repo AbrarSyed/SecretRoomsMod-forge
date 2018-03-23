@@ -2,6 +2,7 @@ package com.wynprice.secretroomsmod.integration.malisisdoors;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity.TileEntityData;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 
 import net.malisis.core.util.syncer.Syncable;
@@ -37,40 +38,24 @@ public class SecretMalisisTileEntityDoor extends DoorTileEntity implements ISecr
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		locked = getTileData().getBoolean("locked");
-		Block testBlock = Block.REGISTRY.getObject(new ResourceLocation(getTileData().getString("MirrorBlock")));
-		if(testBlock != Blocks.AIR)
-			mirrorState = testBlock.getStateFromMeta(getTileData().getInteger("MirrorMeta"));
-		if(mirrorState != null && mirrorState.getBlock() instanceof ISecretBlock)
-			mirrorState = null;
-		if(!ISecretBlock.ALL_SECRET_TILE_ENTITIES.contains(this))
-			ISecretBlock.ALL_SECRET_TILE_ENTITIES.add(this);
+		TileEntityData data = ISecretTileEntity.super.readDataFromNBT(compound);
+		mirrorState = data.getMirroredState();
+		locked = data.isLocked();
 	}
 	
 	@Override
 	public void update() {
-		super.update();
 		if(mirrorState != null)
 			ParticleHandler.BLOCKBRAKERENDERMAP.put(pos, mirrorState.getBlock().getStateFromMeta(mirrorState.getBlock().getMetaFromState(mirrorState)));
 	}
 	
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(getPos().add(-1, -1, -1), getPos().add(1, 1, 1));
-	}
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		ISecretTileEntity.super.writeDataToNBT(compound, new TileEntityData().setMirroredState(getMirrorStateSafely()).setLocked(locked));
+		return super.writeToNBT(compound);
+	} 
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) 
-	{
-		if(getMirrorState() != null)
-		{
-			getTileData().setString("MirrorBlock",  getMirrorState().getBlock().getRegistryName().toString());
-			getTileData().setInteger("MirrorMeta", getMirrorState().getBlock().getMetaFromState(getMirrorState()));
-		}
-		getTileData().setBoolean("locked", locked);
-		return super.writeToNBT(compound);
-	}
-	
 	public IBlockState getMirrorState() {
 		if(mirrorState == null && ParticleHandler.BLOCKBRAKERENDERMAP.containsKey(pos))
 			mirrorState = ParticleHandler.BLOCKBRAKERENDERMAP.get(pos);

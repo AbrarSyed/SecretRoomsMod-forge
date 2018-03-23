@@ -44,8 +44,8 @@ public class FakeBlockAccess implements IBlockAccess
 	@Override
 	public IBlockState getBlockState(BlockPos pos) 
 	{
-		return base.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)base.getTileEntity(pos)).getMirrorState() != null
-				? ((ISecretTileEntity)base.getTileEntity(pos)).getMirrorState() : base.getBlockState(pos);
+		return base.getTileEntity(pos) instanceof ISecretTileEntity && ((ISecretTileEntity)base.getTileEntity(pos)).getMirrorStateSafely() != null
+				? ((ISecretTileEntity)base.getTileEntity(pos)).getMirrorStateSafely() : base.getBlockState(pos);
 	}
 
 	@Override

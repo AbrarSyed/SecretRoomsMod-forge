@@ -42,7 +42,7 @@ public class SecretBlockIconProvider implements IBlockIconProvider
 	public Icon getIcon(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) 
 	{
 		if(world.getBlockState(pos).getBlock() instanceof ISecretBlock) {
-			IBlockState mirroredState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
+			IBlockState mirroredState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorStateSafely();
 
 			List<BakedQuad> quadList = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(mirroredState).getQuads(mirroredState, side, MathHelper.getPositionRandom(pos));
 			

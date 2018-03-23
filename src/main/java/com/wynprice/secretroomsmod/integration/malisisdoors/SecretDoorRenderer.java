@@ -71,7 +71,7 @@ public class SecretDoorRenderer extends DoorRenderer
 				EnumFacing facing = sParamsFace.textureSide.get();
 				facing = facing == null ? EnumFacing.SOUTH : facing; //was in build somewhere, just leave it here
 				facing = EnumFacingUtils.getRealSide(blockState, facing);
-				IBlockState mirrorState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorState();
+				IBlockState mirrorState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorStateSafely();
 				
 				try {
 					mirrorState = mirrorState.getActualState(world, pos);
