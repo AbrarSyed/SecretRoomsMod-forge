@@ -46,6 +46,7 @@ public interface ISecretTileEntity extends ITickable
 	/**
 	 * Used to get the Correct HashMap for the World
 	 * @param world the current world
+	 * @return The correct map for the worlds dimension, or a new Map if it dosnt exist
 	 */
 	public static HashMap<BlockPos, IBlockState> getMap(World world)
 	{
@@ -68,6 +69,7 @@ public interface ISecretTileEntity extends ITickable
 	
 	/**
 	 * Gets the mirrored state from the SRM tile entity, in a NoNull way
+	 * @return {@link #getMirrorState()}, or if thats null, {@link Blocks#STONE}
 	 */
 	@Nonnull
 	default public IBlockState getMirrorStateSafely() {
@@ -77,6 +79,7 @@ public interface ISecretTileEntity extends ITickable
 	
 	/**
 	 * Gets the mirred state from the SRM tileEntity. Can be null if somthing went wrong
+	 * @return The mirrored state.
 	 */
 	@Nullable
 	public IBlockState getMirrorState();
@@ -152,8 +155,9 @@ public interface ISecretTileEntity extends ITickable
 	
 	/**
 	 * Default readFromNBT performed on tile entities
-	 * @param compound
-	 * @return
+	 * @param compound The overall {@link NBTTagCompound} being used to read the data
+	 * @param tileData gotten from {@link TileEntity#getTileData()}. Usually contained in {@code compound}, however other mods may change that
+	 * @return The {@link TileEntityData} containing the infomation for the SRM tileEntity
 	 */
 	default public TileEntityData readDataFromNBT(NBTTagCompound compound, NBTTagCompound tileData) {
 		IBlockState mirrorState = null;
@@ -189,7 +193,11 @@ public interface ISecretTileEntity extends ITickable
 		return new TileEntityData().setMirroredState(mirrorState).setLocked(locked);
 	}
 	
-	
+	/**
+	 * Writes the infomation from the tileEntiy to the {@code compound}
+	 * @param compound The compound to write to
+	 * @param data the data for the tileEntity
+	 */
 	default public void writeDataToNBT(NBTTagCompound compound, TileEntityData data) {
 		NBTTagCompound nbt = new NBTTagCompound();
 		if(data.getMirroredState() == null) {

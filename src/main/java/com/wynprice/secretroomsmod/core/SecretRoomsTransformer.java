@@ -31,6 +31,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockModelRenderer;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -68,9 +70,12 @@ public class SecretRoomsTransformer implements IClassTransformer {
 	};
 	
 	/**
-	 * Transforms {@link BlockStateContainer.StateImplementation}
+	 * <b>Transforms {@link BlockStateContainer.StateImplementation}</b>
 	 * <br>Causes {@link IBlockProperties#doesSideBlockRendering(IBlockAccess, BlockPos, EnumFacing)} to be recieved through {@link SecretRoomsTransformer#doesSideBlockRendering(Block, IBlockState, IBlockAccess, BlockPos, EnumFacing)}.
 	 * This means that the state can be set as something, yet if that block in the actual world is a SecretRoomsMod block, then the correct boolean will be used
+	 * <br><br>
+	 * Also transforms {@link IBlockProperties#addCollisionBoxToList(World, BlockPos, net.minecraft.util.math.AxisAlignedBB, java.util.List, net.minecraft.entity.Entity, boolean)} to be recieved through {@link SecretRoomsHooks#addCollisionBoxToList(Block, IBlockState, World, BlockPos, net.minecraft.util.math.AxisAlignedBB, java.util.List, net.minecraft.entity.Entity, boolean)}
+	 * This meaans that if a block is being overridden with Energized Paste, it will have the correct collision box
 	 *
 	 */
 	private final Consumer<ClassNode> StateImplementation = (node) -> {
@@ -116,6 +121,9 @@ public class SecretRoomsTransformer implements IClassTransformer {
 		}
 	};
 	
+	/**
+	 * Transforms {@link BlockModelRenderer#renderModel(IBlockAccess, IBakedModel, IBlockState, BlockPos, net.minecraft.client.renderer.BufferBuilder, boolean, long)}, and sets the IBakedModel to be {@link SecretRoomsHooks#getActualModel(IBlockAccess, BlockPos, IBakedModel)}
+	 */
 	private final Consumer<ClassNode> BlockModelRenderer = (node) -> {
 		for(MethodNode methodNode : node.methods) {
 			if(methodNode.name.equals(getName("renderModel", "func_187493_a")) && methodNode.desc.equals("(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/client/renderer/block/model/IBakedModel;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/renderer/BufferBuilder;ZJ)Z")) {
@@ -129,6 +137,9 @@ public class SecretRoomsTransformer implements IClassTransformer {
 		}
 	};
 	
+	/**
+	 * Transforms {@link BlockRendererDispatcher#renderBlock(IBlockState, BlockPos, IBlockAccess, net.minecraft.client.renderer.BufferBuilder)}, and sets the IBlockState being used to be {@link SecretRoomsHooks#getActualState(IBlockAccess, BlockPos, IBlockState)}
+	 */
 	private final Consumer<ClassNode> BlockRendererDispatcher = (node) -> {
 		for(MethodNode methodNode : node.methods) {
 			if(methodNode.name.equals(getName("renderBlock", "func_175018_a")) && methodNode.desc.equals("(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/client/renderer/BufferBuilder;)Z")) {

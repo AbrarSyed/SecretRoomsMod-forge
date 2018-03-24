@@ -204,7 +204,8 @@ public class EnergizedPasteHandler
 	 * @param world the world
 	 * @param state the state
 	 * @param pos the position
-	 * @return True if the block has the method {@link Block#SRMdoesTileEntityOptIn(World, IBlockState, BlockPos)} which returns true, or the config has the tileEntity in the whitelist
+	 * @return True if the block has the method {@code SRMdoesTileEntityOptIn(World, IBlockState, BlockPos)} which returns true, or the config has the tileEntity in the whitelist
+	 * @deprecated Convert to API, However still in use
 	 */
 	@Deprecated
 	public static boolean tileEntityOptIn(Block block, World world, IBlockState state, BlockPos pos)
@@ -258,6 +259,7 @@ public class EnergizedPasteHandler
 	
 	/**
 	 * Used to render the correct bounding box for the energized paste block. Uses same code from {@link RenderGlobal#drawSelectionBox(EntityPlayer, RayTraceResult, int, float)}
+	 * @param event the event
 	 */
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
@@ -296,6 +298,7 @@ public class EnergizedPasteHandler
 	
 	/**
 	 * Used to figure out when a Energized Paste block is hit, and then what to do with that being hit. (i.e. removing it, placing it, setting the hit state of it, etc, etc)
+	 * @param event the event
 	 */
 	@SubscribeEvent
 	public void onMouseRightClick(RightClickBlock event)
@@ -397,6 +400,7 @@ public class EnergizedPasteHandler
 	
 	/**
 	 * Called when the world is saved. Used to save the energized paste map
+	 * @param event the event
 	 */
 	@SubscribeEvent
 	public void onWorldSaved(WorldEvent.Save event)
@@ -413,6 +417,7 @@ public class EnergizedPasteHandler
 	
 	/**
 	 * Used for the Energized Paste recipe.
+	 * @param event the event
 	 */
 	@SubscribeEvent
 	public void onEntityTick(WorldTickEvent event)
@@ -462,6 +467,7 @@ public class EnergizedPasteHandler
 	
 	/**
 	 * Used when the world is loaded, used to load the {@link EnergizedPasteHandler#energized_map}
+	 * @param event the event
 	 */
 	@SubscribeEvent
 	public void onWorldLoaded(WorldEvent.Load event)
@@ -554,7 +560,7 @@ public class EnergizedPasteHandler
 	
 	/**
 	 * Used to send the data to the player when they join
-	 * @param event
+	 * @param event the event
 	 */
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerLoggedInEvent event)

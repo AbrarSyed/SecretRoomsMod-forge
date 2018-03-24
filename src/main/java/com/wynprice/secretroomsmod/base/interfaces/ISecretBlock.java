@@ -127,7 +127,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	/**
-	 * Used as an override to SRM blocks. Used to run {@link Block#canCreatureSpawn(IBlockState, IBlockAccess, BlockPos, SpawnPlacementType)} on Mirrored states
+	 * Used as an override to SRM blocks. Used to run {@code Block#canCreatureSpawn(IBlockState, IBlockAccess, BlockPos, SpawnPlacementType)} on Mirrored states
 	 * @param state The current state
      * @param world The current world
      * @param pos Block position in world
@@ -140,6 +140,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	
 	/**
 	 * Used as an override to SRM blocks. Used to run {@link Block#canHarvestBlock(IBlockAccess, BlockPos, EntityPlayer)} on mirrored states
+	 * @param world The world
      * @param player The player damaging the block
      * @param pos The block's current position
      * @return True to spawn the drops
@@ -187,7 +188,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	/**
 	 * Used as an override to SRM blocks. Used to run {@link Block#getBlockHardness(IBlockState, World, BlockPos)} on the Mirrored state
 	 * @param worldIn The current world
-	 * @param state The {@link IBlockState} of the current position
+	 * @param blockState The {@link IBlockState} of the current position
 	 * @param pos The position of the block
 	 * @return the hardness of the block
 	 */
@@ -269,7 +270,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	 * @param entityBox The colliding Entities bounding box
 	 * @param collidingBoxes The list of bounding boxes
 	 * @param entityIn The Entity Colliding with the block
-	 * @param isActualState 
+	 * @param isActualState Is the {@code state} the actual state
 	 */
 	default void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
 			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) 
@@ -307,7 +308,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	/**
-	 * Used to override the light of a block. Used to call {@link Block#getLightValue(IBlockState, IBlockAccess, BlockPos) on the mirrored state
+	 * Used to override the light of a block. Used to call {@link Block#getLightValue(IBlockState, IBlockAccess, BlockPos)} on the mirrored state
 	 * @param state the state
 	 * @param world the world
 	 * @param pos the position
@@ -318,7 +319,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	}
 	
 	/**
-	 * Used as an override of SRM blocks. Runs {@link Block#isOpaqueCube(IBlockState)(IBlockState)} on the mirrored state, which it got using the {@link #RENDER_PROPERTY}
+	 * Used as an override of SRM blocks. Runs {@link Block#isOpaqueCube(IBlockState)} on the mirrored state, which it got using the {@link #RENDER_PROPERTY}
 	 * @param state the current state
 	 * @return if the mirrored state is a opaque cube, or fale if {@code state} dosnt contain the value for {@link #RENDER_PROPERTY}
 	 */
@@ -346,7 +347,7 @@ public interface ISecretBlock extends ITileEntityProvider
     }
 	
 	/**
-	 * Used as an override for SRM blocks. Runs {@link Block#getPackedLightmapCoords(IBlockState, IBlockAccess, BlockPos)} on the mirrored state
+	 * Used as an override for SRM blocks. Runs {@link Block#getPackedLightmapCoords(IBlockState, IBlockAccess, BlockPos)} on mirrored state
 	 * @param state the current state
 	 * @param source the current world
 	 * @param pos the current blockpos
@@ -437,9 +438,9 @@ public interface ISecretBlock extends ITileEntityProvider
 	
 	/**
 	 * An override for SRM blocks. Used to spawn the correct running particles
-     * @param state  The BlockState the entity is running on.
-     * @param world  The world.
-     * @param pos    The position at the entities feet.
+     * @param state The BlockState the entity is running on.
+     * @param world The world.
+     * @param blockpos The position at the entities feet.
      * @param entity The entity running on the block.
      * @return True to prevent vanilla running particles from spawning.
 	 */
@@ -578,22 +579,4 @@ public interface ISecretBlock extends ITileEntityProvider
 //		}
 		return state;
 	}
-	
-    /**
-     * Gets the blockstate this facade appears as.
-     *
-     * @param world
-     *            {@link World}
-     * @param pos
-     *            The Blocks position
-     * @param side
-     *            The side being rendered, NOT the side being connected from.
-     *            <p/>
-     *            This value can be null if no side is specified. Please handle this appropriately.
-     * @return The blockstate which your block appears as.
-     */
-	default IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return ISecretTileEntity.getMirrorState(world, pos);
-	}
-
 }

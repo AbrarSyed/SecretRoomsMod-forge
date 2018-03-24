@@ -49,7 +49,7 @@ public class FakeBlockModel implements IBakedModel
 	
 	/**
 	 * Used to set the current state of the SRM block thats actually in the world
-	 * @param currentRender
+	 * @param currentRender The current SRM block thats in the world
 	 * @return this instance
 	 */
 	public FakeBlockModel setCurrentRender(IBlockState currentRender) {
@@ -59,7 +59,7 @@ public class FakeBlockModel implements IBakedModel
 	
 	/**
 	 * Used to set the current actual state of the block being rendered
-	 * @param currentActualState
+	 * @param currentActualState The current actual state of the mirroredState
 	 * @return this instance
 	 */
 	public FakeBlockModel setCurrentActualState(IBlockState currentActualState) {

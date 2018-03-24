@@ -67,7 +67,10 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 	}
 	
 	/**
-	 * Try not to use. Will get the model from the state
+	 * Try not to use. Will get the model from the state.
+	 * @param face the direction thats being rendered. Can be null
+	 * @param state the state being mirrored by the SRM block
+	 * @return The RenderInfo containing the {@link IBlockState} and the {@link IBakedModel} that going to be rendered
 	 */
 	public final RenderInfo getRenderInfo(EnumFacing face, IBlockState state) {
 		return new RenderInfo(state, getModel(state));
