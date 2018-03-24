@@ -28,6 +28,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SecretRoomsHooks {
 	
@@ -39,6 +41,7 @@ public class SecretRoomsHooks {
 	 * @param pos The position 
 	 * @return The actual block state, if the tileEntity at that position is an {@link ISecretTileEntity}
 	 */
+	@SideOnly(Side.CLIENT)
 	public static IBlockState getBlockState(IBlockAccess world, BlockPos pos) {
 		if(world.getTileEntity(pos) instanceof ISecretTileEntity) {
 			IBlockState state = world.getTileEntity(pos).getWorld().getBlockState(pos);
@@ -70,6 +73,7 @@ public class SecretRoomsHooks {
 	 * @param face The current face
 	 * @return {@link Block#doesSideBlockRendering(IBlockState, IBlockAccess, BlockPos, EnumFacing)}, run on the normal block, or the SRM state if the tileEntity at the position is an {@link ISecretTileEntity}
 	 */
+	@SideOnly(Side.CLIENT)
 	public static boolean doesSideBlockRendering(Block block, IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
 		if(world.getTileEntity(pos) instanceof ISecretTileEntity) {
 			IBlockState otherState = world.getTileEntity(pos).getWorld().getBlockState(pos);
@@ -90,6 +94,7 @@ public class SecretRoomsHooks {
 	 * @param face the blockface
 	 * @return {@link Block#shouldSideBeRendered(IBlockState, IBlockAccess, BlockPos, EnumFacing)}, run on the normal block, or the SRM state if the tileEntity at the position is an instance of {@link ISecretTileEntity}
 	 */
+	@SideOnly(Side.CLIENT)
 	public static boolean shouldSideBeRendered(Block block, IBlockState state, IBlockAccess access, BlockPos pos, EnumFacing face) {
 		if(!isMalisisDoor(state) && access.getTileEntity(pos) instanceof ISecretTileEntity) {
 			World world = access.getTileEntity(pos).getWorld(); //Need to use world as the IBlockAccess wont return the right states
@@ -106,6 +111,7 @@ public class SecretRoomsHooks {
 	 * @param model The current model
 	 * @return {@code model}, or {@link SecretBlockModel#instance()} if the tileEntity at the position is an instance of {@link ISecretTileEntity}
 	 */
+	@SideOnly(Side.CLIENT)
 	public static IBakedModel getActualModel(IBlockAccess access, BlockPos pos, IBakedModel model) {
 		if(access.getTileEntity(pos) instanceof ISecretTileEntity) {
 			IBlockState state = access.getTileEntity(pos).getWorld().getBlockState(pos);
@@ -152,6 +158,7 @@ public class SecretRoomsHooks {
 	 * @param state The blockstate used to be rendering. <i> This block will be an instance of ISecretBlock, if the block at that position in game is so</i>
 	 * @return {@code state} or the mirrored state of the SRM block, if so needed. 
 	 */
+	@SideOnly(Side.CLIENT)
 	public static IBlockState getActualState(IBlockAccess access, BlockPos pos, IBlockState state) {
 		if(isMalisisDoor(state)) {
 			return state;
