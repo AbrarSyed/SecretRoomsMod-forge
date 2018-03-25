@@ -571,7 +571,6 @@ public interface ISecretBlock extends ITileEntityProvider
 //			}
 //			IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
 //			state = ((IExtendedBlockState)state).withProperty(RENDER_PROPERTY, renderState);
-//			System.out.println("jef");
 //			if(model instanceof SecretBlockModel) {
 //				((SecretBlockModel)model).AO.set(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(renderState).isAmbientOcclusion());
 //				((SecretBlockModel)model).SRMBLOCK.set(state);
