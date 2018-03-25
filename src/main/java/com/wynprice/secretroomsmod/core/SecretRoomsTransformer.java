@@ -60,7 +60,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 					if(ins instanceof MethodInsnNode) {
 						MethodInsnNode mIns = ((MethodInsnNode)ins);
 						if(mIns.getOpcode() == Opcodes.INVOKEVIRTUAL && (mIns.owner.equals("ChunkCacheOF")/*Needed so Optifine works with SRM*/ || mIns.owner.equals("net/minecraft/world/ChunkCache")) && mIns.name.equals(getName("getBlockState", "func_180495_p")) && mIns.desc.equals("(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;")) {
-							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "getBlockState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;", false));
+							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooksClient", "getBlockState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;", false));
 							return;
 						} 
 					}
@@ -74,7 +74,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 	 * <br>Causes {@link IBlockProperties#doesSideBlockRendering(IBlockAccess, BlockPos, EnumFacing)} to be recieved through {@link SecretRoomsTransformer#doesSideBlockRendering(Block, IBlockState, IBlockAccess, BlockPos, EnumFacing)}.
 	 * This means that the state can be set as something, yet if that block in the actual world is a SecretRoomsMod block, then the correct boolean will be used
 	 * <br><br>
-	 * Also transforms {@link IBlockProperties#addCollisionBoxToList(World, BlockPos, net.minecraft.util.math.AxisAlignedBB, java.util.List, net.minecraft.entity.Entity, boolean)} to be recieved through {@link SecretRoomsHooks#addCollisionBoxToList(Block, IBlockState, World, BlockPos, net.minecraft.util.math.AxisAlignedBB, java.util.List, net.minecraft.entity.Entity, boolean)}
+	 * Also transforms {@link IBlockProperties#addCollisionBoxToList(World, BlockPos, net.minecraft.util.math.AxisAlignedBB, java.util.List, net.minecraft.entity.Entity, boolean)} to be recieved through {@link SecretRoomsHooksClient#addCollisionBoxToList(Block, IBlockState, World, BlockPos, net.minecraft.util.math.AxisAlignedBB, java.util.List, net.minecraft.entity.Entity, boolean)}
 	 * This meaans that if a block is being overridden with Energized Paste, it will have the correct collision box
 	 *
 	 */
@@ -93,7 +93,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 				list.add(new VarInsnNode(Opcodes.ALOAD, 1));
 				list.add(new VarInsnNode(Opcodes.ALOAD, 2));
 				list.add(new VarInsnNode(Opcodes.ALOAD, 3));
-				list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "doesSideBlockRendering", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
+				list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooksClient", "doesSideBlockRendering", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
 				list.add(new InsnNode(Opcodes.IRETURN));
 				list.add(endLabel);
 				methodNode.instructions = list;
@@ -103,7 +103,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 					if(ins instanceof MethodInsnNode) {
 						MethodInsnNode mIns = ((MethodInsnNode)ins);
 						if(mIns.getOpcode() == Opcodes.INVOKEVIRTUAL && mIns.owner.equals("net/minecraft/block/Block") && mIns.name.equals(getName("shouldSideBeRendered", "func_176225_a")) && mIns.desc.equals("(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z")) {
-							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "shouldSideBeRendered", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
+							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooksClient", "shouldSideBeRendered", "(Lnet/minecraft/block/Block;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", false));
 						}
 					}
 				}
@@ -122,13 +122,13 @@ public class SecretRoomsTransformer implements IClassTransformer {
 	};
 	
 	/**
-	 * Transforms {@link BlockModelRenderer#renderModel(IBlockAccess, IBakedModel, IBlockState, BlockPos, net.minecraft.client.renderer.BufferBuilder, boolean, long)}, and sets the IBakedModel to be {@link SecretRoomsHooks#getActualModel(IBlockAccess, BlockPos, IBakedModel)}
+	 * Transforms {@link BlockModelRenderer#renderModel(IBlockAccess, IBakedModel, IBlockState, BlockPos, net.minecraft.client.renderer.BufferBuilder, boolean, long)}, and sets the IBakedModel to be {@link SecretRoomsHooksClient#getActualModel(IBlockAccess, BlockPos, IBakedModel)}
 	 */
 	private final Consumer<ClassNode> BlockModelRenderer = (node) -> {
 		for(MethodNode methodNode : node.methods) {
 			if(methodNode.name.equals(getName("renderModel", "func_187493_a")) && methodNode.desc.equals("(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/client/renderer/block/model/IBakedModel;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/renderer/BufferBuilder;ZJ)Z")) {
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ASTORE, 2));
-				methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "getActualModel", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/renderer/block/model/IBakedModel;)Lnet/minecraft/client/renderer/block/model/IBakedModel;", false));
+				methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooksClient", "getActualModel", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/renderer/block/model/IBakedModel;)Lnet/minecraft/client/renderer/block/model/IBakedModel;", false));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 2));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 4));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 1));
@@ -138,13 +138,13 @@ public class SecretRoomsTransformer implements IClassTransformer {
 	};
 	
 	/**
-	 * Transforms {@link BlockRendererDispatcher#renderBlock(IBlockState, BlockPos, IBlockAccess, net.minecraft.client.renderer.BufferBuilder)}, and sets the IBlockState being used to be {@link SecretRoomsHooks#getActualState(IBlockAccess, BlockPos, IBlockState)}
+	 * Transforms {@link BlockRendererDispatcher#renderBlock(IBlockState, BlockPos, IBlockAccess, net.minecraft.client.renderer.BufferBuilder)}, and sets the IBlockState being used to be {@link SecretRoomsHooksClient#getActualState(IBlockAccess, BlockPos, IBlockState)}
 	 */
 	private final Consumer<ClassNode> BlockRendererDispatcher = (node) -> {
 		for(MethodNode methodNode : node.methods) {
 			if(methodNode.name.equals(getName("renderBlock", "func_175018_a")) && methodNode.desc.equals("(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/client/renderer/BufferBuilder;)Z")) {
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ASTORE, 1));
-				methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "getActualState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/block/state/IBlockState;", false));
+				methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooksClient", "getActualState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/block/state/IBlockState;", false));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 1));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 2));
 				methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 3));
