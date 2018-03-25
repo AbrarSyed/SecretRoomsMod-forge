@@ -75,21 +75,8 @@ public class FakeChunkCache extends ChunkCache
 			else
 				return EnergizedPasteHandler.getReplacedState(world, pos);
 		}
-		if(oldCache.getBlockState(pos).getBlock() instanceof ISecretBlock) {
-			IBlockState mirroredState = ((ISecretTileEntity)oldCache.getTileEntity(pos)).getMirrorStateSafely();
-			
-			ArrayList<Class<?>> interfaces = new ArrayList<>(); //Used so the class implements the correct interfaces. Say if a mod set up its own IBlockState then this would still work for it
-			Class<?> currentClass = mirroredState.getClass();
-			while(currentClass != null) {
-				for(Class<?> cls : currentClass.getInterfaces()) {
-					if(IBlockState.class.isAssignableFrom(cls)) {
-						interfaces.add(cls);
-					}
-				}
-				currentClass = currentClass.getSuperclass();
-			}
-
-			return mirroredState;
+		if(oldCache.getTileEntity(pos) instanceof ISecretTileEntity) {
+			return ((ISecretTileEntity)oldCache.getTileEntity(pos)).getMirrorStateSafely();
 		}
 		return oldCache.getBlockState(pos);
 	}	
