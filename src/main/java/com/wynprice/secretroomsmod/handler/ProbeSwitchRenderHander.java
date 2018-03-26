@@ -1,8 +1,12 @@
 package com.wynprice.secretroomsmod.handler;
 
+import com.wynprice.secretroomsmod.SecretBlocks;
+import com.wynprice.secretroomsmod.SecretCompatibility;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.integration.malisisdoors.MalisisItemTrapDoorModel;
+import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.SecretBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.SwitchProbeRenderChange;
 
@@ -12,6 +16,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -19,10 +24,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author Wyn Price
  *
  */
+@EventBusSubscriber(modid=SecretRooms5.MODID)
 public class ProbeSwitchRenderHander 
 {
 	 @SubscribeEvent
-	 public void onModelBake(ModelBakeEvent e) 
+	 public static void onModelBake(ModelBakeEvent e) 
 	 {
 		 boolean instanceSet = false;
 		 for(ModelResourceLocation model : e.getModelRegistry().getKeys())
@@ -30,6 +36,12 @@ public class ProbeSwitchRenderHander
 	            if(model.getResourceDomain().equals(SecretRooms5.MODID) && (model.getResourcePath().equals(SecretItems.SWITCH_PROBE.getRegistryName().getResourcePath())
 	            		|| model.getResourcePath().equals(SecretItems.PROGRAMMABLE_SWITCH_PROBE.getRegistryName().getResourcePath())))
 	            	e.getModelRegistry().putObject(model, new SwitchProbeRenderChange(e.getModelRegistry().getObject(model)));
+	            
+	            if(SecretCompatibility.MALISISDOORS && model.getVariant().equals("inventory") && model.getResourceDomain().equals(SecretRooms5.MODID)) {
+	            	if(model.getResourcePath().equals(SecretBlocks.SECRET_WOODEN_TRAPDOOR.getRegistryName().getResourcePath())) {
+	            		e.getModelRegistry().putObject(model, new MalisisItemTrapDoorModel());
+	            	}
+	            }
 	            
 	            if(!model.getVariant().equals("inventory"))
 	            {

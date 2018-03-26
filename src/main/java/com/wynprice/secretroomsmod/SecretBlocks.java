@@ -33,11 +33,17 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
+@EventBusSubscriber(modid=SecretRooms5.MODID)
 public class SecretBlocks 
 {
 	
@@ -57,7 +63,7 @@ public class SecretBlocks
 	public static final Block SECRET_CHEST = new SecretChest("secret_chest");
 	public static final Block SECRET_WOODEN_DOOR = SecretCompatibility.MALISISDOORS ? SecretCompactMalisisDoors.WOODEN_DOOR : new BaseBlockDoor("secret_wooden_door", Material.WOOD);
 	public static final Block SECRET_IRON_DOOR = SecretCompatibility.MALISISDOORS ? SecretCompactMalisisDoors.IRON_DOOR : new BaseBlockDoor("secret_iron_door", Material.IRON);
-	public static final Block SECRET_WOODEN_TRAPDOOR = new SecretTrapDoor("secret_wooden_trapdoor", Material.WOOD);
+	public static final Block SECRET_WOODEN_TRAPDOOR = SecretCompatibility.MALISISDOORS ? SecretCompactMalisisDoors.WOODEN_TRAPDOOR : new SecretTrapDoor("secret_wooden_trapdoor", Material.WOOD);
 	public static final Block SECRET_IRON_TRAPDOOR = new SecretTrapDoor("secret_iron_trapdoor", Material.IRON);
 	public static final Block SECRET_DISPENSER = new SecretDispenser();
 	public static final Block SECRET_TRAPPED_CHEST = new SecretTrappedChest();
@@ -66,9 +72,12 @@ public class SecretBlocks
 	public static final SecretLightDetector SECRET_LIGHT_DETECTOR = new SecretLightDetector(false);
 	public static final SecretLightDetector SECRET_LIGHT_DETECTOR_INVERTED = new SecretLightDetector(true);
 
+	private static IForgeRegistry<Block> blockRegistry;
 	
-	public static void preInit()
+	@SubscribeEvent
+	public static void preInit(RegistryEvent.Register<Block> event)
 	{
+		blockRegistry = event.getRegistry();
 		regBlock(GHOST_BLOCK);
 		regBlockIgnoreAll(FAKE_STAIRS);
 		regBlockIgnoreAll(FAKE_LEVER);
@@ -100,7 +109,8 @@ public class SecretBlocks
 	private final static ArrayList<Block> BLOCKS_WITH_CUSTOM_STATE_MAP = new ArrayList<Block>();
 	private final static ArrayList<IProperty<?>[]> PROPERTIES_TO_IGNORE_CUSTOM_STATE_MAP = new ArrayList<IProperty<?>[]>();
 	
-	public static void regRenders() {
+	@SubscribeEvent
+	public static void regRenders(ModelRegistryEvent event) {
 		for(int i = 0; i < BLOCKS_WITH_CUSTOM_STATE_MAP.size(); i++)
 			createStateMappers(BLOCKS_WITH_CUSTOM_STATE_MAP.get(i), PROPERTIES_TO_IGNORE_CUSTOM_STATE_MAP.get(i));
 		for(Block b : BLOCKS_WITH_ITEMS)
@@ -166,7 +176,7 @@ public class SecretBlocks
 	
 	private static void register(Block block)
 	{
-		ForgeRegistries.BLOCKS.register(block);
+		blockRegistry.register(block);
 		if(BLOCKS_WITH_ITEMS.contains(block))
 		{
 			ItemBlock item = new SecretItemBlock(block);

@@ -1,5 +1,6 @@
 package com.wynprice.secretroomsmod.base;
 
+import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
@@ -9,6 +10,7 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -71,6 +73,9 @@ public class BaseItemDoor extends Item
 	
 	public static void placeDoor(World worldIn, BlockPos pos, IBlockState mirrorState, EnumFacing facing, Block door, boolean isRightHinge)
     {
+		if(!mirrorState.isNormalCube() && SecretConfig.BLOCK_FUNCTIONALITY.onlyFullBlocks) {
+			mirrorState = Blocks.STONE.getDefaultState();
+		}
         BlockPos blockpos = pos.offset(facing.rotateY());
         BlockPos blockpos1 = pos.offset(facing.rotateYCCW());
         int i = (worldIn.getBlockState(blockpos1).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).isNormalCube() ? 1 : 0);

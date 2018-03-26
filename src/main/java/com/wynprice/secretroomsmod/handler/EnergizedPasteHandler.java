@@ -48,6 +48,7 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
@@ -59,6 +60,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Wyn Price
  *
  */
+@EventBusSubscriber(modid=SecretRooms5.MODID)
 public class EnergizedPasteHandler 
 {
 	/**
@@ -263,7 +265,7 @@ public class EnergizedPasteHandler
 	 */
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void onBlockBoundingBoxDrawn(DrawBlockHighlightEvent event)
+	public static void onBlockBoundingBoxDrawn(DrawBlockHighlightEvent event)
 	{
 		if (event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK && hasReplacedState(Minecraft.getMinecraft().world, event.getTarget().getBlockPos()))
         {
@@ -294,14 +296,14 @@ public class EnergizedPasteHandler
 	/**
 	 * A list of previously ticked positions. Used to keep track of when a blocks hit or not
 	 */
-	private ArrayList<Location> previousServerTickMap = new ArrayList<>();
+	private static ArrayList<Location> previousServerTickMap = new ArrayList<>();
 	
 	/**
 	 * Used to figure out when a Energized Paste block is hit, and then what to do with that being hit. (i.e. removing it, placing it, setting the hit state of it, etc, etc)
 	 * @param event the event
 	 */
 	@SubscribeEvent
-	public void onMouseRightClick(RightClickBlock event)
+	public static void onMouseRightClick(RightClickBlock event)
 	{
 		Location location = new Location(event.getPos(), event.getWorld());
 		if((hasReplacedState(event.getWorld(), event.getPos()) && event.getEntityPlayer().getHeldItemMainhand().isEmpty() && event.getEntityPlayer().isSneaking()) || previousServerTickMap.contains(location))
@@ -403,7 +405,7 @@ public class EnergizedPasteHandler
 	 * @param event the event
 	 */
 	@SubscribeEvent
-	public void onWorldSaved(WorldEvent.Save event)
+	public static void onWorldSaved(WorldEvent.Save event)
 	{
 		if(event.getWorld().isRemote) return;		
 		try 
@@ -420,7 +422,7 @@ public class EnergizedPasteHandler
 	 * @param event the event
 	 */
 	@SubscribeEvent
-	public void onEntityTick(WorldTickEvent event)
+	public static void onEntityTick(WorldTickEvent event)
 	{
 		if(event.world.isRemote) return;
 		for(Entity entity : new ArrayList<>(event.world.loadedEntityList))
@@ -470,7 +472,7 @@ public class EnergizedPasteHandler
 	 * @param event the event
 	 */
 	@SubscribeEvent
-	public void onWorldLoaded(WorldEvent.Load event)
+	public static void onWorldLoaded(WorldEvent.Load event)
 	{
 		if(event.getWorld().isRemote) return;
 		try 
@@ -563,7 +565,7 @@ public class EnergizedPasteHandler
 	 * @param event the event
 	 */
 	@SubscribeEvent
-	public void onPlayerJoin(PlayerLoggedInEvent event)
+	public static void onPlayerJoin(PlayerLoggedInEvent event)
 	{
 		SecretNetwork.sendToPlayer(event.player, new MessagePacketSyncEnergizedPaste(saveToNBT(), null));
 	}
@@ -581,7 +583,7 @@ public class EnergizedPasteHandler
 	 * @author Wyn Price
 	 *
 	 */
-	private class Location
+	private static class Location
 	{
 		private final BlockPos pos;
 		private final World world;

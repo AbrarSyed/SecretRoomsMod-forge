@@ -2,7 +2,7 @@ package com.wynprice.secretroomsmod.integration.malisisdoors;
 
 import net.malisis.doors.DoorDescriptor;
 
-public interface DoorDescriptorFactory 
+public interface DescriptorFactory<T extends DoorDescriptor> 
 {
-	public DoorDescriptor getDescriptor();
+	public T getDescriptor();
 }

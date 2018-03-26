@@ -2,6 +2,7 @@ package com.wynprice.secretroomsmod.handler;
 
 import org.lwjgl.input.Keyboard;
 
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.items.CamouflagePaste;
 import com.wynprice.secretroomsmod.network.SecretNetwork;
 import com.wynprice.secretroomsmod.network.packets.MessagePacketEnergizedPaste;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
  * @author Wyn Price
  *
  */
+@EventBusSubscriber(modid=SecretRooms5.MODID)
 public class SecretKeyBindings
 {
 	/**
@@ -32,7 +35,7 @@ public class SecretKeyBindings
 	private static final KeyBinding CHANGE_GLASS_DIRECTION = registerKey(new KeyBinding("key.secretroomsmod.oneWayface", Keyboard.KEY_BACKSLASH, "key.categories.secretroomsmod"));
 	
 	@SubscribeEvent
-	public void onKeyPressed(KeyInputEvent event)
+	public static void onKeyPressed(KeyInputEvent event)
 	{
 		if(CHANGE_GLASS_DIRECTION.isPressed())
 		{

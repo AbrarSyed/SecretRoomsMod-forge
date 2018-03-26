@@ -1,13 +1,16 @@
 package com.wynprice.secretroomsmod.base;
 
+import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -16,6 +19,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 public class SecretItemBlock extends ItemBlock
 {
@@ -44,12 +48,17 @@ public class SecretItemBlock extends ItemBlock
             int i = this.getMetadata(itemstack.getMetadata());
             IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 
+            if(!mirrorState.isNormalCube() && SecretConfig.BLOCK_FUNCTIONALITY.onlyFullBlocks) {
+    			mirrorState = Blocks.STONE.getDefaultState();
+    		}
+            
             ISecretTileEntity.getMap(worldIn).put(pos, mirrorState);
             
             if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1))
             {
-            	if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity)
+            	if(worldIn.getTileEntity(pos) instanceof ISecretTileEntity) {
             		((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(mirrorState);
+            	}
                 iblockstate1 = worldIn.getBlockState(pos);
                 SoundType soundtype = iblockstate1.getBlock().getSoundType(iblockstate1, worldIn, pos, player);
                 worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);

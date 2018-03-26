@@ -12,7 +12,8 @@ public final class SecretConfig {
 
     public static final General GENERAL = new General();
     public static final EnergizedPaste ENERGIZED_PASTE = new EnergizedPaste();
-
+    public static final SRMBlockFunctionality BLOCK_FUNCTIONALITY = new SRMBlockFunctionality();
+    
     public static final class General {
         @Config.Name("update_checker")
         @Config.Comment("Check for mod updates on startup")
@@ -56,7 +57,19 @@ public final class SecretConfig {
         @Config.Name("sound_use_pitch")
         public double soundUsePitch = 3.0D;
     }
-    
+ 
+    public static final class SRMBlockFunctionality {
+    	
+    	@Config.Comment("Should SRM attempt to copy the light value of the block its mirroring")
+    	@Config.Name("copy_light")
+    	public boolean copyLight = true;
+    	
+    	@Config.Comment("Should SRM be limited to only full blocks (Like the Classic SecretRoomsMod)")
+    	@Config.Name("only_full_blocks")
+    	public boolean onlyFullBlocks = false;
+    	
+    	
+    }
     @SubscribeEvent
     public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         if(event.getConfigID().equals(SecretRooms5.MODID)) {

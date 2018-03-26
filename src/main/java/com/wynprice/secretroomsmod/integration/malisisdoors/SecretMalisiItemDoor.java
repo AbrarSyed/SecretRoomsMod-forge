@@ -1,6 +1,7 @@
 package com.wynprice.secretroomsmod.integration.malisisdoors;
 
 import com.wynprice.secretroomsmod.base.BaseBlockDoor;
+import com.wynprice.secretroomsmod.base.BaseItemDoor;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 
@@ -58,42 +59,9 @@ public class SecretMalisiItemDoor extends DoorItem
 		if (!block.canPlaceBlockAt(world, pos))
 			return EnumActionResult.FAIL;
 
-		placeDoor(world, pos, state, EnumFacing.fromAngle(player.rotationYaw), block, false);
+		BaseItemDoor.placeDoor(world, pos, state, EnumFacing.fromAngle(player.rotationYaw), block, false);
 		itemStack.shrink(1);
 		block.onBlockPlacedBy(world, pos, world.getBlockState(pos), player, itemStack);
 		return EnumActionResult.SUCCESS;
 	}
-	
-	public static void placeDoor(World worldIn, BlockPos pos, IBlockState mirrorState, EnumFacing facing, Block door, boolean isRightHinge)
-    {
-        BlockPos blockpos = pos.offset(facing.rotateY());
-        BlockPos blockpos1 = pos.offset(facing.rotateYCCW());
-        int i = (worldIn.getBlockState(blockpos1).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).isNormalCube() ? 1 : 0);
-        int j = (worldIn.getBlockState(blockpos).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos.up()).isNormalCube() ? 1 : 0);
-        boolean flag = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
-        boolean flag1 = worldIn.getBlockState(blockpos).getBlock() == door || worldIn.getBlockState(blockpos.up()).getBlock() == door;
-
-        if ((!flag || flag1) && j <= i)
-        {
-            if (flag1 && !flag || j < i)
-            {
-                isRightHinge = false;
-            }
-        }
-        else
-        {
-            isRightHinge = true;
-        }
-        BlockPos blockpos2 = pos.up();
-        boolean flag2 = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos2);
-        IBlockState iblockstate = door.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, isRightHinge ? BlockDoor.EnumHingePosition.RIGHT : BlockDoor.EnumHingePosition.LEFT).withProperty(BlockDoor.POWERED, Boolean.valueOf(flag2)).withProperty(BlockDoor.OPEN, Boolean.valueOf(flag2));
-        ISecretTileEntity.getMap(worldIn).put(pos, mirrorState);
-        ISecretTileEntity.getMap(worldIn).put(blockpos2, mirrorState);
-        worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 3);
-        worldIn.setBlockState(blockpos2, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 3);
-        ((ISecretTileEntity)worldIn.getTileEntity(pos)).setMirrorState(mirrorState);
-        ((ISecretTileEntity)worldIn.getTileEntity(blockpos2)).setMirrorState(mirrorState);
-        worldIn.notifyNeighborsOfStateChange(pos, door, false);
-        worldIn.notifyNeighborsOfStateChange(blockpos2, door, false);
-    }
 }

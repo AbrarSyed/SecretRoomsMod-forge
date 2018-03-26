@@ -1,5 +1,6 @@
 package com.wynprice.secretroomsmod.handler;
 
+import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
@@ -8,6 +9,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
@@ -16,15 +18,16 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
  * @author Wyn Price
  *
  */
+@EventBusSubscriber(modid=SecretRooms5.MODID)
 public class ReloadTrueSightModelsHandler 
 {
 	
-	boolean lastTickHelmet;
+	static boolean lastTickHelmet;
 	
-	int updated = 0;
+	static int updated = 0;
 	
 	@SubscribeEvent
-	public void onPlayerTick(PlayerTickEvent event)
+	public static void onPlayerTick(PlayerTickEvent event)
 	{
 		if(event.player instanceof EntityPlayerSP && (updated++ == 20 || event.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof TrueSightHelmet != lastTickHelmet))
 		{

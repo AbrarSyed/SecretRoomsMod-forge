@@ -24,6 +24,7 @@ public class ProgrammableSwitchProbe extends Item
 	public ProgrammableSwitchProbe() {
 		setRegistryName("programmable_switch_probe");
 		setUnlocalizedName("programmable_switch_probe");
+		this.setMaxStackSize(1);
 	}
 	
 	@Override

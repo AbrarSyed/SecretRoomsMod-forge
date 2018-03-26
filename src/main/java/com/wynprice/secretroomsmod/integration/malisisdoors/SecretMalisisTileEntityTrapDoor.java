@@ -6,18 +6,15 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity.TileEntityD
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 
 import net.malisis.core.util.syncer.Syncable;
-import net.malisis.doors.tileentity.DoorTileEntity;
-import net.minecraft.block.Block;
+import net.malisis.doors.tileentity.TrapDoorTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 
 @Syncable("TileEntity")
-public class SecretMalisisTileEntityDoor extends DoorTileEntity implements ISecretTileEntity
+public class SecretMalisisTileEntityTrapDoor extends TrapDoorTileEntity implements ISecretTileEntity
 {
 	/**
 	 * The mirrored state

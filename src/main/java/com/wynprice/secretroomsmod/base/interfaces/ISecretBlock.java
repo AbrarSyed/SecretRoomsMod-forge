@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.wynprice.secretroomsmod.SecretConfig;
 import com.wynprice.secretroomsmod.handler.ParticleHandler;
 import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 import com.wynprice.secretroomsmod.render.RenderStateUnlistedProperty;
@@ -304,7 +305,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	 * @return the opacity
 	 */
 	default int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return ISecretTileEntity.getMirrorState(world, pos).getLightOpacity(new FakeBlockAccess(world), pos); //Dont use getState as the tileEntity may be null
+		return SecretConfig.BLOCK_FUNCTIONALITY.copyLight ? ISecretTileEntity.getMirrorState(world, pos).getLightOpacity(new FakeBlockAccess(world), pos) : 255; //Dont use getState as the tileEntity may be null
 	}
 	
 	/**
@@ -315,7 +316,7 @@ public interface ISecretBlock extends ITileEntityProvider
 	 * @return the lightvalue
 	 */
 	default int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return ISecretTileEntity.getMirrorState(world, pos).getLightValue(new FakeBlockAccess(world), pos); //Dont use getState as the tileEntity may be null
+		return SecretConfig.BLOCK_FUNCTIONALITY.copyLight ? ISecretTileEntity.getMirrorState(world, pos).getLightValue(new FakeBlockAccess(world), pos) : 0; //Dont use getState as the tileEntity may be null
 	}
 	
 	/**

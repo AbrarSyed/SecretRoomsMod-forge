@@ -20,6 +20,7 @@ import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 
@@ -30,12 +31,13 @@ import net.minecraftforge.fml.common.versioning.ComparableVersion;
  *
  */
 @Deprecated
+@EventBusSubscriber(modid=SecretRooms5.MODID)
 public class HandlerUpdateChecker 
 {
-	private boolean hasPosted;
+	private static boolean hasPosted;
 	
 	@SubscribeEvent
-	public void onPlayerJoin(EntityJoinWorldEvent event)
+	public static void onPlayerJoin(EntityJoinWorldEvent event)
 	{
 		if(event.getEntity() instanceof EntityPlayer && !hasPosted)
 		{

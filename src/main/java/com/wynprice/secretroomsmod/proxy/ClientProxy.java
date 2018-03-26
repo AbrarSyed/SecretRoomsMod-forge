@@ -3,7 +3,6 @@ package com.wynprice.secretroomsmod.proxy;
 import java.awt.Color;
 import java.lang.reflect.Field;
 
-import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
@@ -30,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -37,30 +37,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class ClientProxy extends CommonProxy 
 {	
-	@Override
-	public void preInit(FMLPreInitializationEvent event) 
-	{	
-		super.preInit(event);
-
-		
-		SecretItems.regRenders();
-		
-		SecretBlocks.regRenders();
-				
-//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInfomationHolder.class, new TileEntityInfomationHolderRenderer());
-//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretDispenser.class, new TileEntityInfomationHolderRendererDispenser());
-//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretPressurePlate.class, new TileEntityInfomationHolderRenderPlate());
-		
-		Object[] handlers = {
-				new ProbeSwitchRenderHander(),
-				new SecretKeyBindings(),
-				new HandlerUpdateChecker(),
-				new ReloadTrueSightModelsHandler()
-		};
-    	for(Object o : handlers)
-    		MinecraftForge.EVENT_BUS.register(o);
-	}
-	
 	@Override
 	public void displayGui(int guiID, Object... objects) 
 	{
@@ -151,7 +127,6 @@ public class ClientProxy extends CommonProxy
 			    return new Color((int) r, (int) g, (int) b, (int) a).getRGB();
 			}
 		}, SecretItems.CAMOUFLAGE_PASTE);
-        
         for(Block block : ForgeRegistries.BLOCKS.getValues())
         	if(block instanceof ISecretBlock)
 		        blockColors.registerBlockColorHandler(new IBlockColor() {

@@ -11,11 +11,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TrueSightHelmet extends ItemArmor
 {
-
 	public TrueSightHelmet(String name, ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		setUnlocalizedName(name);
 		setRegistryName(name);
+		this.setMaxStackSize(1);
 	}
 	
 	public static boolean isHelmet(EntityPlayer player) {

@@ -1,8 +1,6 @@
 package com.wynprice.secretroomsmod.proxy;
 
-import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretCompatibility;
-import com.wynprice.secretroomsmod.SecretItems;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.handler.EnergizedPasteHandler;
 import com.wynprice.secretroomsmod.handler.GuiHandler;
@@ -27,13 +25,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class CommonProxy 
 {
 	public void preInit(FMLPreInitializationEvent event) 
-    {  		
-		SecretItems.preInit();
-		
-		SecretBlocks.preInit();
-				
+    {  								
 		SecretNetwork.preInit();
-				
 		RecipeHelperHandler.preInit();
     }
 	
@@ -56,7 +49,6 @@ public class CommonProxy
     		GameRegistry.registerTileEntity(clas, SecretRooms5.MODID + clas.getSimpleName());
     	
     	Object[] handlers = {
-//    			new ParticleHandler(),
     			new EnergizedPasteHandler()
     	};
     	for(Object o : handlers)

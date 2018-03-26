@@ -22,6 +22,7 @@ public class SwitchProbe extends Item
 	public SwitchProbe() {
 		setRegistryName("switch_probe");
 		setUnlocalizedName("switch_probe");
+		this.setMaxStackSize(1);
 	}
 	
 	@Override

@@ -58,7 +58,7 @@ public class SecretMalisisDoor extends Door implements ISecretBlock
 	
 	@Override
 	protected IIconProvider getIconProvider() {
-		return new SecretBlockIconProvider();
+		return new SecretBlockIconProvider(SecretBlockIconProvider.BlockType.DOOR);
 	}
 	
 	@Override

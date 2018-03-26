@@ -1,7 +1,5 @@
 package com.wynprice.secretroomsmod;
 
-import java.util.ArrayList;
-
 import com.wynprice.secretroomsmod.base.BaseItemDoor;
 import com.wynprice.secretroomsmod.integration.malisisdoors.SecretCompactMalisisDoors;
 import com.wynprice.secretroomsmod.items.CamouflagePaste;
@@ -14,10 +12,16 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-
+@EventBusSubscriber(modid=SecretRooms5.MODID)
 public class SecretItems 
 {
 	public static final Item CAMOUFLAGE_PASTE = new CamouflagePaste();
@@ -28,70 +32,34 @@ public class SecretItems
 	public static final Item IRON_EXPOSING_HELMET = new TrueSightHelmet("iron_exposing_helmet", ItemArmor.ArmorMaterial.IRON, 2, EntityEquipmentSlot.HEAD);
 	public static final Item DIAMOND_EXPOSING_HELMET = new TrueSightHelmet("diamond_exposing_helmet", ItemArmor.ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.HEAD);
 
-	
-	public static void preInit()
-	{
-		regItem(CAMOUFLAGE_PASTE);
-		regItem(SECRET_WOODEN_DOOR);
-		regItem(SECRET_IRON_DOOR);
-		regItem(SWITCH_PROBE, 1);
-		regItem(PROGRAMMABLE_SWITCH_PROBE, 1);
-		regItem(IRON_EXPOSING_HELMET, 1);
-		regItem(DIAMOND_EXPOSING_HELMET, 1);
+	@SubscribeEvent
+	public static void registryEvent(RegistryEvent.Register<Item> event) {
+		event.getRegistry().registerAll(
+				CAMOUFLAGE_PASTE,
+				SECRET_WOODEN_DOOR,
+				SECRET_IRON_DOOR,
+				SWITCH_PROBE,
+				PROGRAMMABLE_SWITCH_PROBE,
+				IRON_EXPOSING_HELMET,
+				DIAMOND_EXPOSING_HELMET);
+	}
 		
-	}
-	
-		
-	public static void regRenders()
-	{
-		for(Item item : ALL_ITEMS)
-			regRender(item);
-	}
-	
-	public final static ArrayList<Item> ALL_ITEMS= new ArrayList<Item>();
-
-	
-	private static String[] emptyList(int size)
-	{
-		String[] s = new String[size];
-		for(int i = 0; i < size; i++)
-			s[i] = "";
-		return s;
-	}
-	
-	private static Item getItem(Item item)
-	{
-		return item;
-	}
-	
-	private static void regItem(Item item)
-	{
-		regItem(item, 64);
-	}
-	
-	private static void regItem(Item item, int stackSize)
-	{
-		ALL_ITEMS.add(item);
-		item.setMaxStackSize(stackSize);
-		ForgeRegistries.ITEMS.register(item);
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public static void registerRenders(ModelRegistryEvent event) {
+		regRender(CAMOUFLAGE_PASTE);
+		regRender(CAMOUFLAGE_PASTE, 1, new ResourceLocation(SecretRooms5.MODID, "energized_camouflage_paste"));
+		regRender(SECRET_WOODEN_DOOR);
+		regRender(SECRET_IRON_DOOR);
+		regRender(SWITCH_PROBE);
+		regRender(PROGRAMMABLE_SWITCH_PROBE);
+		regRender(IRON_EXPOSING_HELMET);
+		regRender(DIAMOND_EXPOSING_HELMET);
 	}
 	
 	private static void regRender(Item item)
 	{
-		if(item.getHasSubtypes())
-		{
-			int metaAmount = 1;
-			ResourceLocation[] fileNames = {item.getRegistryName()};
-			if(item == CAMOUFLAGE_PASTE)
-			{
-				metaAmount = 2;
-				fileNames = new ResourceLocation[] {new ResourceLocation(SecretRooms5.MODID, "camouflage_paste"), new ResourceLocation(SecretRooms5.MODID, "energized_camouflage_paste")};
-			}
-			for(int i = 0; i < metaAmount; i++)
-				regRender(item, i, fileNames[i]);
-		}
-		else
-			regRender(item, 0, item.getRegistryName());
+		regRender(item, 0, item.getRegistryName());
 	}
 	
 	private static void regRender(Item item, int meta, ResourceLocation fileName)
