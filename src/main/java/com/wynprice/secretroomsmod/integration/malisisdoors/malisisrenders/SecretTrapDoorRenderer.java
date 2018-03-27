@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.integration.malisisdoors;
+package com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders;
 
 import java.util.List;
 
@@ -6,6 +6,10 @@ import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretBlockIconProvider;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretRenderParameters;
+import com.wynprice.secretroomsmod.integration.malisisdoors.registries.blocks.SecretMalisisTrapDoorBlock;
+import com.wynprice.secretroomsmod.integration.malisisdoors.registries.tileentities.SecretMalisisTileEntityTrapDoor;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 
@@ -18,15 +22,20 @@ import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.core.renderer.icon.provider.IItemIconProvider;
 import net.malisis.core.util.EnumFacingUtils;
+import net.malisis.doors.block.Door;
 import net.malisis.doors.renderer.TrapDoorRenderer;
 import net.malisis.doors.tileentity.DoorTileEntity;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -41,7 +50,7 @@ public class SecretTrapDoorRenderer extends TrapDoorRenderer {
 	public SecretTrapDoorRenderer() 
 	{
 		registerFor(SecretMalisisTileEntityTrapDoor.class);
-		ensureBlock(SecretMalisisTrapDoor.class);
+		ensureBlock(SecretMalisisTrapDoorBlock.class);
 	}
 	
 	@Override
@@ -97,6 +106,19 @@ public class SecretTrapDoorRenderer extends TrapDoorRenderer {
 				EnumFacing facing = sParamsFace.textureSide.get();
 				facing = facing == null ? EnumFacing.SOUTH : facing; //was in build somewhere, just leave it here
 				facing = EnumFacingUtils.getRealSide(blockState, facing);
+				DoorTileEntity te = Door.getDoor(world, pos);
+				
+				EnumFacing dir = world.getBlockState(pos).getValue(BlockTrapDoor.FACING);
+								
+				if(te.isMoving() || world.getBlockState(pos).getValue(BlockTrapDoor.OPEN)) {
+					if(facing.getAxis() == Axis.Y || facing.getAxis() == dir.getAxis()) {
+						facing = facing.rotateAround(dir.rotateY().getAxis());
+						if(facing.getAxis() == Axis.Y) {
+							facing = facing.getOpposite();
+						}
+					}
+				}
+				
 				IBlockState mirrorState = ((ISecretTileEntity)world.getTileEntity(pos)).getMirrorStateSafely();
 				try {
 					mirrorState = mirrorState.getActualState(world, pos);
@@ -139,11 +161,5 @@ public class SecretTrapDoorRenderer extends TrapDoorRenderer {
 			}
 			
 		}
-	}
-	
-	@Override
-	protected boolean shouldRenderFace(Face face, RenderParameters params) {
-		boolean b = super.shouldRenderFace(face, params);
-		return b;
 	}
 }

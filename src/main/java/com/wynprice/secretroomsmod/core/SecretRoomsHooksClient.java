@@ -146,6 +146,6 @@ public class SecretRoomsHooksClient {
 	}
 	
 	private static boolean isMalisisDoor(IBlockState state) {
-		return SecretCompatibility.MALISISDOORS && (state.getBlock() == SecretBlocks.SECRET_WOODEN_DOOR || state.getBlock() == SecretBlocks.SECRET_IRON_DOOR || state.getBlock() == SecretBlocks.SECRET_WOODEN_TRAPDOOR);
+		return SecretCompatibility.MALISISDOORS && (state.getBlock() == SecretBlocks.SECRET_WOODEN_DOOR || state.getBlock() == SecretBlocks.SECRET_IRON_DOOR || state.getBlock() == SecretBlocks.SECRET_WOODEN_TRAPDOOR || state.getBlock() == SecretBlocks.SECRET_IRON_TRAPDOOR);
 	}
 }

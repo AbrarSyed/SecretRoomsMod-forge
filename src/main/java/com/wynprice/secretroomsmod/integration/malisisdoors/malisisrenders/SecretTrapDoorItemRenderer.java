@@ -1,6 +1,8 @@
-package com.wynprice.secretroomsmod.integration.malisisdoors;
+package com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders;
 
 import java.util.List;
+
+import com.wynprice.secretroomsmod.integration.malisisdoors.registries.blocks.SecretMalisisTrapDoorBlock;
 
 import net.malisis.doors.renderer.DoorRenderer;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +20,7 @@ import net.minecraft.util.EnumFacing;
 public class SecretTrapDoorItemRenderer extends DoorRenderer {
 		
 	public SecretTrapDoorItemRenderer() {
-		ensureBlock(SecretMalisisTrapDoor.class);
+		ensureBlock(SecretMalisisTrapDoorBlock.class);
 		
 	}
 	

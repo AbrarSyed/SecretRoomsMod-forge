@@ -24,7 +24,7 @@ import com.wynprice.secretroomsmod.blocks.SecretWeightedPressurePlate;
 import com.wynprice.secretroomsmod.blocks.SolidAir;
 import com.wynprice.secretroomsmod.blocks.TorchLever;
 import com.wynprice.secretroomsmod.integration.malisisdoors.SecretCompactMalisisDoors;
-import com.wynprice.secretroomsmod.integration.malisisdoors.SecretMalisisDoor;
+import com.wynprice.secretroomsmod.integration.malisisdoors.registries.blocks.SecretMalisisDoorBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -64,7 +64,7 @@ public class SecretBlocks
 	public static final Block SECRET_WOODEN_DOOR = SecretCompatibility.MALISISDOORS ? SecretCompactMalisisDoors.WOODEN_DOOR : new BaseBlockDoor("secret_wooden_door", Material.WOOD);
 	public static final Block SECRET_IRON_DOOR = SecretCompatibility.MALISISDOORS ? SecretCompactMalisisDoors.IRON_DOOR : new BaseBlockDoor("secret_iron_door", Material.IRON);
 	public static final Block SECRET_WOODEN_TRAPDOOR = SecretCompatibility.MALISISDOORS ? SecretCompactMalisisDoors.WOODEN_TRAPDOOR : new SecretTrapDoor("secret_wooden_trapdoor", Material.WOOD);
-	public static final Block SECRET_IRON_TRAPDOOR = new SecretTrapDoor("secret_iron_trapdoor", Material.IRON);
+	public static final Block SECRET_IRON_TRAPDOOR = SecretCompatibility.MALISISDOORS ? SecretCompactMalisisDoors.IRON_TRAPDOOR : new SecretTrapDoor("secret_iron_trapdoor", Material.IRON);
 	public static final Block SECRET_DISPENSER = new SecretDispenser();
 	public static final Block SECRET_TRAPPED_CHEST = new SecretTrappedChest();
 	public static final Block SECRET_GATE_BLOCK = new SecretGateEmptyBlock();

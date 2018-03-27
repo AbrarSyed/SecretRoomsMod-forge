@@ -1,10 +1,15 @@
-package com.wynprice.secretroomsmod.integration.malisisdoors;
+package com.wynprice.secretroomsmod.integration.malisisdoors.registries.blocks;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretBlockIconProvider;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretBlockIconProvider.BlockType;
+import com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders.SecretTrapDoorItemRenderer;
+import com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders.SecretTrapDoorRenderer;
+import com.wynprice.secretroomsmod.integration.malisisdoors.registries.tileentities.SecretMalisisTileEntityTrapDoor;
 
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.renderer.MalisisRendered;
@@ -39,10 +44,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @MalisisRendered(block = SecretTrapDoorRenderer.class, item = SecretTrapDoorItemRenderer.class)
-public class SecretMalisisTrapDoor extends TrapDoor implements ISecretBlock {
+public class SecretMalisisTrapDoorBlock extends TrapDoor implements ISecretBlock {
 
-	public SecretMalisisTrapDoor(TrapDoorDescriptor desc) {
+	public SecretMalisisTrapDoorBlock(TrapDoorDescriptor desc) {
 		super(desc);
+		desc.set(this, null);
 		getComponents().clear();
 		addComponent(new SecretBlockIconProvider(SecretBlockIconProvider.BlockType.TRAPDOOR));
 	}

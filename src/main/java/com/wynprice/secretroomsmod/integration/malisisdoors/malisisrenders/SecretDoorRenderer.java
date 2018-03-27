@@ -1,4 +1,4 @@
-package com.wynprice.secretroomsmod.integration.malisisdoors;
+package com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders;
 
 import java.util.List;
 
@@ -6,6 +6,10 @@ import com.wynprice.secretroomsmod.SecretBlocks;
 import com.wynprice.secretroomsmod.SecretRooms5;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretBlockIconProvider;
+import com.wynprice.secretroomsmod.integration.malisisdoors.SecretRenderParameters;
+import com.wynprice.secretroomsmod.integration.malisisdoors.registries.blocks.SecretMalisisDoorBlock;
+import com.wynprice.secretroomsmod.integration.malisisdoors.registries.tileentities.SecretMalisisTileEntityDoor;
 import com.wynprice.secretroomsmod.items.TrueSightHelmet;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
 import com.wynprice.secretroomsmod.render.fakemodels.TrueSightModel;
@@ -49,7 +53,7 @@ public class SecretDoorRenderer extends DoorRenderer
 	@Override
 	protected void initialize() {
 		super.initialize();
-		ensureBlock(SecretMalisisDoor.class);
+		ensureBlock(SecretMalisisDoorBlock.class);
 		rp.calculateAOColor.set(true);
 		rp.deductParameters.set(true);
 	}
