@@ -38,7 +38,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@MalisisRendered(block = SecretTrapDoorRenderer.class)
+@MalisisRendered(block = SecretTrapDoorRenderer.class, item = SecretTrapDoorItemRenderer.class)
 public class SecretMalisisTrapDoor extends TrapDoor implements ISecretBlock {
 
 	public SecretMalisisTrapDoor(TrapDoorDescriptor desc) {
