@@ -20,13 +20,14 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * The handler for the SecretRoomsMod keybindings
  * @author Wyn Price
  *
  */
-@EventBusSubscriber(modid=SecretRooms5.MODID)
+@EventBusSubscriber(modid=SecretRooms5.MODID, value=Side.CLIENT)
 public class SecretKeyBindings
 {
 	/**

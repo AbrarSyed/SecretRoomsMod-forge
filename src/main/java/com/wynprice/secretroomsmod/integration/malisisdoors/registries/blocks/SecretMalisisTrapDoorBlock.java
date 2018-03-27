@@ -7,7 +7,7 @@ import java.util.List;
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.integration.malisisdoors.SecretBlockIconProvider;
 import com.wynprice.secretroomsmod.integration.malisisdoors.SecretBlockIconProvider.BlockType;
-import com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders.SecretTrapDoorItemRenderer;
+import com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders.SecretMalisisItemRenderer;
 import com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders.SecretTrapDoorRenderer;
 import com.wynprice.secretroomsmod.integration.malisisdoors.registries.tileentities.SecretMalisisTileEntityTrapDoor;
 
@@ -43,7 +43,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@MalisisRendered(block = SecretTrapDoorRenderer.class, item = SecretTrapDoorItemRenderer.class)
+@MalisisRendered(block = SecretTrapDoorRenderer.class, item = SecretMalisisItemRenderer.class)
 public class SecretMalisisTrapDoorBlock extends TrapDoor implements ISecretBlock {
 
 	public SecretMalisisTrapDoorBlock(TrapDoorDescriptor desc) {

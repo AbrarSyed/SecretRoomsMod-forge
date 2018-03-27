@@ -8,6 +8,7 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import com.wynprice.secretroomsmod.integration.malisisdoors.SecretBlockIconProvider;
 import com.wynprice.secretroomsmod.integration.malisisdoors.SecretBlockIconProvider.BlockType;
 import com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders.SecretDoorRenderer;
+import com.wynprice.secretroomsmod.integration.malisisdoors.malisisrenders.SecretMalisisItemRenderer;
 import com.wynprice.secretroomsmod.integration.malisisdoors.registries.tileentities.SecretMalisisTileEntityDoor;
 import com.wynprice.secretroomsmod.render.fakemodels.DoorFakeModel;
 import com.wynprice.secretroomsmod.render.fakemodels.FakeBlockModel;
@@ -44,7 +45,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@MalisisRendered(block = SecretDoorRenderer.class)
+@MalisisRendered(block = SecretDoorRenderer.class, item = SecretMalisisItemRenderer.class)
 public class SecretMalisisDoorBlock extends Door implements ISecretBlock
 {
 

@@ -17,9 +17,9 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-public class SecretTrapDoorItemRenderer extends DoorRenderer {
+public class SecretMalisisItemRenderer extends DoorRenderer {
 		
-	public SecretTrapDoorItemRenderer() {
+	public SecretMalisisItemRenderer() {
 		ensureBlock(SecretMalisisTrapDoorBlock.class);
 		
 	}

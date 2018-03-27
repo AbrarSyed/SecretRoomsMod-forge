@@ -18,11 +18,15 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.common.ForgeVersion.Status;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Used to check for an update. 
@@ -31,7 +35,7 @@ import net.minecraftforge.fml.common.versioning.ComparableVersion;
  *
  */
 @Deprecated
-@EventBusSubscriber(modid=SecretRooms5.MODID)
+@EventBusSubscriber(modid=SecretRooms5.MODID, value=Side.CLIENT)
 public class HandlerUpdateChecker 
 {
 	private static boolean hasPosted;

@@ -12,13 +12,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Used to switch the models on bake event
  * @author Wyn Price
  *
  */
-@EventBusSubscriber(modid=SecretRooms5.MODID)
+@EventBusSubscriber(modid=SecretRooms5.MODID, value=Side.CLIENT)
 public class ProbeSwitchRenderHander 
 {
 	 @SubscribeEvent

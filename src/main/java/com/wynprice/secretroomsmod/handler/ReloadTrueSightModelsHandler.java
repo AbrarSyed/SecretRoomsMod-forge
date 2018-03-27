@@ -12,13 +12,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Used to update the rendering of blocks when the True Helmet is put on
  * @author Wyn Price
  *
  */
-@EventBusSubscriber(modid=SecretRooms5.MODID)
+@EventBusSubscriber(modid=SecretRooms5.MODID, value=Side.CLIENT)
 public class ReloadTrueSightModelsHandler 
 {
 	
