@@ -70,6 +70,7 @@ public final class SecretConfig {
     	
     	
     }
+    
     @SubscribeEvent
     public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         if(event.getConfigID() != null && event.getConfigID().equals(SecretRooms5.MODID)) {
