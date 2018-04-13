@@ -43,17 +43,4 @@ public class SecretRoomsHooks {
 			block.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 		}
     }
-	
-	/**
-	 * Gets the real state, if a blockstate is being covered by a Secret Block
-	 * @param access The world
-	 * @param pos The blockpos
-	 * @return The state, {@link IBlockAccess#getBlockState(BlockPos)} if the position does not hold a {@link ISecretTileEntity}
-	 */
-	public static IBlockState getRealState(IBlockAccess access, BlockPos pos) {
-		if(access.getTileEntity(pos) instanceof ISecretTileEntity) {
-			return access.getTileEntity(pos).getWorld().getBlockState(pos);
-		}
-		return access.getBlockState(pos);
-	}
 }

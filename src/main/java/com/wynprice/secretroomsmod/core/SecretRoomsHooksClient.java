@@ -94,12 +94,21 @@ public class SecretRoomsHooksClient {
 	 * @return {@link Block#shouldSideBeRendered(IBlockState, IBlockAccess, BlockPos, EnumFacing)}, run on the normal block, or the SRM state if the tileEntity at the position is an instance of {@link ISecretTileEntity}
 	 */
 	public static boolean shouldSideBeRendered(Block block, IBlockState state, IBlockAccess access, BlockPos pos, EnumFacing face) {
+		BlockPos offsetPos = pos.offset(face);
+		boolean ret;
 		if(!isMalisisDoor(state) && access.getTileEntity(pos) instanceof ISecretTileEntity) {
 			World world = access.getTileEntity(pos).getWorld(); //Need to use world as the IBlockAccess wont return the right states
-			IBlockState blockState = world.getTileEntity(pos).getWorld().getBlockState(pos);
-			return blockState.getBlock().shouldSideBeRendered(blockState, world, pos, face);
+			IBlockState blockState = world.getBlockState(pos);
+			ret = blockState.getBlock().shouldSideBeRendered(blockState, world, pos, face);
 		}
-		return block.shouldSideBeRendered(state, access, pos, face);
+		ret = block.shouldSideBeRendered(state, access, pos, face);
+		if(!ret && pos.getX() == -125 && pos.getY() == 26 && pos.getZ() == 264) {
+			System.out.println(face);
+		}
+		if(!ret && access.getTileEntity(offsetPos) instanceof ISecretTileEntity && ((ISecretBlock)access.getTileEntity(offsetPos).getWorld().getBlockState(offsetPos).getBlock()).isRenderTransparent()) {			
+			return true;
+		}
+		return ret;
 	}
 	
 	/**

@@ -38,12 +38,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.common.Optional.InterfaceList;
-import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import team.chisel.ctm.api.IFacade;
 
 /**
  * The interface used by all SRM blocks. Most methods here are called directly from the block, as to store all the same code in the same place. 
@@ -55,8 +51,7 @@ import team.chisel.ctm.api.IFacade;
  * @author Wyn Price
  *
  */
-@Interface(modid="ctm", iface="team.chisel.ctm.api.IFacade")
-public interface ISecretBlock extends ITileEntityProvider, IFacade
+public interface ISecretBlock extends ITileEntityProvider
 {
 	
 	/**
@@ -119,6 +114,11 @@ public interface ISecretBlock extends ITileEntityProvider, IFacade
 	@SideOnly(Side.CLIENT)
 	default Class<? extends FakeBlockModel> getModelClass() {
 		return phaseModel(new FakeBlockModel(Blocks.STONE.getDefaultState())).getClass();
+	}
+	
+	@SideOnly(Side.CLIENT)
+	default boolean isRenderTransparent() {
+		return getModelClass() != FakeBlockModel.class;
 	}
 	
 	/**
@@ -584,9 +584,4 @@ public interface ISecretBlock extends ITileEntityProvider, IFacade
 		return state;
 	}
 	
-	@Method(modid="ctm")
-	@Override
-	default IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return world.getBlockState(pos);
-	}
 }

@@ -16,33 +16,22 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import com.wynprice.secretroomsmod.SecretBlocks;
-import com.wynprice.secretroomsmod.SecretCompatibility;
-import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
-import com.wynprice.secretroomsmod.base.interfaces.ISecretTileEntity;
-import com.wynprice.secretroomsmod.render.FakeBlockAccess;
 import com.wynprice.secretroomsmod.render.FakeChunkCache;
-import com.wynprice.secretroomsmod.render.fakemodels.SecretBlockModel;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGlass;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
+import team.chisel.ctm.client.state.ChiselExtendedState;
 
 public class SecretRoomsTransformer implements IClassTransformer {
 	
@@ -190,23 +179,7 @@ public class SecretRoomsTransformer implements IClassTransformer {
 			}
 		}
 	};
-	
-	public Consumer<ClassNode> CTMLogic = (node) -> {
-		for(MethodNode methodNode : node.methods) {
-			if(methodNode.name.equals("getBlockOrFacade")) {
-				for(int i = 0; i < methodNode.instructions.size(); i++) {
-					AbstractInsnNode ins = methodNode.instructions.get(i);
-					if(ins instanceof MethodInsnNode) {
-						MethodInsnNode mIns = ((MethodInsnNode)ins);
-						if(mIns.getOpcode() == Opcodes.INVOKEINTERFACE && mIns.owner.equals("net/minecraft/world/IBlockAccess") && mIns.name.equals(getName("getBlockState", "func_180495_p")) && mIns.desc.equals("(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;")) {
-							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "getRealState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;", false));
-						}
-					}
-				}
-			}
-		}
-	};
-	
+
 	public SecretRoomsTransformer() {
 		FMLLog.info("[SecretRoomsTransformer] Registered");
 	}
@@ -223,8 +196,6 @@ public class SecretRoomsTransformer implements IClassTransformer {
 			basicClass = runConsumer(BlockRendererDispatcher, transformedName, basicClass);
 		} else if(transformedName.equals("net.minecraft.block.BlockBreakable")) {
 			basicClass = runConsumer(BlockBreakable, transformedName, basicClass);
-		} else if(transformedName.equals("team.chisel.ctm.client.util.CTMLogic")) {
-			basicClass = runConsumer(CTMLogic, transformedName, basicClass);
 		}
 		return basicClass;
 		

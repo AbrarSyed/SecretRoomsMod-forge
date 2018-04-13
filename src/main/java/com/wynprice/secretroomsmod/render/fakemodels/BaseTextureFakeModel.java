@@ -19,6 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
+import team.chisel.client.render.ModelChiselBlock;
 
 /**
  * The class used to take textures from one model, and put it on another model
@@ -95,10 +96,6 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		if(renderInfo != null) {
 			for(BakedQuad quad : getModel(normalState).getQuads(currentActualState, side, rand))
 			{
-				if(this instanceof OneWayGlassFakeModel) {
-					finalList.add(quad);
-					continue;
-				}
 				List<BakedQuad> secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, side, 0);
 				if(secList.isEmpty()) {
 					secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, quad.getFace(), 0);
