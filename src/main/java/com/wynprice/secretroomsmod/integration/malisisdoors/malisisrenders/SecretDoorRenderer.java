@@ -85,6 +85,7 @@ public class SecretDoorRenderer extends DoorRenderer
 				
 				IBlockState extendedMirrorState = mirrorState.getBlock().getExtendedState(mirrorState, world, pos);
 				
+				
 				boolean facingX = blockState.getValue(BlockDoor.FACING).getAxis() == Axis.X !=  blockState.getValue(BlockDoor.OPEN);
 				
 				DoorTileEntity te = ((DoorTileEntity)world.getTileEntity(blockState.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER? pos : pos.down()));
@@ -105,6 +106,8 @@ public class SecretDoorRenderer extends DoorRenderer
 				for(BakedQuad quad : quadList) {
 					Icon icon = new Icon(quad.getSprite());
 					int uvIndex = quad.getFormat().getUvOffsetById(0) / 4;
+						
+					
 					
 					icon.setUVs(
 							Float.intBitsToFloat(quad.getVertexData()[0 * quad.getFormat().getIntegerSize() + uvIndex]), 
@@ -112,7 +115,7 @@ public class SecretDoorRenderer extends DoorRenderer
 							Float.intBitsToFloat(quad.getVertexData()[2 * quad.getFormat().getIntegerSize() + uvIndex]), 
 							Float.intBitsToFloat(quad.getVertexData()[2 * quad.getFormat().getIntegerSize() + uvIndex + 1])
 					);
-					
+
 					sParams.quadSprite.set(icon);
 					if(TrueSightHelmet.isHelmet()) {
 						sParams.quadSprite.set(FakeBlockModel.getModel(new ResourceLocation(SecretRooms5.MODID, "block/secret_" + (block == SecretBlocks.SECRET_WOODEN_DOOR ? "wooden" : "iron") + "_door")).getParticleTexture());

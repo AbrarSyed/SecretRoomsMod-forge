@@ -16,7 +16,6 @@ import com.wynprice.secretroomsmod.tileentity.TileEntityInfomationHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
@@ -39,8 +38,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.common.Optional.Interface;
+import net.minecraftforge.fml.common.Optional.InterfaceList;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import team.chisel.ctm.api.IFacade;
 
 /**
  * The interface used by all SRM blocks. Most methods here are called directly from the block, as to store all the same code in the same place. 
@@ -52,7 +55,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Wyn Price
  *
  */
-public interface ISecretBlock extends ITileEntityProvider
+@Interface(modid="ctm", iface="team.chisel.ctm.api.IFacade")
+public interface ISecretBlock extends ITileEntityProvider, IFacade
 {
 	
 	/**
@@ -578,5 +582,11 @@ public interface ISecretBlock extends ITileEntityProvider
 //			}
 //		}
 		return state;
+	}
+	
+	@Method(modid="ctm")
+	@Override
+	default IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return world.getBlockState(pos);
 	}
 }

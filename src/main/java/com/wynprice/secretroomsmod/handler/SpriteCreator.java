@@ -13,13 +13,20 @@ public class SpriteCreator extends TextureAtlasSprite {
 		this.maxV = sprite.getMaxV();
 	}
 	
+	public SpriteCreator(String name, float u, float v, float U, float V) {
+		super(name);
+		this.minU = u;
+		this.minV = v;
+		this.maxU = U;
+		this.maxV = V;
+	}
+	
     private float minU;
     private float maxU;
     private float minV;
     private float maxV;
 	
 	public SpriteCreator setuvs(float u, float v, float U, float V) {
-
 		this.minU = u;
 		this.minV = v;
 		this.maxU = U;
@@ -81,5 +88,4 @@ public class SpriteCreator extends TextureAtlasSprite {
 		}
 		return new SpriteCreator(base);
 	}
-
 }

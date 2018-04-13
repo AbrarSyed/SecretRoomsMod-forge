@@ -191,6 +191,22 @@ public class SecretRoomsTransformer implements IClassTransformer {
 		}
 	};
 	
+	public Consumer<ClassNode> CTMLogic = (node) -> {
+		for(MethodNode methodNode : node.methods) {
+			if(methodNode.name.equals("getBlockOrFacade")) {
+				for(int i = 0; i < methodNode.instructions.size(); i++) {
+					AbstractInsnNode ins = methodNode.instructions.get(i);
+					if(ins instanceof MethodInsnNode) {
+						MethodInsnNode mIns = ((MethodInsnNode)ins);
+						if(mIns.getOpcode() == Opcodes.INVOKEINTERFACE && mIns.owner.equals("net/minecraft/world/IBlockAccess") && mIns.name.equals(getName("getBlockState", "func_180495_p")) && mIns.desc.equals("(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;")) {
+							methodNode.instructions.set(ins, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/wynprice/secretroomsmod/core/SecretRoomsHooks", "getRealState", "(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;", false));
+						}
+					}
+				}
+			}
+		}
+	};
+	
 	public SecretRoomsTransformer() {
 		FMLLog.info("[SecretRoomsTransformer] Registered");
 	}
@@ -207,6 +223,8 @@ public class SecretRoomsTransformer implements IClassTransformer {
 			basicClass = runConsumer(BlockRendererDispatcher, transformedName, basicClass);
 		} else if(transformedName.equals("net.minecraft.block.BlockBreakable")) {
 			basicClass = runConsumer(BlockBreakable, transformedName, basicClass);
+		} else if(transformedName.equals("team.chisel.ctm.client.util.CTMLogic")) {
+			basicClass = runConsumer(CTMLogic, transformedName, basicClass);
 		}
 		return basicClass;
 		

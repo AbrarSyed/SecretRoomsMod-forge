@@ -13,6 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -73,6 +75,28 @@ public class SecretItemBlock extends ItemBlock
         {
             return EnumActionResult.FAIL;
         }
+	}
+	
+	@Override
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side,
+			float hitX, float hitY, float hitZ, IBlockState newState) {
+		boolean flag =  super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
+		NBTTagCompound nbttagcompound = stack.getSubCompound("BlockEntityTag");
+		if(nbttagcompound != null) {
+			TileEntity tileentity =  world.getTileEntity(pos);
+			if(tileentity != null) {
+				NBTTagCompound nbttagcompound1 = tileentity.writeToNBT(new NBTTagCompound());
+		        NBTTagCompound nbttagcompound2 = nbttagcompound1.copy();
+		        nbttagcompound1.merge(nbttagcompound);
+		        nbttagcompound1.setInteger("x", pos.getX());
+		        nbttagcompound1.setInteger("y", pos.getY());
+		        nbttagcompound1.setInteger("z", pos.getZ());
+		        if (!nbttagcompound1.equals(nbttagcompound2)) {
+	                tileentity.readFromNBT(nbttagcompound1);
+		        }
+			}
+		}
+		return flag;
 	}
 
 }

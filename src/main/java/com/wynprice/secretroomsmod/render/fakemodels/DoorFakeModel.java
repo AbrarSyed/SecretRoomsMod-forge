@@ -6,6 +6,8 @@ import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 
 /**
  * Fake model for the door
@@ -29,5 +31,4 @@ public class DoorFakeModel extends BaseTextureFakeModel
 	protected Class<? extends ISecretBlock> getBaseBlockClass() {
 		return BaseBlockDoor.class;
 	}
-
 }
