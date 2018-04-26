@@ -211,7 +211,9 @@ public class SecretRoomsTransformer implements IClassTransformer {
 		
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 	    node.accept(writer);
-	    return writer.toByteArray();
+	    byte[] abyte = writer.toByteArray();
+		FMLLog.info("[SecretRoomsTransformer] Finished Transform on: " + transformedName);
+	    return abyte;
 	}
 	
 	/**

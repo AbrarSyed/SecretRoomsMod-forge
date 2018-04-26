@@ -33,9 +33,9 @@ public class SecretRooms5
 {
     public static final String MODID = "secretroomsmod";
     public static final String MODNAME = "Secret Rooms 5";
-    public static final String VERSION = "5.6.1";
+    public static final String VERSION = "5.6.3";
 	public static final String MCVERSION = "[1.12.2,1.13]";
-	public static final String DEPENDENCIES = "required-after:forge@[14.23.0.2502,);";
+	public static final String DEPENDENCIES = "required-after:srm-hooks;required-after:forge@[14.23.0.2502,);";
     public static final String UPDATE_URL = "http://www.wynprice.com/update_jsons/secretroomsmod.json";
     
     @SidedProxy(modId = MODID, clientSide = "com.wynprice.secretroomsmod.proxy.ClientProxy", serverSide = "com.wynprice.secretroomsmod.proxy.ServerProxy")
@@ -54,26 +54,22 @@ public class SecretRooms5
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 	
     @EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	public void preInit(FMLPreInitializationEvent event) {
 		proxy.preInit(event);
 	}
     
     @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
     	proxy.init(event);
     }
     
     @EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event) {
     	proxy.postInit(event);
     }
     
     @EventHandler
-    public void onServerLoaded(FMLServerStartingEvent event)
-    {
+    public void onServerLoaded(FMLServerStartingEvent event) {
     	event.registerServerCommand(new CommandBase() {@Override public int getRequiredPermissionLevel(){return 2;}@Override public String getUsage(ICommandSender sender) {return "Resets the energized blocks";}@Override public String getName() {return "resetenergized";}@Override public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {EnergizedPasteHandler.getEnergized_map().clear();SecretNetwork.sendToAll(new MessagePacketSyncEnergizedPaste(EnergizedPasteHandler.saveToNBT(), null));}});
     }
 }

@@ -16,9 +16,11 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 @IFMLLoadingPlugin.SortingIndex(1001)
 public class SecretRoomsCore implements IFMLLoadingPlugin {
 
+	public static boolean isLoaded;
     public static boolean isDebofEnabled = false;
 
     public SecretRoomsCore() {
+    	isLoaded = true;
         FMLLog.info("[SecretRoomsMod-Core] Core loaded");
     }
 
@@ -29,7 +31,7 @@ public class SecretRoomsCore implements IFMLLoadingPlugin {
 
     @Override
     public String getModContainerClass() {
-        return null;
+        return "com.wynprice.secretroomsmod.core.SecretRoomsHooksDummyMod";
     }
 
     @Override
@@ -46,5 +48,4 @@ public class SecretRoomsCore implements IFMLLoadingPlugin {
     public String getAccessTransformerClass() {
         return null;
     }
-
 }
