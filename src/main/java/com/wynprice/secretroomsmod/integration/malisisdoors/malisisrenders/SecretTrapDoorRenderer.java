@@ -23,6 +23,7 @@ import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.core.renderer.icon.provider.IItemIconProvider;
 import net.malisis.core.util.EnumFacingUtils;
 import net.malisis.doors.block.Door;
+import net.malisis.doors.block.TrapDoor;
 import net.malisis.doors.renderer.TrapDoorRenderer;
 import net.malisis.doors.tileentity.DoorTileEntity;
 import net.minecraft.block.BlockDirectional;
@@ -50,7 +51,7 @@ public class SecretTrapDoorRenderer extends TrapDoorRenderer {
 	public SecretTrapDoorRenderer() 
 	{
 		registerFor(SecretMalisisTileEntityTrapDoor.class);
-		ensureBlock(SecretMalisisTrapDoorBlock.class);
+		ensureBlock(SecretMalisisTrapDoorBlock.class, TrapDoor.class);
 	}
 	
 	@Override
