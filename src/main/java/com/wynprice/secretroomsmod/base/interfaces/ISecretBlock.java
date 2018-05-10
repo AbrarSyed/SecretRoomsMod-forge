@@ -540,14 +540,14 @@ public interface ISecretBlock extends ITileEntityProvider
 	@SideOnly(Side.CLIENT)
 	default public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) 
 	{
-		if(SecretBlockModel.instance().SRMBLOCK.get() instanceof IExtendedBlockState)
-		{
-			IBlockState renderState = ((IExtendedBlockState)SecretBlockModel.instance().SRMBLOCK.get()).getValue(RENDER_PROPERTY);
-			if(renderState != null) {
-				return renderState.getBlock().getBlockLayer() == layer;
-			}
-		}
-    	return layer == BlockRenderLayer.SOLID;
+//		if(SecretBlockModel.instance().SRMBLOCK.get() instanceof IExtendedBlockState)
+//		{
+//			IBlockState renderState = ((IExtendedBlockState)SecretBlockModel.instance().SRMBLOCK.get()).getValue(RENDER_PROPERTY);
+//			if(renderState != null) {
+//				return renderState.getBlock().getBlockLayer() == layer;
+//			}
+//		}
+    	return layer == BlockRenderLayer.CUTOUT;
 	}
 	
 	/**

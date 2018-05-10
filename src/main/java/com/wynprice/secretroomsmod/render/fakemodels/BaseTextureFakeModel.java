@@ -96,9 +96,9 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		if(renderInfo != null) {
 			for(BakedQuad quad : getModel(normalState).getQuads(currentActualState, side, rand))
 			{
-				List<BakedQuad> secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, side, 0);
+				List<BakedQuad> secList = SecretCompatCTM.getQuadsNull(renderInfo.renderModel, renderInfo.blockstate, side, 0);
 				if(secList.isEmpty()) {
-					secList = SecretCompatCTM.getQuads(renderInfo.renderModel, renderInfo.blockstate, quad.getFace(), 0);
+					secList = SecretCompatCTM.getQuadsNull(renderInfo.renderModel, renderInfo.blockstate, quad.getFace(), 0);
 				}
 				if(secList == null || secList.isEmpty()) {
 					for(EnumFacing facing : fallbackOrder()) {

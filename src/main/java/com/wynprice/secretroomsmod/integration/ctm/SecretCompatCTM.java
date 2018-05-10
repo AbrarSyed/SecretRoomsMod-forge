@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -16,9 +18,14 @@ import net.minecraftforge.client.MinecraftForgeClient;
 public class SecretCompatCTM {
 	
 	public static List<BakedQuad> getQuads(IBakedModel model, IBlockState state, EnumFacing side, long rand) {
+		List<BakedQuad> ret = Lists.newArrayList();
 		BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
 		ForgeHooksClient.setRenderLayer(state.getBlock().getBlockLayer());
-		List<BakedQuad> ret = model.getQuads(state, side, rand);
+		for(BlockRenderLayer renderLayer : BlockRenderLayer.values()) {
+			if(state.getBlock().canRenderInLayer(state, renderLayer)) {
+				ret.addAll(model.getQuads(state, side, rand));
+			}
+		}
 		ForgeHooksClient.setRenderLayer(layer);
 		return ret;
 	}
