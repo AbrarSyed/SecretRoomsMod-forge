@@ -6,11 +6,14 @@ import java.util.List;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
 
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockSlab.EnumBlockHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.MathHelper;
@@ -90,15 +93,18 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		if(renderInfo != null) {
 			for(BakedQuad quad : getModel(normalState).getQuads(currentActualState, side, rand))
 			{
+				EnumFacing face = side;
 				List<BakedQuad> secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, side, 0);
 				if(secList.isEmpty()) {
 					secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, quad.getFace(), 0);
+					face = quad.getFace();
 				}
 				if(secList == null || secList.isEmpty()) {
 					for(EnumFacing facing : fallbackOrder()) {
 						List<BakedQuad> secList2 = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, 0);
 						if(!secList2.isEmpty()) {
 							secList = secList2;
+							face = facing;
 						}
 					}
 				}
@@ -107,7 +113,45 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 				
 				float baseMaxU = Math.max(tas.getUnInterpolatedU(Float.intBitsToFloat(aint1[0 * (aint1.length / 4) + 4])), tas.getUnInterpolatedU(Float.intBitsToFloat(aint1[2 * (aint1.length / 4) + 4])));
 				float baseMaxV = Math.max(tas.getUnInterpolatedV(Float.intBitsToFloat(aint1[0 * (aint1.length / 4) + 5])), tas.getUnInterpolatedV(Float.intBitsToFloat(aint1[2 * (aint1.length / 4) + 5])));
-						
+				
+				{ //New scope so i dont have to deal with renaming varibles
+					
+					int[] aint = Arrays.copyOf(aint1, aint1.length);
+					float minX = Float.MAX_VALUE;
+					float minY = Float.MAX_VALUE;
+					float minZ = Float.MAX_VALUE;
+					float maxX = Float.MIN_VALUE;
+					float maxY = Float.MIN_VALUE;
+					float maxZ = Float.MIN_VALUE;
+					for(int i = 0; i < 4; i++) {
+						int pos = (aint.length / 4) * i;
+						float x = Float.intBitsToFloat(aint[pos + 0]);
+						float y = Float.intBitsToFloat(aint[pos + 1]);
+						float z = Float.intBitsToFloat(aint[pos + 2]);
+						minX = Math.min(minX, x);
+						minY = Math.min(minY, y);
+						minZ = Math.min(minZ, z);						
+						maxX = Math.max(maxX, x);
+						maxY = Math.max(maxY, y);
+						maxZ = Math.max(maxZ, z);
+					}
+					float rangeX = maxX - minX;
+					float rangeY = maxY - minY;
+					float rangeZ = maxZ - minZ;	
+					
+					if(face.getAxis() == Axis.X) {
+						baseMaxU = rangeZ * 16f;
+						baseMaxV = rangeY * 16f;
+					} else if(face.getAxis() == Axis.Y) {
+						baseMaxU = rangeX * 16f;
+						baseMaxV = rangeZ * 16f;
+					} else {
+						baseMaxU = rangeX * 16f;
+						baseMaxV = rangeY * 16f;
+					}
+					
+				}
+				
 				for(BakedQuad mirrorQuad : secList) {
 					int[] aint = Arrays.copyOf(aint1, aint1.length);
 					int[] newAint = Arrays.copyOf(mirrorQuad.getVertexData(), mirrorQuad.getVertexData().length);
@@ -140,11 +184,6 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 					float texMinV = sprite.getUnInterpolatedV(Float.intBitsToFloat(newAint[0 * mirrorQuad.getFormat().getIntegerSize() + uvIndex + 1]));
 					float texRangeU = Math.abs(sprite.getUnInterpolatedU(Float.intBitsToFloat(newAint[2 * mirrorQuad.getFormat().getIntegerSize() + uvIndex])) - texMinU);
 					float texRangeV = Math.abs(sprite.getUnInterpolatedV(Float.intBitsToFloat(newAint[2 * mirrorQuad.getFormat().getIntegerSize() + uvIndex + 1])) - texMinV);
-													
-					float newMaxU = (baseMaxU / 16f) * texRangeU + texMinU;
-					float newMaxV = (baseMaxV / 16f) * texRangeV + texMinV;
-					
-					BlockFaceUV faceUV = new BlockFaceUV(new float[]{ texMinU, texMinV, newMaxU, newMaxV }, 0);
 					
 					boolean postQuad = false;
 					for(int i = 0; i < 4; i++) {
@@ -159,6 +198,26 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 						if((inRangeX && inRangeY && inRangeZ) || side == null) {
 							postQuad = true;
 						}
+						
+						float newBaseMaxU = baseMaxU;
+						float newBaseMaxV = baseMaxV;
+						
+						if(face.getAxis() == Axis.X) {
+							newBaseMaxU /= textureZ;
+							newBaseMaxV /= textureY;
+						} else if(face.getAxis() == Axis.Y) {
+							newBaseMaxU /= textureX;
+							newBaseMaxV /= textureZ;
+						} else {
+							newBaseMaxU /= textureX;
+							newBaseMaxV /= textureY;
+						}
+						
+						float newMaxU = (baseMaxU / 16f) * texRangeU + texMinU;
+						float newMaxV = (baseMaxV / 16f) * texRangeV + texMinV;
+						
+						BlockFaceUV faceUV = new BlockFaceUV(new float[]{ texMinU, texMinV, newMaxU, newMaxV }, 0);
+						
 						newAint[pos + 0] = Float.floatToRawIntBits(Float.intBitsToFloat(newAint[pos + 0]) * rangeX + minX);
 						newAint[pos + 1] = Float.floatToRawIntBits(Float.intBitsToFloat(newAint[pos + 1]) * rangeY + minY);
 						newAint[pos + 2] = Float.floatToRawIntBits(Float.intBitsToFloat(newAint[pos + 2]) * rangeZ + minZ);
