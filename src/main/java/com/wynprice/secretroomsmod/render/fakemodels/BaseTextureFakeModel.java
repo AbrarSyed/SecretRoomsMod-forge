@@ -5,12 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.wynprice.secretroomsmod.base.interfaces.ISecretBlock;
-import com.wynprice.secretroomsmod.integration.ctm.SecretCompatCTM;
 
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -18,8 +14,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
-import team.chisel.client.render.ModelChiselBlock;
 
 /**
  * The class used to take textures from one model, and put it on another model
@@ -96,13 +90,13 @@ public abstract class BaseTextureFakeModel extends FakeBlockModel
 		if(renderInfo != null) {
 			for(BakedQuad quad : getModel(normalState).getQuads(currentActualState, side, rand))
 			{
-				List<BakedQuad> secList = SecretCompatCTM.getQuadsNull(renderInfo.renderModel, renderInfo.blockstate, side, 0);
+				List<BakedQuad> secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, side, 0);
 				if(secList.isEmpty()) {
-					secList = SecretCompatCTM.getQuadsNull(renderInfo.renderModel, renderInfo.blockstate, quad.getFace(), 0);
+					secList = renderInfo.renderModel.getQuads(renderInfo.blockstate, quad.getFace(), 0);
 				}
 				if(secList == null || secList.isEmpty()) {
 					for(EnumFacing facing : fallbackOrder()) {
-						List<BakedQuad> secList2 = SecretCompatCTM.getQuadsNull(renderInfo.renderModel, renderInfo.blockstate, facing, 0);
+						List<BakedQuad> secList2 = renderInfo.renderModel.getQuads(renderInfo.blockstate, facing, 0);
 						if(!secList2.isEmpty()) {
 							secList = secList2;
 						}
