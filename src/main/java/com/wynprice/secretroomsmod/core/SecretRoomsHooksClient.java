@@ -55,7 +55,7 @@ public class SecretRoomsHooksClient {
 			{
 				;
 			}
-			state = ((IExtendedBlockState)state).withProperty(ISecretBlock.RENDER_PROPERTY, renderState);
+			state = ((IExtendedBlockState)state.getBlock().getExtendedState(state, world, pos)).withProperty(ISecretBlock.RENDER_PROPERTY, renderState);
 			SecretBlockModel.instance().AO.set(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(renderState).isAmbientOcclusion());
 			SecretBlockModel.instance().SRMBLOCK.set(state);
 			return state;
