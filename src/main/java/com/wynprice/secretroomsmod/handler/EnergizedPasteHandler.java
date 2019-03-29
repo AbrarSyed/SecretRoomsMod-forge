@@ -424,7 +424,7 @@ public class EnergizedPasteHandler
 	@SubscribeEvent
 	public static void onEntityTick(WorldTickEvent event)
 	{
-		if(event.world.isRemote) return;
+		if(event.world.isRemote || !SecretConfig.ENERGIZED_PASTE.enableRecipe) return;
 		for(Entity entity : new ArrayList<>(event.world.loadedEntityList))
 			if(entity instanceof EntityItem)
 			{
