@@ -25,6 +25,10 @@ public final class SecretConfig {
     }
 
     public static final class EnergizedPaste {
+        @Config.Name("enable_recipe")
+        @Config.Comment("Whether to enable the recipe for energized paste")
+        public boolean enableRecipe = true;
+
         @Config.Name("mirror_blacklist")
         @Config.Comment("Blacklist of blocks that should not be mirrored by energized paste")
         public String[] blacklistMirror = {};
