@@ -1,0 +1,64 @@
+# creative tab
+itemGroup.secretroomsmod=Geheim-Raum
+
+# chat messages
+message.secretroomsmod.oneWay.towards=-- !!! Einwegblock auf "zu dir" eingestellt !!! --
+message.secretroomsmod.oneWay.away=-- !!! Einwegblock auf "von dir weg" eingestellt !!! --
+message.secretroomsmod.commandShow.show=Camouflage-Blöcke sind sichtbar
+message.secretroomsmod.commandShow.hide=Camouflage-Blöcke sind geheim
+
+#update Checker
+update.version=[%s] Der Mod ist veraltet. Ihre Version %s, Zielversion: %s. Klicken Sie hier, um zur Seite zu gelangen
+update.hover=Klicken Sie auf, um zu %s zu wechseln
+
+# keybindings
+key.categories.secretroomsmod=SecretRoomsMod Tastenkombinationen
+key.secretroomsmod.oneWayface=Einweg-Richtung umschalten
+key.secretroomsmod.energizedpaste=Verwende energiegeladene Paste
+
+# blocks
+tile.torch_lever.name=Fackelhebel
+tile.one_way_glass.name=Einwegglas
+tile.secret_gate.name=Geheimes Tor
+tile.secret_gate.name=Geheimtorblock
+tile.secret_wooden_trapdoor.name=Geheime hölzerne Falltür
+tile.secret_iron_trapdoor.name=Geheime eiserne Falltür
+tile.secret_wooden_door.name=Geheime Holztür
+tile.secret_iron_door.name=Geheime Eisentür
+tile.ghost_block.name=Geisterblock
+tile.secret_lever.name=Geheimer Hebel
+tile.secret_redstone.name=Geheimes Redstone
+tile.secret_stone_button.name=Geheime Steinknopf
+tile.secret_wooden_button.name=Geheimer Holzknopf
+tile.secret_pressure_plate.name=Geheime Druckplatte
+tile.secret_player_pressure_plate.name=Geheime Spieler Druckplatte
+tile.secret_light_pressure_plate.name=Geheime gewichtete Platte (leicht)
+tile.secret_heavy_pressure_plate.name=Geheime gewichtete Platte (schwer)
+tile.secret_stairs.name=Geheime Treppe
+tile.secret_chest.name=Geheime Truhe
+tile.secret_trapped_chest.name=Geheime Redstone Truhe
+tile.secret_light_detector.name=Geheimer Lichtdetektor
+tile.secret_inverted_light_detector.name=Geheimer Lichtdetektor
+tile.solid_air.name=Solide Luft
+tile.secret_dispenser.name=Geheimer Werfer
+
+#gui
+gui.secret_chest.name=Geheime Truhe
+gui.programmable.info=Geben Sie den Blocknamen <br>oder den OreDict-Namen<BR>des Blocks ein,<BR> in den Sie die <br> SecretRoomsMod-Blöcke ändern möchten. <br> <br> Wenn mehr als ein Block<BR>vorhanden ist,<BR>klicken Sie auf <br>auf dem gewünschten Block. <br> <br>Der Ausgabeslot zeigt an, welcher Block ausgewählt wurde
+
+#items
+item.secret_iron_door.name=Geheime Eisentür
+item.camouflage_paste.name=Tarnpaste
+item.energized_camouflage_paste.name=Energiegeladene Tarnpaste
+item.secret_wooden_door.name=Geheime Holztür
+item.switch_probe.name=Tastkopf
+item.programmable_switch_probe.name=Programmable Programmierbarer Tastkopf
+item.iron_exposing_helmet.name=Helm der wahren Sicht (Eisen)
+item.diamond_exposing_helmet.name=Helm der wahren Sicht (Diamant)
+
+#Camouflage Info
+camopaste.pressshift=Drücken Sie die Umschalttaste, um weitere Informationen zu erhalten
+camopaste.info=§6Current Block:§5 %s <br>§6Mit Metadaten: §5 %s
+
+#JEI support
+jei.energizedpaste.name=Brennende Rezepte
