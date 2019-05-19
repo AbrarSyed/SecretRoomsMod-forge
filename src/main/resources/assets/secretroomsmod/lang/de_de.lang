@@ -5,7 +5,7 @@ itemGroup.secretroomsmod=Geheim-Raum
 message.secretroomsmod.oneWay.towards=-- !!! Einwegblock auf "zu dir" eingestellt !!! --
 message.secretroomsmod.oneWay.away=-- !!! Einwegblock auf "von dir weg" eingestellt !!! --
 message.secretroomsmod.commandShow.show=Tarnblöcke sichtbar gemacht
-message.secretroomsmod.commandShow.hide=Camouflage-Blöcke sind geheim
+message.secretroomsmod.commandShow.hide=Tarnblöcke unsichtbar gemacht
 
 #update Checker
 update.version=[%s] Die Mod ist veraltet. Deine Version: %s; Zielversion: %s. Klicke hier, um zur Seite zu gelangen
