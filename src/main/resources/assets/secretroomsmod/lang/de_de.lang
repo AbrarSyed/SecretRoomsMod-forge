@@ -9,7 +9,7 @@ message.secretroomsmod.commandShow.hide=Camouflage-Blöcke sind geheim
 
 #update Checker
 update.version=[%s] Die Mod ist veraltet. Deine Version: %s; Zielversion: %s. Klicke hier, um zur Seite zu gelangen
-update.hover=Klicken Sie auf, um zu %s zu wechseln
+update.hover=Klicke zum Wechsel auf %s.
 
 # keybindings
 key.categories.secretroomsmod=SecretRoomsMod Tastenkombinationen
