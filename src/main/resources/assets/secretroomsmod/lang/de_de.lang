@@ -4,7 +4,7 @@ itemGroup.secretroomsmod=Geheim-Raum
 # chat messages
 message.secretroomsmod.oneWay.towards=-- !!! Einwegblock auf "zu dir" eingestellt !!! --
 message.secretroomsmod.oneWay.away=-- !!! Einwegblock auf "von dir weg" eingestellt !!! --
-message.secretroomsmod.commandShow.show=Camouflage-Blöcke sind sichtbar
+message.secretroomsmod.commandShow.show=Tarnblöcke sichtbar gemacht
 message.secretroomsmod.commandShow.hide=Camouflage-Blöcke sind geheim
 
 #update Checker
