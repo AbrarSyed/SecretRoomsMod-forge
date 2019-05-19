@@ -57,7 +57,7 @@ item.iron_exposing_helmet.name=Helm der wahren Sicht (Eisen)
 item.diamond_exposing_helmet.name=Helm der wahren Sicht (Diamant)
 
 #Camouflage Info
-camopaste.pressshift=Drücken Sie die Umschalttaste, um weitere Informationen zu erhalten
+camopaste.pressshift=Drücke die Umschalttaste für weitere Infos.
 camopaste.info=§6Current Block:§5 %s <br>§6Mit Metadaten: §5 %s
 
 #JEI support
