@@ -14,7 +14,7 @@ update.hover=Klicke zum Wechsel auf %s.
 # keybindings
 key.categories.secretroomsmod=SecretRoomsMod Tastenkombinationen
 key.secretroomsmod.oneWayface=Einweg-Richtung umschalten
-key.secretroomsmod.energizedpaste=Verwende energiegeladene Paste
+key.secretroomsmod.energizedpaste=Energiegeladene Paste verwenden
 
 # blocks
 tile.torch_lever.name=Fackelhebel
