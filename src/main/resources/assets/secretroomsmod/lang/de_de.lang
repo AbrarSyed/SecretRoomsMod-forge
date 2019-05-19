@@ -39,7 +39,7 @@ tile.secret_chest.name=Geheime Truhe
 tile.secret_trapped_chest.name=Geheime Redstone-Truhe
 tile.secret_light_detector.name=Geheimer Tageslichtsensor
 tile.secret_inverted_light_detector.name=Geheimer Nachtlichtsensor
-tile.solid_air.name=Solide Luft
+tile.solid_air.name=Feste Luft
 tile.secret_dispenser.name=Geheimer Werfer
 
 #gui
