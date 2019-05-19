@@ -58,7 +58,7 @@ item.diamond_exposing_helmet.name=Helm der wahren Sicht (Diamant)
 
 #Camouflage Info
 camopaste.pressshift=Drücke die Umschalttaste für weitere Infos.
-camopaste.info=§6Current Block:§5 %s <br>§6Mit Metadaten: §5 %s
+camopaste.info=§6Aktueller Block:§5 %s <br>§6Mit Metadaten: §5 %s
 
 #JEI support
 jei.energizedpaste.name=Brennende Rezepte
