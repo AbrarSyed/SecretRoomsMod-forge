@@ -1,5 +1,5 @@
 # creative tab
-itemGroup.secretroomsmod=Geheim-Raum
+itemGroup.secretroomsmod=Secret Room
 
 # chat messages
 message.secretroomsmod.oneWay.towards=-- !!! Einwegblock auf "zu dir" eingestellt !!! --
