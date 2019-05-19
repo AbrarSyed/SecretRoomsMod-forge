@@ -8,7 +8,7 @@ message.secretroomsmod.commandShow.show=Camouflage-Blöcke sind sichtbar
 message.secretroomsmod.commandShow.hide=Camouflage-Blöcke sind geheim
 
 #update Checker
-update.version=[%s] Der Mod ist veraltet. Ihre Version %s, Zielversion: %s. Klicken Sie hier, um zur Seite zu gelangen
+update.version=[%s] Die Mod ist veraltet. Deine Version: %s; Zielversion: %s. Klicke hier, um zur Seite zu gelangen
 update.hover=Klicken Sie auf, um zu %s zu wechseln
 
 # keybindings
