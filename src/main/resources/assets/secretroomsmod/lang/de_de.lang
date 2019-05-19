@@ -44,7 +44,7 @@ tile.secret_dispenser.name=Geheimer Werfer
 
 #gui
 gui.secret_chest.name=Geheime Truhe
-gui.programmable.info=Geben Sie den Blocknamen <br>oder den OreDict-Namen<BR>des Blocks ein,<BR> in den Sie die <br> SecretRoomsMod-Blöcke ändern möchten. <br> <br> Wenn mehr als ein Block<BR>vorhanden ist,<BR>klicken Sie auf <br>auf dem gewünschten Block. <br> <br>Der Ausgabeslot zeigt an, welcher Block ausgewählt wurde
+gui.programmable.info=Gib den Blocknamen <br>oder den OreDict-Namen<BR>des Blocks ein,<BR> in welchen du die <br> SecretRoomsMod-Blöcke ändern möchten. <br> <br> Sollte mehr als ein Block<BR>vorhanden sein,<BR>klicke auf <br>den gewünschten Block. <br> <br>Der Ausgabeslot zeigt an, welcher Block ausgewählt wurde
 
 #items
 item.secret_iron_door.name=Geheime Eisentür
