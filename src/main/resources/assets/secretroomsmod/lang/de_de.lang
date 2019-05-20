@@ -1,0 +1,64 @@
+# creative tab
+itemGroup.secretroomsmod=Secret Room
+
+# chat messages
+message.secretroomsmod.oneWay.towards=-- !!! Richtung des Tarnblocks auf die eigene Seite gesetzt !!! --
+message.secretroomsmod.oneWay.away=-- !!! Richtung des Tarnblocks auf die andere Seite gesetzt !!! --
+message.secretroomsmod.commandShow.show=Tarnblöcke offensichtlich gemacht
+message.secretroomsmod.commandShow.hide=Tarnblöcke geheim gemacht
+
+#update Checker
+update.version=[%s] Die Mod ist veraltet. Deine Version: %s; Zielversion: %s. Klicke hier, um zur Seite zu gelangen
+update.hover=Klicke zum Wechsel auf %s.
+
+# keybindings
+key.categories.secretroomsmod=SecretRoomsMod Tastenkombinationen
+key.secretroomsmod.oneWayface=Einweg-Richtung wechseln
+key.secretroomsmod.energizedpaste=Energiegeladene Paste verwenden
+
+# blocks
+tile.torch_lever.name=Fackelhebel
+tile.one_way_glass.name=Einwegglas
+tile.secret_gate.name=Geheimes Tor
+tile.secret_gate.name=Geheimes Tor
+tile.secret_wooden_trapdoor.name=Geheime Holzfalltür
+tile.secret_iron_trapdoor.name=Geheime Eisenfalltür
+tile.secret_wooden_door.name=Geheime Holztür
+tile.secret_iron_door.name=Geheime Eisentür
+tile.ghost_block.name=Tarnblock
+tile.secret_lever.name=Geheimer Hebel
+tile.secret_redstone.name=Geheimes Redstone
+tile.secret_stone_button.name=Geheimer Steinknopf
+tile.secret_wooden_button.name=Geheimer Holzknopf
+tile.secret_pressure_plate.name=Geheime Druckplatte
+tile.secret_player_pressure_plate.name=Geheime Spielerdruckplatte
+tile.secret_light_pressure_plate.name=Geheime Feinwägeplatte
+tile.secret_heavy_pressure_plate.name=Geheime Grobwägeplatte
+tile.secret_stairs.name=Geheime Treppe
+tile.secret_chest.name=Geheime Truhe
+tile.secret_trapped_chest.name=Geheime Redstone-Truhe
+tile.secret_light_detector.name=Geheimer Tageslichtsensor
+tile.secret_inverted_light_detector.name=Geheimer Nachtlichtsensor
+tile.solid_air.name=Feste Luft
+tile.secret_dispenser.name=Geheimer Werfer
+
+#gui
+gui.secret_chest.name=Geheime Truhe
+gui.programmable.info=Gib den Blocknamen <br>oder den OreDict-Namen<BR>des Blocks ein,<BR> in welchen du die <br> SecretRoomsMod-Blöcke ändern möchten. <br> <br> Sollte mehr als ein Block<BR>vorhanden sein,<BR>klicke auf <br>den gewünschten Block. <br> <br>Der Ausgabeslot zeigt an, welcher Block ausgewählt wurde
+
+#items
+item.secret_iron_door.name=Geheime Eisentür
+item.camouflage_paste.name=Tarnpaste
+item.energized_camouflage_paste.name=Energiegeladene Tarnpaste
+item.secret_wooden_door.name=Geheime Holztür
+item.switch_probe.name=Tastkopf
+item.programmable_switch_probe.name=Programmierbarer Tastkopf
+item.iron_exposing_helmet.name=Helm der Wahren Sicht (Eisen)
+item.diamond_exposing_helmet.name=Helm der Wahren Sicht (Diamant)
+
+#Camouflage Info
+camopaste.pressshift=Drücke die Umschalttaste für weitere Infos.
+camopaste.info=§6Aktueller Block:§5 %s <br>§6Mit Metadaten: §5 %s
+
+#JEI support
+jei.energizedpaste.name=Brennende Rezepte
