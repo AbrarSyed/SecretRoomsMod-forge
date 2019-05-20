@@ -2,10 +2,10 @@
 itemGroup.secretroomsmod=Secret Room
 
 # chat messages
-message.secretroomsmod.oneWay.towards=-- !!! Einwegblock auf "zu dir" eingestellt !!! --
-message.secretroomsmod.oneWay.away=-- !!! Einwegblock auf "von dir weg" eingestellt !!! --
-message.secretroomsmod.commandShow.show=Tarnblöcke sichtbar gemacht
-message.secretroomsmod.commandShow.hide=Tarnblöcke unsichtbar gemacht
+message.secretroomsmod.oneWay.towards=-- !!! Richtung des Tarnblocks auf die eigene Seite gesetzt !!! --
+message.secretroomsmod.oneWay.away=-- !!! Richtung des Tarnblocks auf die andere Seite gesetzt !!! --
+message.secretroomsmod.commandShow.show=Tarnblöcke offensichtlich gemacht
+message.secretroomsmod.commandShow.hide=Tarnblöcke geheim gemacht
 
 #update Checker
 update.version=[%s] Die Mod ist veraltet. Deine Version: %s; Zielversion: %s. Klicke hier, um zur Seite zu gelangen
@@ -21,8 +21,8 @@ tile.torch_lever.name=Fackelhebel
 tile.one_way_glass.name=Einwegglas
 tile.secret_gate.name=Geheimes Tor
 tile.secret_gate.name=Geheimes Tor
-tile.secret_wooden_trapdoor.name=Geheime hölzerne Falltür
-tile.secret_iron_trapdoor.name=Geheime eiserne Falltür
+tile.secret_wooden_trapdoor.name=Geheime Holzfalltür
+tile.secret_iron_trapdoor.name=Geheime Eisenfalltür
 tile.secret_wooden_door.name=Geheime Holztür
 tile.secret_iron_door.name=Geheime Eisentür
 tile.ghost_block.name=Tarnblock
