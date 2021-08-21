@@ -35,6 +35,7 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 		ItemStack ret = ItemStack.EMPTY;
 		if(accessor.getTileEntity() instanceof ISecretTileEntity && ((ISecretTileEntity)accessor.getTileEntity()).getMirrorStateSafely() != null  && !TrueSightHelmet.isHelmet(accessor.getPlayer()))
 		{
+			ret = new ItemStack(((ISecretTileEntity)accessor.getTileEntity()).getMirrorStateSafely().getBlock());
 			try
 			{
 				ret = ((ISecretTileEntity)accessor.getTileEntity()).getMirrorStateSafely().getBlock().getPickBlock(
@@ -48,7 +49,6 @@ public class SecretWaliaDataProvider implements IWailaDataProvider
 			{
 				;
 			}
-			ret = new ItemStack(((ISecretTileEntity)accessor.getTileEntity()).getMirrorStateSafely().getBlock());
 		}
 		else if(EnergizedPasteHandler.hasReplacedState(accessor.getWorld(), accessor.getPosition()))
 		{
