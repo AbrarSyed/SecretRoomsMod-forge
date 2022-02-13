@@ -1,6 +1,6 @@
 buildscript {
 	repositories {
-		jcenter()
+		mavenCentral()
 		maven {
 			url = "https://maven.minecraftforge.net"
 		}
@@ -10,8 +10,10 @@ buildscript {
             	}
 	}
 	dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-       		classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+		classpath("com.anatawa12.forge:ForgeGradle:2.3-1.0.+") {
+			changing = true
+		}
+		classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
 	}
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -30,7 +32,7 @@ compileJava {
 }
 
 minecraft {
-	version = "1.12.2-14.23.2.2629"
+	version = "1.12.2-14.23.5.2847"
 	runDir = "run"
 	mappings = "snapshot_20180302"
 
@@ -86,18 +88,19 @@ dependencies {
 	deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
 	deobfCompile "malisiscore:malisiscore-1.12.2:6.4.0:dev"
 	deobfCompile "malisisdoors:malisisdoors-1.12.2:7.3.0:dev"
-	deobfCompile "team.chisel.ctm:CTM:MC1.12-0.3.0.14"
-    deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"
+	deobfCompile "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
+    deobfCompile "team.chisel:Chisel:MC1.12.2-1.0.2.45"
 
-	deobfProvided "mezz.jei:jei_1.12.2:4.8.5.138:api"
-	runtime "mezz.jei:jei_1.12.2:4.8.5.138"
-	
+	deobfProvided "mezz.jei:jei_1.12.2:4.16.1.301:api"
+	runtime "mezz.jei:jei_1.12.2:4.16.1.301"
+
 	compile('org.spongepowered:mixin:0.7.4-SNAPSHOT') {
         exclude module: 'asm-commons'
         exclude module: 'asm-tree'
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'log4j-core'
+		exclude module: 'gson'
     }
 }
 

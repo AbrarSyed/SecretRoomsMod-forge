@@ -31,7 +31,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
-import team.chisel.ctm.client.state.ChiselExtendedState;
 
 public class SecretRoomsTransformer implements IClassTransformer {
 	
